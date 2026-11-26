@@ -43,7 +43,7 @@ U({ side: "r", region: CO, n: 2, face: -Math.PI / 2, keys: [[0, HARLEM[0] - 2, H
 U({ side: "u", region: CO, n: 2, face: Math.PI * 0.75, keys: [[0, TRc[0] + 6, TRc[1] - 6]], t0: T.delaware - 0.3 });
 U({ side: "r", region: CO, n: 2, face: Math.PI * 0.75, keys: [[0, NB[0] - 6, NB[1] + 8], [T.delaware + 0.4, NB[0] - 40, NB[1] + 44]], t0: T.chased + 0.4 });
 // jersey: the army on the NJ bank at Trenton crosses (break rank onto the boats at three landings), reappears on the PA bank
-const LAND = [kT - 0.022, kT, kT + 0.022];   // round 1: wider spacing for the bigger wide-map blocks
+const LAND = [kT - 0.032, kT, kT + 0.032];   // round 1: wider spacing for the bigger wide-map blocks
 const decks = [], ESC = [];
 LAND.forEach((k, i) => { const r = RV(k), near = bank(k, "NJ", HW + 0.55), far = bank(k, "NJ", HW - 0.35), out = bank(k, "NJ", HW - 1.0), back = bank(k, "NJ", HW + 1.6);
   decks.push({ x: (near[0] + far[0]) / 2, z: (near[1] + far[1]) / 2, angle: Math.atan2(far[1] - near[1], far[0] - near[0]), len: Math.hypot(far[0] - near[0], far[1] - near[1]), deck: r.h + 1.5, wl: r.h });
@@ -52,7 +52,7 @@ const toPA = (k) => Math.atan2(-RV(k).dx, RV(k).dy);                // facing ac
 LAND.forEach((k, i) => { const p = bank(k, "NJ", HW + 4.2 + (i % 2) * 1.2);
   U({ side: "u", region: JE, face: toPA(k), keys: [[0, ...p]], escape: { ...ESC[i], t0: 23.0 + i * 0.7 } }); });
 // the PA bank: the army that crossed + the camp along the river up to McConkey's (blocks thin out from "melting away")
-const CAMPK = [[kT - 0.022, 4.2, 27.4], [kT, 5.4, 28.0], [kT + 0.022, 4.2, 28.6], [kT - 0.07, 4.0, 0], [kT - 0.12, 4.6, 0], [kT - 0.17, 4.2, 0], [kT - 0.22, 4.8, 0], [kT - 0.27, 4.4, 0]];
+const CAMPK = [[kT - 0.032, 4.2, 27.4], [kT, 5.4, 28.0], [kT + 0.032, 4.2, 28.6], [kT - 0.07, 4.0, 0], [kT - 0.12, 4.6, 0], [kT - 0.17, 4.2, 0], [kT - 0.22, 4.8, 0], [kT - 0.27, 4.4, 0]];
 const FADE = [null, 62.6, null, 56.2, null, 58.4, 60.9, null];
 CAMPK.forEach(([k, d, t0], i) => { const p = bank(k, "PA", HW + d), inl = bank(k, "PA", HW + d + 1.6), f = Math.atan2(RV(k).dx, -RV(k).dy);
   U({ side: "u", region: JE, face: f, t0: t0 || 23.0, t1: FADE[i] || 1e9, keys: t0 ? [[0, ...p], [t0, ...p], [t0 + 3.4, ...inl]] : [[0, ...inl]] }); });

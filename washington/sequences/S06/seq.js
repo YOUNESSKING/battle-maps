@@ -41,7 +41,7 @@ const N_ = -Math.PI / 2, S_ = Math.PI / 2;
 const units = [];
 const U = (o) => { units.push({ type: "inf", n: 1, arrive: false, ...o }); return units.length - 1; };
 // jersey: back over the river at Trenton (30-31 Dec): three regiments board on the PA bank, the boats cross, they land on the NJ bank
-const LAND = [kT - 0.022, kT, kT + 0.022], decks = [];
+const LAND = [kT - 0.032, kT, kT + 0.032], decks = [];
 LAND.forEach((k, i) => { const r = RV(k), near = bank(k, "PA", HW + 0.55), far = bank(k, "PA", HW - 0.35), out = bank(k, "PA", HW - 1.0), back = bank(k, "PA", HW + 1.6);
   decks.push({ x: (near[0] + far[0]) / 2, z: (near[1] + far[1]) / 2, angle: Math.atan2(far[1] - near[1], far[0] - near[0]), len: Math.hypot(far[0] - near[0], far[1] - near[1]), deck: r.h + 1.5, wl: r.h });
   const toNJ = Math.atan2(RV(k).dx, -RV(k).dy);

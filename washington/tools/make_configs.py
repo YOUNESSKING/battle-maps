@@ -115,7 +115,7 @@ write("jersey", {
  "note": "The Ten Crucial Days, 25 Dec 1776 - 3 Jan 1777 (~24 x 28 km, winter): McConkey's Ferry -> the Bear Tavern road -> Birmingham -> Trenton (River "
          "road / Pennington road), the Assunpink, the post road to Maidenhead and Princeton (Shabakunk, Stony Brook), the night march (Sandtown / "
          "Quaker Bridge / Saw Mill roads), Bordentown. Base frame (zoom 10). Modern reservoirs / Carnegie Lake / the D&R canal filled from the banks.",
- "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 8192, "jpeg_q": 92,   # critic A r2: 2x texture not possible (16384 high > the 16k texture limit; 11264 OOM-killed at 14 GB): sharper woods + jpeg 92 instead "exag": 2.0, "cell": 6.5, "seed": 1776, "relief_k": 0.5, "lit_k": 0.3, "wideSunK": 0.15,
+ "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 8192, "jpeg_q": 92, "exag": 2.0, "cell": 6.5, "seed": 1776, "relief_k": 0.5, "lit_k": 0.3, "wideSunK": 0.15,   # critic A r2: 2x texture not possible (16384 high > the 16k texture limit; 11264 OOM-killed at 14 GB): crisper woods + jpeg 92 instead
  "wood_soft": {"blur_u": 0.3, "alpha": 0.9}, "village_cluster": {"spread": 1.4, "k": 1.4},   # soft winter woods; compact villages (no crosses)
  "tex_grade": {"contrast": 1.2, "sat": 1.3, "gamma": 0.97}, "river_halo_u": 0.25,
  "stills": [{"at": [jb[0] + jb[2] / 2, jb[1] + jb[3] / 2], "dist": 330, "tilt": 32, "yaw": 0}, {"at": pl("Trenton"), "dist": 150, "tilt": 44, "yaw": 0},

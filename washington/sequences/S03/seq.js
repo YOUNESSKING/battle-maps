@@ -236,8 +236,8 @@ window.SEQ = {
     { t: 58.4, region: BK, at: [2479.6, 1146.0], dist: 25, tilt: 51, yaw: -2, fov: 30, ease: "lin" },
     { t: 62.4, region: BK, at: [2481.0, 1148.6], dist: 23, tilt: 50, yaw: -2, fov: 30, night: NI, ease: "io" },   // night: the regiments leave, break rank, board
     { t: 67.4, region: BK, at: [2481.4, 1149.0], dist: 22, tilt: 51, yaw: 2, fov: 30, night: NI, ease: "lin" },
-    { t: 70.2, region: BK, at: [2483.2, 1151.6], dist: 28, tilt: 49, yaw: 2, fov: 30, night: NI, ease: "io" },
-    { t: 73.0, region: BK, at: [2499.0, 1165.0], dist: 34, tilt: 48, yaw: 0, fov: 30, night: NI, ease: "io" },   // the covering force in the line
+    { t: 70.9, region: BK, at: [2482.4, 1150.6], dist: 25, tilt: 50, yaw: 2, fov: 30, night: NI, ease: "lin" },
+    { t: 70.9, region: BK, at: [2499.4, 1165.4], dist: 33, tilt: 48, yaw: 0, fov: 30, night: NI, ease: "cut", dissolve: 0.9 },   // the covering force (round 2: a dissolve, no fast pan over the marching blocks)
     { t: 76.6, region: BK, at: [2498.6, 1164.6], dist: 33, tilt: 48, yaw: 0, fov: 30, night: NI, ease: "lin" },
     { t: 76.6, region: BK, at: [2474.8, 1139.8], dist: 28, tilt: 50, yaw: -8, fov: 30, night: NI, ease: "cut", dissolve: 0.9 },  // the river at night (round 1: 20 % closer)
     { t: 90.9, region: BK, at: [2474.0, 1138.8], dist: 26, tilt: 50, yaw: -4, fov: 30, night: NI, ease: "lin" },

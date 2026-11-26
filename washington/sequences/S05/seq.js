@@ -331,7 +331,7 @@ window.SEQ = {
             off: { warm: 0.05, emerge: 0.1, clear: 0.28, haze: 0.85 },   // round 1 (critic A): shorter flat grey
             from: { region: JE, at: [636, 994], dist: 150, tilt: 44, yaw: -60, night: 0.32 },
             to: { region: CR, at: at(-2.0, -3.4, -0.6), dist: 18, tilt: 57, yaw: -36, fov: 30, night: NI } }],
-  clouds: { [JE]: { scatter: { seed: 7 }, keepClear: [[680, 1020, 60, 1, 0.8], [620, 990, 50, 1, 0.8]] }, [CR]: { shadows: false }, [TR]: { shadows: false },
+  clouds: { [JE]: { scatter: { seed: 7, box: [560, 874, 220, 255], n: 9, med: 40 }, diveClear: 40, keepClear: [[680, 1020, 30, 1, 0.8], [620, 990, 25, 1, 0.8]] }, [CR]: { shadows: false }, [TR]: { shadows: false },
             [CO]: { scatter: { seed: 4 }, keepClear: [[500, 380, 120, 1, 0.8], [360, 480, 110, 1, 0.9]] } },
   units, arrows, banners, boats, fx, generals, labels,
   overlay: [

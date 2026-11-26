@@ -214,7 +214,7 @@ window.SEQ = {
     K(113.0, TR, [1358.0, 2064.0], 26, 49, 4, "io", 0.06),
     K(T.D, TR, [1361.0, 2058.0], 32, 47, 6, "io", 0.02),
   ],
-  clouds: { [JE]: { scatter: { seed: 7 }, keepClear: [[720, 980, 70, 1, 0.8]] }, [TR]: { shadows: true }, [PR]: { shadows: true } },
+  clouds: { [JE]: { scatter: { seed: 7, box: [560, 874, 220, 255], n: 9, med: 40 }, diveClear: 40, keepClear: [[720, 980, 35, 1, 0.8]] }, [TR]: { shadows: true }, [PR]: { shadows: true } },
   units, arrows, banners, fx, generals, labels,
   overlay: [
     ["plaque.date", 0, { month: "January 1777", day: "2", weekday: "Thursday", note: "night" }],
