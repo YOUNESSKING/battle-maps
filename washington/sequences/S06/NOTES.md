@@ -38,3 +38,14 @@ Open issues: the town houses (two dense rows on King / Queen St) partly hide the
 
 ## Round 5
 - Cornwallis banner (Trenton) 3 u south (y 2059.4) and in at 54.2, inside the frame.
+
+## V2 (owner decision 22)
+- v14 troopsOpts; jersey ts 2.0, trenton ts 1.0 / fxScale 6.2; v8 wide grade + night veil, night keys 1.0 + film.grade night on "stopped".
+- One block per unit: Cornwallis's column = 4 ranks x 2 single blocks (1.3 u apart).
+- Musketry v14 (VO x KF 0.63): each bridge volley lasts 2.2 s but fires once (volley 2.4, roll <= 0.4), so the cues stay 43.0-50.12 (in the word gaps)
+  and the last flash is before 50.4; jersey rifle volleys >= 2.2 s (last cue 32.05, before the 32.45 cut).
+- Assaults stage 4 u from the creek (ts 1.0 walks ~1 u/s), retreat over 5 s: no flips.
+- Legend (sub Cornwallis) 0.9 -> the decision card; timeline (Brooklyn + Trenton sealed) at 4.9 -> 5.1 on "second of January", hidden at 32.2
+  (the Trenton close shots frame the blue line low); bridge keys 1 u south.
+- Checks: trenton 0 FAIL, side gap 0 (both regions); jersey: turn 46-69 deg/s on the landing blocks during the 13 s pan, FvV 20-22 deg on two
+  rear red blocks, the 32.5 cut.

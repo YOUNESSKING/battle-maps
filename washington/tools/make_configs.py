@@ -282,7 +282,7 @@ write("princeton", {
          "clash point), the Olden house, Frog Hollow. Zoom-11 frame. Carnegie Lake (1906) and the D&R canal (1834) are modern: filled.",
  "box": pb, "focus": pl("William Clarke orchard", Z),
  "stills": [{"at": [pb[0] + pb[2] / 2, pb[1] + pb[3] / 2], "dist": 100, "tilt": 34, "yaw": 0}, {"at": pl("William Clarke orchard", Z), "dist": 42, "tilt": 48, "yaw": -8},
-            {"at": pl("Nassau Hall", Z), "dist": 24, "tilt": 56, "yaw": 12}],
+            {"at": [1476.4, 1849.8], "dist": 7, "tilt": 58, "yaw": 20}],   # r3 carry-over: the Stony Brook bridge close-up
  "hm_ppu": 8, "tex": 4096, "exag": 3.8, "cell": 1.85, "gm_unit": 0.45, "track_k": 0.5, "seed": 1777, "relief_noise": [2.0, 0.6],
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.5, "spike_m": 25.0},
  "creek_km2": 0.4, "creeks": {"paint_km2": 0.8, "ribbon_km2": 1e9},

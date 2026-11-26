@@ -63,3 +63,14 @@ Checks: check_troops_motion brooklyn 0-153.84: 0 overlaps, 0 pops; turn spikes o
 - Dive landing: `to` at [2487.5, 1162] dist 74 -> 60, the 11.0 key dist 62, `off.clear` 0.75 / haze 1.0: no flat world edge at the right (snaps every 0.3 s, 4.2-9 s).
 - Covering-force shots ~25 % closer (dist 33/29/30 -> 25/22/23), label 17 -> 20.
 - Checks: brooklyn FAIL rows only after the 70.9 dissolve (off-frame).
+
+## V2 (owner decision 22: the approved v8 / v14 tests are the look)
+- seq.js = the approved `_v2test_b` (built from this scene) + the film-only parts: troopsOpts v14 (size 1.44, depthK 0.44, steel-blue pal),
+  brooklyn ts 1.15 / fxScale 7.5, colonies ts 6; v8 wide grade + the tested night veil; night 1.0 + film.grade night/day; rain veil x0.5, n 1800;
+  boats `wake: false`, `lamp: true`, `lampK 0.5`; clocks 20:00 / 23:00 / 26:00 (FACT 21-22); legend (sub Howe) T.d29+0.4 -> T.about-0.6 and on the
+  colonies tail; timeline from T.d29 (Aug), seal "Brooklyn" on "the last of them"; out for the method letter, back (with the seal) on the colonies tail;
+  small parchment ledger top-right (9,000 across / Nearly all the guns / A handful left behind) instead of the big card, no film.dim;
+  carved "Brooklyn ferry" + "Brooklyn"; colonies clouds seed 11 / n 24 / med 15, colonies arrow width 0.34.
+- Kept: whooshAt 1.4, dive off (clear 1.0), word timings, no negative times, the escape decks.
+- Units stay n 2 as in the approved test (escapes over the landing decks); checker: spikes only on the 70.9 / 76.7 / 91.0 / 105.4 / 118.4 cut
+  frames, FvV rows of the camp regiments after the 70.9 dissolve (off-frame); 0 overlaps.

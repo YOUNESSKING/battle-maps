@@ -31,3 +31,9 @@ Open issues: blue camp blocks are small at dist 104-134 (troopScale 3.2 = Jackso
 
 ## Round 3
 - No S04 rows; rebuilt on the latest jersey bake (folder 24.4 MB). Checker jersey + colonies 0 FAIL. No negative overlay times.
+
+## V2 (owner decision 22)
+- seq.js = the approved `_v2test_a` (built from this scene): v14 troopsOpts, v8 wide grade, colonies ts 6, arrows 0.34, clouds seed 11 / n 24 / med 15,
+  legend (sub Howe) all through, timeline 1.5 -> 3.5 on "sixteenth" -> 4.25 on "eighth" (Brooklyn sealed), carved Manhattan / Fort Washington /
+  Hudson River; plus jersey ts 2.0 (recipe table: 0.020 x dist 54-112). Checks jersey + colonies: 0 FAIL, 0 overlaps.
+- Note: at ts 2.0 the jersey posts / camp are small (v8 wide size); the recipe value is kept.
