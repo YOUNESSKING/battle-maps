@@ -34,14 +34,14 @@ const held = { build() { const c = document.createElement("canvas"); c.width = 1
 
 // ---------------- units ----------------
 const units = [];
-const walk = (side, a, b, t0, t1, o = {}) => units.push({ region: CO, side, type: "inf", n: 1, bw: 2.0, skirmish: false, arrive: false, face: Math.atan2(b[1] - a[1], b[0] - a[0]),
+const walk = (side, a, b, t0, t1, o = {}) => units.push({ region: CO, side, type: "inf", n: 1, bw: 1.6, skirmish: false, arrive: false, face: Math.atan2(b[1] - a[1], b[0] - a[0]),
   keys: [[0, ...a], [t0, ...a], [t1, ...b]], ...o });
 // the blue army north into the hills (Pluckemin -> Morristown)
 const B0 = lerp2(PLU, MOR, 0.5), B1 = lerp2(PLU, MOR, 0.9);
 walk("u", B0, B1, 0.2, 9.4);
 // the red posts pull back east to New Brunswick, Perth Amboy and Paulus Hook (front first)
-walk("r", lerp2(KIN, [NB[0] - 5, NB[1] + 8], 0.45), [NB[0] - 5, NB[1] + 8], T.pulled - 0.4, 15.6);
-walk("r", lerp2(SOM, [NB[0] - 2, NB[1] - 8], 0.3), [NB[0] - 2, NB[1] - 8], T.pulled - 0.1, 15.0);
+walk("r", lerp2(KIN, [NB[0] - 14, NB[1] + 10], 0.45), [NB[0] - 14, NB[1] + 10], T.pulled - 0.4, 15.6);
+walk("r", lerp2(SOM, [NB[0] + 4, NB[1] - 12], 0.3), [NB[0] + 4, NB[1] - 12], T.pulled - 0.1, 15.0);
 walk("r", lerp2(ETC, [PA[0] - 8, PA[1] - 7], 0.55), [PA[0] - 8, PA[1] - 7], T.pulled + 0.2, 15.4);
 walk("r", NEW, [PH[0] - 8, PH[1] + 2], T.pulled + 0.5, 14.8);
 

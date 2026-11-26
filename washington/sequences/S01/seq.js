@@ -81,7 +81,7 @@ const U = (o) => { units.push({ arrive: false, ...o }); };
 // A: colonies. Red posts settle across New Jersey (short walks into their posts, done by ~6 s); the small blue army walks up to the PA bank.
 const NYC = P("New York", CO);
 // each post: the line walks in from the north (front first, straight down the screen) and halts at its post
-[[TRC, 1, 3.0], [BOC, 1, 2.5], [PRC, 1, 2.5], [NBC, 1, 2.5], [PAC, 1, 2.5]].forEach(([p, n, d], i) => {
+[[TRC, 1, 3.0], [BOC, 1, 2.5], [PRC, 1, 2.5], [NBC, 1, 2.5]].forEach(([p, n, d], i) => {
   const v0 = [0, -1], l = Math.hypot(...v0), v = [v0[0] / l, v0[1] / l], st = [p[0] + v[0] * (d + 9), p[1] + v[1] * (d + 9)], end = [p[0] + v[0] * d, p[1] + v[1] * d];
   U({ region: CO, side: "r", type: "inf", n, bw: 1.4, face: Math.atan2(-v[1], -v[0]), t0: -1, t1: DV.full + 0.2, keys: [[0, ...lerp2(st, end, 0.25)], [1.0 + i * 0.4, ...lerp2(st, end, 0.45)], [5.6 + i * 0.4, ...end]] }); });
 // the blue army: behind the river on the PA side, walking up to the bank (facing New Jersey)
@@ -106,7 +106,7 @@ const STE0 = [1367.4, 2043.2], STE1 = [1367.4, 2047.6];             // a third l
 const fSE = Math.atan2(GRE1[1] - GRE0[1], GRE1[0] - GRE0[0]), fSU = Math.atan2(SUL1[1] - SUL0[1], SUL1[0] - SUL0[0]), fST = Math.atan2(STE1[1] - STE0[1], STE1[0] - STE0[0]);
 U({ region: TR, side: "u", type: "inf", n: 2, face: fSE, t0: CW[0], t1: CW[1], keys: [[0, ...GRE0], [20.4, ...GRE0], [23.4, ...GRE1]] });
 U({ region: TR, side: "u", type: "inf", n: 2, face: fSU, t0: CW[0], t1: CW[1], keys: [[0, ...SUL0], [20.6, ...SUL0], [23.8, ...SUL1]] });
-U({ region: TR, side: "u", type: "inf", n: 2, face: fST, t0: CW[0], t1: CW[1], keys: [[0, ...STE0], [20.9, ...STE0], [23.6, ...STE1]] });
+U({ region: TR, side: "u", type: "inf", n: 2, face: fST, t0: CW[0], t1: CW[1], keys: [[0, ...STE1]] });   // round 1: already across the Princeton road (no oblique walk at the frame edge)
 U({ region: TR, side: "u", type: "art", n: 1, face: Math.PI / 2, t0: CW[0], t1: CW[1], keys: [[0, HEAD[0] - 0.1, HEAD[1] - 1.3]] });
 // the Hessians spill out of the houses east of King St and try for the Princeton road (north-east), then are boxed in
 const fNE = 0;
@@ -268,7 +268,7 @@ window.SEQ = {
     from: { region: CO, at: [MKC[0] + 4, MKC[1] - 2], dist: 230, tilt: 42, yaw: -2, night: 0.35 },
     to: { region: CR, at: XC, dist: 26, tilt: 52, yaw: -30, fov: 30, night: NI } }],
   clouds: {
-    [CO]: { scatter: { seed: 3, n: 10, med: 18 }, keepClear: [[MKC[0], MKC[1], 45, 1, 0.85], [BHC[0], BHC[1], 40, 1, 0.9]] },   // round 1 (critic A): visible wide clouds
+    [CO]: { scatter: { seed: 3, n: 10, med: 18 }, keepClear: [[MKC[0], MKC[1], 50, 1, 0.9], [BHC[0], BHC[1], 85, 1, 1]] },   // round 1 (critic A): visible wide clouds
     [CR]: { shadows: true, opts: {
       erode: (t) => { const e = DV.emerge; return [0, VX.lerp(0.35, 0.7, sstep(e, e + 0.6, t)) + VX.lerp(0, 2.2, sstep(e + 0.3, e + 1.5, t))]; },
       deck: (t) => { const e = DV.emerge; return { x: Math.round(XC[0]) + 4, z: Math.round(XC[1]), r: 9, front: 3 * sstep(e + 0.2, e + 0.7, t), k: 1 }; },
