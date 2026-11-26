@@ -999,7 +999,7 @@ def bake(rname, G, P, creeks, preview=True):
     LOG("  fields ...")
     hedge_pts = None
     if close and PROJ and cfg.get("gm_unit"):   # project (Battle 21 v2): the gm field detail (strips, furrows, tracks, scrub) at gm_unit x its unit size, so a close
-        gu_ = float(cfg["gm_unit"]); img, hedge_pts = gm_fields(lab, n, cell, s * gu_, r, TW, TH, seed, track_k=cfg.get("track_k", 1.0))   # camera 2-4x nearer (in metres) than v8's reads like v8 at 35-60 s
+        gu_ = float(cfg["gm_unit"]); img, hedge_pts = gm_fields(lab, n, cell, s * gu_, r, TW, TH, seed, track_k=cfg.get("track_k", 1.0), strip_k=cfg.get("strip_k", 1.0))   # camera 2-4x nearer (in metres) than v8's reads like v8 at 35-60 s
         rh_ = np.random.default_rng(seed + 777).random(len(hedge_pts)); kp_ = np.where(hedge_pts[:, 2] == 2, gu_, gu_ * gu_)   # same tree density per unit area / hedge length as before
         hedge_pts = hedge_pts[rh_ < kp_]; del rh_, kp_
     elif close: img, hedge_pts = gm_fields(lab, n, cell, s, r, TW, TH, seed)
@@ -1192,6 +1192,7 @@ def bake(rname, G, P, creeks, preview=True):
     for sig, wgt in ((0.0015, 0.22), (0.005, 0.6)) if not close else ((0.004, 0.6), (0.012, 0.4)):
         hb = cv2.GaussianBlur(ht, (0, 0), sig * TW) * exag / MPU
         dz, dx = np.gradient(hb); dx *= s; dz *= s
+        if PROJ and cfg.get("shade_gain") and not close: dx *= cfg["shade_gain"]; dz *= cfg["shade_gain"]   # project (v2 r6, critic A r4 N1): steeper SHADING slopes on a blurred (streak-free) wide DEM: v8-like hill light without more exag
         lam = (-dx * sun[0] + sun[1] - dz * sun[2]) / np.sqrt(dx * dx + 1 + dz * dz)
         shade += wgt * (np.clip(lam, 0, 1) / sun[1] - 1); del hb, dz, dx, lam
     if not close:
@@ -1287,10 +1288,16 @@ def bake(rname, G, P, creeks, preview=True):
             A = np.array(rv["pts"], np.float32); dd = np.hypot(A[:, 0] - p[0], A[:, 1] - p[1]); i = int(dd.argmin())
             if dd[i] < maxd and (best is None or dd[i] < best[0]): best = (dd[i], rv, A, i)
         return best
-    def bridge_at(p, kind, name, burn=False, length=None):
+    def bridge_at(p, kind, name, burn=False, length=None, road_dir=None):
         b = river_at(p)
         if b is None: return None
         _, rv, A, i = b; t_ = A[min(i + 2, len(A) - 1), :2] - A[max(i - 2, 0), :2]; t_ /= np.linalg.norm(t_) + 1e-6
+        if road_dir is not None:   # project (v2 r6, critic A N4): the deck lies ALONG the road (not square to the river), centred on the road x river point, length = crossing + 10 %
+            rd_ = np.asarray(road_dir, np.float64); rd_ /= np.linalg.norm(rd_) + 1e-9; sn_ = max(0.35, abs(rd_[0] * t_[1] - rd_[1] * t_[0]))
+            L_ = length or round(rv["w"] * 1.08 / sn_ * 1.1 + 0.12, 3); ac_ = math.atan2(rd_[1], rd_[0]); u_ = rd_ * L_ / 2; pc_ = np.asarray(p, np.float64)
+            ends_h = float(np.mean(sample(h, box, np.array([pc_ + u_, pc_ - u_], np.float32))))
+            return dict(name=name, kind=kind, x=round(float(pc_[0]), 3), z=round(float(pc_[1]), 3), angle=round(ac_, 4), len=round(L_, 3), wl=round(float(A[i, 2]), 2),
+                        deck=round(max(min(ends_h, float(A[i, 2]) + 2.0), float(A[i, 2]) + 0.8) + 0.2, 2), river=rv["name"], burn=burn, spans=3)
         wl = float(A[i, 2]); ring = np.array([A[i, :2] + [math.cos(a) * (rv["w"] / 2 + 0.6), math.sin(a) * (rv["w"] / 2 + 0.6)] for a in np.linspace(0, 6.28, 16)], np.float32)
         bank_h = float(np.percentile(sample(h, box, ring), 70))
         if PROJ and cfg.get("bridge_deck") == "ends":   # project (v2 r3 carry-over): deck at road level = the terrain at the bridge's two ends (not the valley floor + 4 m)
@@ -1302,18 +1309,18 @@ def bake(rname, G, P, creeks, preview=True):
                     len=round(length or max(1.0, rv["w"] * 1.08 * 1.6 + 1.0), 3), wl=round(wl, 2), deck=round(max(bank_h, wl + 4) + 1.0, 2), river=rv["name"], burn=burn)
     done_b = []
     for b in bridges_cfg:
-        p = resolve_pt(G, b)
+        p = resolve_pt(G, b); rdir_ = None
         if p is None: continue
         if PROJ and b.get("kind", "road") == "road" and b.get("snap_road", True):   # project (v2 r3): put a named road bridge ON the nearest road x river crossing (research points are +-100 m)
             best_ = None
             for rd, _, _ in RDS:
                 for rv in rivs:
                     if rv["w"] >= 2.5: continue
-                    for (q_, _, _) in seg_intersections(rd, np.array(rv["pts"], np.float32)[:, :2]):
+                    for (q_, _ia, _) in seg_intersections(rd, np.array(rv["pts"], np.float32)[:, :2]):
                         d_ = math.hypot(q_[0] - p[0], q_[1] - p[1])
-                        if d_ < b.get("snap_u", 3.0) and (best_ is None or d_ < best_[0]): best_ = (d_, q_)
-            if best_ is not None: p = np.array(best_[1], np.float32)
-        bb = bridge_at(p, b.get("kind", "road"), b.get("name", "bridge"), b.get("burn", False), b.get("len"))
+                        if d_ < b.get("snap_u", 3.0) and (best_ is None or d_ < best_[0]): best_ = (d_, q_, rd[min(_ia + 1, len(rd) - 1)] - rd[_ia])
+            if best_ is not None: p = np.array(best_[1], np.float32); rdir_ = best_[2] if b.get("align") == "road" else None   # align "road" (project, v2 r6): deck along the road
+        bb = bridge_at(p, b.get("kind", "road"), b.get("name", "bridge"), b.get("burn", False), b.get("len"), rdir_)
         if bb: feat["bridges"].append(bb); done_b.append((bb["x"], bb["z"]))
     if cfg.get("auto_bridges", True):   # every road / railroad crossing of a ribbon river (not the Mississippi)
         for (lines, kind) in (([(rd, nm) for rd, c_, nm in RDS if c_ != "lane" or close], "road"), ([(rd, nm) for rd, nm in RAILS], "rail")):

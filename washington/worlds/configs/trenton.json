@@ -62,14 +62,15 @@
   }
  ],
  "hm_ppu": 8,
- "tex": 4096,
+ "tex": 8192,
  "exag": 3.0,
  "dem_blur": 3.0,
  "cell": 1.8,
  "gm_unit": 0.8,
  "track_k": 0.5,
  "seed": 1226,
- "road_w_k": 0.3,
+ "road_w_k": 0.12,
+ "strip_k": 2.2,
  "carve_reach_u": 2.0,
  "wl_smooth_u": 1.0,
  "dem_ppu": 8,
@@ -107,9 +108,11 @@
  },
  "bank_slope": 5.0,
  "bank_fill": {
-  "u": 0.15,
-  "a": 0.7
+  "u": 0.2,
+  "a": 0.8,
+  "col": "#464a3c"
  },
+ "auto_bridges": false,
  "rivers": [
   {
    "name": "Delaware River",
@@ -136,12 +139,12 @@
     "half_u": 4.0
    },
    "look": {
-    "color": "#344c60",
-    "rough": 0.9,
-    "env": 0.08,
+    "color": "#3d5868",
+    "rough": 0.85,
+    "env": 0.1,
     "ns": 0.05,
-    "edge": 0.45,
-    "mid": 0.1,
+    "edge": 0.75,
+    "mid": 0.32,
     "wvar": 0.12
    }
   }
@@ -263,7 +266,8 @@
     "name": "Assunpink bridge (stone)",
     "geo": "Assunpink bridge",
     "kind": "road",
-    "snap_road": false
+    "snap_u": 2.5,
+    "align": "road"
    }
   ]
  },
