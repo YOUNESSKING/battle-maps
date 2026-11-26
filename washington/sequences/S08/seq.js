@@ -15,7 +15,7 @@ const T = { D: 65.72, washington: 0.90, army: 1.57, winter: 2.33, hills: 3.57, m
   first: 25.50, hit: 26.23, rest: 27.02, go: 27.75, not: 28.49, so: 29.59, which: 29.61, greatest: 31.25, one: 32.78, brooklyn: 34.16,
   two: 35.04, christmas: 35.76, trenton: 36.99, or: 37.87, three2: 38.12, march: 39.14, cornwallis: 39.97, princeton: 40.87,
   tell: 41.90, comments: 42.50, tell2: 43.21, commander: 43.83, next: 45.00, subscribe: 46.62, one2: 47.90 };
-const CO = "colonies", P = (n) => VX.place(n, CO);
+const CO = "colonieswinter", P = (n) => VX.place(n, CO);
 const lerp2 = (a, b, k) => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
 const MOR = P("Morristown"), PRI = P("Princeton"), PLU = P("Pluckemin"), NB = P("New Brunswick"), PA = P("Perth Amboy"), PH = P("Paulus Hook");
 const KIN = P("Kingston"), SOM = P("Somerset Court House"), ETC = P("Elizabeth Town"), NEW = P("Newark");

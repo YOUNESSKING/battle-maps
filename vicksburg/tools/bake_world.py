@@ -700,11 +700,13 @@ def wide_plan(cfg, G, dist, hw, box, roads, sea=None):
         if wet(px, py, 1.2): return False
         if any((px - q[0]) ** 2 + (py - q[1]) ** 2 < (gap * min(w, 1.6)) ** 2 for q in occ[-160:]): return False
         occ.append((px, py)); houses.append((px, py, w, d, rot, rc)); return True
-    TT = {}
+    TT = {}; CLU = {}
+    if PROJ and cfg.get("village_cluster"): CLU["_v*"] = cfg["village_cluster"]
     for t in cfg.get("towns", []):
         p = resolve_pt(G, t)
         if p is None: LOG("  town not found:", t.get("name")); continue
         TT[t["name"]] = (float(p[0]), float(p[1]), t.get("rad", 1.6), t.get("houses", 12), t.get("grid"), t.get("snap", True))
+        if PROJ and t.get("cluster"): CLU[t["name"]] = t["cluster"]   # project mode: compact cluster of small houses (no long houses strung along crossing roads)
     VIL = {}; rv_ = np.random.default_rng(cfg.get("seed", 5)); allT = [v[:2] for v in TT.values()]
     for p_ in RDP[rv_.permutation(len(RDP))]:
         if len(VIL) >= cfg.get("villages", 14): break
@@ -749,6 +751,13 @@ def wide_plan(cfg, G, dist, hw, box, roads, sea=None):
                     for q in np.arange(-R_, R_, B):
                         c = np.array([tx, ty]) + u * (k * B + side * 0.6) + v * (q + B / 2)
                         if rr.random() < 0.3 and np.hypot(c[0] - tx, c[1] - ty) < R_: put(float(c[0]), float(c[1]), rr.uniform(0.6, 0.9), rr.uniform(0.42, 0.52), -ang - math.pi / 2, int(rr.integers(0, 4)), 0.55)
+        elif CLU.get(nm) or (nm.startswith("_v") and CLU.get("_v*")):
+            cl = CLU.get(nm) or CLU["_v*"]; R_ = rad * cl.get("spread", 1.6) if isinstance(cl, dict) else rad * 1.6
+            n_ = int(cnt * (cl.get("k", 1.5) if isinstance(cl, dict) else 1.5)); k = 0; tries = 0
+            while k < n_ and tries < n_ * 40:
+                tries += 1; q = rr.uniform(0, 2 * math.pi); r_ = R_ * math.sqrt(rr.uniform(0, 1))
+                px, py = tx + math.cos(q) * r_, ty + math.sin(q) * r_; rot = -ang + (math.pi / 2 if rr.random() < 0.4 else 0) + rr.normal(0, 0.08)
+                if put(px, py, rr.uniform(0.45, 0.8), rr.uniform(0.35, 0.5), rot, int(rr.integers(0, 4)), 0.55): k += 1
         else:
             k = 0; tries = 0; cnt_ = int(cnt * 5); rad = rad * 4.5
             cross = np.array([tx, ty], np.float32) + v * np.linspace(-rad * 0.8, rad * 0.8, 12)[:, None]
@@ -1288,7 +1297,7 @@ WINTER = None   # set per region by bake() from cfg "season": "winter" (+ option
 def winter_woods(fcol, crown, close, TW, TH, bw, seed):
     """bare deciduous woods: the same dark speckled canopy mass, but a dark grey-brown twig colour (low chroma) with scattered conifer
     (cedar / pine) clumps that keep the teal"""
-    bare = hexc("#433d37" if close else "#2e2b27")[None, None] * (0.86 + 0.28 * crown[..., None])
+    bare = hexc("#433d37" if close else "#4b4641")[None, None] * (0.86 + 0.28 * crown[..., None])   # wide: the crossing / trenton winter-wood tone as rendered (not near-black)
     con = np.clip((cv2.resize(fbm(TH // 8, TW // 8, 3, int(bw / (1.2 if close else 10)), seed + 501), (TW, TH)) - 0.62) * 6, 0, 1)[..., None]
     return bare * (1 - con) + fcol * con
 

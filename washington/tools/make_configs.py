@@ -115,7 +115,7 @@ write("jersey", {
          "road / Pennington road), the Assunpink, the post road to Maidenhead and Princeton (Shabakunk, Stony Brook), the night march (Sandtown / "
          "Quaker Bridge / Saw Mill roads), Bordentown. Base frame (zoom 10). Modern reservoirs / Carnegie Lake / the D&R canal filled from the banks.",
  "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 8192, "exag": 3.5, "cell": 6.5, "seed": 1776,
- "wood_soft": {"blur_u": 0.5, "alpha": 0.85}, "field_look": "gm",
+ "wood_soft": {"blur_u": 1.1, "alpha": 0.72}, "field_look": "gm", "village_cluster": {"spread": 1.4, "k": 1.4},   # soft winter woods; compact villages (no crosses)
  "tex_grade": {"contrast": 1.2, "sat": 1.3, "gamma": 0.97}, "river_halo_u": 0.25,
  "stills": [{"at": [jb[0] + jb[2] / 2, jb[1] + jb[3] / 2], "dist": 330, "tilt": 32, "yaw": 0}, {"at": pl("Trenton"), "dist": 150, "tilt": 44, "yaw": 0},
             {"at": pl("Johnson's Ferry"), "dist": 70, "tilt": 52, "yaw": -8}],
@@ -129,11 +129,11 @@ write("jersey", {
  "roads": [{"geo": n, "cls": "pike"} for n in ("River road (NJ)", "River road (PA)", "Bear Tavern road", "Pennington road", "New York post road", "Trenton - Bordentown",
                                               "Philadelphia - Trenton post road", "Quaker Bridge road", "Saw Mill road", "Sandtown road")]
           + [{"geo": n, "cls": "lane"} for n in ("Birmingham - River road", "Birmingham - Pennington road", "Scotch road")],
- "towns": [{"name": "Trenton", "geo": "Trenton", "rad": 1.3, "houses": 26, "grid": {"block": 0.55, "angle": -60}, "snap": False},
+ "towns": [dict(t_, cluster={"spread": 1.4, "k": 1.4}) for t_ in [{"name": "Trenton", "geo": "Trenton", "rad": 1.3, "houses": 26, "snap": False},
            {"name": "Princeton", "geo": "Princeton", "rad": 1.1, "houses": 18}, {"name": "Pennington", "geo": "Pennington", "rad": 0.6, "houses": 7},
            {"name": "Maidenhead", "geo": "Maidenhead", "rad": 0.6, "houses": 7}, {"name": "Bordentown", "geo": "Bordentown", "rad": 0.8, "houses": 10},
            {"name": "Birmingham", "geo": "Birmingham", "rad": 0.4, "houses": 4}, {"name": "McConkey's Ferry", "geo": "McConkey's Ferry", "rad": 0.3, "houses": 3, "snap": False},
-           {"name": "Johnson's Ferry", "geo": "Johnson's Ferry", "rad": 0.3, "houses": 2, "snap": False}],
+           {"name": "Johnson's Ferry", "geo": "Johnson's Ferry", "rad": 0.3, "houses": 2, "snap": False}]],
  "features": {"works": []},
  "labels": ["McConkey's Ferry", "Johnson's Ferry", "Bear Tavern", "Jacobs Creek crossing", "Birmingham", "Assunpink bridge", "Mill Hill", "Quaker Bridge",
             "Stony Brook bridge", "Thomas Clarke house", "Shabakunk Creek (Five Mile Run) bridge", "Hermitage"],

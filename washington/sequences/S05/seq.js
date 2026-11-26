@@ -32,7 +32,7 @@ const T = { D: 163.54,
   second: 142.93, method: 143.75, settles: 145.29, winter2: 146.35, hit2: 147.07, rest2: 147.93,
   but2: 149.03, letgo: 150.85, newyork: 152.13, general: 153.21, cornwallis: 153.85, sail: 155.25, england: 156.19, instead2: 157.19, sent: 158.31,
   racing: 158.55, trenton3: 159.23, finish: 160.17, good: 161.39 };
-const JE = "jersey", CR = "crossing", TR = "trenton", CO = "colonies";
+const JE = "jersey", CR = "crossing", TR = "trenton", CO = "colonieswinter";
 const sstep = VX.sstep, lerp = VX.lerp;
 const P = (n, r) => VX.place(n, r);
 

@@ -28,7 +28,7 @@ const T = { D: 74.04, december: 0.56, e1776: 1.65, revolution: 3.14, time: 5.38,
   his: 53.02, name: 53.24, george: 53.82, washington: 54.22, he1: 55.46, steal: 55.76, trap: 57.16, night: 58.10, he2: 58.46,
   cross: 59.22, frozen: 59.72, storm2: 60.82, fall: 61.52, trenton3: 62.06, dawn2: 62.70, and3: 63.64, slip: 64.08, british3: 65.06,
   dark: 66.06, strike: 66.74, behind2: 67.08, these: 68.50, george2: 68.90, three: 70.24, moves: 71.64 };
-const CO = "colonies", CR = "crossing", TR = "trenton", BR = "brooklyn", PR = "princeton";
+const CO = "colonieswinter", CR = "crossing", TR = "trenton", BR = "brooklyn", PR = "princeton";
 const sstep = VX.sstep, hsh = VX.hsh;
 const SWT = 14.5, DOFF = { push: -4.0, deckIn: -1.0, full: -0.45, deck: -0.4, wIn: -0.3, inside: -0.12, warm: 0.08, emerge: 0.35, clear: 0.5, haze: 1.0, land: 2.0 },   // Jackson S01 round 3 profile
   DV = VX.diveTimes(SWT); for (const k in DOFF) DV[k] = SWT + DOFF[k];   // push 10.5, deckIn 13.5, full 14.05, emerge 14.85, clear 15.0, land 16.5
