@@ -90,3 +90,9 @@ flags copied from `washington/assets/flags/` (Grand Union, 1707 Union Flag - unu
 - Wide clouds: the dive's default `diveClear` (118 units) emptied the whole opening frame -> `diveClear: 36`, `scatter { n 34, med 12 }`,
   small keepClear; 3-6 clouds in the opening frames; Brooklyn flashback kept clear (r 70) with 3 far-side `extra` clouds.
 - Checks: units unchanged since round 1 (motion + side gap clean).
+
+## Round 3 fixes (critics A 7.5 / B 8.5 on S01)
+- Plate over Trenton: month-only "December 1776" on "dawn" (20.12; no empty day cell, no unspoken day, not over the crossing).
+- Trenton gun 26.15 dropped (it fired under the 900 / Hessian prisoners card); only the 22.45 gun + volleys remain.
+- Whoosh cue 12.45 (`whooshAt`, 0.2 s earlier) so its tail clears "On".
+- Negative-time audit (engine lesson, S07): every overlay call / card tween in S01 is at t >= 0.35 s; only unit / boat data use t0 -1. OK.

@@ -55,3 +55,6 @@ colonies + brooklyn: no overlaps, no pops, no shape change, screen long-side-nor
 ## Round 2 fixes
 - Wide clouds visible: `scatter { n 34, med 12 }`, small keepClear, plus 3 far-side `extra` clouds (r 12-13) for the Long Island shots
   (clouds on the near side of a dist-140 camera sit above the frame; scatter radii < 12 are not drawn). sheet.jpg is from round 1 (clouds only changed).
+
+## Round 3
+- No findings. Negative-time audit: all overlay times >= 3.05 s. OK.
