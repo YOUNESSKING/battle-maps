@@ -160,3 +160,6 @@ the East River fix and the village clusters unchanged.
   bridges snap onto the nearest road x river crossing (new, `snap_road`, off for the Assunpink stone bridge); colonies / colonieswinter
   `tex_grade.tint` [1.03, 1, 0.965] (new: a touch warmer). Sheet `previews/v2_ground_r3.jpg`: trenton S 65 -> 52 (R-B 17 -> 12), princeton
   67 -> 61, jersey 67 -> 61, crossing (night) unchanged.
+- **r3 carry-over:** `bridge_deck: "ends"` (new, princeton): a named / auto bridge's deck = the terrain at its two ends (road level), min water + 1 m
+  (Stony Brook bridge 28.6 -> 24.9 m, water 23.6 m); colonies / colonieswinter `tint` [1.07, 1, 0.93] (centre R-B -9 -> -5 / -1 -> +3; v8 3 s +7;
+  the colonies centre holds the harbour). Princeton still 3 = the bridge close-up. Sheet `previews/v2_carryover.jpg`.
