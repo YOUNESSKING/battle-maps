@@ -971,6 +971,11 @@ def bake(rname, G, P, creeks, preview=True):
     if close: img, hedge_pts = gm_fields(lab, n, cell, s, r, TW, TH, seed)
     elif PROJ and cfg.get("field_look") == "gm": img, _ = gm_fields(lab, n, cell, s, r, TW, TH, seed)   # project mode: the close (chalmette) field look on a wide map
     else: img = wide_fields(lab, n, cell, s, r, TW, TH, seed)
+    if PROJ and cfg.get("field_feather"):   # project: feather the field patch borders (no hard Voronoi facets): blur blended in along the label edges only
+        fp_ = cfg["field_feather"] * s; lf_ = lab.astype(np.float32); k3_ = np.ones((3, 3), np.uint8)
+        em_ = (cv2.dilate(lf_, k3_) != cv2.erode(lf_, k3_)).astype(np.float32); del lf_
+        em_ = np.clip(cv2.GaussianBlur(em_, (0, 0), fp_) * 2.5, 0, 1)[..., None]
+        img = img * (1 - em_) + cv2.GaussianBlur(img, (0, 0), fp_) * em_; del em_
     if PROJ and cfg.get("field_patch_k") is not None:   # project: field patch-to-patch contrast x k (soft Voronoi facets), the strip / mottle detail kept
         lp_ = cv2.GaussianBlur(img, (0, 0), cell * 0.5); img = img - (1 - cfg["field_patch_k"]) * (lp_ - img.reshape(-1, 3).mean(0)); del lp_
     if PROJ and cfg.get("rust_k"):   # project mode: pull the rust / ploughed-brown field tones toward the sand tones (reads as a pink smear on hills)

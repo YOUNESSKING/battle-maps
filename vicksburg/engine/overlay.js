@@ -596,16 +596,19 @@
 
       // decide({sub, a, b, real: "a"|"b", t, tCount, tReveal, until}): dimmed map, WHAT WOULD YOU DO?, options A / B, TELL US IN THE COMMENTS + 3 ticks
       const decide = (o) => {
-        const t = o.t, real = o.real === "b" || o.real === 1 ? 1 : 0;
-        O.film.dim(t - 0.2, o.until, o.dim ?? 1);
+        const t = o.t, real = o.real === "b" || o.real === 1 ? 1 : 0, I = !!o.instant;   // instant (Battle 21 S07): card, options, note, ticks and dim fully on AT t (continues a card shown at the end of the previous scene; no tween before t)
+        if (I) { const d = mk(Ldim, "dim", ""); gsap.set(d, { autoAlpha: 0 }); tl.set(d, { autoAlpha: o.dim ?? 1 }, t); if (o.until != null) fadeOut(d, o.until, 0.8); }
+        else O.film.dim(t - 0.2, o.until, o.dim ?? 1);
         const box = (txt, i) => `<div class="eng-box o${i}"><div class="glow"></div><div class="k">${i ? "B" : "A"}</div><div class="v">${esc(txt).replace(/\n/g, "<br>")}</div><div class="ln"></div></div>`;
         const el = mk(Lcards, "eng-dec", `<div class="caps sb">${esc(o.sub || "")}</div><div class="tt gold">${esc(o.title || "WHAT WOULD YOU DO?")}</div>
           <div class="row">${box(o.a, 0)}<div class="or">OR</div>${box(o.b, 1)}</div>
           <div class="cm caps"><span>${esc(o.note || "TELL US IN THE COMMENTS")}</span><span class="tk"><i></i><i></i><i></i></span></div>`, o.top != null ? `top:${o.top}px` : "");
         gsap.set(el, { autoAlpha: 0 });
-        tl.fromTo(el, { autoAlpha: 0, scale: 1.06 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: "power3.out", immediateRender: false }, t);
+        if (I) tl.set(el, { autoAlpha: 1, scale: 1 }, t); else tl.fromTo(el, { autoAlpha: 0, scale: 1.06 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: "power3.out", immediateRender: false }, t);
         const os = [el.querySelector(".o0"), el.querySelector(".o1")], or = el.querySelector(".or"), cm = el.querySelector(".cm"), ticks = [...el.querySelectorAll(".tk i")];
         gsap.set([...os, or, cm], { autoAlpha: 0 });
+        if (I) { tl.set([...os, or, cm], { autoAlpha: 1, y: 0 }, t); updaters.push((tt) => { ticks.forEach((k) => { const on = tt >= t; if (k.classList.contains("on") !== on) k.classList.toggle("on", on); }); }); }
+        if (!I) {
         // o.tA / o.tB (optional, S05): each option appears on its own spoken words (default t + 0.5 / t + 0.85)
         const tAB = [o.tA ?? t + 0.5, o.tB ?? t + 0.85];
         os.forEach((b, i) => tl.fromTo(b, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, tAB[i]));
@@ -613,7 +616,7 @@
         const tC = o.tCount ?? t + 1.4;
         tl.fromTo(cm, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4, immediateRender: false }, o.tNote ?? Math.min(tC, t + 1.2));   // o.tNote: the comments line on its words
         updaters.push((tt) => { ticks.forEach((k, i) => { const on = tt >= tC + i * 0.8; if (k.classList.contains("on") !== on) k.classList.toggle("on", on); }); });
-        [0, 1, 2].forEach((k) => tl.fromTo(cm, { scale: 1 }, { scale: 1.08, duration: 0.1, yoyo: true, repeat: 1, immediateRender: false }, tC + k * 0.8));
+        [0, 1, 2].forEach((k) => tl.fromTo(cm, { scale: 1 }, { scale: 1.08, duration: 0.1, yoyo: true, repeat: 1, immediateRender: false }, tC + k * 0.8)); }
         if (o.tReveal != null) { const win = os[real], lose = os[1 - real];
           tl.fromTo(win.querySelector(".glow"), { opacity: 0 }, { opacity: 0.55, duration: 0.35, immediateRender: false }, o.tReveal);
           tl.fromTo(win, { scale: 1 }, { scale: 1.06, duration: 0.35, ease: "back.out(2)", immediateRender: false }, o.tReveal);
