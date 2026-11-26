@@ -55,7 +55,7 @@ def write(name, cfg):
 
 
 WINTER = {"snow": 0.6, "snow_alpha": 0.66, "desat": 0.45, "ice": 1.0, "conifers": 0.16}
-WINTER_WIDE = dict(WINTER, snow_alpha=0.28, desat=0.25, conifers_wide=0.4, wood_col="#3b4747", lit_col="#a9ab98")   # r2b: lighter woods, field strips visible   # wide maps (critic A r1): less frost wash, dark teal-grey woods   # tuned on the winter test sheet (worlds/previews/winter_test.jpg)
+WINTER_WIDE = dict(WINTER, snow_alpha=0.28, desat=0.25, conifers_wide=0.4, wood_col="#3b4747", lit_col="#a9ab98", crown_k=1.45)   # r2b: lighter woods, field strips visible   # wide maps (critic A r1): less frost wash, dark teal-grey woods   # tuned on the winter test sheet (worlds/previews/winter_test.jpg)
 
 # ============================================================ colonies (wide, zoom 9) ============================================================
 Z = 9
@@ -80,7 +80,7 @@ write("colonies", {
                "fill_water": True, "spike_m": 60.0, "sea_floor_m": 0.0},
  "sea_look": {"deep": "#33505f", "shallow": "#4a6a75", "shelf_u": 3.0, "beach_u": 0.5, "line_u": 0.2},
  "creek_km2": 120.0, "creeks": {"paint_km2": 400, "ribbon_km2": 1e9},
- "woods": 0.02, "wood_scale": 1.6, "wide_near_k": 0.3, "wide_slope_k": 0.6, "crown_u": 0.3, "villages": 6, "wood_soft": {"blur_u": 0.22, "alpha": 0.9},   # critic A r2: crisp speckled canopy, smaller woods
+ "woods": 0.02, "wood_scale": 1.6, "wide_near_k": 0.3, "wide_slope_k": 0.6, "crown_u": 0.55, "field_patch_k": 0.65, "detail": {"k": 0.08, "u": 0.6, "far": 420}, "villages": 6, "wood_soft": {"blur_u": 0.15, "alpha": 0.93},   # critic A r2/r3: crisp speckled canopy
  "tex_grade": {"contrast": 1.12, "sat": 1.1, "gamma": 0.97}, "river_halo_u": 0.5,
  "rivers": [{"name": n, "geo": [n], "w": w, "step": 1.0, **({"snap": False} if w >= 1.0 else {})} for n, w in CW.items()],
  "roads": [{"geo": r["name"], "cls": "pike"} for r in G["roads"] if not r["name"].startswith(("Trenton streets", "Bear Tavern", "Birmingham", "Scotch", "Saw Mill", "Sandtown", "Quaker", "River road (PA)", "Gowanus road", "Jamaica road", "Brooklyn - Flatbush"))]
@@ -116,13 +116,14 @@ write("jersey", {
          "road / Pennington road), the Assunpink, the post road to Maidenhead and Princeton (Shabakunk, Stony Brook), the night march (Sandtown / "
          "Quaker Bridge / Saw Mill roads), Bordentown. Base frame (zoom 10). Modern reservoirs / Carnegie Lake / the D&R canal filled from the banks.",
  "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 8192, "jpeg_q": 92, "exag": 2.0, "cell": 6.5, "seed": 1776, "relief_k": 0.5, "lit_k": 0.3, "wideSunK": 0.15,   # critic A r2: 2x texture not possible (16384 high > the 16k texture limit; 11264 OOM-killed at 14 GB): crisper woods + jpeg 92 instead
- "wood_soft": {"blur_u": 0.3, "alpha": 0.9}, "village_cluster": {"spread": 1.4, "k": 1.4},   # soft winter woods; compact villages (no crosses)
+ "wood_soft": {"blur_u": 0.08, "alpha": 0.95}, "village_cluster": {"spread": 1.4, "k": 1.4},   # soft winter woods; compact villages (no crosses)
  "tex_grade": {"contrast": 1.2, "sat": 1.3, "gamma": 0.97}, "river_halo_u": 0.25,
  "stills": [{"at": [jb[0] + jb[2] / 2, jb[1] + jb[3] / 2], "dist": 330, "tilt": 32, "yaw": 0}, {"at": pl("Trenton"), "dist": 150, "tilt": 44, "yaw": 0},
             {"at": pl("Johnson's Ferry"), "dist": 70, "tilt": 52, "yaw": -8}],
  "dem_ppu": 2, "dem_margin": 24, "dem_edits": {"fill_water": True, "spike_m": 40.0},
  "creek_km2": 4.0, "creeks": {"paint_km2": 8, "ribbon_km2": 1e9},
- "woods": 0.0, "wood_scale": 1.5, "wide_near_k": 0.32, "wide_slope_k": 0.7, "crown_u": 0.12, "villages": 5,   # r2b: fewer, larger masses along valleys
+ "woods": 0.0, "wood_scale": 1.5, "wide_near_k": 0.32, "wide_slope_k": 0.7, "crown_u": 0.4, "field_patch_k": 0.6,
+ "detail": {"k": 0.1, "u": 0.35, "far": 320}, "villages": 5,   # r3: speckle readable at dist 150-270, soft facets, engine detail layer   # r2b: fewer, larger masses along valleys
  "rivers": [{"name": "Delaware River", "geo": "Delaware River (fine)", "w": 2.6, "step": 0.6, "snap": False, "keep": 2.4},
             {"name": "Assunpink Creek", "geo": "Assunpink Creek", "w": 0.35, "step": 0.5}, {"name": "Stony Brook", "geo": "Stony Brook", "w": 0.35, "step": 0.5},
             {"name": "Shabakunk Creek", "geo": "Shabakunk Creek", "w": 0.2, "step": 0.5}, {"name": "Jacobs Creek", "geo": "Jacobs Creek", "w": 0.25, "step": 0.5},

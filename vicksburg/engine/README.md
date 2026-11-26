@@ -298,3 +298,5 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
   takes ~7.4 s and starts that long before the retreat key: hold >= ~9 s between the arrival and the retreat key, else the block flips at
   the arrival (S06 bridge assaults).
 - (Battle 21 S01 round 2) `dives[].whooshAt`: optional time of the dive's `whoosh` cue (default `deckIn + 0.15`, unchanged); lets a scene put the whoosh body into a word gap without changing the dive look (`seqlib.js` VX.cues).
+
+- Battle 21 S07 round 3: an overlay call that schedules a tween at a NEGATIVE time (e.g. `engage.decide` at t 0 = `film.dim` at -0.2 and the OR at tB - 0.15) makes GSAP shift every earlier timeline child, including the scene clock tween that drives the 3D draw: all 3D fx then run ~0.35 s late while later overlays stay on time. Keep every overlay time >= ~0.4 s (decide `t` >= 0.2).

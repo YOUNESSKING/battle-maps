@@ -57,3 +57,8 @@ flags from `washington/assets/flags/`.
 - Assunpink escape walks front first (faces the bridge, `escape.front`): 37 deg (was 145).
 - Ferry flats lamp glow halved (`lampK` 0.5); Marblehead label at 50.5 (on "saved"); Rall banner anchor 108.85.
 - Trenton approach camera shifted west (ring wood toward the frame edge; the wood itself is world data). Greene's three blocks walk parallel paths (no crossing).
+
+## Round 3 fixes (critics A 7.4 / B 8.2)
+- Trenton approach: Greene's three blocks start abreast WEST of the Pennington road, walk straight south past the ring wood on open ground (facing south), hold, turn in place and walk to their deploy spots west of the guns (no block over the wood canopy; the wood is world data). The blue answer volley at the picket is dropped (the blocks face south there). Screen long-side <= 17 deg; the checker's world front-vs-velocity 58-67 deg there is the on-screen correction under the yaw-14 oblique camera.
+- Night march: camera moved so the blocks sit at ~30 % of the frame; Washington's banner 3-5 u north of the Greene block; each block walks ~8 u to the split, then 10 u along its arrow (<= 2 u/s). Jersey check 68-88: clean.
+- Crossing from 58 s: camera pushed toward the NJ bank (landing nearer mid-frame); "Delaware River" label moved east (no clip).

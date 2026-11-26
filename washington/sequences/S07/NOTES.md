@@ -40,3 +40,7 @@ leaving, the orchard, Mercer, Washington at ~30 yards, Nassau Hall ~194 surrende
 - Princeton blocks: wider and shallower (bw x1.5, bd 0.2 = thin lines, same men); side gap 0/0.
 - Mawhood's block now starts AT Princeton and walks SW down the post road (n 1); arrow moved with it.
 - Remaining checker items: Princeton 27-29 deg and the dawn withdrawal at Trenton 27-32 deg = on-screen correction (screen <= 13 deg).
+
+## Round 3 fixes (critics A 7.4 / B 8.2)
+- FLASH LAG (critic B R3-1): cause = `engage.decide` at t 0 inserts tweens at negative times (`film.dim` at t - 0.2 and the "OR" at tB - 0.15); GSAP then shifts every earlier child of the timeline, including the scene clock tween that drives the 3D draw (`__clk`, added first at 0), by +0.35-0.37 s, so all 3D fx ran late while the overlays (added later) stayed on time. Fix: decide `t: 0.2`, `tA/tB/tNote/tCount: 0.4`, `tReveal: 0.45` (nothing below 0; the campfires' `t0: -1` are fx data, not timeline children, and are harmless). Verified: the clock tween starts at 0 (was shifted); local snaps show the flash appearing between 51.20 and 51.27 (volley 51.23) and between 86.95 and 87.04 (gun 87.0). LESSON: never pass a time < ~0.2 to an overlay device that offsets backwards.
+- Princeton: red line held 0.6 u further from the blue (RY2 1851.3); the fallen Mercer banner 1 u south of the block.

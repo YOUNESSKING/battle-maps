@@ -326,11 +326,17 @@
  "wood_scale": 1.6,
  "wide_near_k": 0.3,
  "wide_slope_k": 0.6,
- "crown_u": 0.3,
+ "crown_u": 0.55,
+ "field_patch_k": 0.65,
+ "detail": {
+  "k": 0.08,
+  "u": 0.6,
+  "far": 420
+ },
  "villages": 6,
  "wood_soft": {
-  "blur_u": 0.22,
-  "alpha": 0.9
+  "blur_u": 0.15,
+  "alpha": 0.93
  },
  "tex_grade": {
   "contrast": 1.12,

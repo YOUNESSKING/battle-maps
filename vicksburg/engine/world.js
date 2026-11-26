@@ -156,6 +156,18 @@ export function initWorld(canvas, opts = {}) {
     tmatG.onBeforeCompile = (sh) => { sh.uniforms.uNight = tmatG.userData.uNight;   // v6: at night the red roads go dark grey (no glowing veins); fx.patchGround chains after this
       sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nuniform float uNight;").replace("#include <map_fragment>",
         "#include <map_fragment>\n{ float rd = clamp((diffuseColor.r - diffuseColor.g) * 7.0 - 0.25, 0.0, 1.0) * uNight; diffuseColor.rgb = mix(diffuseColor.rgb, vec3(dot(diffuseColor.rgb, vec3(0.3, 0.45, 0.25)) * 0.6), rd); }"); };
+    if (d.detail) {   // opt-in (Battle 21, region.js "detail": {k, u, far}): procedural high-frequency ground detail near the camera (wide maps whose
+      // texture is too coarse at the scene distances); stronger on the dark wood canopy (speckle), faded out beyond `far`. Regions without it: unchanged.
+      const DK = (+d.detail.k || 0.1).toFixed(4), DU = (+d.detail.u || 0.3).toFixed(4), DF = (+d.detail.far || 300).toFixed(2), prevD = tmatG.onBeforeCompile;
+      tmatG.onBeforeCompile = (sh, r) => { prevD(sh, r);
+        sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nvarying vec3 vDetW;").replace("#include <project_vertex>", "#include <project_vertex>\nvDetW = (modelMatrix * vec4(transformed, 1.0)).xyz;");
+        sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nvarying vec3 vDetW;\nfloat gdH(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }\n" +
+          "float gdN(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(gdH(i), gdH(i + vec2(1.0, 0.0)), f.x), mix(gdH(i + vec2(0.0, 1.0)), gdH(i + vec2(1.0, 1.0)), f.x), f.y); }")
+          .replace("#include <map_fragment>", "#include <map_fragment>\n{ vec2 q = mod(vDetW.xz / " + DU + ", 251.0); float n = gdN(q) * 0.55 + gdN(q * 2.31 + 7.1) * 0.3 + gdN(q * 5.17 + 3.3) * 0.15;" +
+            " float lum = dot(diffuseColor.rgb, vec3(0.333)); float wood = clamp((0.075 - lum) * 25.0, 0.0, 1.0);" +
+            " float fade = 1.0 - smoothstep(" + DF + " * 0.6, " + DF + ", distance(vDetW, cameraPosition)); diffuseColor.rgb *= 1.0 + " + DK + " * (n - 0.5) * 2.0 * fade * mix(0.45, 1.8, wood); }"); };
+      tmatG.customProgramCacheKey = () => "gm3d-detail-" + DK + DU + DF;
+    }
     const terrain = new THREE.Mesh(geo, tmatG);
     terrain.receiveShadow = true; terrain.castShadow = !wideK; scene.add(terrain); R.terrain = terrain;
     // skirt: a dark ground plane far below so the box edge never shows a void
