@@ -36,8 +36,8 @@
  "tex": 7168,
  "jpeg_q": 92,
  "exag": 3.0,
- "dem_blur": 5.0,
- "lit_k": 0.3,
+ "dem_blur": 8.0,
+ "lit_k": 0.22,
  "cell": 6.0,
  "gm_unit": 1.5,
  "tex_grade": {

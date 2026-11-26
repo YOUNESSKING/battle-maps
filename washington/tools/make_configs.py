@@ -77,7 +77,7 @@ write("colonies", {
  "stills": [{"at": [cb[0] + cb[2] / 2, cb[1] + cb[3] / 2], "dist": 760, "tilt": 30, "yaw": 0}, {"at": pl("New York", Z), "dist": 260, "tilt": 44, "yaw": 0},
             {"at": pl("Trenton", Z), "dist": 170, "tilt": 52, "yaw": -8}],
  "hm_ppu": 1.5, "tex": 8192, "exag": 3.5, "dem_blur": 2.5, "lit_k": 0.55, "cell": 12.0, "seed": 1776,   # critic A v2 r1: soft broad relief (no bright ridge combs), smaller fields (no flat sheet over Long Island)
- "tex_grade": {"tint": [1.07, 1.0, 0.93], "gamma": 0.8, "sat": 1.12}, "field_feather": 1.2, "field_patch_k": 0.75, "tex_lift": [{"box": [560, 200, 740, 292], "feather_u": 22, "k": 0.08, "wood_k": 0.3}],   # v2 r5 (critic A r3 #5): S02 1:37 far band (Queens / Bronx / upper Manhattan) L 28-33 -> v8 35-38   # v2 r4 (critic A #4 / N3): lighter, greener patchwork (S02 Long Island L 23-29 -> v8 33-37), soft field borders (no flat-shaded facets)   # r3: a touch warmer (critic 1: centre cooler than v8)   # v2: the v8 wide relief (baker / engine defaults relief_k 0.9, lit_k 0.85, wideSunK 0.35)
+ "tex_grade": {"tint": [1.07, 1.0, 0.93], "gamma": 0.8, "sat": 1.12}, "field_feather": 1.2, "field_patch_k": 0.75, "tex_lift": [{"box": [520, 150, 820, 320], "feather_u": 60, "k": 0.16}],   # v2 r5 (critic A r3 #5): S02 1:37 far band (Queens / Bronx / upper Manhattan) L 28-33 -> v8 35-38   # v2 r4 (critic A #4 / N3): lighter, greener patchwork (S02 Long Island L 23-29 -> v8 33-37), soft field borders (no flat-shaded facets)   # r3: a touch warmer (critic 1: centre cooler than v8)   # v2: the v8 wide relief (baker / engine defaults relief_k 0.9, lit_k 0.85, wideSunK 0.35)
  "dem_ppu": 2, "dem_margin": 24,
  "dem_edits": {"sea": {"level": 0.5, "min_px": 300, "island_px": 40, "open_px": 3,
                        "seeds": [[40.665, -74.045], [40.53, -74.03], [40.49, -74.18], [40.67, -74.135], [40.74, -73.968], [40.83, -73.93], [40.86, -73.78],
@@ -121,7 +121,7 @@ write("jersey", {
  "note": "The Ten Crucial Days, 25 Dec 1776 - 3 Jan 1777 (~24 x 28 km, winter): McConkey's Ferry -> the Bear Tavern road -> Birmingham -> Trenton (River "
          "road / Pennington road), the Assunpink, the post road to Maidenhead and Princeton (Shabakunk, Stony Brook), the night march (Sandtown / "
          "Quaker Bridge / Saw Mill roads), Bordentown. Base frame (zoom 10). Modern reservoirs / Carnegie Lake / the D&R canal filled from the banks.",
- "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 7168, "jpeg_q": 92, "exag": 3.0, "dem_blur": 5.0, "lit_k": 0.3, "cell": 6.0, "gm_unit": 1.5,   # v2 r5 (critic A r3 #3): DEM blur 2.5 -> 5 DEM px (~290 m), lit_k 0.55 -> 0.3: no pale diagonal ridge streaks
+ "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 7168, "jpeg_q": 92, "exag": 3.0, "dem_blur": 8.0, "lit_k": 0.22, "cell": 6.0, "gm_unit": 1.5,   # v2 r5 (critic A r3 #3): DEM blur 2.5 -> 8 DEM px (~470 m), lit_k 0.55 -> 0.22: no pale diagonal ridge streaks
   "tex_grade": {"contrast": 1.05, "sat": 1.3}, "seed": 1776, "field_look": "gm",   # v2: v8 close patchwork (~760 m fields = v8's 670 m), v8 relief defaults; tex 7168 (gm_fields RAM)   # critic A r2: 2x texture not possible (16384 high > the 16k texture limit; 11264 OOM-killed at 14 GB): crisper woods + jpeg 92 instead
  "wood_soft": {"blur_u": 0.08, "alpha": 0.95}, "village_cluster": {"spread": 1.4, "k": 1.4},   # soft winter woods; compact villages (no crosses)
  "river_halo_u": 0.25, "bank_fill": {"u": 0.8, "a": 0.85},   # v2 r4 (#23): the strip between water and woods / frost = river bank colour (no white pond rims)
@@ -248,7 +248,7 @@ write("trenton", {
  "box": tb, "focus": pl("Trenton", Z),
  "stills": [{"at": [tb[0] + tb[2] / 2, tb[1] + tb[3] / 2], "dist": 95, "tilt": 34, "yaw": 0}, {"at": pl("Trenton", Z), "dist": 40, "tilt": 48, "yaw": -8},
             {"at": qs, "dist": 22, "tilt": 56, "yaw": 15}],
- "hm_ppu": 8, "tex": 4096, "exag": 3.0, "dem_blur": 3.0, "cell": 1.8, "gm_unit": 0.8, "track_k": 0.5, "seed": 1226, "road_w_k": 0.4, "carve_reach_u": 2.0, "wl_smooth_u": 1.0,   # v2 r5 (A r3 #4 / R7): v8 rut width, furrow stripes readable at dist 18-60 (gm_unit 0.45 -> 0.8), no terraced / striated carve banks "relief_noise": [2.0, 0.6],
+ "hm_ppu": 8, "tex": 4096, "exag": 3.0, "dem_blur": 3.0, "cell": 1.8, "gm_unit": 0.8, "track_k": 0.5, "seed": 1226, "road_w_k": 0.3, "carve_reach_u": 2.0, "wl_smooth_u": 1.0,   # v2 r5 (A r3 #4 / R7): v8 rut width, furrow stripes readable at dist 18-60 (gm_unit 0.45 -> 0.8), no terraced / striated carve banks "relief_noise": [2.0, 0.6],
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.6, "spike_m": 25.0},
  "creek_km2": 0.4, "creeks": {"paint_km2": 0.8, "ribbon_km2": 1e9},
  "woods": 0.06, "ravine_woods": 0.6, "tree_spacing": 0.28, "clear_blur": 0.35, "clear_noise_u": 0.8,
