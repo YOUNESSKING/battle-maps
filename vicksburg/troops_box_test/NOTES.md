@@ -148,3 +148,12 @@ v14 lineblocks | A4 | A5, each with a ~1.8x bridge crop). Share clip re-rendered
 - Checker (`check_troops_motion.mjs` now accepts a per-block drawn height `zh` from the look, so a box on the deck is judged at deck level):
   S10 15-35 screen long-side rule max 13-14 deg, 0 fails, pops 0, turn <= 25 deg/s, overlaps only the known south-flank self brush at 20 s
   (0.11 u); S09 55-110 = A4 (only units 1 x 3, 0.12 u).
+
+# Round 6 (2026-11-26): A6, owner "at the bridge do NOT change the box's shape"
+Switch: `counter: "A6"`. The A5 bridge path is kept (walk to the mouth, turn in place onto the deck axis, step up, cross straight front
+first, step down + turn onto the trail at the far end, walk up it, fade; same queue gaps) but the box keeps its normal size and shape
+(it overhangs the 0.2 u deck); the NATO X stays drawn. Guns x1.0 bronze with a side-colour ground disc again (#2c57b7 / #be3a2a, 1.2 x
+gun scale, 0.35, thin ink rim) and crews back in the side colour. THE ARMIES key uses the A4 mini counter for A4-A6.
+Checker: S10 15-35 0 screen fails, pops 0, overlaps only the known south-flank self brush (0.11 u, 20 s); S09 = A4 (units 1 x 3, 0.12 u;
+Crocker's known 5 frames at 99.1 s). `sheet_r6.jpg`: S10 21-30.5 s (+ bridge crops) and S09 103.5 s guns, v14 | A5 | A6.
+Share: RunPod RTX A4000 ($0.17/h, ~$0.01), pod terminated, list empty; concat + v14 audio, crf 24, 12.5 MB.
