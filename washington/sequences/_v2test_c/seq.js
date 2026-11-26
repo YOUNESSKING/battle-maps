@@ -234,7 +234,7 @@ const labels = [
   { text: "Delaware River", at: at(-3.4, 0.6), region: CR, size: 16, river: true, t0: T.river2 - 0.05, t1: T.river2 + 3.2 },
   { text: "Trenton", at: [TRj[0] + 0.5, TRj[1] + 6.0], region: JE, size: 20, t0: T.trenton2 - 0.3, t1: T.trenton2 + 3.0 },   // the march's goal ("Trenton" 78.89)
   { text: "Birmingham", at: [BIRj[0] - 9, BIRj[1] + 4], region: JE, size: 15, t0: T.crossroads - 0.05, t1: T.crossroads + 3.4 },
-  { text: "Trenton", at: [1353.0, 2055.6], region: TR, size: 20, t0: 97.6, t1: 101.1 },   // V2 r2: carved on "the town's two main streets"
+  { text: "Trenton", at: [1355.0, 2056.6], region: TR, size: 20, t0: 97.6, t1: 101.1 },   // V2 r2: carved on "the town's two main streets"
   { text: "Assunpink Creek", at: [1364.0, 2071.4], region: TR, size: 15, river: true, t0: T.creek - 0.05, t1: T.creek + 3.4 },
   { text: "New York", at: [NYc[0] + 2, NYc[1] - 10], region: CO, size: 20, t0: T.newyork - 0.05, t1: T.newyork + 3.6 },
   { text: "Trenton", at: [TRc[0] + 2, TRc[1] + 8], region: CO, size: 18, t0: T.trenton3 - 0.05, t1: T.D + 1 },
