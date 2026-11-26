@@ -253,7 +253,7 @@ window.SEQ = {
   ],
   dives: [{ t: DS, over: OV, overTo: OVB, from: { region: CO, at: [OV[0] - 3, OV[1] + 8], dist: 230, tilt: 38, yaw: 0 },
             to: { region: BK, at: [2487.5, 1162.0], dist: 60, tilt: 40, yaw: 0, fov: 30 },
-            whooshAt: 1.4, off: { warm: 0.05, emerge: 0.1, clear: 0.75, haze: 1.0 } }],   // round 4: whoosh back to 1.4 (1.2 covered "simple."); clear 0.4 (no luma snap)   // round 2: whoosh before "General William Howe"; no flat cream hold (S05 values)
+            whooshAt: 1.4, off: { warm: 0.05, emerge: 0.1, clear: 1.0, haze: 1.2 } }],   // round 6: clear 1.0 (A: corner edge); round 4: whoosh back to 1.4 (1.2 covered "simple."); clear 0.4 (no luma snap)   // round 2: whoosh before "General William Howe"; no flat cream hold (S05 values)
   clouds: { [CO]: { scatter: { seed: 5 } }, [BK]: { shadows: true } },
   units, arrows, boats, fx, generals, banners, labels,
   overlay: [

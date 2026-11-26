@@ -118,7 +118,7 @@ const generals = {
 };
 const banners = [
   { general: "washington", region: JE, keys: [[0, ...bank(kT, "NJ", HW + 6.0)]], t0: T.washington + 0.1, t1: 11.4 },
-  { general: "cornwallis", region: JE, keys: [[0, ...RD(70, -3.0)], [13.4, ...RD(70, -3.0)], [29.6, ...RD(48, -3.0)]], t0: T.cornwallis - 0.05, t1: 32.6 },
+  { general: "cornwallis", region: JE, keys: [[0, ...RD(61, -3.0)], [13.4, ...RD(61, -3.0)], [29.6, ...RD(44, -3.0)]], t0: T.cornwallis - 0.05, t1: 32.6 },
   { general: "washington", region: TR, keys: [[0, 1351.6, 2077.4]], t0: 51.0, t1: T.now - 0.2 },   // round 3: only once the night shot frames him (the dusk/bridge shots cut him at the bottom edge)   // round 1: no banners under the choice card
   { general: "cornwallis", region: TR, keys: [[0, 1357.4, 2059.4]], t0: 54.2,   /* round 5: 3 u south + in once the rising camera frames it (52.8 still cut) */ t1: T.now - 0.2 },
 ];
