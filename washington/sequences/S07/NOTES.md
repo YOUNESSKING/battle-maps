@@ -62,3 +62,14 @@ the Trenton night, jersey night 0.85 (blocks readable); Trenton dawn night <= 0.
 timeline hidden at 119.0 for the method card. Kept: decide `instant: true` at t 0 (no negative times), cues in word gaps.
 Checks: princeton 46.5-83.5 turns <= 45 deg/s, no overlaps (residual: the leftmost red block 54 deg on screen at its 46 s entrance under the
 dissolve, front-vs-velocity 21-26 deg on the outer blocks); jersey: Mawhood 32 deg world (8 on screen); side gap 0 / 0.
+
+## V2 round 1 fixes (critics A 6.3 / B 8.2)
+- Nassau Hall shot at the v14 framing (dist 18-18.5, tilt 52.5-53; was 9-9.5) with the `bw` / `bd` overrides removed (the British block,
+  the gun): blocks ~70 px, the gun clear of the timeline.
+- Mercer's banner fades out on "from under him" (no tilted fallen banner); THE MUD FROZE is a dark v8 plate (`label`), not a red stamp.
+- Clocks / notes on their words: 2:00 on "back road" (header "2 - 3 January 1777"), note "the roads froze" after "froze", 8:00 "an orchard"
+  on "orchard" (49.47); "college" label (was the unspoken "Nassau Hall"); Princeton seal at 5.4 (off "Jan").
+- Ledger rows on their words: note "killed, wounded or captured" on "killed", "Almost 200 prisoners" on "prisoner", note "died nine days
+  later" on "nine".
+- Checks: princeton 84.5-105 clean, 46.5-83.5 turns <= 45 deg/s; side gap 0 / 0. Not changed (sev 1): r0 entrance, militia 21-26 deg
+  front-vs-velocity (on-screen correction), the 84.0 dissolve (frozen frame).
