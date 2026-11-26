@@ -116,3 +116,16 @@ Checker A3: S09 55-110 = A2 (only units 1 x 3 at 106.1-106.6 s, 0.12 u; v14 0.07
 screen long-side rule, pops, shape identical to v14.
 Final clip: RunPod RTX 3090 community ($0.22/h, S09 146 s + S10 55 s render, ~$0.04 incl. setup); pod terminated, `myself { pods }` empty;
 no broken frames (per-frame luma steps <= 0.4).
+
+# Round 4 (2026-11-26): A4 = the shipped look (critics on A3: 8/10 "show the owner", 7.5/10 "after the guns fix")
+Switch: `troopsOpts: { look: "counter", counter: "A4" }`. Files: `sheet_r4.jpg` (v14 | A3 | A4), `phone_r4.jpg` (S09 103.5 / 86.2, S10 28.5 at
+640x360 1:1), `troops_box_share.mp4` (re-rendered with A4: S09 55-110 + S10 20-35, 1280x720 30 fps, v14 audio, 22.9 MB).
+- Guns x1.0 (no checker-size mismatch), dark bronze (barrel #4a3a2c, carriage + limber #5a4432), ground disc removed; crews 1.6x in the
+  bright side colour (#5b80d0 / #e0614c). At 640x360 the Union battery reads as dark guns with blue crew dots (no ink ellipse added).
+- Facing: a LIGHTER saturated front strip (#5b80d0 / #e0614c, 0.22 of the depth) behind the 2.5 px ink front edge.
+- Blue lifted: top #4466a6, walls #2a4577 (red unchanged); THE ARMIES key follows (`counter4`).
+- NATO crossed lines: 100 % ink, 1.8 px.
+- S10 end: Grant's banner (test sequence S10_gm only) holds at x 1518.3 (was 1521.4) from 32.6 s: clear of the captured counter, the guns and
+  the "18 GUNS TAKEN" card.
+Checker A4 = A2/A3 (S09 only units 1 x 3, 0.12 u at 106.1-106.6 s; S10 only the south flank's own blocks at 22 s, 0.11 u); 0 screen-rule fails.
+Render: RunPod RTX 3090 community $0.22/h, ~$0.024; pod terminated, `myself { pods }` empty; luma steps <= 0.4 (no broken frames).
