@@ -146,7 +146,8 @@ def gated_loop(L, out, src, t0, t1, gain_db, pan, lp, rng, fade=.5, hp=None):
     n = int((t1 - t0) * SR)
     if n <= 0: return
     off = int(rng.uniform(0, max(1, len(src) - 1)))
-    x = np.concatenate([src, src, src])[off:off + n].mean(1) if len(src) > 1 else src
+    reps = 3 + n // max(1, len(src))   # Battle 21: a stream longer than 2 loops (e.g. a 118 s boarding stream) tiles the loop instead of failing
+    x = np.concatenate([src] * reps)[off:off + n].mean(1) if len(src) > 1 else src
     x = lowpass(x[:, None], lp)[:, 0]
     if hp: x = sosfilt(butter(2, hp, "hp", fs=SR, output="sos"), x)
     f = min(int(fade * SR), n // 2); env = np.ones(n); env[:f] = np.linspace(0, 1, f); env[n - f:] = np.linspace(1, 0, f)
@@ -175,8 +176,8 @@ def render_stem(events_files, kit=False):
             gated_loop(L, out, L.march, e["tShare"], t1, -34 - 9 * dd + 2 * np.log2(max(men, 8) / 144), pan_of(e["at"]), 2600 - 1200 * dd, rng, fade=.6)
             log.append(dict(type="march", t=e["tShare"], until=round(t1, 2), unit=e["unit"]["unit"]))
         elif ty == "bridge_stream_first_on_deck":
-            last = next((x for x, _ in allev if x["type"] == "bridge_stream_last_off_deck" and x["unit"]["unit"] == e["unit"]["unit"] and x["unit"].get("block") == e["unit"].get("block") and x["tShare"] > e["tShare"]), None)
-            t1 = last["tShare"] if last else e["tShare"] + 2.2
+            last = next((x for x, dx in allev if x["type"] == "bridge_stream_last_off_deck" and dx["scene"] == d["scene"] and x["unit"]["unit"] == e["unit"]["unit"] and x["unit"].get("block") == e["unit"].get("block") and x["tShare"] > e["tShare"]), None)   # Battle 21: same scene only (unit ids repeat across scenes)
+            t1 = last["tShare"] if last else e["tShare"] + 2.2; t1 = min(t1, e["tShare"] + 12)
             gated_loop(L, out, L.march, e["tShare"], t1, -28, pan_of(e["at"]), 4200, rng, fade=.2, hp=250)   # footsteps on the planks
             log.append(dict(type="bridge_stream", t=e["tShare"], until=round(t1, 2)))
         elif ty in ("capture", "retaken") and on_screen(e["at"]):

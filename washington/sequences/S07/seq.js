@@ -66,7 +66,7 @@ const postAt = (s) => { const L = VX.len(POST), g = VX.along(POST, L - s); retur
 U({ side: "r", region: JE, n: 1, face: Math.atan2(postAt(46)[1] - postAt(38)[1], postAt(46)[0] - postAt(38)[0]), t0: 40.6, keys: [[0, ...postAt(38)], [T.marching + 0.9, ...postAt(38)], [CUT3 - 0.2, ...postAt(45)]] });
 
 // princeton: the orchard (William Clarke's), Mercer v Mawhood, the militia, Washington between the lines, Nassau Hall
-const OX = 1485.9, RY0 = 1847.0, RY1 = 1850.2, RY2 = 1851.9, BY0 = 1858.6, BY1 = 1853.6, BY2 = 1856.4, MY = 1858.8, AY = 1854.6;
+const OX = 1485.9, RY0 = 1847.0, RY1 = 1850.2, RY2 = 1851.3, BY0 = 1858.6, BY1 = 1853.6, BY2 = 1856.4, MY = 1858.8, AY = 1854.6;
 const red = [1484.2, 1487.6].map((x, i) => U({ side: "r", region: PR, face: S_, t0: CUT3 + 0.2, bw: 0.9, bd: 0.2,
   keys: [[0, x, RY0], [CUT3 + 0.8, x, RY0], [50.4 + i * 0.2, x, RY1], [T.charged, x, RY1], [54.6 + i * 0.2, x, RY2], [81.8 + i * 0.4, x, RY2], [85.6 + i * 0.4, x, RY2 - 6.0]], t1: CUT4 + 0.5 }));
 const merc = [1484.2, 1487.6].map((x, i) => U({ side: "u", region: PR, face: N_, t0: CUT3 + 0.2, bw: 1.0, bd: 0.2,
@@ -130,7 +130,7 @@ const banners = [
   { general: "washington", region: TR, keys: [[0, 1356.4, 2079.0], [6.8, 1356.4, 2079.0], [14.0, 1357.4, 2083.6]], t0: 2.1, t1: CUT1 + 0.3 },
   { general: "washington", region: JE, keys: [[0, NA[0] - 2, NA[1] - 4], [CUT1 + 0.8, NA[0] - 2, NA[1] - 4], [27.0, NB[0] - 2, NB[1] - 4]], t0: CUT1 + 0.6, t1: 31.6 },
   { general: "washington", region: JE, keys: [[0, DA[0] - 4, DA[1] + 1], [32.4, DA[0] - 4, DA[1] + 1], [CUT3 - 1.0, DB[0] - 4, DB[1] + 1]], t0: 31.8, t1: CUT3 },
-  { general: "mercer", region: PR, keys: [[0, 1485.9, BY1 + 1.4]], t0: T.mercer - 0.05, t1: T.broke + 0.8, fall: T.shot + 0.05 },
+  { general: "mercer", region: PR, keys: [[0, 1485.9, BY1 + 2.4]], t0: T.mercer - 0.05, t1: T.broke + 0.8, fall: T.shot + 0.05 },
   { general: "washington", region: PR, keys: [[0, OX, MY + 1.6], [T.rode, OX, MY + 1.6], [T.lines, OX, RY2 + 1.5], [T.rallied + 0.2, OX, RY2 + 1.5], [83.6, OX, AY - 0.6]], t0: T.washington - 0.05, t1: CUT4 + 0.4 },
   { general: "cornwallis", region: TR, keys: [[0, 1361.6, 2063.4], [117.6, 1361.6, 2063.4], [T.D, 1364.0, 2059.6]], t0: T.cornwallis2 - 0.05, t1: T.D + 1 },
 ];
@@ -219,11 +219,11 @@ window.SEQ = {
   overlay: [
     ["plaque.date", 0, { month: "January 1777", day: "2", weekday: "Thursday", note: "night" }],
     // the decision card continues from S06 (shown through S06's end): the real choice (B) lights on "He slipped away"
-    ["engage.decide", { t: 0, sub: "2 JANUARY 1777 · YOU ARE WASHINGTON", a: "HOLD THE CREEK\nAND FIGHT", b: "SLIP AWAY\nIN THE NIGHT", real: "b",
-      tA: 0, tB: 0, tNote: 0, tCount: 0, tReveal: 0.3, until: 2.0, dim: 0.55 }],
+    ["engage.decide", { t: 0, instant: true, sub: "2 JANUARY 1777 · YOU ARE WASHINGTON", a: "HOLD THE CREEK\nAND FIGHT", b: "SLIP AWAY\nIN THE NIGHT", real: "b",
+      tReveal: 0.3, until: 2.0, dim: 0.55 }],
     ["label", T.five - 0.05, T.covering + 1.2, { name: "About 500 men", sub: "keep the fires burning and dig", world: [1356.4, 2079.6], side: "us", marker: false }],
     ["plaque.date", T.changed - 0.05, { month: "January 1777", day: "2", weekday: "Thursday", note: "hard frost" }],
-    (O, c) => stamp(c, "THE MUD FROZE", T.froze - 0.05, 31.3, [706.0, 1028.0], JE),
+    (O, c) => stamp(c, "THE MUD FROZE", T.froze - 0.05, 31.3, [702.0, 1021.0], JE)   /* round 5: clear of Washington's banner */,
     ["plaque.date", T.third - 0.05, { month: "January 1777", day: "3", weekday: "Friday", note: "sunrise" }],
     ["distance", T.twelve - 0.05, T.brigade - 0.3, { from: [TRj[0] + 2, TRj[1] - 2], to: [740.0, 934.0], value: 12, countFrom: 12, unit: "MILES", sub: "behind the British army", dash: false }],
     ["plaque.date", CUT3 + 0.6, { month: "January 1777", day: "3", weekday: "Friday", note: "Princeton" }],

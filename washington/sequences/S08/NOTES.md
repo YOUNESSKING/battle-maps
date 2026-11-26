@@ -40,3 +40,6 @@ No overlaps, no pops, no shape change, screen long-side-normal <= 4 deg, turn <=
 
 ## Round 2
 - No S08 findings; unchanged.
+
+## Round 3
+- `T.two` 35.04 -> 35.25 (card 2 on "Two,"). Negative-time audit: earliest overlay = plate at 0.35 s. OK.

@@ -971,6 +971,13 @@ def bake(rname, G, P, creeks, preview=True):
     if close: img, hedge_pts = gm_fields(lab, n, cell, s, r, TW, TH, seed)
     elif PROJ and cfg.get("field_look") == "gm": img, _ = gm_fields(lab, n, cell, s, r, TW, TH, seed)   # project mode: the close (chalmette) field look on a wide map
     else: img = wide_fields(lab, n, cell, s, r, TW, TH, seed)
+    if PROJ and cfg.get("field_feather"):   # project: feather the field patch borders (no hard Voronoi facets): blur blended in along the label edges only
+        fp_ = cfg["field_feather"] * s; lf_ = lab.astype(np.float32); k3_ = np.ones((3, 3), np.uint8)
+        em_ = (cv2.dilate(lf_, k3_) != cv2.erode(lf_, k3_)).astype(np.float32); del lf_
+        em_ = np.clip(cv2.GaussianBlur(em_, (0, 0), fp_) * 2.5, 0, 1)[..., None]
+        img = img * (1 - em_) + cv2.GaussianBlur(img, (0, 0), fp_) * em_; del em_
+    if PROJ and cfg.get("field_patch_k") is not None:   # project: field patch-to-patch contrast x k (soft Voronoi facets), the strip / mottle detail kept
+        lp_ = cv2.GaussianBlur(img, (0, 0), cell * 0.5); img = img - (1 - cfg["field_patch_k"]) * (lp_ - img.reshape(-1, 3).mean(0)); del lp_
     if PROJ and cfg.get("rust_k"):   # project mode: pull the rust / ploughed-brown field tones toward the sand tones (reads as a pink smear on hills)
         red = np.clip((img[..., 0] - img[..., 1] - 12.0) / 14.0, 0, 1)[..., None] * cfg["rust_k"]
         img = img * (1 - red) + np.array([138, 128, 90], np.float32) * (img.mean(-1, keepdims=True) / 119.0) * red; del red
@@ -1278,6 +1285,7 @@ def bake(rname, G, P, creeks, preview=True):
              trees=trees, houses=houses, towns=towns_out, places=places, features=feat)
     if PROJ: D["frame"] = PROJ.frame_info(CUR_ZOOM, list(box)); D["exag_cfg"] = cfg.get("exag", 6.0 if close else 14.0)
     if PROJ and cfg.get("wideSunK") is not None: D["wideSunK"] = cfg["wideSunK"]
+    if PROJ and cfg.get("detail"): D["detail"] = cfg["detail"]   # engine: procedural ground detail near the camera (opt-in)
     if WINTER: D["season"] = "winter"; D["winter"] = {k: v for k, v in WINTER.items() if k in ("ice", "floes", "trees")}   # engine: bare woods, ice on the rivers
     # compatibility with the clip's world.js (single bridge / pontoons / breastworks)
     rb = [b for b in feat["bridges"] if b.get("burn")] or [b for b in feat["bridges"] if b["kind"] == "rail"]
@@ -1301,7 +1309,7 @@ WINTER = None   # set per region by bake() from cfg "season": "winter" (+ option
 def winter_woods(fcol, crown, close, TW, TH, bw, seed):
     """bare deciduous woods: the same dark speckled canopy mass, but a dark grey-brown twig colour (low chroma) with scattered conifer
     (cedar / pine) clumps that keep the teal"""
-    bare = hexc("#433d37" if close else WINTER.get("wood_col", "#34403f"))[None, None] * ((0.86 + 0.28 * crown[..., None]) if close else (0.74 + 0.52 * crown[..., None]))   # wide: the Jackson canopy speckle contrast   # wide: dark teal-grey (critic A r1: Jackson-like wood mass)
+    bare = hexc("#433d37" if close else WINTER.get("wood_col", "#34403f"))[None, None] * ((0.86 + 0.28 * crown[..., None]) if close else (1 - 0.26 * WINTER.get('crown_k', 1.0) + 0.52 * WINTER.get('crown_k', 1.0) * crown[..., None]))   # wide: the Jackson canopy speckle contrast   # wide: dark teal-grey (critic A r1: Jackson-like wood mass)
     con = np.clip((cv2.resize(fbm(TH // 8, TW // 8, 3, int(bw / (1.2 if close else 10)), seed + 501), (TW, TH)) - (0.62 if close else 0.62 - 0.6 * (WINTER.get("conifers_wide", 0.4) - 0.16))) * 6, 0, 1)[..., None]
     return bare * (1 - con) + fcol * con
 

@@ -1552,57 +1552,6 @@
    "boxes": 1
   },
   {
-   "type": "cannon_shot",
-   "preset": "field",
-   "t": 26.15,
-   "tExcerpt": 26.15,
-   "tShare": 26.15,
-   "tFilm": 26.15,
-   "at": {
-    "map": [
-     1356.66,
-     2053.62
-    ],
-    "px": [
-     619,
-     263
-    ],
-    "nx": 0.322,
-    "ny": 0.243,
-    "onScreen": true,
-    "camDist": 34.06
-   },
-   "unit": {
-    "unit": 3,
-    "side": "Union",
-    "type": "art",
-    "label": null,
-    "blocks": 1,
-    "men": 4,
-    "dist": 0.88
-   },
-   "impact": {
-    "t": 26.45,
-    "tExcerpt": 26.45,
-    "tShare": 26.45,
-    "tFilm": 26.45,
-    "at": {
-     "map": [
-      1356.86,
-      2062.42
-     ],
-     "px": [
-      647,
-      523
-     ],
-     "nx": 0.337,
-     "ny": 0.484,
-     "onScreen": true,
-     "camDist": 27.43
-    }
-   }
-  },
-  {
    "type": "unit_leaves",
    "t": 30.16,
    "tExcerpt": 30.16,

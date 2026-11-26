@@ -77,6 +77,15 @@
  "rust_k": 0.85,
  "clear_blur": 0.35,
  "clear_noise_u": 0.8,
+ "clear": [
+  [
+   1345.3,
+   2033.3,
+   2.3
+  ]
+ ],
+ "field_patch_k": 0.45,
+ "field_feather": 0.6,
  "rivers": [
   {
    "name": "Delaware River",

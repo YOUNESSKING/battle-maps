@@ -49,3 +49,17 @@ Checks: check_troops_motion brooklyn 0-153.84: 0 overlaps, 0 pops; turn spikes o
 - Evacuation: each camp regiment already faces its landing and walks straight there front first (escape t0 +6.4 s, same walk times); first regiment moved 1.4 u east (no u0 x Glover overlap); 70.9 = a dissolve to the covering force instead of a fast pan. Checker: the remaining FvV 21-41 deg rows are at/after the 70.9 cut while those blocks are off-frame.
 - Result card: divider + right column now arrive with "A FEW" (no empty column); first-light plate = month-only "August 1776" (no empty day box).
 - Boats have no lamps (`lamp: false`), so `lampK` n/a.
+
+## Round 3 fixes (A 7.5 / B 8.0)
+- Dive whoosh 1.4 -> 1.2 (tail off "Their"); `off.clear` 0.28 -> 0.4 (no one-frame luma snap at the dive end).
+- Result card: "ACROSS" on "crossed" (125.5), not on "About".
+- Negative-time check (lead): no overlay call / tween before 0.
+- Checker: 8 FAIL rows, all at/after the 70.9 dissolve with the blocks off-frame (was 9).
+
+## Round 4
+- Dive whoosh back to 1.4 (1.2 covered "simple.").
+
+## Round 5
+- Dive landing: `to` at [2487.5, 1162] dist 74 -> 60, the 11.0 key dist 62, `off.clear` 0.75 / haze 1.0: no flat world edge at the right (snaps every 0.3 s, 4.2-9 s).
+- Covering-force shots ~25 % closer (dist 33/29/30 -> 25/22/23), label 17 -> 20.
+- Checks: brooklyn FAIL rows only after the 70.9 dissolve (off-frame).
