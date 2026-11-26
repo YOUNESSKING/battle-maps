@@ -61,3 +61,21 @@ flags copied from `washington/assets/flags/` (Grand Union, 1707 Union Flag - unu
 - Boats show big dotted wakes at night (engine wake look); Durham boats are drawn at ~2x true size for readability.
 - `VX.rain` streaks are a 2D canvas: during the 19.9 dissolve the streak density drops at the cut (0.8 -> 0.45) rather than crossfading.
 - Brooklyn ferry points: the research landing points lie in the river; boats use the 1776 waterline (2479.4, 1146.4) / (2467.6, 1131.6).
+
+## Round 1 fixes (critics A 6 / B 7.5 on S01; lead: re-voiced "an icy river", D 73.98, region `colonieswinter`)
+- T re-timed from scene_times (washington 54.24, trap 57.14, storm2 60.78 ... these 68.38, moves 71.56; `frozen` -> `icy2`).
+- Date plate hidden over the August flashback and 2 January (`plaque.hide` at 29.96); the snap-cut plate 1776 - 1777 brings it back at 55.46.
+- Letter card held to 53.72 (T.george - 0.1), typed at cps 40 (complete ~51.5); dim to the same time.
+- NEW YEAR'S EVE tag without the early sub (the sub was on screen 3 s before "go home").
+- Trenton guns moved into word gaps: 20.0, 22.4, 23.95 (booms +0.45); no gun on "the Hessians at Trenton".
+- Orchard (G3): one volley line 63.6-64.2 (start of the shot) + one at 67.7-68.33 (gap after "behind it."), gun at 67.8; no fire under "strike behind it".
+- Troop motion: every visible move now runs straight down or across the screen (Greene south, Sullivan east, Hessians east, British army
+  south on 2 Jan, colonies posts from due north); the NE line on the Princeton road, the PA waiting lines and the NJ landed lines are
+  formed in place (no crab walks). Perth Amboy post dropped (off frame on the closer opening).
+- Bigger readable troops on the wide shots: opening camera 30 % closer (dist 330 -> 270 at the push), colonies lines bw 1.4-1.45; Brooklyn ring bw 0.6.
+- Night crossing: Durham boats x1.45 (size 0.9-1.0); 2,400 shot 15 % closer (dive `to` dist 26, key 23). Lamp glow size / floes = engine + world (not changed here).
+- Trenton 2 Jan camera 20 % closer (dist 45 -> 41).
+- Wide clouds: colonies `scatter { seed 3, n 10, med 18 }`, keepClear only on McConkey's (50) and the Brooklyn Heights (85: a cloud sat on the flashback at r 40).
+- Checks: check_troops_motion all regions: no overlaps / pops; one 20-deg world FvV for 4 frames at the end of the New Brunswick post's walk
+  (screen 14 deg); hard-cut / dissolve frames only. check_side_gap: 0 pairs in every region.
+- Not done here (lead / engine): dive whoosh level (assemble.py), floe density + lamp glow size (world / engine).

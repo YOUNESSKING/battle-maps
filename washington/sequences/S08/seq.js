@@ -68,7 +68,7 @@ window.SEQ = {
   generals: { washington: { img: "seq/washington.png", flag: "seq/grand_union_flag.png", side: "us", name: "Washington", full: "George Washington", role: "General" } },
   banners: [{ general: "washington", region: CO, keys: [[0, B0[0] + 7, B0[1] + 2], [0.4, B0[0] + 7, B0[1] + 2], [9.4, B1[0] + 7, B1[1] + 2]], t0: T.washington - 0.05, t1: 22.0 }],
   labels: [
-    { text: "Morristown", at: [MOR[0] + 16, MOR[1] + 6], size: 24, t0: T.morristown, t1: T.morristown + 3.6, region: CO },
+    { text: "Morristown", at: [MOR[0] + 26, MOR[1] + 8], size: 24, t0: T.morristown, t1: T.morristown + 3.6, region: CO },
     { text: "New Jersey", at: [430, 420], size: 26, t0: T.jersey, t1: T.jersey + 3.4, region: CO },
   ],
   fx: {},

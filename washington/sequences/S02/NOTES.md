@@ -44,3 +44,10 @@ colonies + brooklyn: no overlaps, no pops, no shape change, screen long-side-nor
 ## Open issues
 - No banners (no general is named in S02). No sound cues (no fire on screen; the fight is shown as movement only).
 - Night on the wide map (0.55) is subtle.
+
+## Round 1 fixes (critics A 5.5 / B 7.5 on S02)
+- Readable troops on the Long Island shot: lines bw 0.45 -> 0.56; ridge spaced 10 units (no blue overlaps), the British front lines close
+  up only 1 unit on "fell on" (they touched the blue at 2.4), flank line ends at 645.
+- Wide clouds: `scatter { seed 3, n 10, med 18 }`, keepClear radius <= 45 on the action.
+- Colonies (summer) re-baked by the worlds agent (lower relief, darker woods); no world files touched here.
+- Checks: check_troops_motion colonies + brooklyn clean (only the 37.4 dissolve frame); check_side_gap 0 pairs.
