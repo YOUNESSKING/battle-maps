@@ -5,8 +5,8 @@
   0,
   153.842
  ],
- "shareOffset": 117.586,
- "filmStart": 117.586,
+ "shareOffset": 117.522,
+ "filmStart": 117.522,
  "render": [
   1920,
   1080
@@ -17,8 +17,8 @@
    "type": "unit_appears",
    "t": 49.43,
    "tExcerpt": 49.43,
-   "tShare": 167.02,
-   "tFilm": 167.02,
+   "tShare": 166.95,
+   "tFilm": 166.95,
    "at": {
     "map": [
      2481.6,
@@ -48,8 +48,8 @@
    "speed": 0.19,
    "t": 61.8,
    "tExcerpt": 61.8,
-   "tShare": 179.39,
-   "tFilm": 179.39,
+   "tShare": 179.32,
+   "tFilm": 179.32,
    "at": {
     "map": [
      2483.59,
@@ -79,8 +79,8 @@
    "speed": 0.21,
    "t": 62.4,
    "tExcerpt": 62.4,
-   "tShare": 179.99,
-   "tFilm": 179.99,
+   "tShare": 179.92,
+   "tFilm": 179.92,
    "at": {
     "map": [
      2479,
@@ -108,8 +108,8 @@
    "type": "bridge_break_ranks",
    "t": 63.72,
    "tExcerpt": 63.72,
-   "tShare": 181.31,
-   "tFilm": 181.31,
+   "tShare": 181.24,
+   "tFilm": 181.24,
    "at": {
     "map": [
      2480.51,
@@ -140,8 +140,8 @@
    "type": "bridge_break_ranks",
    "t": 64.15,
    "tExcerpt": 64.15,
-   "tShare": 181.74,
-   "tFilm": 181.74,
+   "tShare": 181.67,
+   "tFilm": 181.67,
    "at": {
     "map": [
      2477.5,
@@ -172,8 +172,8 @@
    "type": "bridge_stream_first_on_deck",
    "t": 64.17,
    "tExcerpt": 64.17,
-   "tShare": 181.76,
-   "tFilm": 181.76,
+   "tShare": 181.69,
+   "tFilm": 181.69,
    "at": {
     "map": [
      2480.46,
@@ -203,8 +203,8 @@
    "type": "bridge_stream_first_on_deck",
    "t": 64.6,
    "tExcerpt": 64.6,
-   "tShare": 182.19,
-   "tFilm": 182.19,
+   "tShare": 182.12,
+   "tFilm": 182.12,
    "at": {
     "map": [
      2477.46,
@@ -235,8 +235,8 @@
    "duration": 3.5,
    "t": 65.3,
    "tExcerpt": 65.3,
-   "tShare": 182.89,
-   "tFilm": 182.89,
+   "tShare": 182.82,
+   "tFilm": 182.82,
    "at": {
     "map": [
      2480.16,
@@ -264,8 +264,8 @@
    "type": "bridge_stream_last_on_deck",
    "t": 65.44,
    "tExcerpt": 65.44,
-   "tShare": 183.02,
-   "tFilm": 183.02,
+   "tShare": 182.96,
+   "tFilm": 182.96,
    "at": {
     "map": [
      2480.46,
@@ -297,8 +297,8 @@
    "speed": 0.3,
    "t": 65.5,
    "tExcerpt": 65.5,
-   "tShare": 183.09,
-   "tFilm": 183.09,
+   "tShare": 183.02,
+   "tFilm": 183.02,
    "at": {
     "map": [
      2481.58,
@@ -328,8 +328,8 @@
    "speed": 0.24,
    "t": 65.6,
    "tExcerpt": 65.6,
-   "tShare": 183.19,
-   "tFilm": 183.19,
+   "tShare": 183.12,
+   "tFilm": 183.12,
    "at": {
     "map": [
      2487.59,
@@ -358,8 +358,8 @@
    "duration": 3.3,
    "t": 65.7,
    "tExcerpt": 65.7,
-   "tShare": 183.29,
-   "tFilm": 183.29,
+   "tShare": 183.22,
+   "tFilm": 183.22,
    "at": {
     "map": [
      2477.32,
@@ -387,8 +387,8 @@
    "type": "bridge_break_ranks",
    "t": 65.84,
    "tExcerpt": 65.84,
-   "tShare": 183.42,
-   "tFilm": 183.42,
+   "tShare": 183.36,
+   "tFilm": 183.36,
    "at": {
     "map": [
      2480.51,
@@ -419,8 +419,8 @@
    "type": "bridge_stream_last_on_deck",
    "t": 65.87,
    "tExcerpt": 65.87,
-   "tShare": 183.45,
-   "tFilm": 183.45,
+   "tShare": 183.39,
+   "tFilm": 183.39,
    "at": {
     "map": [
      2477.46,
@@ -450,8 +450,8 @@
    "type": "bridge_stream_last_off_deck",
    "t": 66.07,
    "tExcerpt": 66.07,
-   "tShare": 183.66,
-   "tFilm": 183.66,
+   "tShare": 183.59,
+   "tFilm": 183.59,
    "at": {
     "map": [
      2480.24,
@@ -481,8 +481,8 @@
    "type": "bridge_stream_first_on_deck",
    "t": 66.29,
    "tExcerpt": 66.29,
-   "tShare": 183.87,
-   "tFilm": 183.87,
+   "tShare": 183.81,
+   "tFilm": 183.81,
    "at": {
     "map": [
      2480.46,
@@ -512,8 +512,8 @@
    "type": "bridge_stream_last_off_deck",
    "t": 66.5,
    "tExcerpt": 66.5,
-   "tShare": 184.08,
-   "tFilm": 184.08,
+   "tShare": 184.02,
+   "tFilm": 184.02,
    "at": {
     "map": [
      2477.29,
@@ -545,8 +545,8 @@
    "speed": 0.26,
    "t": 67.1,
    "tExcerpt": 67.1,
-   "tShare": 184.69,
-   "tFilm": 184.69,
+   "tShare": 184.62,
+   "tFilm": 184.62,
    "at": {
     "map": [
      2481.39,
@@ -575,8 +575,8 @@
    "duration": 1.9,
    "t": 67.4,
    "tExcerpt": 67.4,
-   "tShare": 184.99,
-   "tFilm": 184.99,
+   "tShare": 184.92,
+   "tFilm": 184.92,
    "at": {
     "map": [
      2480.15,
@@ -604,8 +604,8 @@
    "type": "bridge_stream_last_on_deck",
    "t": 67.55,
    "tExcerpt": 67.55,
-   "tShare": 185.14,
-   "tFilm": 185.14,
+   "tShare": 185.07,
+   "tFilm": 185.07,
    "at": {
     "map": [
      2480.46,
@@ -635,8 +635,8 @@
    "type": "bridge_stream_last_off_deck",
    "t": 68.18,
    "tExcerpt": 68.18,
-   "tShare": 185.77,
-   "tFilm": 185.77,
+   "tShare": 185.71,
+   "tFilm": 185.71,
    "at": {
     "map": [
      2480.24,
@@ -666,8 +666,8 @@
    "type": "bridge_break_ranks",
    "t": 69.36,
    "tExcerpt": 69.36,
-   "tShare": 186.95,
-   "tFilm": 186.95,
+   "tShare": 186.88,
+   "tFilm": 186.88,
    "at": {
     "map": [
      2480.51,
@@ -700,8 +700,8 @@
    "speed": 0.17,
    "t": 69.6,
    "tExcerpt": 69.6,
-   "tShare": 187.19,
-   "tFilm": 187.19,
+   "tShare": 187.12,
+   "tFilm": 187.12,
    "at": {
     "map": [
      2485.4,
@@ -729,8 +729,8 @@
    "type": "bridge_stream_gone",
    "t": 69.76,
    "tExcerpt": 69.76,
-   "tShare": 187.35,
-   "tFilm": 187.35,
+   "tShare": 187.28,
+   "tFilm": 187.28,
    "at": {
     "map": [
      2480.11,
@@ -760,8 +760,8 @@
    "type": "bridge_stream_first_on_deck",
    "t": 69.81,
    "tExcerpt": 69.81,
-   "tShare": 187.4,
-   "tFilm": 187.4,
+   "tShare": 187.33,
+   "tFilm": 187.33,
    "at": {
     "map": [
      2480.46,
@@ -793,8 +793,8 @@
    "speed": 0.28,
    "t": 70.1,
    "tExcerpt": 70.1,
-   "tShare": 187.69,
-   "tFilm": 187.69,
+   "tShare": 187.62,
+   "tFilm": 187.62,
    "at": {
     "map": [
      2477.6,
@@ -822,8 +822,8 @@
    "type": "bridge_stream_gone",
    "t": 70.19,
    "tExcerpt": 70.19,
-   "tShare": 187.77,
-   "tFilm": 187.77,
+   "tShare": 187.71,
+   "tFilm": 187.71,
    "at": {
     "map": [
      2477.2,
@@ -854,8 +854,8 @@
    "duration": 5.3,
    "t": 70.9,
    "tExcerpt": 70.9,
-   "tShare": 188.49,
-   "tFilm": 188.49,
+   "tShare": 188.42,
+   "tFilm": 188.42,
    "at": {
     "map": [
      2480.07,
@@ -883,8 +883,8 @@
    "type": "bridge_break_ranks",
    "t": 70.96,
    "tExcerpt": 70.96,
-   "tShare": 188.55,
-   "tFilm": 188.55,
+   "tShare": 188.48,
+   "tFilm": 188.48,
    "at": {
     "map": [
      2477.5,
@@ -915,8 +915,8 @@
    "type": "bridge_stream_last_on_deck",
    "t": 71.08,
    "tExcerpt": 71.08,
-   "tShare": 188.66,
-   "tFilm": 188.66,
+   "tShare": 188.6,
+   "tFilm": 188.6,
    "at": {
     "map": [
      2480.46,
@@ -946,8 +946,8 @@
    "type": "bridge_stream_first_on_deck",
    "t": 71.41,
    "tExcerpt": 71.41,
-   "tShare": 189,
-   "tFilm": 189,
+   "tShare": 188.93,
+   "tFilm": 188.93,
    "at": {
     "map": [
      2477.46,
@@ -977,8 +977,8 @@
    "type": "bridge_stream_last_off_deck",
    "t": 71.71,
    "tExcerpt": 71.71,
-   "tShare": 189.29,
-   "tFilm": 189.29,
+   "tShare": 189.23,
+   "tFilm": 189.23,
    "at": {
     "map": [
      2480.24,
@@ -1008,8 +1008,8 @@
    "type": "bridge_stream_gone",
    "t": 71.87,
    "tExcerpt": 71.87,
-   "tShare": 189.46,
-   "tFilm": 189.46,
+   "tShare": 189.4,
+   "tFilm": 189.4,
    "at": {
     "map": [
      2480.11,
@@ -1040,8 +1040,8 @@
    "duration": 5.4,
    "t": 72.5,
    "tExcerpt": 72.5,
-   "tShare": 190.09,
-   "tFilm": 190.09,
+   "tShare": 190.02,
+   "tFilm": 190.02,
    "at": {
     "map": [
      2477.26,
@@ -1069,8 +1069,8 @@
    "type": "bridge_stream_last_on_deck",
    "t": 72.68,
    "tExcerpt": 72.68,
-   "tShare": 190.26,
-   "tFilm": 190.26,
+   "tShare": 190.2,
+   "tFilm": 190.2,
    "at": {
     "map": [
      2477.46,
@@ -1102,8 +1102,8 @@
    "speed": 0.3,
    "t": 73.2,
    "tExcerpt": 73.2,
-   "tShare": 190.79,
-   "tFilm": 190.79,
+   "tShare": 190.72,
+   "tFilm": 190.72,
    "at": {
     "map": [
      2489.58,
@@ -1131,8 +1131,8 @@
    "type": "bridge_stream_last_off_deck",
    "t": 73.31,
    "tExcerpt": 73.31,
-   "tShare": 190.89,
-   "tFilm": 190.89,
+   "tShare": 190.83,
+   "tFilm": 190.83,
    "at": {
     "map": [
      2477.29,
@@ -1162,8 +1162,8 @@
    "type": "bridge_break_ranks",
    "t": 74.01,
    "tExcerpt": 74.01,
-   "tShare": 191.6,
-   "tFilm": 191.6,
+   "tShare": 191.53,
+   "tFilm": 191.53,
    "at": {
     "map": [
      2480.51,
@@ -1194,8 +1194,8 @@
    "type": "bridge_stream_first_on_deck",
    "t": 74.46,
    "tExcerpt": 74.46,
-   "tShare": 192.05,
-   "tFilm": 192.05,
+   "tShare": 191.98,
+   "tFilm": 191.98,
    "at": {
     "map": [
      2480.46,
@@ -1225,8 +1225,8 @@
    "type": "bridge_break_ranks",
    "t": 74.78,
    "tExcerpt": 74.78,
-   "tShare": 192.37,
-   "tFilm": 192.37,
+   "tShare": 192.3,
+   "tFilm": 192.3,
    "at": {
     "map": [
      2477.5,
@@ -1257,8 +1257,8 @@
    "type": "bridge_stream_first_on_deck",
    "t": 75.23,
    "tExcerpt": 75.23,
-   "tShare": 192.82,
-   "tFilm": 192.82,
+   "tShare": 192.75,
+   "tFilm": 192.75,
    "at": {
     "map": [
      2477.46,
@@ -1288,8 +1288,8 @@
    "type": "bridge_stream_gone",
    "t": 75.4,
    "tExcerpt": 75.4,
-   "tShare": 192.98,
-   "tFilm": 192.98,
+   "tShare": 192.92,
+   "tFilm": 192.92,
    "at": {
     "map": [
      2480.11,
@@ -1320,8 +1320,8 @@
    "duration": 6,
    "t": 75.6,
    "tExcerpt": 75.6,
-   "tShare": 193.19,
-   "tFilm": 193.19,
+   "tShare": 193.12,
+   "tFilm": 193.12,
    "at": {
     "map": [
      2480.24,
@@ -1349,8 +1349,8 @@
    "type": "bridge_stream_last_on_deck",
    "t": 75.73,
    "tExcerpt": 75.73,
-   "tShare": 193.31,
-   "tFilm": 193.31,
+   "tShare": 193.25,
+   "tFilm": 193.25,
    "at": {
     "map": [
      2480.46,
@@ -1382,8 +1382,8 @@
    "speed": 0.25,
    "t": 75.9,
    "tExcerpt": 75.9,
-   "tShare": 193.49,
-   "tFilm": 193.49,
+   "tShare": 193.42,
+   "tFilm": 193.42,
    "at": {
     "map": [
      2483.59,
@@ -1411,8 +1411,8 @@
    "type": "bridge_stream_last_off_deck",
    "t": 76.36,
    "tExcerpt": 76.36,
-   "tShare": 193.94,
-   "tFilm": 193.94,
+   "tShare": 193.88,
+   "tFilm": 193.88,
    "at": {
     "map": [
      2480.24,
@@ -1443,8 +1443,8 @@
    "duration": 6.3,
    "t": 76.4,
    "tExcerpt": 76.4,
-   "tShare": 193.99,
-   "tFilm": 193.99,
+   "tShare": 193.92,
+   "tFilm": 193.92,
    "at": {
     "map": [
      2477.49,
@@ -1472,8 +1472,8 @@
    "type": "bridge_stream_last_on_deck",
    "t": 76.5,
    "tExcerpt": 76.5,
-   "tShare": 194.08,
-   "tFilm": 194.08,
+   "tShare": 194.02,
+   "tFilm": 194.02,
    "at": {
     "map": [
      2477.46,
@@ -1503,21 +1503,21 @@
    "type": "bridge_stream_gone",
    "t": 77,
    "tExcerpt": 77,
-   "tShare": 194.58,
-   "tFilm": 194.58,
+   "tShare": 194.52,
+   "tFilm": 194.52,
    "at": {
     "map": [
      2477.2,
      1145.76
     ],
     "px": [
-     781,
-     522
+     823,
+     562
     ],
-    "nx": 0.407,
-    "ny": 0.484,
+    "nx": 0.429,
+    "ny": 0.521,
     "onScreen": true,
-    "camDist": 31.08
+    "camDist": 24.11
    },
    "unit": {
     "unit": 3,
@@ -1534,21 +1534,21 @@
    "type": "bridge_stream_last_off_deck",
    "t": 77.12,
    "tExcerpt": 77.12,
-   "tShare": 194.71,
-   "tFilm": 194.71,
+   "tShare": 194.65,
+   "tFilm": 194.65,
    "at": {
     "map": [
      2477.29,
      1146.6
     ],
     "px": [
-     794,
-     551
+     841,
+     599
     ],
-    "nx": 0.413,
-    "ny": 0.51,
+    "nx": 0.438,
+    "ny": 0.555,
     "onScreen": true,
-    "camDist": 30.53
+    "camDist": 23.58
    },
    "unit": {
     "unit": 5,
@@ -1565,21 +1565,21 @@
    "type": "bridge_break_ranks",
    "t": 78.95,
    "tExcerpt": 78.95,
-   "tShare": 196.54,
-   "tFilm": 196.54,
+   "tShare": 196.47,
+   "tFilm": 196.47,
    "at": {
     "map": [
      2480.51,
      1148.15
     ],
     "px": [
-     971,
-     573
+     1077,
+     629
     ],
-    "nx": 0.506,
-    "ny": 0.531,
+    "nx": 0.561,
+    "ny": 0.582,
     "onScreen": true,
-    "camDist": 29.12
+    "camDist": 22.65
    },
    "unit": {
     "unit": 6,
@@ -1599,21 +1599,21 @@
    "speed": 0.32,
    "t": 79.1,
    "tExcerpt": 79.1,
-   "tShare": 196.69,
-   "tFilm": 196.69,
+   "tShare": 196.62,
+   "tFilm": 196.62,
    "at": {
     "map": [
      2487.99,
      1160.58
     ],
     "px": [
-     1729,
-     1199
+     2335,
+     1615
     ],
-    "nx": 0.901,
-    "ny": 1.11,
+    "nx": 1.216,
+    "ny": 1.495,
     "onScreen": false,
-    "camDist": 28.03
+    "camDist": 23.43
    },
    "unit": {
     "unit": 8,
@@ -1628,21 +1628,21 @@
    "type": "bridge_stream_first_on_deck",
    "t": 79.4,
    "tExcerpt": 79.4,
-   "tShare": 196.99,
-   "tFilm": 196.99,
+   "tShare": 196.92,
+   "tFilm": 196.92,
    "at": {
     "map": [
      2480.46,
      1147.8
     ],
     "px": [
-     965,
-     565
+     1068,
+     617
     ],
-    "nx": 0.503,
-    "ny": 0.523,
+    "nx": 0.556,
+    "ny": 0.571,
     "onScreen": true,
-    "camDist": 29.2
+    "camDist": 22.78
    },
    "unit": {
     "unit": 6,
@@ -1659,21 +1659,21 @@
    "type": "bridge_stream_gone",
    "t": 80.05,
    "tExcerpt": 80.05,
-   "tShare": 197.63,
-   "tFilm": 197.63,
+   "tShare": 197.57,
+   "tFilm": 197.57,
    "at": {
     "map": [
      2480.11,
      1145.56
     ],
     "px": [
-     917,
-     516
+     996,
+     553
     ],
-    "nx": 0.478,
-    "ny": 0.478,
+    "nx": 0.519,
+    "ny": 0.512,
     "onScreen": true,
-    "camDist": 30.85
+    "camDist": 24.46
    },
    "unit": {
     "unit": 4,
@@ -1691,21 +1691,21 @@
    "duration": 7.3,
    "t": 80.5,
    "tExcerpt": 80.5,
-   "tShare": 198.09,
-   "tFilm": 198.09,
+   "tShare": 198.02,
+   "tFilm": 198.02,
    "at": {
     "map": [
      2480.13,
      1147.8
     ],
     "px": [
-     957,
-     570
+     1055,
+     623
     ],
-    "nx": 0.498,
-    "ny": 0.527,
+    "nx": 0.55,
+    "ny": 0.576,
     "onScreen": true,
-    "camDist": 28.67
+    "camDist": 22.4
    },
    "unit": {
     "unit": 6,
@@ -1720,21 +1720,21 @@
    "type": "bridge_stream_last_on_deck",
    "t": 80.67,
    "tExcerpt": 80.67,
-   "tShare": 198.25,
-   "tFilm": 198.25,
+   "tShare": 198.19,
+   "tFilm": 198.19,
    "at": {
     "map": [
      2480.46,
      1147.8
     ],
     "px": [
-     972,
-     571
+     1075,
+     625
     ],
-    "nx": 0.507,
-    "ny": 0.529,
+    "nx": 0.56,
+    "ny": 0.579,
     "onScreen": true,
-    "camDist": 28.77
+    "camDist": 22.55
    },
    "unit": {
     "unit": 6,
@@ -1751,21 +1751,21 @@
    "type": "bridge_stream_gone",
    "t": 80.81,
    "tExcerpt": 80.81,
-   "tShare": 198.4,
-   "tFilm": 198.4,
+   "tShare": 198.34,
+   "tFilm": 198.34,
    "at": {
     "map": [
      2477.2,
      1145.76
     ],
     "px": [
-     794,
-     538
+     837,
+     581
     ],
-    "nx": 0.413,
-    "ny": 0.498,
+    "nx": 0.436,
+    "ny": 0.538,
     "onScreen": true,
-    "camDist": 29.78
+    "camDist": 23.4
    },
    "unit": {
     "unit": 5,
@@ -1782,21 +1782,21 @@
    "type": "bridge_stream_last_off_deck",
    "t": 81.3,
    "tExcerpt": 81.3,
-   "tShare": 198.89,
-   "tFilm": 198.89,
+   "tShare": 198.82,
+   "tFilm": 198.82,
    "at": {
     "map": [
      2480.24,
      1146.4
     ],
     "px": [
-     940,
-     550
+     1026,
+     596
     ],
-    "nx": 0.49,
-    "ny": 0.509,
+    "nx": 0.534,
+    "ny": 0.552,
     "onScreen": true,
-    "camDist": 29.95
+    "camDist": 23.77
    },
    "unit": {
     "unit": 6,
@@ -1815,21 +1815,21 @@
    "speed": 0.24,
    "t": 82.2,
    "tExcerpt": 82.2,
-   "tShare": 199.79,
-   "tFilm": 199.79,
+   "tShare": 199.72,
+   "tFilm": 199.72,
    "at": {
     "map": [
      2492.59,
      1159.79
     ],
     "px": [
-     2045,
-     1170
+     2753,
+     1538
     ],
-    "nx": 1.065,
-    "ny": 1.084,
+    "nx": 1.434,
+    "ny": 1.424,
     "onScreen": false,
-    "camDist": 30.39
+    "camDist": 26.55
    },
    "unit": {
     "unit": 9,
@@ -1844,21 +1844,21 @@
    "type": "bridge_break_ranks",
    "t": 82.22,
    "tExcerpt": 82.22,
-   "tShare": 199.81,
-   "tFilm": 199.81,
+   "tShare": 199.75,
+   "tFilm": 199.75,
    "at": {
     "map": [
      2477.5,
      1148.36
     ],
     "px": [
-     844,
-     611
+     909,
+     677
     ],
-    "nx": 0.44,
-    "ny": 0.566,
+    "nx": 0.473,
+    "ny": 0.627,
     "onScreen": true,
-    "camDist": 27.04
+    "camDist": 20.91
    },
    "unit": {
     "unit": 7,
@@ -1876,21 +1876,21 @@
    "type": "bridge_stream_first_on_deck",
    "t": 82.67,
    "tExcerpt": 82.67,
-   "tShare": 200.26,
-   "tFilm": 200.26,
+   "tShare": 200.2,
+   "tFilm": 200.2,
    "at": {
     "map": [
      2477.46,
      1148
     ],
     "px": [
-     840,
-     599
+     902,
+     660
     ],
-    "nx": 0.437,
-    "ny": 0.555,
+    "nx": 0.47,
+    "ny": 0.612,
     "onScreen": true,
-    "camDist": 27.09
+    "camDist": 21.02
    },
    "unit": {
     "unit": 7,
@@ -1908,21 +1908,21 @@
    "duration": 7.9,
    "t": 83.8,
    "tExcerpt": 83.8,
-   "tShare": 201.39,
-   "tFilm": 201.39,
+   "tShare": 201.32,
+   "tFilm": 201.32,
    "at": {
     "map": [
      2477.26,
      1147.89
     ],
     "px": [
-     833,
-     602
+     891,
+     664
     ],
-    "nx": 0.434,
-    "ny": 0.558,
+    "nx": 0.464,
+    "ny": 0.615,
     "onScreen": true,
-    "camDist": 26.75
+    "camDist": 20.84
    },
    "unit": {
     "unit": 7,
@@ -1937,21 +1937,21 @@
    "type": "bridge_stream_last_on_deck",
    "t": 83.94,
    "tExcerpt": 83.94,
-   "tShare": 201.53,
-   "tFilm": 201.53,
+   "tShare": 201.46,
+   "tFilm": 201.46,
    "at": {
     "map": [
      2477.46,
      1148
     ],
     "px": [
-     845,
-     606
+     907,
+     669
     ],
-    "nx": 0.44,
-    "ny": 0.561,
+    "nx": 0.472,
+    "ny": 0.619,
     "onScreen": true,
-    "camDist": 26.67
+    "camDist": 20.79
    },
    "unit": {
     "unit": 7,
@@ -1968,21 +1968,21 @@
    "type": "bridge_stream_last_off_deck",
    "t": 84.57,
    "tExcerpt": 84.57,
-   "tShare": 202.15,
-   "tFilm": 202.15,
+   "tShare": 202.09,
+   "tFilm": 202.09,
    "at": {
     "map": [
      2477.29,
      1146.6
     ],
     "px": [
-     820,
-     586
+     870,
+     640
     ],
-    "nx": 0.427,
-    "ny": 0.543,
+    "nx": 0.453,
+    "ny": 0.593,
     "onScreen": true,
-    "camDist": 28.04
+    "camDist": 22.22
    },
    "unit": {
     "unit": 7,
@@ -1999,21 +1999,21 @@
    "type": "bridge_stream_gone",
    "t": 84.99,
    "tExcerpt": 84.99,
-   "tShare": 202.58,
-   "tFilm": 202.58,
+   "tShare": 202.51,
+   "tFilm": 202.51,
    "at": {
     "map": [
      2480.11,
      1145.56
     ],
     "px": [
-     943,
-     539
+     1023,
+     580
     ],
-    "nx": 0.491,
-    "ny": 0.499,
+    "nx": 0.533,
+    "ny": 0.537,
     "onScreen": true,
-    "camDist": 29.21
+    "camDist": 23.55
    },
    "unit": {
     "unit": 6,
@@ -2030,21 +2030,21 @@
    "type": "bridge_break_ranks",
    "t": 85.91,
    "tExcerpt": 85.91,
-   "tShare": 203.49,
-   "tFilm": 203.49,
+   "tShare": 203.43,
+   "tFilm": 203.43,
    "at": {
     "map": [
      2480.51,
      1148.15
     ],
     "px": [
-     1012,
-     615
+     1122,
+     679
     ],
-    "nx": 0.527,
-    "ny": 0.57,
+    "nx": 0.584,
+    "ny": 0.628,
     "onScreen": true,
-    "camDist": 26.84
+    "camDist": 21.41
    },
    "unit": {
     "unit": 8,
@@ -2062,21 +2062,21 @@
    "type": "bridge_stream_first_on_deck",
    "t": 86.36,
    "tExcerpt": 86.36,
-   "tShare": 203.94,
-   "tFilm": 203.94,
+   "tShare": 203.88,
+   "tFilm": 203.88,
    "at": {
     "map": [
      2480.46,
      1147.8
     ],
     "px": [
-     1006,
-     605
+     1112,
+     665
     ],
-    "nx": 0.524,
-    "ny": 0.56,
+    "nx": 0.579,
+    "ny": 0.616,
     "onScreen": true,
-    "camDist": 26.91
+    "camDist": 21.53
    },
    "unit": {
     "unit": 8,
@@ -2094,21 +2094,21 @@
    "duration": 8.4,
    "t": 87.5,
    "tExcerpt": 87.5,
-   "tShare": 205.09,
-   "tFilm": 205.09,
+   "tShare": 205.02,
+   "tFilm": 205.02,
    "at": {
     "map": [
      2480.24,
      1147.7
     ],
     "px": [
-     1001,
-     608
+     1103,
+     667
     ],
-    "nx": 0.521,
-    "ny": 0.563,
+    "nx": 0.574,
+    "ny": 0.618,
     "onScreen": true,
-    "camDist": 26.51
+    "camDist": 21.27
    },
    "unit": {
     "unit": 8,
@@ -2123,21 +2123,21 @@
    "type": "bridge_stream_last_on_deck",
    "t": 87.62,
    "tExcerpt": 87.62,
-   "tShare": 205.21,
-   "tFilm": 205.21,
+   "tShare": 205.14,
+   "tFilm": 205.14,
    "at": {
     "map": [
      2480.46,
      1147.8
     ],
     "px": [
-     1014,
-     614
+     1120,
+     675
     ],
-    "nx": 0.528,
-    "ny": 0.568,
+    "nx": 0.583,
+    "ny": 0.625,
     "onScreen": true,
-    "camDist": 26.51
+    "camDist": 21.31
    },
    "unit": {
     "unit": 8,
@@ -2154,21 +2154,21 @@
    "type": "bridge_stream_last_off_deck",
    "t": 88.25,
    "tExcerpt": 88.25,
-   "tShare": 205.84,
-   "tFilm": 205.84,
+   "tShare": 205.77,
+   "tFilm": 205.77,
    "at": {
     "map": [
      2480.24,
      1146.4
     ],
     "px": [
-     979,
-     588
+     1067,
+     640
     ],
-    "nx": 0.51,
-    "ny": 0.545,
+    "nx": 0.556,
+    "ny": 0.593,
     "onScreen": true,
-    "camDist": 27.69
+    "camDist": 22.52
    },
    "unit": {
     "unit": 8,
@@ -2185,21 +2185,21 @@
    "type": "bridge_stream_gone",
    "t": 88.26,
    "tExcerpt": 88.26,
-   "tShare": 205.85,
-   "tFilm": 205.85,
+   "tShare": 205.78,
+   "tFilm": 205.78,
    "at": {
     "map": [
      2477.2,
      1145.76
     ],
     "px": [
-     821,
-     573
+     866,
+     620
     ],
-    "nx": 0.427,
-    "ny": 0.53,
+    "nx": 0.451,
+    "ny": 0.574,
     "onScreen": true,
-    "camDist": 27.35
+    "camDist": 22.04
    },
    "unit": {
     "unit": 7,
@@ -2216,21 +2216,21 @@
    "type": "bridge_break_ranks",
    "t": 90.17,
    "tExcerpt": 90.17,
-   "tShare": 207.76,
-   "tFilm": 207.76,
+   "tShare": 207.7,
+   "tFilm": 207.7,
    "at": {
     "map": [
      2480.51,
      1148.15
     ],
     "px": [
-     1040,
-     645
+     1151,
+     714
     ],
-    "nx": 0.542,
-    "ny": 0.597,
+    "nx": 0.6,
+    "ny": 0.661,
     "onScreen": true,
-    "camDist": 25.49
+    "camDist": 20.67
    },
    "unit": {
     "unit": 9,
@@ -2248,21 +2248,21 @@
    "type": "bridge_stream_first_on_deck",
    "t": 90.62,
    "tExcerpt": 90.62,
-   "tShare": 208.21,
-   "tFilm": 208.21,
+   "tShare": 208.15,
+   "tFilm": 208.15,
    "at": {
     "map": [
      2480.46,
      1147.8
     ],
     "px": [
-     1034,
-     634
+     1141,
+     699
     ],
-    "nx": 0.539,
-    "ny": 0.587,
+    "nx": 0.594,
+    "ny": 0.647,
     "onScreen": true,
-    "camDist": 25.57
+    "camDist": 20.79
    },
    "unit": {
     "unit": 9,
@@ -2280,8 +2280,8 @@
    "duration": 9.6,
    "t": 91.8,
    "tExcerpt": 91.8,
-   "tShare": 209.39,
-   "tFilm": 209.39,
+   "tShare": 209.32,
+   "tFilm": 209.32,
    "at": {
     "map": [
      2480.13,
@@ -2309,8 +2309,8 @@
    "type": "bridge_stream_last_on_deck",
    "t": 91.89,
    "tExcerpt": 91.89,
-   "tShare": 209.47,
-   "tFilm": 209.47,
+   "tShare": 209.41,
+   "tFilm": 209.41,
    "at": {
     "map": [
      2480.46,
@@ -2340,8 +2340,8 @@
    "type": "bridge_stream_gone",
    "t": 91.94,
    "tExcerpt": 91.94,
-   "tShare": 209.53,
-   "tFilm": 209.53,
+   "tShare": 209.46,
+   "tFilm": 209.46,
    "at": {
     "map": [
      2480.11,
@@ -2371,8 +2371,8 @@
    "type": "bridge_stream_last_off_deck",
    "t": 92.52,
    "tExcerpt": 92.52,
-   "tShare": 210.11,
-   "tFilm": 210.11,
+   "tShare": 210.04,
+   "tFilm": 210.04,
    "at": {
     "map": [
      2480.24,
@@ -2404,8 +2404,8 @@
    "speed": 0.21,
    "t": 92.6,
    "tExcerpt": 92.6,
-   "tShare": 210.19,
-   "tFilm": 210.19,
+   "tShare": 210.12,
+   "tFilm": 210.12,
    "at": {
     "map": [
      2504.34,
@@ -2435,8 +2435,8 @@
    "speed": 0.18,
    "t": 93.2,
    "tExcerpt": 93.2,
-   "tShare": 210.79,
-   "tFilm": 210.79,
+   "tShare": 210.72,
+   "tFilm": 210.72,
    "at": {
     "map": [
      2499.21,
@@ -2466,8 +2466,8 @@
    "speed": 0.31,
    "t": 93.9,
    "tExcerpt": 93.9,
-   "tShare": 211.49,
-   "tFilm": 211.49,
+   "tShare": 211.42,
+   "tFilm": 211.42,
    "at": {
     "map": [
      2493.76,
@@ -2495,8 +2495,8 @@
    "type": "bridge_stream_gone",
    "t": 96.21,
    "tExcerpt": 96.21,
-   "tShare": 213.8,
-   "tFilm": 213.8,
+   "tShare": 213.73,
+   "tFilm": 213.73,
    "at": {
     "map": [
      2480.11,
@@ -2527,8 +2527,8 @@
    "duration": 4,
    "t": 96.6,
    "tExcerpt": 96.6,
-   "tShare": 214.19,
-   "tFilm": 214.19,
+   "tShare": 214.12,
+   "tFilm": 214.12,
    "at": {
     "map": [
      2500.32,
@@ -2557,8 +2557,8 @@
    "duration": 3.6,
    "t": 96.8,
    "tExcerpt": 96.8,
-   "tShare": 214.39,
-   "tFilm": 214.39,
+   "tShare": 214.32,
+   "tFilm": 214.32,
    "at": {
     "map": [
      2496.31,
@@ -2587,8 +2587,8 @@
    "duration": 3.2,
    "t": 97.1,
    "tExcerpt": 97.1,
-   "tShare": 214.69,
-   "tFilm": 214.69,
+   "tShare": 214.62,
+   "tFilm": 214.62,
    "at": {
     "map": [
      2492.06,
@@ -2616,8 +2616,8 @@
    "type": "unit_appears",
    "t": 102,
    "tExcerpt": 102,
-   "tShare": 219.59,
-   "tFilm": 219.59,
+   "tShare": 219.52,
+   "tFilm": 219.52,
    "at": {
     "map": [
      2482.6,
@@ -2645,8 +2645,8 @@
    "type": "unit_appears",
    "t": 102,
    "tExcerpt": 102,
-   "tShare": 219.59,
-   "tFilm": 219.59,
+   "tShare": 219.52,
+   "tFilm": 219.52,
    "at": {
     "map": [
      2478.4,
@@ -2674,8 +2674,8 @@
    "type": "unit_appears",
    "t": 102,
    "tExcerpt": 102,
-   "tShare": 219.59,
-   "tFilm": 219.59,
+   "tShare": 219.52,
+   "tFilm": 219.52,
    "at": {
     "map": [
      2485.6,
@@ -2705,8 +2705,8 @@
    "speed": 0.21,
    "t": 103.2,
    "tExcerpt": 103.2,
-   "tShare": 220.79,
-   "tFilm": 220.79,
+   "tShare": 220.72,
+   "tFilm": 220.72,
    "at": {
     "map": [
      2500.33,
@@ -2736,8 +2736,8 @@
    "speed": 0.18,
    "t": 103.8,
    "tExcerpt": 103.8,
-   "tShare": 221.39,
-   "tFilm": 221.39,
+   "tShare": 221.32,
+   "tFilm": 221.32,
    "at": {
     "map": [
      2496.32,
@@ -2767,8 +2767,8 @@
    "speed": 0.16,
    "t": 104.4,
    "tExcerpt": 104.4,
-   "tShare": 221.99,
-   "tFilm": 221.99,
+   "tShare": 221.92,
+   "tFilm": 221.92,
    "at": {
     "map": [
      2492.07,
@@ -2797,8 +2797,8 @@
    "duration": 4,
    "t": 107.2,
    "tExcerpt": 107.2,
-   "tShare": 224.79,
-   "tFilm": 224.79,
+   "tShare": 224.72,
+   "tFilm": 224.72,
    "at": {
     "map": [
      2504.35,
@@ -2827,8 +2827,8 @@
    "duration": 3.6,
    "t": 107.4,
    "tExcerpt": 107.4,
-   "tShare": 224.99,
-   "tFilm": 224.99,
+   "tShare": 224.92,
+   "tFilm": 224.92,
    "at": {
     "map": [
      2499.22,
@@ -2857,8 +2857,8 @@
    "duration": 3.3,
    "t": 107.7,
    "tExcerpt": 107.7,
-   "tShare": 225.29,
-   "tFilm": 225.29,
+   "tShare": 225.22,
+   "tFilm": 225.22,
    "at": {
     "map": [
      2493.77,
@@ -2886,8 +2886,8 @@
    "type": "unit_leaves",
    "t": 108.5,
    "tExcerpt": 108.5,
-   "tShare": 226.09,
-   "tFilm": 226.09,
+   "tShare": 226.02,
+   "tFilm": 226.02,
    "at": {
     "map": [
      2504.35,
@@ -2915,8 +2915,8 @@
    "type": "unit_leaves",
    "t": 108.5,
    "tExcerpt": 108.5,
-   "tShare": 226.09,
-   "tFilm": 226.09,
+   "tShare": 226.02,
+   "tFilm": 226.02,
    "at": {
     "map": [
      2499.22,
@@ -2944,8 +2944,8 @@
    "type": "unit_leaves",
    "t": 108.5,
    "tExcerpt": 108.5,
-   "tShare": 226.09,
-   "tFilm": 226.09,
+   "tShare": 226.02,
+   "tFilm": 226.02,
    "at": {
     "map": [
      2493.77,
@@ -2975,8 +2975,8 @@
    "speed": 0.2,
    "t": 113.5,
    "tExcerpt": 113.5,
-   "tShare": 231.09,
-   "tFilm": 231.09,
+   "tShare": 231.02,
+   "tFilm": 231.02,
    "at": {
     "map": [
      2482.59,
@@ -3006,8 +3006,8 @@
    "speed": 0.3,
    "t": 113.5,
    "tExcerpt": 113.5,
-   "tShare": 231.09,
-   "tFilm": 231.09,
+   "tShare": 231.02,
+   "tFilm": 231.02,
    "at": {
     "map": [
      2478.39,
@@ -3035,8 +3035,8 @@
    "type": "bridge_break_ranks",
    "t": 114.4,
    "tExcerpt": 114.4,
-   "tShare": 231.99,
-   "tFilm": 231.99,
+   "tShare": 231.93,
+   "tFilm": 231.93,
    "at": {
     "map": [
      2477.5,
@@ -3067,8 +3067,8 @@
    "type": "bridge_break_ranks",
    "t": 114.64,
    "tExcerpt": 114.64,
-   "tShare": 232.22,
-   "tFilm": 232.22,
+   "tShare": 232.16,
+   "tFilm": 232.16,
    "at": {
     "map": [
      2480.51,
@@ -3099,8 +3099,8 @@
    "type": "bridge_stream_first_on_deck",
    "t": 114.85,
    "tExcerpt": 114.85,
-   "tShare": 232.44,
-   "tFilm": 232.44,
+   "tShare": 232.38,
+   "tFilm": 232.38,
    "at": {
     "map": [
      2477.46,
@@ -3130,8 +3130,8 @@
    "type": "bridge_stream_first_on_deck",
    "t": 115.09,
    "tExcerpt": 115.09,
-   "tShare": 232.67,
-   "tFilm": 232.67,
+   "tShare": 232.61,
+   "tFilm": 232.61,
    "at": {
     "map": [
      2480.46,
@@ -3163,8 +3163,8 @@
    "speed": 0.24,
    "t": 115.6,
    "tExcerpt": 115.6,
-   "tShare": 233.19,
-   "tFilm": 233.19,
+   "tShare": 233.12,
+   "tFilm": 233.12,
    "at": {
     "map": [
      2485.59,
@@ -3193,8 +3193,8 @@
    "duration": 2.5,
    "t": 116,
    "tExcerpt": 116,
-   "tShare": 233.59,
-   "tFilm": 233.59,
+   "tShare": 233.52,
+   "tFilm": 233.52,
    "at": {
     "map": [
      2477.32,
@@ -3222,8 +3222,8 @@
    "type": "bridge_stream_last_on_deck",
    "t": 116.12,
    "tExcerpt": 116.12,
-   "tShare": 233.71,
-   "tFilm": 233.71,
+   "tShare": 233.64,
+   "tFilm": 233.64,
    "at": {
     "map": [
      2477.46,
@@ -3254,8 +3254,8 @@
    "duration": 2.7,
    "t": 116.2,
    "tExcerpt": 116.2,
-   "tShare": 233.79,
-   "tFilm": 233.79,
+   "tShare": 233.72,
+   "tFilm": 233.72,
    "at": {
     "map": [
      2480.16,
@@ -3283,8 +3283,8 @@
    "type": "bridge_stream_last_on_deck",
    "t": 116.35,
    "tExcerpt": 116.35,
-   "tShare": 233.94,
-   "tFilm": 233.94,
+   "tShare": 233.87,
+   "tFilm": 233.87,
    "at": {
     "map": [
      2480.46,
@@ -3314,8 +3314,8 @@
    "type": "bridge_stream_last_off_deck",
    "t": 116.75,
    "tExcerpt": 116.75,
-   "tShare": 234.33,
-   "tFilm": 234.33,
+   "tShare": 234.27,
+   "tFilm": 234.27,
    "at": {
     "map": [
      2477.29,
@@ -3345,8 +3345,8 @@
    "type": "bridge_stream_last_off_deck",
    "t": 116.98,
    "tExcerpt": 116.98,
-   "tShare": 234.57,
-   "tFilm": 234.57,
+   "tShare": 234.5,
+   "tFilm": 234.5,
    "at": {
     "map": [
      2480.24,
@@ -3376,8 +3376,8 @@
    "type": "bridge_break_ranks",
    "t": 118.14,
    "tExcerpt": 118.14,
-   "tShare": 235.73,
-   "tFilm": 235.73,
+   "tShare": 235.66,
+   "tFilm": 235.66,
    "at": {
     "map": [
      2480.51,
@@ -3408,8 +3408,8 @@
    "type": "bridge_stream_first_on_deck",
    "t": 118.59,
    "tExcerpt": 118.59,
-   "tShare": 236.18,
-   "tFilm": 236.18,
+   "tShare": 236.11,
+   "tFilm": 236.11,
    "at": {
     "map": [
      2480.46,
@@ -3441,8 +3441,8 @@
    "speed": 0.3,
    "t": 119.4,
    "tExcerpt": 119.4,
-   "tShare": 236.99,
-   "tFilm": 236.99,
+   "tShare": 236.92,
+   "tFilm": 236.92,
    "at": {
     "map": [
      2516.91,
@@ -3472,8 +3472,8 @@
    "speed": 0.22,
    "t": 119.6,
    "tExcerpt": 119.6,
-   "tShare": 237.19,
-   "tFilm": 237.19,
+   "tShare": 237.12,
+   "tFilm": 237.12,
    "at": {
     "map": [
      2513.19,
@@ -3502,8 +3502,8 @@
    "duration": 4.1,
    "t": 119.7,
    "tExcerpt": 119.7,
-   "tShare": 237.29,
-   "tFilm": 237.29,
+   "tShare": 237.22,
+   "tFilm": 237.22,
    "at": {
     "map": [
      2480.06,
@@ -3531,8 +3531,8 @@
    "type": "bridge_stream_last_on_deck",
    "t": 119.86,
    "tExcerpt": 119.86,
-   "tShare": 237.44,
-   "tFilm": 237.44,
+   "tShare": 237.38,
+   "tFilm": 237.38,
    "at": {
     "map": [
      2480.46,
@@ -3564,8 +3564,8 @@
    "speed": 0.3,
    "t": 119.9,
    "tExcerpt": 119.9,
-   "tShare": 237.49,
-   "tFilm": 237.49,
+   "tShare": 237.42,
+   "tFilm": 237.42,
    "at": {
     "map": [
      2507.63,
@@ -3595,8 +3595,8 @@
    "speed": 0.22,
    "t": 120.1,
    "tExcerpt": 120.1,
-   "tShare": 237.69,
-   "tFilm": 237.69,
+   "tShare": 237.62,
+   "tFilm": 237.62,
    "at": {
     "map": [
      2500.75,
@@ -3626,8 +3626,8 @@
    "speed": 0.3,
    "t": 120.4,
    "tExcerpt": 120.4,
-   "tShare": 237.99,
-   "tFilm": 237.99,
+   "tShare": 237.92,
+   "tFilm": 237.92,
    "at": {
     "map": [
      2494.56,
@@ -3655,8 +3655,8 @@
    "type": "bridge_stream_gone",
    "t": 120.44,
    "tExcerpt": 120.44,
-   "tShare": 238.02,
-   "tFilm": 238.02,
+   "tShare": 237.96,
+   "tFilm": 237.96,
    "at": {
     "map": [
      2477.2,
@@ -3686,8 +3686,8 @@
    "type": "bridge_stream_last_off_deck",
    "t": 120.49,
    "tExcerpt": 120.49,
-   "tShare": 238.08,
-   "tFilm": 238.08,
+   "tShare": 238.01,
+   "tFilm": 238.01,
    "at": {
     "map": [
      2480.24,
@@ -3717,8 +3717,8 @@
    "type": "bridge_stream_gone",
    "t": 120.67,
    "tExcerpt": 120.67,
-   "tShare": 238.26,
-   "tFilm": 238.26,
+   "tShare": 238.2,
+   "tFilm": 238.2,
    "at": {
     "map": [
      2480.11,
@@ -3748,8 +3748,8 @@
    "type": "bridge_stream_gone",
    "t": 124.18,
    "tExcerpt": 124.18,
-   "tShare": 241.77,
-   "tFilm": 241.77,
+   "tShare": 241.7,
+   "tFilm": 241.7,
    "at": {
     "map": [
      2480.11,
@@ -3780,8 +3780,8 @@
    "duration": 4.8,
    "t": 124.2,
    "tExcerpt": 124.2,
-   "tShare": 241.79,
-   "tFilm": 241.79,
+   "tShare": 241.72,
+   "tFilm": 241.72,
    "at": {
     "map": [
      2513.06,
@@ -3810,8 +3810,8 @@
    "duration": 4.8,
    "t": 124.4,
    "tExcerpt": 124.4,
-   "tShare": 241.99,
-   "tFilm": 241.99,
+   "tShare": 241.92,
+   "tFilm": 241.92,
    "at": {
     "map": [
      2509.33,
@@ -3840,8 +3840,8 @@
    "duration": 4.8,
    "t": 124.7,
    "tExcerpt": 124.7,
-   "tShare": 242.29,
-   "tFilm": 242.29,
+   "tShare": 242.22,
+   "tFilm": 242.22,
    "at": {
     "map": [
      2503.78,
@@ -3870,8 +3870,8 @@
    "duration": 4.8,
    "t": 124.9,
    "tExcerpt": 124.9,
-   "tShare": 242.49,
-   "tFilm": 242.49,
+   "tShare": 242.42,
+   "tFilm": 242.42,
    "at": {
     "map": [
      2496.9,
@@ -3900,8 +3900,8 @@
    "duration": 4.8,
    "t": 125.2,
    "tExcerpt": 125.2,
-   "tShare": 242.79,
-   "tFilm": 242.79,
+   "tShare": 242.72,
+   "tFilm": 242.72,
    "at": {
     "map": [
      2490.71,
