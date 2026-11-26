@@ -146,7 +146,8 @@ def gated_loop(L, out, src, t0, t1, gain_db, pan, lp, rng, fade=.5, hp=None):
     n = int((t1 - t0) * SR)
     if n <= 0: return
     off = int(rng.uniform(0, max(1, len(src) - 1)))
-    x = np.concatenate([src, src, src])[off:off + n].mean(1) if len(src) > 1 else src
+    reps = 3 + n // max(1, len(src))   # Battle 21: a stream longer than 2 loops (e.g. a 118 s boarding stream) tiles the loop instead of failing
+    x = np.concatenate([src] * reps)[off:off + n].mean(1) if len(src) > 1 else src
     x = lowpass(x[:, None], lp)[:, 0]
     if hp: x = sosfilt(butter(2, hp, "hp", fs=SR, output="sos"), x)
     f = min(int(fade * SR), n // 2); env = np.ones(n); env[:f] = np.linspace(0, 1, f); env[n - f:] = np.linspace(1, 0, f)
