@@ -14,7 +14,7 @@ def formation(im, c, col, cols, rows, cw=11, ch=7, gap=3, ang=-0.42):
             ds.polygon([(p[0] + 2, p[1] + 3) for p in pts], fill=(0, 0, 0, 150))
             shade = tuple(int(v_ * rng.uniform(0.85, 1.05)) for v_ in col); d.polygon(pts, fill=shade + (255,), outline=tuple(int(v_ * 0.55) for v_ in col) + (255,))
     im = Image.alpha_composite(im, sh.filter(ImageFilter.GaussianBlur(2))); return Image.alpha_composite(im, lay)
-def grunge_arrow(im, pts, w0, w1):
+def grunge_arrow(im, pts, w0, w1, shadow=(140, 5, 8, 6)):
     N = 140; P = []
     for t in np.linspace(0, 1, N):
         # cubic bezier through 4 points
@@ -29,7 +29,7 @@ def grunge_arrow(im, pts, w0, w1):
     m = Image.new("L", im.size, 0); ImageDraw.Draw(m).polygon(poly, fill=255)
     tex = Image.effect_noise(im.size, 60).convert("L").filter(ImageFilter.GaussianBlur(1.2)); tex = ImageOps.autocontrast(tex)
     col = Image.composite(Image.new("RGBA", im.size, (214, 206, 190, 255)), Image.new("RGBA", im.size, (246, 242, 232, 255)), tex.point(lambda v: 255 if v < 70 else 0))
-    sh = Image.new("RGBA", im.size, (0, 0, 0, 0)); sh.paste(Image.new("RGBA", im.size, (0, 0, 0, 140)), (5, 8), m); im = Image.alpha_composite(im, sh.filter(ImageFilter.GaussianBlur(6)))
+    sh = Image.new("RGBA", im.size, (0, 0, 0, 0)); sh.paste(Image.new("RGBA", im.size, (0, 0, 0, shadow[0])), (shadow[1], shadow[2]), m); im = Image.alpha_composite(im, sh.filter(ImageFilter.GaussianBlur(shadow[3])))
     out = im.copy(); out.paste(col, (0, 0), m.filter(ImageFilter.GaussianBlur(0.8))); return out
 def parchment(im, xy, lines, size=30):
     f = ImageFont.truetype(SERB, size); d0 = ImageDraw.Draw(im); w = max(d0.textlength(l, font=f) for l in lines); h = len(lines) * (size + 6)
