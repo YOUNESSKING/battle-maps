@@ -34,7 +34,14 @@ Packaging `youtube/`: title A "George Washington's Top 3 Legendary Tactical Move
 - `troop_sfx`: unit ids repeat between scenes: pair stream start/end events within one scene only.
 - Background jobs must be detached (`setsid nohup`), or a finished shell kills them mid-run.
 
-## Delivery (2026-11-26)
+## Delivery v2 (2026-11-26, matches the approved tests v8 / v6 / v14)
+Gofile: **https://gofile.io/d/VpYEs4T6** (md5 checked against the server on upload)
+- `Washington-Top3-v2-1080p.mp4` master 1920x1080, 12:53, -14.0 LUFS, md5 c757734de8e8b32ee2c5ed2624ce9f8b
+- `Washington-Top3-v2-720p-preview.mp4` md5 c6c165ad343ebeaac4bdc5584be419d4
+- `Washington-publishing-guide.pdf`, `thumb_A_MAIN_HE_SNUCK_OUT.jpg`, `thumb_B_HE_SNUCK_OUT.jpg`
+- Final critics: A (look vs v8/v6/v14) 7.6/10, B (story + sync + sound) 8.8/10, after 4 fix rounds. RunPod v2 ~$1.36 (balance $7.49), pod list verified empty. Still check: `critics/drift_v2_final.jpg`.
+
+## Delivery v1 (2026-11-26)
 Gofile: **https://gofile.io/d/9Fe1zD3P** (md5 checked against the server on upload)
 - `Washington-Top3-1080p.mp4` master 1920x1080, 12:53, -14.0 LUFS, md5 56f48c09341e543043986b6566511cd5
 - `Washington-Top3-720p-preview.mp4` md5 6d086b9a52c57d9cb199cb279320c1ea

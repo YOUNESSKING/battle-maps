@@ -33,7 +33,7 @@
     "nx": -1.19,
     "ny": -0.617,
     "onScreen": false,
-    "camDist": 2087.26
+    "camDist": 2087.27
    },
    "unit": {
     "unit": 0,
@@ -1614,12 +1614,12 @@
     ],
     "px": [
      468,
-     172
+     170
     ],
     "nx": 0.244,
-    "ny": 0.159,
+    "ny": 0.157,
     "onScreen": true,
-    "camDist": 39.3
+    "camDist": 39.26
    },
    "unit": {
     "unit": 0,
@@ -1673,13 +1673,13 @@
      2060.33
     ],
     "px": [
-     99,
-     479
+     98,
+     478
     ],
-    "nx": 0.052,
-    "ny": 0.443,
+    "nx": 0.051,
+    "ny": 0.442,
     "onScreen": true,
-    "camDist": 31.49
+    "camDist": 31.47
    },
    "unit": {
     "unit": 2,
@@ -2237,7 +2237,7 @@
     "nx": -0.141,
     "ny": -1.089,
     "onScreen": false,
-    "camDist": 1829.43
+    "camDist": 1829.42
    },
    "unit": {
     "unit": 11,
@@ -2555,12 +2555,12 @@
     ],
     "px": [
      738,
-     88
+     87
     ],
     "nx": 0.384,
-    "ny": 0.082,
+    "ny": 0.081,
     "onScreen": true,
-    "camDist": 69.6
+    "camDist": 69.58
    },
    "unit": {
     "unit": 11,
@@ -2894,12 +2894,12 @@
     ],
     "px": [
      348,
-     530
+     532
     ],
     "nx": 0.181,
-    "ny": 0.491,
+    "ny": 0.492,
     "onScreen": true,
-    "camDist": 42.44
+    "camDist": 42.48
    },
    "unit": {
     "unit": 17,
@@ -3014,12 +3014,12 @@
     ],
     "px": [
      774,
-     137
+     139
     ],
     "nx": 0.403,
-    "ny": 0.127,
+    "ny": 0.129,
     "onScreen": true,
-    "camDist": 62.55
+    "camDist": 62.59
    },
    "unit": {
     "unit": 10,
@@ -3044,12 +3044,12 @@
     ],
     "px": [
      728,
-     137
+     135
     ],
     "nx": 0.379,
-    "ny": 0.127,
+    "ny": 0.125,
     "onScreen": true,
-    "camDist": 62.42
+    "camDist": 62.4
    },
    "unit": {
     "unit": 11,
@@ -3079,7 +3079,7 @@
     "nx": 0.45,
     "ny": 0.1,
     "onScreen": true,
-    "camDist": 65.88
+    "camDist": 65.9
    },
    "unit": {
     "unit": 12,
@@ -3134,12 +3134,12 @@
     ],
     "px": [
      678,
-     172
+     173
     ],
     "nx": 0.353,
-    "ny": 0.159,
+    "ny": 0.16,
     "onScreen": true,
-    "camDist": 58.97
+    "camDist": 58.99
    },
    "unit": {
     "unit": 14,
@@ -3256,7 +3256,7 @@
     "nx": -0.583,
     "ny": -1.237,
     "onScreen": false,
-    "camDist": 1829.04
+    "camDist": 1829.05
    },
    "unit": {
     "unit": 12,
@@ -3401,7 +3401,7 @@
     "nx": -0.549,
     "ny": -1.233,
     "onScreen": false,
-    "camDist": 1842.18
+    "camDist": 1842.19
    },
    "unit": {
     "unit": 17,
