@@ -4,7 +4,7 @@ import sys
 from PIL import Image, ImageDraw, ImageFont
 tag, out, cols = sys.argv[1], sys.argv[2], sys.argv[3:]   # col = look or look:tag (e.g. A:r1)
 COLT = {c.split(":")[0]: (c.split(":")[1] if ":" in c else tag) for c in cols}; cols = [c.split(":")[0] for c in cols]
-NAMES = {"lineblocks": "v14 lineblocks (approved motion)", "A": "A raised enamel counter", "B": "B bevelled slab, gold frame, pennant", "C": "C thin tile, strong drop shadow", "A2": "A2 painted counter", "A2L": "A2-L painted counter, large", "A3": "A3 NATO counter"}
+NAMES = {"lineblocks": "v14 lineblocks (approved motion)", "A": "A raised enamel counter", "B": "B bevelled slab, gold frame, pennant", "C": "C thin tile, strong drop shadow", "A2": "A2 painted counter", "A2L": "A2-L painted counter, large", "A3": "A3 NATO counter", "A4": "A4 NATO counter (final)"}
 ROWS = [("S09", "59.5", "S09 59.5 s lines + smoke"), ("S09", "65", "S09 65.0 s line advancing"), ("S09", "86.2", "S09 86.2 s on the march"),
         ("S09", "103.5", "S09 103.5 s crest fight"), ("S10", "28.5", "S10 28.5 s rout over the bridge")]
 ZOOM = [("S09", "59.5", (330, 340, 650, 520), "2x S09 59.5 s"), ("S10", "25", (440, 250, 760, 430), "2x S10 25 s bridge"), ("S10", "22", (560, 340, 880, 520), "2x S10 22 s counter")]

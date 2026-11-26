@@ -103,7 +103,7 @@ window.SEQ = {
   units, arrows,
   banners: [
     { general: "pemberton", keys: [[0, BR.x - 3.4, 682.6]], t0: T.pem + 0.1, t1: T.D + 1, escape: { road: RD, t0: T.ran + 0.6, v: 1.1, v2: 1.1, join: "west" } },
-    { general: "grant", keys: [[0, 1527.2, 682.4], [T.ran + 1.0, 1527.2, 682.4], [32.6, 1521.4, 684.8], [41.18, 1521.4, 684.8], [41.26, 1516.2, 689.4]], t0: T.grant + 0.1, t1: T.D + 1 },
+    { general: "grant", keys: [[0, 1527.2, 682.4], [T.ran + 1.0, 1527.2, 682.4], [32.6, 1518.3, 684.9], [41.18, 1518.3, 684.9], [41.26, 1516.2, 689.4]], t0: T.grant + 0.1, t1: T.D + 1 },
   ],
   labels: [
     { text: "Bovina", town: "Bovina", size: 18, t0: 2.4, t1: 9.6 },

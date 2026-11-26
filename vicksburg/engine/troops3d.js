@@ -514,13 +514,17 @@ export function createTroops3D(o) {
       B: { dk: 0.30, h: 0.10, bev: 0.034, ao: 0.46, drop: 0, cast: true, phong: false, pen: true, tex: "B" },
       C: { dk: 0.32, h: 0.028, bev: 0.008, ao: 0.3, drop: 0.5, cast: false, phong: false, pen: false, tex: "C" },
       A2: { dk: 0.40, wk: 1.06, h: 0.06, bev: 0.012, ao: 0.35, aoM: 0.055, drop: 0, cast: true, phong: false, pen: false, tex: "A2", edgePx: 1.8, capPx: 2.3, grain: 0.06, pull: 1.2,
-        top: { u: "#3a5a94", r: "#a8432f" }, wall: { u: "#243b63", r: "#6e2a1f" }, capC: "#6e6a62", ink: "#2a1d16", guns: true, edgeFade: 26 } })[o.counter === "A3" ? "A2" : o.counter || "A"] || null;
+        top: { u: "#3a5a94", r: "#a8432f" }, wall: { u: "#243b63", r: "#6e2a1f" }, capC: "#6e6a62", ink: "#2a1d16", guns: true, edgeFade: 26 } })[o.counter === "A3" || o.counter === "A4" ? "A2" : o.counter || "A"] || null;
     // round 3 "A3" (critics on A2: it read as FLAGS - saltires / bunting): no cream anywhere; facing = a thicker ink front edge + a slim
     // darker-side-colour front strip + the lighter front wall; NATO symbol = a small plate in the lightened side colour, thin ink outline,
     // thin crossed lines (drawn in the shader in screen px); edge width grows with the counter's size on screen; guns: side-colour crew,
     // a flat side-colour ground disc, x1.3; captured = fully grey top, side-colour edge, held grey
-    if (o.counter === "A3") Object.assign(V, { tex: "A3", capPx: 2.5, edgeMax: 3.0, frontK: 1.4, gunK: 1.3, stripD: 0.17, plateW: 0.31, plateD: 0.5,
-      plate: { u: "#8ea2c6", r: "#d39a8c" }, strip: { u: "#2a4472", r: "#7f2f22" }, capPlate: "#9a968e", capStrip: "#55524b" });
+    if (o.counter === "A3" || o.counter === "A4") Object.assign(V, { tex: "A3", capPx: 2.5, edgeMax: 3.0, frontK: 1.4, gunK: 1.3, stripD: 0.17, plateW: 0.31, plateD: 0.5,
+      plate: { u: "#8ea2c6", r: "#d39a8c" }, strip: { u: "#2a4472", r: "#7f2f22" }, capPlate: "#9a968e", capStrip: "#55524b", xInk: 0.85, xPx: 1.5 });
+    // round 4 "A4" (critics on A3: 8 / 7.5): guns x1.0 in dark ink bronze, no ground disc, bigger saturated side-colour crews; a LIGHTER
+    // saturated front strip (the dark one merged with the near wall); blue top / walls lifted for dark woods; crossed lines 100 % ink, 1.8 px
+    if (o.counter === "A4") Object.assign(V, { gunK: 1.0, noDisc: true, crewK: 1.6, gunBronze: { barrel: "#4a3a2c", carriage: "#5a4432" }, stripD: 0.22,
+      strip: { u: "#5b80d0", r: "#e0614c" }, top: { u: "#4466a6", r: "#a8432f" }, wall: { u: "#2a4577", r: "#6e2a1f" }, xInk: 1.0, xPx: 1.8 });
     const CV = { ...V, ...(o.counterOpts || {}) }, ART = { dk: 0.46 }, A3 = CV.tex === "A3", A2 = CV.tex === "A2" || A3;   /* A2 = the A2 family (A2, A3) */
     const slabG = (dk, h, bev, skirt) => { const P = [], N = [], C = [], hw = 0.5, hd = dk / 2, iw = hw - bev, id = hd - bev, yc = h - bev * 0.8, yb = -skirt;
       const tri = (a, b, c, sh) => { const u1 = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], u2 = [c[0] - a[0], c[1] - a[1], c[2] - a[2]];
@@ -615,7 +619,7 @@ vec2 q = (vMapUv - p0) / fwd, qs = (p1 - p0) / fwd; float bd = min(min(q.x, q.y)
 c = mix(c, vPlt * gr, ins);
 float ol = ins * (1.0 - smoothstep(0.85, 1.85, bd));
 float Ld = length(qs), d1 = abs(q.x * qs.y - q.y * qs.x) / Ld, d2 = abs(q.x * qs.y + q.y * qs.x - qs.x * qs.y) / Ld, dx = uSym < 0.5 ? min(d1, d2) : uSym < 1.5 ? d1 : 1e3;
-float xl = ins * (1.0 - smoothstep(0.25, 1.25, dx)) * 0.85;
+float xl = ins * (1.0 - smoothstep(${(CV.xPx / 2 - 0.5).toFixed(2)}, ${(CV.xPx / 2 + 0.5).toFixed(2)}, dx)) * ${CV.xInk.toFixed(2)};
 c = mix(c, uInk, max(ol, xl));
 #define BND(d) (smoothstep(EB - 0.3, EB + 0.2, d) * (1.0 - smoothstep(EB + 0.9, EB + 1.4, d)))
 float lit = vSun.x * (BND(dHi.x) - BND(dLo.x)) + vSun.y * (smoothstep(EF - 0.3, EF + 0.2, dHi.y) * (1.0 - smoothstep(EF + 0.9, EF + 1.4, dHi.y)) - BND(dLo.y));
@@ -653,7 +657,7 @@ diffuseColor.rgb = mix(c, vEdge.rgb, max(e1, e2));`;
       const fm = new THREE.MeshLambertMaterial({ side: THREE.DoubleSide, transparent: true, emissive: 0x303030 }); fm.onBeforeCompile = opHook; fm.customProgramCacheKey = () => "ctrFlag";
       return { pole, flag: mk(fg, fm, nI + nA, false, true, 2.04) }; })() : null;
     // A3: a flat side-colour ground disc under each gun (0.35 opacity, thin ink rim) so a battery reads as a unit of its side
-    const disc = A3 && CV.guns && nA ? (() => { const c = document.createElement("canvas"); c.width = c.height = 128; const g = c.getContext("2d"); g.fillStyle = "#000"; g.fillRect(0, 0, 128, 128);
+    const disc = A3 && CV.guns && nA && !CV.noDisc ? (() => { const c = document.createElement("canvas"); c.width = c.height = 128; const g = c.getContext("2d"); g.fillStyle = "#000"; g.fillRect(0, 0, 128, 128);
       g.fillStyle = "#ff0000"; g.beginPath(); g.arc(64, 64, 61, 0, Math.PI * 2); g.fill(); g.strokeStyle = "#00ff00"; g.lineWidth = 2.6; g.beginPath(); g.arc(64, 64, 61.5, 0, Math.PI * 2); g.stroke();
       const t3 = new THREE.CanvasTexture(c); t3.colorSpace = THREE.NoColorSpace; const dm = new THREE.MeshBasicMaterial({ map: t3, transparent: true, depthWrite: false, fog: true });
       dm.onBeforeCompile = (sh) => { sh.uniforms.uInk = { value: new THREE.Color("#2a1d16") }; sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nattribute float iOp; varying float vOp;").replace("#include <begin_vertex>", "#include <begin_vertex>\nvOp = iOp;");
@@ -684,14 +688,15 @@ diffuseColor.rgb = mix(c, vEdge.rgb, max(e1, e2));`;
         let rec = 0; for (const s of shots) { if (s.t > t) break; if (Math.hypot(s.x - bx, s.y - by) < D.span * 0.6 + 0.5 * ts && i === 0) rec = Math.max(rec, Math.exp(-(t - s.t) * 7) * (t - s.t < 1.2 ? 1 : 0)); }
         const ga = Math.atan2(fy, fx) + Math.PI * sstep(0.2, 0.8, lmb), gfx = Math.cos(ga), gfy = Math.sin(ga);
         const gx = bx - fx * (rec * 0.08 * gk) - fx * lmb * 0.15 * gk, gy = by - fy * (rec * 0.08 * gk) - fy * lmb * 0.15 * gk, hg = Hs(gx, gy) + S.lift - sink;
-        const cg = col.setHex(0x6a5a3e).lerp(GREYC, capd); carriage.setColorAt(k, cg); limber.setColorAt(k, cg);
+        const cg = CV.gunBronze ? col.set(CV.gunBronze.carriage).lerp(GREYC, capd) : col.setHex(0x6a5a3e).lerp(GREYC, capd); carriage.setColorAt(k, cg); limber.setColorAt(k, cg);
+        if (CV.gunBronze) { const bc = new THREE.Color(CV.gunBronze.barrel).lerp(GREYC, capd), bm = barrel.material.color; barrel.setColorAt(k, bc.setRGB(bc.r / bm.r, bc.g / bm.g, bc.b / bm.b)); }   /* A4: dark bronze barrel (instance colour x the material's pale grey) */
         setM(carriage, k, gx, hg, gy, gfx, gfy, gk, gk, gk); setM(barrel, k, gx, hg, gy, gfx, gfy, gk, gk, gk); setM(wheels, k, gx, hg, gy, gfx, gfy, gk, gk, gk);
         const lf = lerp(-0.55, 0.5, sstep(0.1, 0.9, lmb)) * gk, lx = bx + fx * lf, ly = by + fy * lf; setM(limber, k, lx, Hs(lx, ly) + S.lift - sink, ly, fx, fy, gk, gk, gk);
         for (const m of [carriage, barrel, wheels, limber]) setOp(m, k, op);
-        const fs = gk * 0.11;
+        const fs = gk * 0.11 * (CV.crewK ?? 1);
         for (let j = 0; j < 4; j++) { const a = (j < 2 ? -1 : 1) * (0.2 + 0.05 * (j % 2)) * gk, d = ((j % 2 ? 0.28 : 0.05) + 0.03 * Math.sin(t * 3 + j) * rec - 0.2 * lmb) * gk;
           const x = gx + px * a - fx * d, y = gy + py * a - fy * d;
-          setM(coats, nf, x, Hs(x, y) + S.lift - sink, y, fx, fy, fs * 0.55, fs * 1.9, fs * 0.5); coats.setColorAt(nf, A3 ? col.copy(FILL[u.side] || FILL.u).lerp(GREYC, capd) : col.setHex(P.coat).lerp(GREYC, capd));   /* A3: crew in the side colour */
+          setM(coats, nf, x, Hs(x, y) + S.lift - sink, y, fx, fy, fs * 0.55, fs * 1.9, fs * 0.5); coats.setColorAt(nf, A3 ? col.copy(((CV.crewK ? STR : FILL)[u.side]) || FILL.u).lerp(GREYC, capd) : col.setHex(P.coat).lerp(GREYC, capd));   /* A3: crew in the side colour */
           setM(pales, nf, x, Hs(x, y) + S.lift - sink, y, fx, fy, fs * 0.55, fs * 1.9, fs * 0.5); pales.setColorAt(nf, col.setHex(P.pale).lerp(GREYP, capd)); setOp(coats, nf, op); setOp(pales, nf, op); nf++; }
         continue; }
       const WK = W * (CV.wk ?? 1), Dd0 = W * KK.dk;

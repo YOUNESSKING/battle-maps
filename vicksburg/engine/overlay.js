@@ -252,8 +252,8 @@
     return `<svg viewBox="0 0 56 16"><rect x="5" y="3.6" width="46" height="12" fill="rgba(0,0,0,.28)"/><rect x="4" y="5" width="46" height="9" fill="${w}"/><rect x="4" y="1" width="46" height="11" fill="${f}" stroke="#2a1d16" stroke-width="1.3"/>` +
       `<rect x="4.65" y="1.65" width="44.7" height="2.4" fill="#efe6cf"/><rect x="18" y="5" width="20" height="5.6" fill="#e9dfc6"/><path d="M18.8 5.6 L37.2 10 M37.2 5.6 L18.8 10" stroke="#1e1a16" stroke-width="1.2"/></svg>`; };
   // troops-box test round 3 (A3): no cream: darker-side-colour front strip, lightened-side-colour NATO plate with thin ink outline + crossed lines
-  const legCounter3 = (c) => { const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i.exec(c || ""), blue = m ? parseInt(m[3], 16) > parseInt(m[1], 16) : true;
-    const f = blue ? "#3a5a94" : "#a8432f", w = blue ? "#243b63" : "#6e2a1f", st = blue ? "#2a4472" : "#7f2f22", pl = blue ? "#8ea2c6" : "#d39a8c";
+  const legCounter3 = (c, v4) => { const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i.exec(c || ""), blue = m ? parseInt(m[3], 16) > parseInt(m[1], 16) : true;
+    const f = blue ? (v4 ? "#4466a6" : "#3a5a94") : "#a8432f", w = blue ? (v4 ? "#2a4577" : "#243b63") : "#6e2a1f", st = v4 ? (blue ? "#5b80d0" : "#e0614c") : blue ? "#2a4472" : "#7f2f22", pl = blue ? "#8ea2c6" : "#d39a8c";   /* v4: troops-box round 4 (lighter front strip, lifted blue) */
     return `<svg viewBox="0 0 56 16"><rect x="5" y="3.6" width="46" height="12" fill="rgba(0,0,0,.28)"/><rect x="4" y="5" width="46" height="9" fill="${w}"/><rect x="4" y="1" width="46" height="11" fill="${f}"/>` +
       `<rect x="4" y="1" width="46" height="2.6" fill="${st}"/><rect x="4" y="1" width="46" height="11" fill="none" stroke="#2a1d16" stroke-width="1.2"/><path d="M4 1.5 H50" stroke="#2a1d16" stroke-width="1.6"/>` +
       `<rect x="20" y="5" width="15" height="5.2" fill="${pl}" stroke="#1e1a16" stroke-width="0.7"/><path d="M20 5 L35 10.2 M35 5 L20 10.2" stroke="#1e1a16" stroke-opacity=".85" stroke-width="0.7"/></svg>`; };
@@ -424,7 +424,7 @@
 
     // ---------------------------------------------------------------- 3. THE ARMIES legend (bottom-left)
     O.legend = (tIn, tOut, o) => {
-      const el = mk(Lhud, "legend", `<div class="caps t">${esc(o.title || "THE ARMIES")}</div>` + o.entries.map((e) => `<div class="e">${(o.swatch || O.legendSwatch) === "counter3" ? legCounter3(e.color) : (o.swatch || O.legendSwatch) === "counter" ? legCounter(e.color) : legArrow(e.color || "#3A3A36")}<div><div class="n">${esc(e.name)}</div>${e.sub ? `<div class="s">${esc(e.sub)}</div>` : ""}</div></div>`).join(""));
+      const el = mk(Lhud, "legend", `<div class="caps t">${esc(o.title || "THE ARMIES")}</div>` + o.entries.map((e) => `<div class="e">${(o.swatch || O.legendSwatch) === "counter4" ? legCounter3(e.color, true) : (o.swatch || O.legendSwatch) === "counter3" ? legCounter3(e.color) : (o.swatch || O.legendSwatch) === "counter" ? legCounter(e.color) : legArrow(e.color || "#3A3A36")}<div><div class="n">${esc(e.name)}</div>${e.sub ? `<div class="s">${esc(e.sub)}</div>` : ""}</div></div>`).join(""));
       fadeIn(el, tIn, 0.6, { y: 12 }, { y: 0 }); fadeOut(el, tOut, 0.5); return O; };
 
     // ---------------------------------------------------------------- 4. medallions: 'card' (portrait over an ivory plaque, leader line to the map) and 'plate' (portrait + dark plate)
