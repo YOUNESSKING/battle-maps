@@ -873,7 +873,7 @@ def bake(rname, G, P, creeks, preview=True):
         wl = water_levels(pts, lambda p: sample(hs, box, p))
         if "wl_max" in e: wl = np.minimum(wl, e["wl_max"])
         Pp = np.stack([(pts[:, 0] - x0) * upx_h, (pts[:, 1] - y0) * upx_h], 1)
-        tmp = np.full((HH, HW), 1e4, np.float32); th = max(2, int((w * 2.5 + 2.0) * upx_h))
+        tmp = np.full((HH, HW), 1e4, np.float32); th = max(2, int((w * 2.5 + 2.0 + (2 * float(cfg.get("carve_reach_u", 0)) if PROJ else 0)) * upx_h))   # project (v2 r5): carve_reach_u widens the carve band (no cliff where a gentle bank_slope meets the band edge)
         for i in range(len(Pp) - 1):
             a = tuple(int(v) for v in np.round(Pp[i] * 4)); b = tuple(int(v) for v in np.round(Pp[i + 1] * 4))
             cv2.line(tmp, a, b, float(wl[i]), th, cv2.LINE_8, shift=2); cv2.line(widthimg, a, b, float(w), th, cv2.LINE_8, shift=2)
@@ -882,6 +882,10 @@ def bake(rname, G, P, creeks, preview=True):
         stride = 2 if close or w < 3 else 1
         rivs.append(dict(name=key, w=round(w, 3), pts=[[round(float(p[0]), 3), round(float(p[1]), 3), round(float(l), 2)] for p, l in zip(pts[::stride], wl[::stride])]))
         if PROJ and e.get("look"): rivs[-1]["look"] = e["look"]   # project (Battle 21 v2 r4): per-river water look for the engine (colour / roughness / ripple / env)
+    if PROJ and cfg.get("wl_smooth_u"):   # project (v2 r5): smooth the per-segment water levels (no stepped / striated banks across the carve band)
+        mw_ = (wlimg < 1e3).astype(np.float32); sg_ = float(cfg["wl_smooth_u"]) * upx_h
+        ws_ = cv2.GaussianBlur(np.where(mw_ > 0, wlimg, 0), (0, 0), sg_) / np.maximum(cv2.GaussianBlur(mw_, (0, 0), sg_), 1e-4)
+        wlimg = np.where(mw_ > 0, ws_, wlimg).astype(np.float32); del mw_, ws_
     dist = cv2.distanceTransform(cl, cv2.DIST_L2, 5) / upx_h
     hw = np.maximum(widthimg, 0.3) / 2; depth = 2.5 if not close else 3.0
     bankslope = 9.0 if not close else 14.0
@@ -1207,6 +1211,13 @@ def bake(rname, G, P, creeks, preview=True):
         lum = img.mean(-1, keepdims=True); img = lum + (img - lum) * tg_.get("sat", 1.0); del lum
         img = 255.0 * (np.clip(img, 0, 255) / 255.0) ** tg_.get("gamma", 1.0)
         if tg_.get("tint"): img = img * np.array(tg_["tint"], np.float32)   # project: per-channel warmth (R, G, B multipliers)
+    if PROJ and cfg.get("tex_lift"):   # project (v2 r5, critic A r3 #5): soft local brightness lift [{box [x0, y0, x1, y1] region units, feather_u, k, wood_k}] (a dark far band of one shot)
+        xs_ = x0 + (np.arange(TW, dtype=np.float32) + 0.5) / TW * bw; ys_ = y0 + (np.arange(TH, dtype=np.float32) + 0.5) / TH * bh
+        for tl_ in cfg["tex_lift"]:
+            bx_ = tl_["box"]; f_ = float(tl_.get("feather_u", 15.0)); sm_ = lambda v: v * v * (3 - 2 * v)
+            wx_ = sm_(np.clip((xs_ - bx_[0]) / f_, 0, 1) * np.clip((bx_[2] - xs_) / f_, 0, 1)); wy_ = sm_(np.clip((ys_ - bx_[1]) / f_, 0, 1) * np.clip((bx_[3] - ys_) / f_, 0, 1))
+            img *= (1 + np.outer(wy_, wx_) * (tl_.get("k", 0.1) + tl_.get("wood_k", 0.0) * forest))[..., None]
+        img = np.clip(img, 0, 255); del xs_, ys_
     if FROST is not None: img = img * (1 - FROST[..., None]) + hexc(WINTER["frost"].get("col", "#dde5ea")) * FROST[..., None]; del FROST
     if PROJ and cfg.get("bank_fill"):   # project (v2 r4, critic #23): the strip between the water and the woods / frost = the river bank colour (no pale rims round ponds)
         bf_ = cfg["bank_fill"]; u_ = bf_.get("u", 0.8 if not close else 0.15); o_ = (cfg.get("river_halo_u") or 0.0) if not close else 0.0   # starts outside the painted water halo

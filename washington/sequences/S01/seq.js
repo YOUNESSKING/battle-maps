@@ -329,6 +329,13 @@ window.SEQ = {
     ["plaque.date", SN1, { month: "1776 - 1777", day: "", weekday: "", note: "" }],
     ["film.grade", SN1, "night", 0.1],
     ["film.grade", SN3, "day", 0.1],
+    // v2 r3 fix (critic A R8): THE ARMIES key + the wax-seal timeline back on the three montage map shots (out only for the letter + name slam
+    // and the title card); the seal steps to each move's month on its cut: Brooklyn (Aug), the Delaware (25 Dec), Princeton (3 Jan)
+    ["legend", SN1 + 0.1, T.three - 0.2, { entries: [{ name: "Americans", color: "#3C6E9E" }, { name: "British", color: "#9C3A35" }] }],
+    ["timeline.show", SN1 + 0.1, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 0.95 }],
+    ["timeline.go", SN2 + 0.1, { at: 4.8, d: 1.2 }],
+    ["timeline.go", SN3 + 0.1, { at: 5.25, d: 1.0 }],
+    ["timeline.hide", T.three - 0.2],
     ["title", T.three, T.D - 1.8, { lines: ["THREE GREATEST", "TACTICAL MOVES"], y: 250 }],
   ],
 };

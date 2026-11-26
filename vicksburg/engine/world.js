@@ -183,7 +183,8 @@ export function initWorld(canvas, opts = {}) {
     const wmat = new THREE.MeshStandardMaterial({ color: 0x2f4552, roughness: 0.4, metalness: 0.05, envMap, envMapIntensity: 0.22, side: THREE.DoubleSide, normalMap: wnorm, normalScale: new THREE.Vector2(0.35, 0.35) });
     R.water = [];
     for (const rv of d.rivers || []) {
-      const P = rv.pts, n = P.length, w = rv.w * 1.08, vs = [], uv = [], ix = []; let arc = 0;
+      const P = rv.pts, n = P.length, w = rv.w * 1.08, vs = [], uv = [], ix = [], cx = []; let arc = 0;
+      const LK = rv.look || {}, wv = +LK.wvar || 0, edgeK = +LK.edge || 0;   // project (Battle 21 v2 r5): opt-in width wobble + darker banks (absent = unchanged)
       // round 2 (critic A "silver foil" on the siege / vicksburg Mississippi): a broad river in a close world tiles the ripple normal map
       // every ~0.9 units instead of once per river width (fine faint ripples, not metre-sized scales); narrow rivers unchanged
       const broad = d.kind !== "wide" && (rv.w || rv.width || 0) >= 2.5, uvK = broad ? w / 0.9 : 1;
@@ -191,8 +192,9 @@ export function initWorld(canvas, opts = {}) {
         const a = P[Math.max(0, i - 1)], b = P[Math.min(n - 1, i + 1)]; let tx = b[0] - a[0], tz = b[1] - a[1]; const l = Math.hypot(tx, tz) || 1; tx /= l; tz /= l;
         if (i) arc += Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]);
         const y = P[i][2] * ys + 0.002 * exag;
-        vs.push(P[i][0] - tz * w / 2, y, P[i][1] + tx * w / 2, P[i][0] + tz * w / 2, y, P[i][1] - tx * w / 2);
-        uv.push(arc / w * uvK, 0, arc / w * uvK, uvK);
+        const wi = wv ? w * (1 + wv * (0.6 * Math.sin(arc * 0.9 + 1.3) + 0.4 * Math.sin(arc * 2.3 + 0.4))) : w;
+        vs.push(P[i][0] - tz * wi / 2, y, P[i][1] + tx * wi / 2, P[i][0] + tz * wi / 2, y, P[i][1] - tx * wi / 2);
+        uv.push(arc / w * uvK, 0, arc / w * uvK, uvK); cx.push(-1, 1);
         if (i) { const k = (i - 1) * 2; ix.push(k, k + 1, k + 2, k + 1, k + 3, k + 2); }
       }
       const wg = new THREE.BufferGeometry(); wg.setAttribute("position", new THREE.Float32BufferAttribute(vs, 3)); wg.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2)); wg.setIndex(ix); wg.computeVertexNormals();
@@ -204,6 +206,14 @@ export function initWorld(canvas, opts = {}) {
         if (L.rough != null) m.material.roughness = L.rough;
         if (L.env != null) { m.material.envMapIntensity = L.env; m.userData.envK = L.env / 0.22; }
         if (L.ns != null) m.userData.ns = L.ns;
+        if (edgeK) {   // v8 carved-river shading: darker toward both banks, a touch lighter mid-stream (matte); per-vertex cross coordinate -1..1
+          wg.setAttribute("aCross", new THREE.Float32BufferAttribute(cx, 1)); const EK = edgeK.toFixed(3), ML = (+L.mid || 0.06).toFixed(3);
+          m.material.onBeforeCompile = (sh) => {
+            sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nattribute float aCross;\nvarying float vCross;").replace("#include <begin_vertex>", "#include <begin_vertex>\nvCross = aCross;");
+            sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nvarying float vCross;").replace("#include <map_fragment>",
+              "#include <map_fragment>\n{ float e = abs(vCross); diffuseColor.rgb *= (1.0 + " + ML + " * (1.0 - e * e)) * (1.0 - " + EK + " * smoothstep(0.45, 1.0, e)); }"); };
+          m.material.customProgramCacheKey = () => "gm3d-river-edge-" + EK + ML;
+        }
       } else if (broad) { m.material = wmat.clone(); m.material.roughness = 0.78; m.userData.envK = 0.45; }   // + matte: the specular sheet read as foil   // own material: wmat is shared, its normalScale is set per mesh each frame   // critic A4: broad rivers in close worlds read as foil at 0.35
     }
     R.wmat = wmat;

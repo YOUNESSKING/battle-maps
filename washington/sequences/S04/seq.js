@@ -149,8 +149,8 @@ window.SEQ = {
     ["plaque.date", T.eighth - 0.05, { month: "December 1776", day: "8", weekday: "Sunday", note: "into Pennsylvania" }],
     ["plaque.note", T.congress - 0.05, "Congress flees Philadelphia"],
     ["plaque.date", T.settled - 0.1, { month: "December 1776", day: "8", weekday: "Sunday", note: "" }],   // v2 r3 (critic A N7): keep the last spoken day (8 Dec) until the next one; only the Congress note leaves
-    ["label", T.hessian - 0.05, T.ralls - 0.3, { name: "Hessians", sub: "three regiments", world: [TRj[0] + 0.6, TRj[1] - 14.0], side: "uk", marker: false }],
-    ["label", T.fourteen - 0.05, T.colonel - 0.3, { name: "About 1,400 men", sub: "", world: [TRj[0] + 0.6, TRj[1] - 14.0], side: "uk", marker: false }],
+    ["label", T.hessian - 0.05, T.ralls - 0.3, { name: "Hessians", sub: "three regiments", world: [TRj[0] + 0.6, TRj[1] - 20.0], side: "uk", marker: false }],   // v2 r3 fix (critic A R4): 6 u north, clear of the carved "Knyphausen"
+    ["label", T.fourteen - 0.05, T.colonel - 0.3, { name: "About 1,400 men", sub: "", world: [TRj[0] + 0.6, TRj[1] - 20.0], side: "uk", marker: false }],   // v2 r3 fix (critic A R4): 6 u north, clear of the carved "Knyphausen"
     ["label", T.thirtyfirst - 0.05, T.D, { name: "Enlistments end", sub: "31 December", world: bank(kT - 0.15, "PA", HW + 12.0), side: "us", marker: false }],
   ],
   build: (ctx) => { },   // v2 r1: no pulse (not in the v8 tests)

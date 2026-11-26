@@ -55,6 +55,19 @@
  },
  "field_feather": 1.2,
  "field_patch_k": 0.75,
+ "tex_lift": [
+  {
+   "box": [
+    560,
+    200,
+    740,
+    292
+   ],
+   "feather_u": 22,
+   "k": 0.08,
+   "wood_k": 0.3
+  }
+ ],
  "dem_ppu": 2,
  "dem_margin": 24,
  "dem_edits": {

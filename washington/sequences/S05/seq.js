@@ -133,7 +133,7 @@ const DG = [68.5, 76.8, 85.8].map((d) => d * Math.PI / 180);   // the on-screen 
 const sPos = [[1353.4, 2062.4], [1352.0, 2067.8]];   // v2 r3: the second block clear of the clock plate in the bridge shot   // v2 r2 critic B: Sullivan's lead block in the frame, among the houses
 // v2 r3 (critic A #2): up from the River road into the lower town, straight north (front first, long side across the screen), after the dissolve
 const DS = (77.0 + 180) * Math.PI / 180;   // on-screen 'up' at the lower town (camera at 103 s)
-add({ side: "u", region: TR, face: DS, t0: 95.4, arrive: false, keys: [[0, sPos[0][0] - Math.cos(DS) * 2.4, sPos[0][1] - Math.sin(DS) * 2.4], [101.0, sPos[0][0] - Math.cos(DS) * 2.4, sPos[0][1] - Math.sin(DS) * 2.4], [105.4, ...sPos[0]], [T.D, ...sPos[0]]] });
+add({ side: "u", region: TR, face: DS, t0: 95.4, arrive: false, keys: [[0, sPos[0][0] - Math.cos(DS) * 2.4, sPos[0][1] - Math.sin(DS) * 2.4], [103.2, sPos[0][0] - Math.cos(DS) * 2.4, sPos[0][1] - Math.sin(DS) * 2.4], [107.4, ...sPos[0]], [T.D, ...sPos[0]]] });
 add({ side: "u", region: TR, face: N, t0: 95.4, arrive: false, keys: [[0, ...sPos[1]]] });   // the second brigade waits below the frame (no walk)
 // Knox's guns race to the head of King and Queen streets
 const G1 = [1355.2, 2053.2], G2 = [1356.6, 2053.3];
@@ -226,7 +226,7 @@ const arrows = [
   { side: "u", region: JE, pts: [[620.0, 959.0], [640.0, 973.0], [660.0, 993.0], [668.4, 1012.0], [674.6, 1022.4]], t0: T.split - 0.05, dur: 2.2, t1: 88.6, width: BLUEW, maxWidth: BLUEW },
   { side: "u", region: JE, pts: [[616.0, 969.0], [624.0, 984.0], [628.0, 993.0], [640.0, 1004.0], [656.0, 1016.0], [670.0, 1027.0], [673.6, 1031.0]], t0: T.split + 0.3, dur: 2.2, t1: 88.6, width: BLUEW, maxWidth: BLUEW },
   // trenton: the guns race to the head of the streets; the counterattack; colonies: Cornwallis races to Trenton
-  { side: "u", region: TR, pts: [[1349.8, 2046.8], [1352.6, 2050.0], [1355.4, 2052.4]], t0: T.raced - 0.05, dur: 1.4, t1: T.hessians - 0.3, width: 0.43, maxWidth: 0.43 },
+  { side: "u", region: TR, pts: [[1350.8, 2050.1], [1353.1, 2050.9], [1355.4, 2052.4]], t0: T.raced - 0.05, dur: 1.4, t1: T.hessians - 0.3, width: 0.43, maxWidth: 0.43 },
   { side: "r", region: TR, pts: [[1360.6, 2059.6], [1360.9, 2057.4], [1361.4, 2055.4]], t0: T.counterattack - 0.05, dur: 1.0, t1: T.men2 + 0.4, width: 0.43, maxWidth: 0.43 },
   { side: "r", region: CO, pts: [[NYc[0] - 8, NYc[1] + 6], [NBc[0] + 6, NBc[1] - 2], [PRc[0] + 2, PRc[1] + 3], [TRc[0] + 4, TRc[1] - 2]], t0: T.racing - 0.05, dur: 2.6, t1: T.D + 1, width: 0.34, maxWidth: 0.34 },
 ];
@@ -242,7 +242,9 @@ const banners = [
   { general: "rall", region: JE, keys: [[0, TRj[0] + 3.4, TRj[1] - 3.0]], t0: T.colonel - 0.05, t1: T.other - 0.2 },
   { general: "washington", region: JE, keys: [[0, MKj[0] - 6.0, MKj[1] + 3.0]], t0: T.washington - 0.05, t1: T.after - 0.4 },
   { general: "washington", region: JE, keys: [[0, JFj[0] + 3.0, JFj[1] - 4.0], [T.marched + 1.0, JFj[0] + 3.0, JFj[1] - 4.0], [T.split, 616.0, 947.6], [87.0, 619.0, 949.0]], t0: T.washington2 - 0.05, t1: 88.3 },
-  { general: "washington", region: TR, keys: [[0, 1344.2, 2040.0], [T.american, 1344.2, 2040.0], [T.streets, 1350.6, 2048.6]], t0: T.burst - 0.05, t1: T.colonel2 - 0.3 },
+  // v2 r3 fix (critic A R1 / R2): fades in ON screen behind Greene's blocks in the approach shot; at the head of the town it stands by the arrow's start, in frame, and steps out before the pan south
+  { general: "washington", region: TR, keys: [[0, 1333.6, 2031.4]], t0: T.burst - 0.05, t1: 95.4 },
+  { general: "washington", region: TR, keys: [[0, 1350.4, 2050.0]], t0: 95.4, t1: 102.4 },
   { general: "rall", region: TR, keys: [[0, 1360.4, 2060.2], [T.counterattack + 0.1, 1360.4, 2060.2], [T.shot2, 1361.0, 2057.6]], t0: T.colonel2 - 0.05, t1: T.men2 + 2.0, fall: T.shot2 + 0.05 },
   { general: "cornwallis", region: CO, keys: [[0, NYc[0] - 4, NYc[1] - 6]], t0: T.cornwallis - 0.05, t1: T.D + 1 },
 ];
@@ -338,11 +340,12 @@ window.SEQ = {
     K(80.5, JE, [626, 970], 96, 48, -44, "io", 0.85),
     K(CUT2, JE, [630, 974], 90, 49, -40, "lin", 0.85),
     // 5. trenton grey dawn: the picket, Greene down the Pennington road
-    K(CUT2, TR, [1335.0, 2033.6], 16.5, 52, 14, "cut", 0.10, { dissolve: 0.9 }),   // round 5: the ring wood framed out to the right
-    K(95.0, TR, [1337.4, 2038.4], 16.5, 52, 10, "lin", 0.08),
+    K(CUT2, TR, [1335.6, 2031.0], 11.6, 52, 14, "cut", 0.10, { dissolve: 0.9 }),   // v2 r3 fix (critic A R2): ~30 % closer (dist 16.5 -> 11.6), framed on the picket + Greene's blocks
+    K(95.0, TR, [1336.4, 2032.6], 11.6, 52, 10, "lin", 0.08),
     // 6. the head of the town: guns down both streets, the Hessians in the streets
-    K(95.4, TR, [1352.8, 2055.6], 15.5, 58, 8, "cut", 0.06, { dissolve: 0.9 }),   // v2 r3 (critic A #12): pulled out, blocks ~70 px
-    K(108.0, TR, [1355.6, 2059.6], 15, 57, 4, "lin", 0.05),
+    K(95.4, TR, [1352.8, 2054.9], 16.8, 58, 8, "cut", 0.06, { dissolve: 0.9 }),   // v2 r3 (critic A #12): pulled out, blocks ~70 px; r3 fix (A R1): 0.7 u north + the banner 1.6 u south: inside the frame
+    K(102.8, TR, [1353.3, 2055.6], 16.6, 58, 7, "lin", 0.06),
+    K(108.0, TR, [1355.6, 2059.6], 15, 57, 4, "io", 0.05),   // r3 fix (A R3): pans south to Sullivan after the banner steps out
     // 7. Rall, the fields east of the town, the surrender
     K(110.5, TR, [1360.2, 2059.6], 13.5, 56, 0, "io", 0.04),   // v2 r3: 1.2 u west (the ring round the Hessians nearer the frame centre)
     K(118.6, TR, [1362.0, 2057.0], 14, 56, -4, "lin", 0.03),
@@ -400,7 +403,7 @@ window.SEQ = {
     // method card (Jackson recipe): line 1 static in the sub, line 2 types on "hit them where they rest"
     ["letter", 142.5, 150.7, { header: "Move 2 · Trenton", title: "The Washington Method", sub: "1. Save the army first", marks: false, quote: "2. Hit them where they rest", qSize: 34, height: 270,
       cps: 20, qAt: T.hit2 - 0.05, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
-    ["plaque.date", CUT3 + 0.3, { month: "December 1776", day: "", weekday: "", note: "New York" }],
+    ["plaque.date", T.newyork - 0.05, { month: "December 1776", day: "", weekday: "", note: "New York" }],
     // v2 r3 (critic A N6): key + timeline back on the colonies map shot (the key's sub waits for "Cornwallis")
     ["timeline.show", CUT3 + 0.4, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 4.8 }],
     ["legend", T.cornwallis - 0.05, T.D + 1, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Cornwallis", color: "#9C3A35" }] }],

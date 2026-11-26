@@ -14,11 +14,12 @@
    "woods": 0.2,
    "col": "#d2dfec"
   },
-  "ice": 0.6,
+  "ice": 0.1,
   "conifers": 0.55,
   "bare_mix": 0.35,
   "road_col": "#84583f",
-  "snow_col": "#d2d0c2"
+  "snow_col": "#d2d0c2",
+  "floes": 0.08
  },
  "note": "Trenton, 26 Dec 1776 and 2 Jan 1777 (winter): the 1776 town (King St + Queen St converging at the north end where the Pennington and Princeton roads come in; ~100 houses; the Old Barracks), the Assunpink Creek with the stone bridge at the foot of Queen St, Mill Hill south of it, the Delaware, the River road from the NW, the Pennington road from the N, the post road NE; the American line of 2 Jan on the Assunpink's south bank. Zoom-11 frame.",
  "box": [
@@ -65,13 +66,12 @@
  "exag": 3.0,
  "dem_blur": 3.0,
  "cell": 1.8,
- "gm_unit": 0.45,
+ "gm_unit": 0.8,
  "track_k": 0.5,
  "seed": 1226,
- "relief_noise": [
-  2.0,
-  0.6
- ],
+ "road_w_k": 0.4,
+ "carve_reach_u": 2.0,
+ "wl_smooth_u": 1.0,
  "dem_ppu": 8,
  "dem_margin": 6,
  "dem_edits": {
@@ -136,10 +136,13 @@
     "half_u": 4.0
    },
    "look": {
-    "color": "#3d5a6c",
-    "rough": 0.85,
-    "env": 0.1,
-    "ns": 0.06
+    "color": "#344c60",
+    "rough": 0.9,
+    "env": 0.08,
+    "ns": 0.05,
+    "edge": 0.45,
+    "mid": 0.1,
+    "wvar": 0.12
    }
   }
  ],
