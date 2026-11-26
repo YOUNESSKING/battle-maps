@@ -41,16 +41,16 @@ const boats = [
 ];
 
 // ---------------- 27 August (colonies) ----------------
-const RIDGE = [[619.4, 306.4], [627.4, 305.8], [634.0, 302.6]];                     // Heights of Guan: Battle Hill, Flatbush pass, Bedford pass
-const WORKS = [[616.8, 294.2], [624.0, 292.8], [631.2, 291.6]];                     // behind the Brooklyn works
+const RIDGE = [[617.4, 306.6], [627.4, 305.8], [636.4, 302.2]];                     // Heights of Guan: Battle Hill, Flatbush pass, Bedford pass
+const WORKS = [[615.4, 294.4], [624.0, 292.8], [632.6, 291.4]];                     // behind the Brooklyn works
 const units = [];
-RIDGE.forEach((p, i) => units.push({ region: CO, side: "u", type: "inf", n: 1, bw: 0.45, skirmish: false, face: Math.PI / 2, t0: 17.8, t1: CUT_B + 0.2, arrive: false,
+RIDGE.forEach((p, i) => units.push({ region: CO, side: "u", type: "inf", n: 1, bw: 0.56, skirmish: false, face: Math.PI / 2, t0: 17.8, t1: CUT_B + 0.2, arrive: false,
   keys: [[0, ...p], [T.broke + i * 0.25, ...p], [T.broke + 4.6 + i * 0.35, ...WORKS[i]]] }));
 // Grant (Gowanus road) and Heister's Hessians (Flatbush) in front of the ridge: close up on "fell on", halt
-[[617.6, 313.2], [629.0, 312.4]].forEach((p, i) => units.push({ region: CO, side: "r", type: "inf", n: 1, bw: 0.45, skirmish: false, face: -Math.PI / 2, t0: 17.8, t1: CUT_B + 0.2, arrive: false,
-  keys: [[0, ...p], [T.fell + i * 0.3, ...p], [T.line + 0.2 + i * 0.3, p[0], p[1] - 2.4]] }));
+[[617.4, 313.8], [627.4, 313.2]].forEach((p, i) => units.push({ region: CO, side: "r", type: "inf", n: 1, bw: 0.56, skirmish: false, face: -Math.PI / 2, t0: 17.8, t1: CUT_B + 0.2, arrive: false,
+  keys: [[0, ...p], [T.fell + i * 0.3, ...p], [T.line + 0.2 + i * 0.3, p[0], p[1] - 1.0]] }));
 // the flank column comes in behind the American left (from the east) at first light
-units.push({ region: CO, side: "r", type: "inf", n: 1, bw: 0.45, skirmish: false, face: Math.PI, t0: T.unguarded + 0.1, t1: CUT_B + 0.2, arrive: false, keys: [[0, 647.0, 297.6], [T.unguarded + 0.4, 647.0, 297.6], [T.behind, 641.6, 297.6]] });
+units.push({ region: CO, side: "r", type: "inf", n: 1, bw: 0.56, skirmish: false, face: Math.PI, t0: T.unguarded + 0.1, t1: CUT_B + 0.2, arrive: false, keys: [[0, 650.0, 297.0], [T.unguarded + 0.4, 650.0, 297.0], [T.behind, 645.0, 297.0]] });
 const JPASS = P("Jamaica Pass", CO), FLAT = P("Flatlands", CO);
 const arrows = [
   { region: CO, side: "r", pts: [[FLAT[0] + 1, FLAT[1] - 2], [651, 310], [JPASS[0] - 1, JPASS[1] + 2.5], [652, 297.4], [645, 297.6]], t0: T.marched, dur: 3.6, t1: T.line, width: 0.5, maxWidth: 0.5 },
@@ -87,7 +87,7 @@ window.SEQ = {
     { t: CUT_H, ...HAND, ease: "cut", dissolve: 0.9 },
     { t: T.D, ...HAND, ease: "lin" },
   ],
-  clouds: { [CO]: { scatter: { seed: 3 }, keepClear: [[619, 285, 60, 1, 0.9], [604, 350, 60, 1, 0.8], [632, 306, 50, 1, 0.9]] }, [BR]: { shadows: true } },
+  clouds: { [CO]: { scatter: { seed: 3, n: 34, med: 12 }, keepClear: [[619, 292, 22, 1, 0.9], [601, 345, 18, 1, 0.8], [632, 304, 20, 1, 0.9]], extra: [[606, 290, 12, 5.2, 54, 0], [668, 300, 12, 5.0, 50, 0], [640, 276, 13, 5.5, 52, 0]] }, [BR]: { shadows: true } },   // round 2: 3-6 clouds in every wide frame (extra = far-side clouds; near-side ones sit above the frame)
   units, arrows, boats,
   labels: [
     { text: "New York", at: [P("New York", CO)[0] - 2, P("New York", CO)[1] - 3], size: 24, t0: T.york, t1: T.york + 3.6, region: CO },

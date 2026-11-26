@@ -24,7 +24,7 @@ const T = { D: 163.54,
   eight: 88.49, morning2: 89.11, twentysixth: 90.6, burst: 92.07, storm3: 92.79, hessian: 93.71, outposts: 93.99,
   american: 95.59, guns: 95.99, raced: 96.49, top: 97.19, streets: 98.67, fired: 99.33, down: 100.15, them: 100.49, hessians: 101.55, form: 102.43,
   streets2: 103.17, raked: 104.41, cannon2: 104.97, shot: 106.31, houses: 107.23,
-  colonel2: 108.73, rall2: 109.09, counterattack: 109.77, shot2: 110.71, horse2: 111.47, men2: 112.65, driven: 113.15, fields: 114.15, east: 114.53,
+  colonel2: 108.85, rall2: 109.09, counterattack: 109.77, shot2: 110.71, horse2: 111.47, men2: 112.65, driven: 113.15, fields: 114.15, east: 114.53,
   surrounded: 115.87, laid: 117.17, arms: 117.97,
   several: 119.27, away: 120.29, bridge: 121.31, creek: 122.05, south: 122.33, before: 123.43, closed: 124.55, rest: 126.01, trapped: 126.53,
   about: 127.75, ninehundred: 128.21, captured: 129.39, more: 130.47, hundred: 131.05, killed: 131.43, wounded: 132.25, notone: 133.31, american2: 133.83,
@@ -70,8 +70,8 @@ const add = (o) => { units.push({ type: "inf", n: 1, arrive: false, ...o }); ret
 // PA bank: the blocks waiting in a queue behind each landing (facing inland: the men about-face and stream onto the boat)
 LANES.forEach((ds, k) => SCHED[k].forEach((q, j) => {
   const pos = at(ds, -HW - 3.0 - 1.15 * j, 0.25 * j);
-  add({ side: "u", region: CR, face: FP, keys: [[0, ...pos]], t1: q.b + 1.0,
-    escape: { road: [pos, at(ds, -HW - 1.7), at(ds, -HW - 0.15), at(ds, -HW + 0.9), at(ds, -HW + 1.6)], join: "nearest", t0: q.a - 3.4, from: 0, vanish: [0.35, 0.95] } }); }));
+  add({ side: "u", region: CR, face: FN, keys: [[0, ...pos]], t1: q.b + 1.0,
+    escape: { road: [pos, at(ds, -HW - 1.7), at(ds, -HW - 0.15), at(ds, -HW + 0.9), at(ds, -HW + 1.6)], join: "nearest", t0: q.a - 3.4, from: 0, vanish: [0.35, 0.95], front: true } }); }));
 // more men waiting on the PA bank (in the back, framed at the edge): they stay
 [[-2.9, -HW - 6.2], [1.7, -HW - 6.6]].forEach(([ds, d]) => add({ side: "u", region: CR, face: FN, keys: [[0, ...at(ds, d)]] }));
 // NJ bank: the advance guard up the Bear Tavern road; each boatload comes off at Johnson's Ferry and walks up to the assembly ground
@@ -79,11 +79,11 @@ const BT = VX.road(CR, "Bear Tavern road"), BTp = (s) => { const g = VX.along(BT
 add({ side: "u", region: CR, face: Math.atan2(-0.75, 0.66), keys: [[0, ...BTp(6.5)]] });
 const ASM = [[3.2, 1.2], [3.6, -0.6], [5.0, 0.4], [5.4, -1.4], [6.8, -0.4], [7.0, 1.6]];   // [across from the NJ edge, along the bank (downstream +)]
 let asmI = 0;
-LANES.forEach((ds, k) => SCHED[k].forEach((q) => { if (q.c > 68.4) return; const A = ASM[asmI++ % ASM.length], p0 = at(ds + 0.6, HW + 0.7), p1 = at(ds + 0.6, HW + A[0], A[1]);
+LANES.forEach((ds, k) => SCHED[k].forEach((q) => { if (q.c > 68.4) return; const A = ASM[asmI++ % ASM.length], p0 = at(ds + 0.6, HW + 0.7), p1 = at(ds + 0.6, HW + A[0], 0);   // round 2: straight up the bank, along the facing (no crab)
   add({ side: "u", region: CR, face: Math.atan2(p1[1] - p0[1], p1[0] - p0[0]), t0: q.c + 0.3, keys: [[0, ...p0], [q.c + 1.0, ...p0], [q.c + 1.0 + Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) / 0.55, ...p1]], arrive: false }); }));
 // guns: on the flats, then off on the NJ bank one by one
 const FTR = [trip(46.0), trip(55.0)].map((q) => ({ ...q, b: q.b + 1.0, c: q.c + 2.6, d: q.d + 2.6, e: q.e + 2.6 }));
-FTR.forEach((q, j) => { const p0 = at(FLAT + 0.6, HW + 0.8), p1 = at(FLAT + 0.2 - 1.6 * j, HW + 2.6 + 0.9 * j);
+FTR.forEach((q, j) => { const p0 = at(FLAT + 0.6 - 1.4 * j, HW + 0.8), p1 = at(FLAT + 0.6 - 1.4 * j, HW + 3.0);
   add({ side: "u", type: "art", region: CR, face: Math.atan2(p1[1] - p0[1], p1[0] - p0[0]), t0: q.c + 0.4, keys: [[0, ...p0], [q.c + 1.2, ...p0], [q.c + 5.0, ...p1]], arrive: false }); });
 add({ side: "u", type: "art", region: CR, face: FN, keys: [[0, ...at(FLAT - 3.2, HW + 3.4)]], t0: 58.0, arrive: true });   // already over (earlier flats)
 
@@ -102,10 +102,14 @@ const marchU = (path, t0, v, i, face, t1) => units.push({ side: "u", type: "inf"
 // four blocks on the Bear Tavern road from Johnson's Ferry, splitting at Birmingham
 const BTsub = (s0, s1) => VX.sub(BTj, s0, s1);
 const LBT = VX.len(BTj);
-[0, 1, 2, 3].forEach((i) => { const s0 = Math.max(0, LBT - 24 - i * 3.6);
-  const tail = i < 2 ? GREENE : SULL, path = [...BTsub(s0, LBT), ...tail.slice(1)];
-  units.push({ side: "u", type: "inf", n: 1, region: JE, arrive: false, face: 0, t0: T.washington2 - 0.2 + i * 0.25, t1: 88.6,
-    keys: VX.march(path, T.marched - 0.6 + i * 0.5, 2.2) }); });
+// critic round 1: two WIDE line blocks (2 boxes each), well spaced, long side first: Johnson's Ferry -> Birmingham side by side, then each
+// stops, turns in place and walks its own road (Greene east toward the Pennington road, Sullivan south toward the River road)
+const JB0 = [JFj[0] + 3.0, JFj[1] + 1.0], JB1 = [BIRj[0] - 1.0, BIRj[1] - 0.6], dJ = [JB1[0] - JB0[0], JB1[1] - JB0[1]], lJ = Math.hypot(...dJ), pJ = [-dJ[1] / lJ * 7.4, dJ[0] / lJ * 7.4];
+const uJ = [dJ[0] / lJ, dJ[1] / lJ], JBm = [JB0[0] + uJ[0] * 10.6 + uJ[1] * 5.2, JB0[1] + uJ[1] * 10.6 - uJ[0] * 5.2];   // round 2: <= 2 u/s, only the first part of the march (the arrows carry the rest)
+const G2d = [0.87, 0.49], S2d = [0.62, 0.78];
+[[-1, G2d], [1, S2d]].forEach(([sg, dd]) => { const a = [JB0[0] + pJ[0] * sg + uJ[1] * 5.2, JB0[1] + pJ[1] * sg - uJ[0] * 5.2], b = [JBm[0] + pJ[0] * sg, JBm[1] + pJ[1] * sg], end = [b[0] + dd[0] * 6.4, b[1] + dd[1] * 6.4];
+  units.push({ side: "u", type: "inf", n: 1, region: JE, arrive: false, face: Math.atan2(dJ[1], dJ[0]), t0: T.washington2 - 0.2, t1: 88.6,
+    keys: [[0, ...a], [T.marched - 0.3, ...a], [82.6, ...b], [T.split + 0.9, ...b], [87.5, ...end]] }); });
 
 // trenton: grey dawn, 26 Dec
 const HEAD = [1355.9, 2054.5], KING = (y) => [1355.3, y], QUEEN = (y) => [lerp(1356.3, 1356.8, (y - 2054.7) / 15.5), y], FIELD = [1364.3, 2053.2], BR = [1356.3, 2069.3];
@@ -114,9 +118,9 @@ const N = -Math.PI / 2, S_ = Math.PI / 2, E = 0, W = Math.PI;
 // the picket on the Pennington road
 add({ side: "r", region: TR, face: Math.atan2(-0.95, -0.3), bw: 0.45, keys: [[0, 1339.9, 2024.6]], t1: 96.0 });
 // Greene's blocks down the Pennington road, deploying at the head of the town; Sullivan's from the River road into the lower town
-const gPos = [[1352.6, 2050.0], [1350.4, 2052.6], [1358.8, 2050.4]];
-gPos.forEach((p, i) => add({ side: "u", region: TR, face: Math.atan2(0.8, 0.6), t0: 88.0,
-  keys: [[0, 1339.0 + i * 1.6, 2028.4 - i * 0.5], [T.burst + 0.4, 1339.0 + i * 1.6, 2028.4 - i * 0.5], [104.6 + i * 0.6, ...p], [T.D, ...p]] }));
+const gPos = [[1347.8, 2052.4], [1349.6, 2049.4], [1351.8, 2047.0]];
+gPos.forEach((p, i) => { const s0 = [1338.6 + i * 2.1, 2028.6 - i * 0.6];   // round 1: straight down past the WEST side of the ring wood, facing the way they walk
+  add({ side: "u", region: TR, face: Math.atan2(p[1] - s0[1], p[0] - s0[0]), t0: 88.0, keys: [[0, ...s0], [T.burst + 0.4, ...s0], [104.6 + i * 0.6, ...p], [T.D, ...p]] }); });
 const sPos = [[1350.2, 2062.6], [1351.4, 2066.2]];
 sPos.forEach((p, i) => add({ side: "u", region: TR, face: Math.atan2(p[1] - 2056.0 - i * 1.4, p[0] - 1338.5 + i * 1.2), t0: 88.0, keys: [[0, 1338.5 - i * 1.2, 2056.0 + i * 1.4], [T.burst, 1338.5 - i * 1.2, 2056.0 + i * 1.4], [T.hessians + i * 0.5, ...p], [T.D, ...p]] }));
 // Knox's guns race to the head of King and Queen streets
@@ -132,7 +136,7 @@ const rH = [[H1, F1, O1], [H2, F2, O2]].map(([h, f, o], i) => add({ side: "r", r
 // by the Assunpink bridge: one block streams away over the bridge, one is trapped; a blue block closes the bridge from the west
 const KN1 = [1357.1, 2066.4], KN2 = [1355.0, 2065.6];
 const ESCR = [[1357.1, 2066.4], [1356.8, 2068.4], [1357.2, 2072.0], [1357.7, 2073.4], [1358.5, 2075.1], [1360.9, 2077.9], [1363.6, 2080.4], [1366.0, 2083.2]];
-add({ side: "r", region: TR, face: N, bw: 0.55, t0: 118.4, keys: [[0, ...KN1]], escape: { road: ESCR, join: "nearest", t0: T.several + 0.2, from: 0 } });
+add({ side: "r", region: TR, face: S_, bw: 0.55, t0: 118.4, keys: [[0, ...KN1]], escape: { road: ESCR, join: "nearest", t0: T.several + 0.2, from: 0, front: true } });   // round 2: walks front first (no backing)
 add({ side: "r", region: TR, face: Math.atan2(-0.4, -0.9), bw: 0.55, t0: 118.4, keys: [[0, ...KN2]], cap: T.trapped - 0.1 });
 add({ side: "u", region: TR, face: E, t0: 118.4, keys: [[0, 1350.4, 2067.6], [T.before - 2.2, 1350.4, 2067.6], [T.closed + 0.2, 1354.6, 2068.1], [T.D, 1354.6, 2068.1]] });
 
@@ -144,23 +148,23 @@ units.push({ side: "r", type: "inf", n: 1, region: CO, arrive: false, face: Math
 // ---------------- boats ----------------
 const boats = [];
 LANES.forEach((ds, k) => SCHED[k].forEach((q, j) => { const path = bpath(ds, k), L = VX.len(path);
-  boats.push({ region: CR, kind: "durham", n: 1, path, sAt: (t) => sOf(L, [q], t), t0: q.a - 2.5, t1: (j === SCHED[k].length - 1 ? 200 : SCHED[k][j + 1].a - 2.5), size: 0.5, lamp: true, wake: true, wl: 6.85, h: 0.03,
+  boats.push({ region: CR, kind: "durham", n: 1, path, sAt: (t) => sOf(L, [q], t), t0: q.a - 2.5, t1: (j === SCHED[k].length - 1 ? 200 : SCHED[k][j + 1].a - 2.5), size: 0.75, lampK: 0.5, lamp: true, wake: true, wl: 6.85, h: 0.03,
     load: (t) => loaded([q], t) }); }));
 // a few more Durham boats out on the river already (each its own lane, speed and spacing)
 [[-9.0, 36.0, 0.9], [11.6, 30.0, 0.55], [-2.8, 48.8, 0.0]].forEach(([ds, t0, k]) => { const path = bpath(ds, 1), L = VX.len(path), q = trip(t0);
-  boats.push({ region: CR, kind: "durham", n: 1, path, sAt: (t) => sOf(L, [q, trip(t0 + 2 * TC + 7.0)], t), t0: 30, t1: 200, size: 0.5, lamp: true, wake: true, wl: 6.85, h: 0.03,
+  boats.push({ region: CR, kind: "durham", n: 1, path, sAt: (t) => sOf(L, [q, trip(t0 + 2 * TC + 7.0)], t), t0: 30, t1: 200, size: 0.75, lampK: 0.5, lamp: true, wake: true, wl: 6.85, h: 0.03,
     load: (t) => loaded([q, trip(t0 + 2 * TC + 7.0)], t) }); });
 // the ferry flats (guns + horses)
 FTR.forEach((q) => { const path = bpath(FLAT, 0), L = VX.len(path);
-  boats.push({ region: CR, kind: "flat", n: 1, path, sAt: (t) => sOf(L, [q], t), t0: 30, t1: 200, size: 0.45, lamp: true, wake: true, wl: 6.85, h: 0.03, load: (t) => loaded([q], t) }); });
+  boats.push({ region: CR, kind: "flat", n: 1, path, sAt: (t) => sOf(L, [q], t), t0: 30, t1: 200, size: 0.45, lampK: 0.5, lamp: true, wake: true, wl: 6.85, h: 0.03, load: (t) => loaded([q], t) }); });
 
 // ---------------- fx ----------------
 const VO = { size: 0.75, alpha: 0.085, life: 9, muzzle: 5, rate: 3.0, roll: 0.6, height: 2.0 };
 const gShots = [];
 // the guns at the head of the streets fire straight down King and Queen streets: each shot a flash + an impact in the street
-[[99.45, 0, 2061.0], [100.75, 1, 2062.4], [102.05, 0, 2063.4], [104.45, 1, 2061.8], [105.6, 0, 2060.6], [107.0, 1, 2063.0]].forEach(([t, g, y]) => {
+[[99.45, 0, 2061.0], [100.9, 1, 2062.4], [103.55, 0, 2063.4], [107.65, 1, 2061.8], [108.2, 0, 2060.6]].forEach(([t, g, y]) => {
   const at0 = g ? G2 : G1, imp = g ? QUEEN(y) : KING(y);
-  gShots.push({ t, at: at0, dir: [imp[0] - at0[0], imp[1] - at0[1]], impact: imp, delay: 0.35 }); });
+  gShots.push({ t, at: at0, dir: [imp[0] - at0[0], imp[1] - at0[1]], impact: imp, delay: 0.3, ...(t < 100 ? { boom: false } : {}) }); });   // round 2 (critic B N2): no boom on "fired", the rest in word gaps
 const fx = {
   volleys: [
     // the picket fires into the storm as Greene's men burst out of it
@@ -168,10 +172,10 @@ const fx = {
     // Greene's leading block answers
     { region: TR, pts: [[1338.6, 2027.7], [1339.6, 2027.6]], t0: 93.3, t1: 95.2, every: 1.8, opts: { ...VO, dir: [0.3, 0.95], volley: 1.8 } },
     // the Hessians in the streets fire back up the streets
-    { region: TR, pts: [[H1[0] - 0.25, H1[1] - 0.2], [H1[0] + 0.25, H1[1] - 0.2]], t0: 103.5, t1: 104.2, every: 2, opts: { ...VO, dir: [0, -1], volley: 2 } },
-    { region: TR, pts: [[H2[0] - 0.25, H2[1] - 0.2], [H2[0] + 0.25, H2[1] - 0.2]], t0: 103.9, t1: 104.6, every: 2, opts: { ...VO, dir: [0, -1], volley: 2 } },
+    { region: TR, pts: [[H1[0] - 0.25, H1[1] - 0.2], [H1[0] + 0.25, H1[1] - 0.2]], t0: 103.5, t1: 103.9, every: 2, opts: { ...VO, dir: [0, -1], volley: 2 } },
+    { region: TR, pts: [[H2[0] - 0.25, H2[1] - 0.2], [H2[0] + 0.25, H2[1] - 0.2]], t0: 103.6, t1: 103.9, every: 2, opts: { ...VO, dir: [0, -1], volley: 2 } },
     // Sullivan's men fire from the houses into the lower town
-    { region: TR, pts: [[1350.8, 2062.2], [1351.2, 2063.0]], t0: 106.4, t1: 107.4, every: 2, opts: { ...VO, dir: [1, 0], volley: 2 } },
+    { region: TR, pts: [[1350.8, 2062.2], [1351.2, 2063.0]], t0: 107.75, t1: 108.6, every: 2, opts: { ...VO, dir: [1, 0], volley: 2 } },
     // round the orchard: the ring fires once
     { region: TR, pts: [[1362.8, 2051.8], [1364.0, 2051.8]], t0: 116.35, t1: 117.0, every: 2, opts: { ...VO, dir: [0, 1], volley: 2 } },
     { region: TR, pts: [[1367.9, 2053.6], [1367.9, 2054.8]], t0: 116.65, t1: 117.2, every: 2, opts: { ...VO, dir: [-1, 0], volley: 2 } },
@@ -196,8 +200,8 @@ const arrows = [
   { color: "#9aa3ad", region: JE, pts: [[662.0, 1046.0], [667.0, 1041.6], [670.2, 1039.4]], t0: T.downriver - 0.05, dur: 1.4, t1: T.marched - 0.2, width: BLUEW, maxWidth: BLUEW },
   { color: "#9aa3ad", region: JE, pts: [[679.0, 1086.0], [682.4, 1081.0], [685.6, 1076.6]], t0: T.other2 - 0.05, dur: 1.4, t1: T.marched - 0.2, width: BLUEW, maxWidth: BLUEW },
   // the march: the two columns from Birmingham
-  { side: "u", region: JE, pts: [[640.0, 982.0], ...GREENE.slice(2), [668.4, 1012.0], [674.6, 1022.4]], t0: T.split - 0.05, dur: 2.2, t1: 88.6, width: BLUEW, maxWidth: BLUEW },
-  { side: "u", region: JE, pts: [[637.4, 983.0], ...SULL.slice(2), [656.0, 1015.0], [670.0, 1027.0], [673.6, 1031.0]], t0: T.split + 0.3, dur: 2.2, t1: 88.6, width: BLUEW, maxWidth: BLUEW },
+  { side: "u", region: JE, pts: [[620.0, 959.0], [640.0, 973.0], [660.0, 993.0], [668.4, 1012.0], [674.6, 1022.4]], t0: T.split - 0.05, dur: 2.2, t1: 88.6, width: BLUEW, maxWidth: BLUEW },
+  { side: "u", region: JE, pts: [[616.0, 969.0], [624.0, 984.0], [628.0, 993.0], [640.0, 1004.0], [656.0, 1016.0], [670.0, 1027.0], [673.6, 1031.0]], t0: T.split + 0.3, dur: 2.2, t1: 88.6, width: BLUEW, maxWidth: BLUEW },
   // trenton: the guns race to the head of the streets; the counterattack; colonies: Cornwallis races to Trenton
   { side: "u", region: TR, pts: [[1349.8, 2046.8], [1352.6, 2050.0], [1355.4, 2052.4]], t0: T.raced - 0.05, dur: 1.4, t1: T.hessians - 0.3, width: 0.18 },
   { side: "r", region: TR, pts: [[1360.6, 2059.6], [1360.9, 2057.4], [1361.4, 2055.4]], t0: T.counterattack - 0.05, dur: 1.0, t1: T.men2 + 0.4, width: 0.18 },
@@ -214,7 +218,7 @@ const generals = {
 const banners = [
   { general: "rall", region: JE, keys: [[0, TRj[0] + 3.4, TRj[1] - 3.0]], t0: T.colonel - 0.05, t1: T.other - 0.2 },
   { general: "washington", region: JE, keys: [[0, MKj[0] - 6.0, MKj[1] + 3.0]], t0: T.washington - 0.05, t1: T.after - 0.4 },
-  { general: "washington", region: JE, keys: [[0, JFj[0] + 3.0, JFj[1] - 4.0], [T.marched + 1.0, JFj[0] + 3.0, JFj[1] - 4.0], [T.split, 637.0, 976.0], [87.0, 652.0, 985.0]], t0: T.washington2 - 0.05, t1: 88.3 },
+  { general: "washington", region: JE, keys: [[0, JFj[0] + 3.0, JFj[1] - 4.0], [T.marched + 1.0, JFj[0] + 3.0, JFj[1] - 4.0], [T.split, 618.0, 953.0], [87.0, 622.0, 956.0]], t0: T.washington2 - 0.05, t1: 88.3 },
   { general: "washington", region: TR, keys: [[0, 1344.2, 2040.0], [T.american, 1344.2, 2040.0], [T.streets, 1350.6, 2048.6]], t0: T.burst - 0.05, t1: T.colonel2 - 0.3 },
   { general: "rall", region: TR, keys: [[0, 1360.4, 2060.2], [T.counterattack + 0.1, 1360.4, 2060.2], [T.shot2, 1361.0, 2057.6]], t0: T.colonel2 - 0.05, t1: T.men2 + 2.0, fall: T.shot2 + 0.05 },
   { general: "cornwallis", region: CO, keys: [[0, NYc[0] - 4, NYc[1] - 6]], t0: T.cornwallis - 0.05, t1: T.D + 1 },
@@ -236,7 +240,7 @@ const labels = [
 labels[5].t0 = 78.85; labels[5].t1 = 82.0;
 
 // ---------------- storm (from "Around eleven"), Trenton glow, result card, stamp ----------------
-const RAIN = VX.rain([[0, 0], [T.around - 0.1, 0], [T.storm + 0.4, 0.75], [T.sleet, 0.95], [68.3, 0.95], [68.5, 0.85], [87.9, 0.85], [88.1, 0.5], [107.5, 0.45], [127.5, 0.3], [148.9, 0.3], [149.0, 0]],
+const RAIN = VX.rain([[0, 0], [T.around - 0.1, 0], [T.storm + 0.4, 0.75], [T.sleet, 0.95], [68.3, 0.95], [68.5, 0.85], [87.9, 0.85], [88.1, 0.5], [107.5, 0.45], [127.5, 0.3], [150.7, 0.3], [150.8, 0]],
   { slant: 0.55, n: 1100, speed: 1150, veil: "64,72,84" });
 const PU = VX.pulses([{ at: TRj, t0: T.trenton, t1: T.fortifications + 1.6, r: 7, color: [200, 40, 28], period: 1.6, region: JE }]);
 const RCSS = `.aj-res{position:absolute;left:330px;top:170px;width:1260px;height:640px;color:#EEE7D6;text-align:center;font-family:"GM Cormorant",Georgia,serif;
@@ -275,12 +279,12 @@ function stamp(c, text, t0, t1, world, region) {
 const SW = 34.55, DV = VX.diveTimes(SW);   // push 30.75 (on "After dark"), land ~37.9
 const MID = at(0.4, 0.4, 0);
 const K = (t, region, at0, dist, tilt, yaw, ease = "io", night = 0, o = {}) => ({ t, region, at: at0, dist, tilt, yaw, fov: 30, ease, night, ...o });
-const CUT1 = 68.4, CUT2 = 88.0, CUT3 = 149.0;
+const CUT1 = 68.4, CUT2 = 88.0, CUT3 = 150.8;   // round 1: the colonies cut after method card 2 (held to 150.7)
 window.SEQ = {
   grade: { wide: { toe: 14, ct: 1.03, sat: 1.04 } },   // as Jackson (owner 2026-11-23: richer wide overhead maps)
   name: "S05", D: T.D, T, seed: 1776, date: "1776-12-25",
   regions: [JE, CR, TR, CO],
-  regionOpts: { [JE]: { troopScale: 8 }, [CO]: { troopScale: 6 }, [CR]: { decks }, [TR]: { troopScale: 1.6 } },
+  regionOpts: { [JE]: { troopScale: 12 }, [CO]: { troopScale: 6 }, [CR]: { decks }, [TR]: { troopScale: 1.6 } },
   features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })), houseK: 0.35 } },   // houseK as S06; the small wide-map bridge meshes read as crosses from far away
   troops: "blocks", troopsOpts: { look: "lineblocks" },
   keys: [
@@ -294,17 +298,17 @@ window.SEQ = {
     K(29.4, JE, [636, 994], 150, 44, -60, "io", 0.32),
     // (dive keys from push 30.75 to land ~37.9)
     // 3. the crossing at night: the PA bank, the boats, the NJ bank
-    K(41.0, CR, at(-2.4, -3.0, 0), 16, 58, -40, "io", NI),
-    K(52.4, CR, at(-0.8, -0.6, 1.4), 16.5, 58, -46, "lin", NI),
-    K(60.0, CR, at(3.4, 1.4, 1.0), 17, 58, -52, "io", NI),
-    K(CUT1, CR, at(6.6, 3.2, 0.4), 17, 59, -56, "lin", NI),
+    K(41.0, CR, at(-2.4, -3.0, 0), 13.6, 58, -40, "io", NI),
+    K(52.4, CR, at(-0.8, -0.6, 1.4), 14, 58, -46, "lin", NI),
+    K(60.0, CR, at(3.4, 1.4, 1.0), 14.5, 58, -52, "io", NI),
+    K(CUT1, CR, at(6.6, 3.2, 0.4), 14.5, 59, -56, "lin", NI),
     // 4. jersey night storm: the failed crossings, the march, the split
-    K(CUT1, JE, [640, 1030], 175, 46, -60, "cut", 0.8, { dissolve: 0.9 }),
-    K(75.8, JE, [640, 1006], 160, 46, -58, "lin", 0.8),
-    K(80.5, JE, [652, 1004], 135, 48, -44, "io", 0.8),
-    K(CUT2, JE, [658, 1008], 128, 49, -40, "lin", 0.8),
+    K(CUT1, JE, [640, 1030], 175, 46, -60, "cut", 0.6, { dissolve: 0.9 }),
+    K(75.8, JE, [640, 1006], 160, 46, -58, "lin", 0.6),
+    K(80.5, JE, [630, 978], 96, 48, -44, "io", 0.45),
+    K(CUT2, JE, [634, 982], 90, 49, -40, "lin", 0.45),
     // 5. trenton grey dawn: the picket, Greene down the Pennington road
-    K(CUT2, TR, [1340.4, 2028.4], 16.5, 52, 14, "cut", 0.32, { dissolve: 0.9 }),
+    K(CUT2, TR, [1338.4, 2029.0], 16.5, 52, 14, "cut", 0.32, { dissolve: 0.9 }),
     K(95.0, TR, [1342.4, 2031.6], 16.5, 52, 10, "lin", 0.25),
     // 6. the head of the town: guns down both streets, the Hessians in the streets
     K(95.4, TR, [1354.6, 2056.0], 13, 56, 8, "cut", 0.2, { dissolve: 0.9 }),
@@ -323,29 +327,30 @@ window.SEQ = {
     K(156.0, CO, [496, 388], 390, 45, 2, "io", 0),
     K(T.D, CO, [452, 414], 410, 44, 0, "io", 0),
   ],
-  dives: [{ t: SW, over: MKj, overTo: MID,
+  dives: [{ t: SW, over: MKj, overTo: MID, whooshAt: 32.25,   // round 2 (critic B N6): whoosh body in the gap before "main force"
+            off: { warm: 0.05, emerge: 0.1, clear: 0.28, haze: 0.85 },   // round 1 (critic A): shorter flat grey
             from: { region: JE, at: [636, 994], dist: 150, tilt: 44, yaw: -60, night: 0.32 },
             to: { region: CR, at: at(-2.0, -3.4, -0.6), dist: 18, tilt: 57, yaw: -36, fov: 30, night: NI } }],
-  clouds: { [JE]: { scatter: { seed: 7 }, keepClear: [[680, 1020, 60, 1, 0.8], [620, 990, 50, 1, 0.8]] }, [CR]: { shadows: false }, [TR]: { shadows: false },
+  clouds: { [JE]: { scatter: { seed: 7, box: [560, 874, 220, 255], n: 9, med: 40 }, diveClear: 40, keepClear: [[680, 1020, 30, 1, 0.8], [620, 990, 25, 1, 0.8]] }, [CR]: { shadows: false }, [TR]: { shadows: false },
             [CO]: { scatter: { seed: 4 }, keepClear: [[500, 380, 120, 1, 0.8], [360, 480, 110, 1, 0.9]] } },
   units, arrows, banners, boats, fx, generals, labels,
   overlay: [
     ["plaque.date", 0.4, { month: "December 1776", day: "", weekday: "", note: "" }],
     (O, c) => stamp(c, "NO FORTIFICATIONS", T.fortifications - 0.1, T.other - 0.3, [TRj[0] + 1.0, TRj[1] - 8.0], JE),
     ["plaque.date", T.christmas - 0.05, { month: "December 1776", day: "25", weekday: "Wednesday", note: "Christmas night" }],
-    ["plaque.note", T.dark + 0.3, "after dark"],
+    ["plaque.date", T.dark + 0.3, { month: "December 1776", day: "25", weekday: "Wednesday", note: "after dark" }],
     ["label", T.durham - 0.05, T.iron + 1.2, { name: "Durham boats", sub: "built to carry iron ore", world: (t) => { const B = boats[0], p = VX.along(B.path, B.sAt(t)); return [p[0], p[1], 0.6]; }, side: "us", marker: false }],
-    ["label", T.marblehead - 0.05, T.brooklyn + 0.9, { name: "Glover's Marblehead men", sub: "at the oars", world: (t) => { const B = boats[2], p = VX.along(B.path, B.sAt(t)); return [p[0], p[1], 0.6]; }, side: "us", marker: false }],
+    ["label", 50.5, T.brooklyn + 0.9, { name: "The Marblehead men", sub: "who saved the army at Brooklyn", world: (t) => { const B = boats[2], p = VX.along(B.path, B.sAt(t)); return [p[0], p[1], 0.6]; }, side: "us", marker: false }],
     ["plaque.clock", T.around - 0.05, { time: "23:00", note: "the storm breaks", header: "25 December 1776" }],
     ["plaque.clock", T.three2 - 0.05, { time: "3:00", note: "the last guns across", header: "Christmas night" }],
     ["number", T.eighteen - 0.05, CUT1 - 0.2, { value: 18, from: 18, round: 1, suffix: " GUNS", world: at(FLAT - 2.0, HW + 4.6), size: 90 }],
-    ["plaque.note", T.schedule - 0.2, "hours behind schedule"],
+    ["plaque.date", T.schedule - 0.2, { month: "December 1776", day: "26", weekday: "Thursday", note: "hours behind schedule" }],
     ["distance", T.nine2 - 0.05, T.crossroads - 0.3, { from: [JFj[0] + 1.0, JFj[1] + 1.0], to: [TRj[0] - 1.0, TRj[1] - 1.0], value: 9, countFrom: 9, unit: "MILES", sub: "to Trenton", dash: false }],
     ["plaque.clock", T.eight - 0.05, { time: "8:00", note: "the storm still blowing", header: "26 December 1776" }],
     ["plaque.date", T.twentysixth - 0.05, { month: "December 1776", day: "26", weekday: "Thursday", note: "Trenton" }],
     ["film.dim", T.about - 0.5, 141.8, 0.8],
     // method card (Jackson recipe): line 1 static in the sub, line 2 types on "hit them where they rest"
-    ["letter", 142.4, 148.95, { header: "Move 2 · Trenton", title: "The Washington Method", sub: "1. Save the army first", marks: false, quote: "2. Hit them where they rest", qSize: 34, height: 270,
+    ["letter", 142.4, 150.7, { header: "Move 2 · Trenton", title: "The Washington Method", sub: "1. Save the army first", marks: false, quote: "2. Hit them where they rest", qSize: 34, height: 270,
       cps: 20, qAt: T.hit2 - 0.05, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
     ["plaque.date", CUT3 + 0.3, { month: "December 1776", day: "", weekday: "", note: "New York" }],
   ],

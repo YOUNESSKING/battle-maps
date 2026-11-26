@@ -26,3 +26,17 @@ leaving, the orchard, Mercer, Washington at ~30 yards, Nassau Hall ~194 surrende
 - Jersey dawn (34-45): a sliver of the world edge shows in the top-right corner; Mawhood's red block on the post road is small at that distance.
 - Nassau Hall shot: the British block reads small among the village houses.
 - `check_troops_motion` trenton 0-126.7: turn spikes only at the camera cuts; red dawn about-face front-vs-velocity 21-25 deg; princeton 45.5-83.5: on-screen correction 27-34 deg on the oblique withdrawals, no overlaps; `check_side_gap` princeton 45.5-105: 0 / 0.
+
+## Round 1 fixes (critics A 5.8 / B 7.3)
+- Night march: no column. ONE wide line block (2 boxes) out of Trenton east on the Sandtown road (stop -> turn -> walk, <= 2 u/s), then after the dawn dissolve the same wide block up the Saw Mill road; arrows rebuilt along the visible legs. Jersey check 16-46: 0 overlaps, no slides (only the cut spike + Mawhood 37 deg fixed by facing along his road).
+- Jersey cameras moved SW / closer: no world-edge wedge at 18-45 (checked 18, 25, 28.5, 33, 37, 40, 42.5, 44.5). Mawhood's column now starts further down the post road (in frame).
+- Princeton: British withdraw and militia advance straight along their facing (no lateral shift, militia `arrive: false`); side gap 0/0.
+- Nassau Hall guns off words (84.15, 90.4), grey at 90.55; Cornwallis arrow width 0.5; method card from 119.3; plate at t 0 = S06's last ("2 Thursday night"); `plaque.note` -> `plaque.date` notes (hard frost, Princeton, dawn at the creek, guns heard from Princeton).
+- British leaving Trenton at dawn walk straight north (along their facing axis).
+
+## Round 2 fixes (critics A 7.0 / B 7.9)
+- Nassau Hall gun 84.15 -> 87.0 (in the gap "town," -> "surrendered", on screen); 90.4 kept. The gun is half size (bw 0.24, bd 0.2).
+- Washington's banner in the first trenton shot from 2.1 (not under the choice card).
+- Princeton blocks: wider and shallower (bw x1.5, bd 0.2 = thin lines, same men); side gap 0/0.
+- Mawhood's block now starts AT Princeton and walks SW down the post road (n 1); arrow moved with it.
+- Remaining checker items: Princeton 27-29 deg and the dawn withdrawal at Trenton 27-32 deg = on-screen correction (screen <= 13 deg).

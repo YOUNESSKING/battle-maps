@@ -1009,16 +1009,18 @@ def bake(rname, G, P, creeks, preview=True):
     # ---------------- woods ----------------
     LOG("  woods ...")
     wd = cfg.get("woods", 0.0); LOG("  alluvial %.3f creeks %d" % (float(alluv.mean()), len(creek_lines)))
-    fm = fbm(TH, TW, 6, 5, seed + 2)
-    fm2 = fbm(TH, TW, 3, int(bw / (14 if not close else 1.6)), seed + 12)
+    ws_ = cfg.get("wood_scale", 1.0) if PROJ else 1.0   # project mode: >1 = smaller, more numerous woods (wide maps of small boxes)
+    fm = fbm(TH, TW, 6, int(round(5 * ws_)), seed + 2)
+    fm2 = fbm(TH, TW, 3, int(bw / (14 if not close else 1.6) * ws_), seed + 12)
     swamp = alluv * np.clip((dist_t - hw_t - (3.0 if close else 7.0)) / (4.0 if close else 10.0), 0, 1) * cfg.get("swamp", 0.1) * np.clip(cv2.resize(fbm(TH // 8, TW // 8, 3, int(bw / (6 if close else 40)), seed + 95), (TW, TH)) * 2.2 - 0.5, 0, 1.4)   # back-swamp woods away from the rivers, in patches
     if close:
         jag = cv2.resize(fbm(TH // 4, TW // 4, 3, int(bw / 0.7), seed + 60), (TW, TH))
         fbase = np.maximum(fm * 0.7 + fm2 * 0.3 + near * 0.12 + slope * cfg.get("ravine_woods", 0.5) - 0.72, fm2 * 0.85 + fm * 0.2 - 0.69) + (jag - 0.5) * 0.16 + wd + swamp
         del jag
     else:
-        fm3 = fbm(TH, TW, 4, int(bw / 18), seed + 13)
-        fbase = np.maximum(fm * 0.7 + fm2 * 0.3 + near * 0.12 + slope * 0.3 - WT[0], fm3 * 0.55 + fm * 0.45 - WT[1]) + wd + swamp
+        fm3 = fbm(TH, TW, 4, int(bw / 18 * ws_), seed + 13)
+        nk_, sk_ = (cfg.get("wide_near_k", 0.12), cfg.get("wide_slope_k", 0.3)) if PROJ else (0.12, 0.3)   # project: woods biased to river valleys / steep ground
+        fbase = np.maximum(fm * 0.7 + fm2 * 0.3 + near * nk_ + slope * sk_ - WT[0], fm3 * 0.55 + fm * 0.45 - WT[1]) + wd + swamp
         del fm3
     forest = np.clip(fbase * 12, 0, 1); del fbase, fm2, swamp
     MARSH = None
@@ -1036,7 +1038,7 @@ def bake(rname, G, P, creeks, preview=True):
         ws = cfg["wood_soft"]; forest_paint = cv2.GaussianBlur(forest, (0, 0), ws.get("blur_u", 1.5) * s) * ws.get("alpha", 0.5)
     else: forest_paint = forest
     LOG("  forest cover %.3f" % float((forest > 0.5).mean()))
-    crown = fbm(TH, TW, 2, int(bw / (0.6 if not close else 0.09)), seed + 3)
+    crown = fbm(TH, TW, 2, int(bw / ((cfg.get("crown_u", 0.6) if PROJ else 0.6) if not close else 0.09)), seed + 3)   # project: crown_u = canopy speckle size (units) on wide maps
     fdark = cv2.GaussianBlur(forest, (0, 0), 0.004 * TW)
     fcol = (hexc("#2e4645") if close else hexc("#192e32"))[None, None] * (0.78 + 0.44 * crown[..., None]) * (1.08 - 0.16 * fdark[..., None])
     if WINTER: fcol = winter_woods(fcol, crown, close, TW, TH, bw, seed)
@@ -1138,10 +1140,11 @@ def bake(rname, G, P, creeks, preview=True):
         lam = (-dx * sun[0] + sun[1] - dz * sun[2]) / np.sqrt(dx * dx + 1 + dz * dz)
         shade += wgt * (np.clip(lam, 0, 1) / sun[1] - 1); del hb, dz, dx, lam
     if not close:
-        k = 0.9; img *= (1 + k * (shade - 1))[..., None]
+        k = cfg.get("relief_k", 0.9) if PROJ else 0.9; img *= (1 + k * (shade - 1))[..., None]
         vt = np.clip(1 - (dist_t - hw_t - 6.0) / 18.0, 0, 1)
         lit = np.clip((shade - 1.02) * 3.0, 0, 1)[..., None] * (1 - 0.8 * forest[..., None]) * (0.25 + 0.75 * vt[..., None])
-        img = img * (1 - 0.85 * lit) + hexc(WINTER.get("lit_col", "#c4c5bc") if WINTER else "#bcbe8a") * 1.12 * 0.85 * lit; del lit, vt   # winter: frost-pale (not yellow) sunlit slopes
+        lk_ = cfg.get("lit_k", 0.85) if PROJ else 0.85
+        img = img * (1 - lk_ * lit) + hexc(WINTER.get("lit_col", "#c4c5bc") if WINTER else "#bcbe8a") * 1.12 * lk_ * lit; del lit, vt   # winter: frost-pale (not yellow) sunlit slopes
         img *= np.array([0.9, 0.95, 0.98], np.float32)
     else: img *= (1 + 0.5 * (shade - 1))[..., None]
     del shade, ht
@@ -1274,6 +1277,7 @@ def bake(rname, G, P, creeks, preview=True):
              railroads=[dict(name=nm, pts=[[round(float(a), 3), round(float(b), 3)] for a, b in rd[::3]]) for rd, nm in RAILS],
              trees=trees, houses=houses, towns=towns_out, places=places, features=feat)
     if PROJ: D["frame"] = PROJ.frame_info(CUR_ZOOM, list(box)); D["exag_cfg"] = cfg.get("exag", 6.0 if close else 14.0)
+    if PROJ and cfg.get("wideSunK") is not None: D["wideSunK"] = cfg["wideSunK"]
     if WINTER: D["season"] = "winter"; D["winter"] = {k: v for k, v in WINTER.items() if k in ("ice", "floes", "trees")}   # engine: bare woods, ice on the rivers
     # compatibility with the clip's world.js (single bridge / pontoons / breastworks)
     rb = [b for b in feat["bridges"] if b.get("burn")] or [b for b in feat["bridges"] if b["kind"] == "rail"]
@@ -1297,8 +1301,8 @@ WINTER = None   # set per region by bake() from cfg "season": "winter" (+ option
 def winter_woods(fcol, crown, close, TW, TH, bw, seed):
     """bare deciduous woods: the same dark speckled canopy mass, but a dark grey-brown twig colour (low chroma) with scattered conifer
     (cedar / pine) clumps that keep the teal"""
-    bare = hexc("#433d37" if close else "#4b4641")[None, None] * (0.86 + 0.28 * crown[..., None])   # wide: the crossing / trenton winter-wood tone as rendered (not near-black)
-    con = np.clip((cv2.resize(fbm(TH // 8, TW // 8, 3, int(bw / (1.2 if close else 10)), seed + 501), (TW, TH)) - 0.62) * 6, 0, 1)[..., None]
+    bare = hexc("#433d37" if close else WINTER.get("wood_col", "#34403f"))[None, None] * ((0.86 + 0.28 * crown[..., None]) if close else (0.74 + 0.52 * crown[..., None]))   # wide: the Jackson canopy speckle contrast   # wide: dark teal-grey (critic A r1: Jackson-like wood mass)
+    con = np.clip((cv2.resize(fbm(TH // 8, TW // 8, 3, int(bw / (1.2 if close else 10)), seed + 501), (TW, TH)) - (0.62 if close else 0.62 - 0.6 * (WINTER.get("conifers_wide", 0.4) - 0.16))) * 6, 0, 1)[..., None]
     return bare * (1 - con) + fcol * con
 
 

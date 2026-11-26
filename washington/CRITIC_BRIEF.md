@@ -5,7 +5,7 @@ longer improving). Be concrete and severe; every finding names the scene, the ti
 exact fix (seq.js value / engine change). Rank by how much it hurts a viewer. Do NOT render, do NOT commit, do NOT edit seq.js (report only).
 
 Inputs
-- The assembled film with sound: `/tmp/wx_build/washington_round<N>_720.mp4` (14:20 approx). Per-scene silent renders: `/tmp/wx_render/S01.mp4` ... `S08.mp4` (round 2+)
+- The assembled film with sound: `/tmp/wx_build/washington_round<N>_720.mp4` (14:20 approx). Per-scene silent renders: `/tmp/wx_render2/S01.mp4` ... `S08.mp4` (round 2+)
   (1280x720). Scene start times in the film: `washington/audio/scenes.json` (A = film start of each scene; the last 0.6 s of a scene dissolves into the next).
 - Extract frames with ffmpeg into `/tmp/wx_critic_<you>/` (every 2 s for the overview; 5 fps for troop-motion windows; 2.5x crops of sectors).
 - Narration word times: `python3 washington/tools/scene_times.py SNN --words`; script + shot tags `washington/script.md`; direction `washington/SCENES.md`;
@@ -26,3 +26,9 @@ has a visible flash and vice versa, levels (voice clear, music quiet), no sound 
 
 Write `washington/critics/round<N>_<A|B>.md`: a score 1-10 per scene and overall (10 = GM polish), "fit to publish?" yes/no, then the findings
 table (scene | local t | film t | problem | fix | severity 1-3), then the top 10 fixes. Keep it under ~250 lines. Report the scores + top 5 in <= 200 words.
+
+## Extra references (owner 2026-11-26, relayed): compare against ALL THREE
+1. **Jackson v4** (the reference film): `washington/critics/jackson_ref/` + `ajackson/critics/`.
+2. **The owner-approved 3D tests**, frame by frame and sector by sector: `research/style_tests/gm3d/clip/gm3d_clip_v6_share.mp4` (the chosen clouds + opening) and `gm3d_clip_v8_share.mp4` (the approved look) + their `README.md`; the troop tests `vicksburg/troops_test_v13_share.mp4` / `troops_test_v14_share.mp4` (the approved line blocks, owner "Great") + `vicksburg/critics/troops_v2_notes.md`.
+3. **Grand Maneuver** (the channel we copy): `research/competitors_top20/grand_maneuver/GM_STUDY.md`, `gm_criticA.md`, `gm_criticB.md`. The owner's Gofile with GM frames (0clSF4KK) had expired on 2026-11-26 ("content not found"), so GM is judged from the study files. Never bypass YouTube's bot check; never commit GM frames (sheets with GM frames stay in /tmp).
+The drift sheet `washington/critics/drift_round<N>.jpg` has 3 columns: this film | Jackson v4 | the approved tests. Critic A scores the film against all three; any visible gap is a defect to fix (the winter ground is the one allowed difference).

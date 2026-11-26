@@ -34,14 +34,14 @@ const held = { build() { const c = document.createElement("canvas"); c.width = 1
 
 // ---------------- units ----------------
 const units = [];
-const walk = (side, a, b, t0, t1, o = {}) => units.push({ region: CO, side, type: "inf", n: 1, bw: 1.7, skirmish: false, arrive: false, face: Math.atan2(b[1] - a[1], b[0] - a[0]),
+const walk = (side, a, b, t0, t1, o = {}) => units.push({ region: CO, side, type: "inf", n: 1, bw: 1.6, skirmish: false, arrive: false, face: Math.atan2(b[1] - a[1], b[0] - a[0]),
   keys: [[0, ...a], [t0, ...a], [t1, ...b]], ...o });
 // the blue army north into the hills (Pluckemin -> Morristown)
 const B0 = lerp2(PLU, MOR, 0.5), B1 = lerp2(PLU, MOR, 0.9);
 walk("u", B0, B1, 0.2, 9.4);
 // the red posts pull back east to New Brunswick, Perth Amboy and Paulus Hook (front first)
-walk("r", lerp2(KIN, [NB[0] - 5, NB[1] + 8], 0.45), [NB[0] - 5, NB[1] + 8], T.pulled - 0.4, 15.6);
-walk("r", lerp2(SOM, [NB[0] - 2, NB[1] - 8], 0.3), [NB[0] - 2, NB[1] - 8], T.pulled - 0.1, 15.0);
+walk("r", lerp2(KIN, [NB[0] - 14, NB[1] + 10], 0.45), [NB[0] - 14, NB[1] + 10], T.pulled - 0.4, 15.6);
+walk("r", lerp2(SOM, [NB[0] + 4, NB[1] - 12], 0.3), [NB[0] + 4, NB[1] - 12], T.pulled - 0.1, 15.0);
 walk("r", lerp2(ETC, [PA[0] - 8, PA[1] - 7], 0.55), [PA[0] - 8, PA[1] - 7], T.pulled + 0.2, 15.4);
 walk("r", NEW, [PH[0] - 8, PH[1] + 2], T.pulled + 0.5, 14.8);
 
@@ -60,7 +60,7 @@ window.SEQ = {
     { t: T.D, region: CO, at: [494, 366], dist: 580, tilt: 30, yaw: 3, fov: 30, ease: "lin" },          // the living map alone for the end screen
   ],
   features: { [CO]: { bridges: Array.from({ length: 60 }, () => ({ hidden: true })) } },
-  clouds: { [CO]: { scatter: { seed: 7 }, keepClear: [[460, 350, 190, 1, 1]] } },
+  clouds: { [CO]: { scatter: { seed: 7, n: 10, med: 18 }, keepClear: [[452, 300, 60, 1, 0.9], [470, 390, 60, 1, 0.9], [560, 430, 90, 1, 1]] } },   // round 1: Jackson-like scatter, lower right kept clear for the end-screen tiles
   units,
   arrows: [
     { side: "u", region: CO, width: 0.5, maxWidth: 0.5, pts: [[PRI[0] + 4, PRI[1] - 8], [PLU[0] - 2, PLU[1] + 20], lerp2(PLU, MOR, 0.35), [MOR[0] - 3, MOR[1] + 7]], t0: T.washington, dur: 2.6, t1: 9.4 },
@@ -68,7 +68,7 @@ window.SEQ = {
   generals: { washington: { img: "seq/washington.png", flag: "seq/grand_union_flag.png", side: "us", name: "Washington", full: "George Washington", role: "General" } },
   banners: [{ general: "washington", region: CO, keys: [[0, B0[0] + 7, B0[1] + 2], [0.4, B0[0] + 7, B0[1] + 2], [9.4, B1[0] + 7, B1[1] + 2]], t0: T.washington - 0.05, t1: 22.0 }],
   labels: [
-    { text: "Morristown", at: [MOR[0] + 16, MOR[1] + 6], size: 24, t0: T.morristown, t1: T.morristown + 3.6, region: CO },
+    { text: "Morristown", at: [MOR[0] + 26, MOR[1] + 8], size: 24, t0: T.morristown, t1: T.morristown + 3.6, region: CO },
     { text: "New Jersey", at: [430, 420], size: 26, t0: T.jersey, t1: T.jersey + 3.4, region: CO },
   ],
   fx: {},
@@ -84,7 +84,7 @@ window.SEQ = {
     ["plaque.hide", T.not + 0.7],
     ["engage.final", { moves: [["BROOKLYN", "29-30 AUGUST 1776"], ["TRENTON", "26 DECEMBER 1776"], ["PRINCETON", "3 JANUARY 1777"]], q: "WHICH WAS HIS GREATEST MOVE?", sub: "",
       tShow: T.which - 0.1, tNums: [T.one, T.two, T.three2], tAsk: T.princeton + 0.5, extra: "Tell us in the comments, and which commander we should cover next", tExtra: T.tell,
-      until: T.subscribe - 0.2, tSub: T.subscribe - 1.25, subUntil: T.one2 + 0.5 }],
+      until: T.subscribe - 0.2, tSub: T.subscribe - 0.1, subUntil: T.one2 + 0.5 }],
   ],
   start: {}, end: { fadeAt: T.D - 1.5, dur: 1.5 },
   build: (ctx) => { held.build(ctx); },

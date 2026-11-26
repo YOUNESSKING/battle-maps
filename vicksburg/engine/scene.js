@@ -83,7 +83,8 @@ for (const n of NAMES) {
   if (isWide(n)) {
     const DF = DIVES.filter((d) => d.from.region === n);
     const keep = (C.keepClear || []).map((q) => [q[0], q[1], q[2], q[3] ?? 1, q[4] ?? 1]);
-    const offWide = (x, z, r) => DF.some((d) => Math.hypot(x - d.over[0], (z - (d.over[1] + 6)) * 1.15) < 118 + 0.5 * r) || keep.some(([cx, cz, R, ky, rk]) => Math.hypot(x - cx, (z - cz) * ky) < R + rk * r);
+    const DC = C.diveClear ?? 118;   // opt-in (Battle 21): radius kept clear round each dive target (118 = the v8 value; small wide boxes need ~30-50)
+    const offWide = (x, z, r) => DF.some((d) => Math.hypot(x - d.over[0], (z - (d.over[1] + 6)) * 1.15) < DC + 0.5 * r) || keep.some(([cx, cz, R, ky, rk]) => Math.hypot(x - cx, (z - cz) * ky) < R + rk * r);
     // fair-weather cumulus: Poisson clusters of 2-5 clouds (a big parent + children), log-normal radii, clear sky between (v6)
     const sc = { box: [box[0] + 50, box[1] - 30, box[2] - 140, box[3]], med: 30, tries: 600, seed: 0, ...(C.scatter || {}) };
     if (sc.n == null) sc.n = Math.round(14 * (sc.box[2] * sc.box[3]) / (860 * 640));
@@ -313,8 +314,9 @@ const placeBoats = (t) => { for (const o of BOATS) { const b = boatAt(o, t); o.g
   if (o.B.load) { const cg = o.g.getObjectByName("cargo"); if (cg) cg.visible = !!o.B.load(t, o.i); } } };
 for (const r of NAMES) { const L = BOATS.filter((o) => o.r === r); if (!L.length) continue;
   FX[r].custom((t, push) => { for (const o of L) { const b = boatAt(o, t), s = o.sz; if (!b.on) continue; const l = Math.hypot(b.dx, b.dy) || 1, dx = b.dx / l, dy = b.dy / l;
-    if (o.B.lamp !== false) { push(b.x + dx * 0.5 * s, b.h + 0.6 * s, b.y + dy * 0.5 * s, 1.5 * s, 0.9, 1.3, 0.62, 0.22);   // deck lamp
-      push(b.x - dx * 0.2 * s, b.h + 0.5 * s, b.y - dy * 0.2 * s, 4.2 * s, 0.26, 1.0, 0.45, 0.15); }   // its glow on the deck and water
+    if (o.B.lamp !== false) { const lk = o.B.lampK ?? 1;   // (Battle 21) lampK scales the lamp + glow size
+      push(b.x + dx * 0.5 * s, b.h + 0.6 * s, b.y + dy * 0.5 * s, 1.5 * s * lk, 0.9, 1.3, 0.62, 0.22);   // deck lamp
+      push(b.x - dx * 0.2 * s, b.h + 0.5 * s, b.y - dy * 0.2 * s, 4.2 * s * lk, 0.26, 1.0, 0.45, 0.15); }   // its glow on the deck and water
     if (o.B.wake !== false && (typeof o.B.wake !== "function" || o.B.wake(t, o.i))) for (let k = 1; k <= 8; k++) {   /* Battle 21: wake(t, i) = only while under way */ const d = (1.0 + k * 0.7) * s, sw = (0.15 + k * 0.12) * s, a = 0.45 * (1 - k / 9);   // the wake: two arms of foam behind the stern
       for (const sg of [-1, 1]) push(b.x - dx * d - dy * sg * sw, b.h - 0.1 * s, b.y - dy * d + dx * sg * sw, (0.9 + k * 0.12) * s, a, 0.5, 0.58, 0.68); } } }); }
 

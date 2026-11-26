@@ -1,0 +1,287 @@
+{
+ "scene": "S02",
+ "region": "brooklyn",
+ "window": [
+  0,
+  44.743
+ ],
+ "shareOffset": 73.379,
+ "filmStart": 73.379,
+ "render": [
+  1920,
+  1080
+ ],
+ "camDistUnits": "world units (the close shot is ~13-20 units from the ground)",
+ "events": [
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.35,
+   "t": 35.1,
+   "tExcerpt": 35.1,
+   "tShare": 108.48,
+   "tFilm": 108.48,
+   "at": {
+    "map": [
+     2490,
+     1179.98
+    ],
+    "px": [
+     -4876,
+     -1583
+    ],
+    "nx": -2.539,
+    "ny": -1.466,
+    "onScreen": false,
+    "camDist": 2024.37
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.15,
+   "t": 35.2,
+   "tExcerpt": 35.2,
+   "tShare": 108.58,
+   "tFilm": 108.58,
+   "at": {
+    "map": [
+     2499.6,
+     1178.6
+    ],
+    "px": [
+     -4912,
+     -1583
+    ],
+    "nx": -2.558,
+    "ny": -1.465,
+    "onScreen": false,
+    "camDist": 2032.77
+   },
+   "unit": {
+    "unit": 1,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.22,
+   "t": 35.6,
+   "tExcerpt": 35.6,
+   "tShare": 108.98,
+   "tFilm": 108.98,
+   "at": {
+    "map": [
+     2508.8,
+     1173.59
+    ],
+    "px": [
+     -4967,
+     -1580
+    ],
+    "nx": -2.587,
+    "ny": -1.463,
+    "onScreen": false,
+    "camDist": 2039.76
+   },
+   "unit": {
+    "unit": 2,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_appears",
+   "t": 37.1,
+   "tExcerpt": 37.1,
+   "tShare": 110.48,
+   "tFilm": 110.48,
+   "at": {
+    "map": [
+     2489.48,
+     1173.37
+    ],
+    "px": [
+     -4863,
+     -1557
+    ],
+    "nx": -2.533,
+    "ny": -1.442,
+    "onScreen": false,
+    "camDist": 2023.7
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_appears",
+   "t": 37.1,
+   "tExcerpt": 37.1,
+   "tShare": 110.48,
+   "tFilm": 110.48,
+   "at": {
+    "map": [
+     2499.27,
+     1172.48
+    ],
+    "px": [
+     -4899,
+     -1558
+    ],
+    "nx": -2.552,
+    "ny": -1.442,
+    "onScreen": false,
+    "camDist": 2032.35
+   },
+   "unit": {
+    "unit": 1,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_appears",
+   "t": 37.1,
+   "tExcerpt": 37.1,
+   "tShare": 110.48,
+   "tFilm": 110.48,
+   "at": {
+    "map": [
+     2508.58,
+     1168.59
+    ],
+    "px": [
+     -4959,
+     -1560
+    ],
+    "nx": -2.583,
+    "ny": -1.445,
+    "onScreen": false,
+    "camDist": 2039.42
+   },
+   "unit": {
+    "unit": 2,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_stop",
+   "duration": 6.9,
+   "t": 42,
+   "tExcerpt": 42,
+   "tShare": 115.38,
+   "tFilm": 115.38,
+   "at": {
+    "map": [
+     2488.6,
+     1162
+    ],
+    "px": [
+     562,
+     371
+    ],
+    "nx": 0.293,
+    "ny": 0.343,
+    "onScreen": true,
+    "camDist": 67.58
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_stop",
+   "duration": 7.1,
+   "t": 42.3,
+   "tExcerpt": 42.3,
+   "tShare": 115.68,
+   "tFilm": 115.68,
+   "at": {
+    "map": [
+     2498.6,
+     1160.2
+    ],
+    "px": [
+     759,
+     346
+    ],
+    "nx": 0.396,
+    "ny": 0.321,
+    "onScreen": true,
+    "camDist": 70.03
+   },
+   "unit": {
+    "unit": 1,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_stop",
+   "duration": 7,
+   "t": 42.6,
+   "tExcerpt": 42.6,
+   "tShare": 115.98,
+   "tFilm": 115.98,
+   "at": {
+    "map": [
+     2508,
+     1155.4
+    ],
+    "px": [
+     922,
+     282
+    ],
+    "nx": 0.48,
+    "ny": 0.262,
+    "onScreen": true,
+    "camDist": 75.57
+   },
+   "unit": {
+    "unit": 2,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  }
+ ]
+}

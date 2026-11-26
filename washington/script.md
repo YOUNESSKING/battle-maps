@@ -31,7 +31,7 @@ And a week after Trenton, it was trapped again, with a British army in front and
 A week before Christmas, its general had written to his brother: I think the game is pretty near up.
 
 [S01 | NAME SLAM: GEORGE WASHINGTON (gold 3D title on its words), the banner portrait revealed; then 3 snap cuts, each on its words: the East River at night with boats shuttling, the Delaware in the storm, the orchard at Princeton with smoke]
-His name was George Washington. He would steal his army out of a trap in a single night. He would cross a frozen river in a storm and fall on Trenton at dawn. And he would slip away from a British army in the dark, and strike behind it. These are George Washington's three greatest tactical moves.
+His name was George Washington. He would steal his army out of a trap in a single night. He would cross an icy river in a storm and fall on Trenton at dawn. And he would slip away from a British army in the dark, and strike behind it. These are George Washington's three greatest tactical moves.
 
 ## S02 BACKGROUND: NEW YORK, 1776 (~1:05 - ~1:45)
 

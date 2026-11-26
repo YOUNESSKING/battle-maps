@@ -1,0 +1,406 @@
+{
+ "scene": "S05",
+ "region": "jersey",
+ "window": [
+  0,
+  163.539
+ ],
+ "shareOffset": 336.487,
+ "filmStart": 336.487,
+ "render": [
+  1920,
+  1080
+ ],
+ "camDistUnits": "world units (the close shot is ~13-20 units from the ground)",
+ "events": [
+  {
+   "type": "unit_appears",
+   "t": 74.39,
+   "tExcerpt": 74.39,
+   "tShare": 410.88,
+   "tFilm": 410.88,
+   "at": {
+    "map": [
+     610.05,
+     947.62
+    ],
+    "px": [
+     85,
+     316
+    ],
+    "nx": 0.044,
+    "ny": 0.292,
+    "onScreen": true,
+    "camDist": 181.67
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_appears",
+   "t": 74.39,
+   "tExcerpt": 74.39,
+   "tShare": 410.88,
+   "tFilm": 410.88,
+   "at": {
+    "map": [
+     602.05,
+     960.07
+    ],
+    "px": [
+     108,
+     397
+    ],
+    "nx": 0.056,
+    "ny": 0.368,
+    "onScreen": true,
+    "camDist": 170.91
+   },
+   "unit": {
+    "unit": 4,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_leaves",
+   "t": 76.4,
+   "tExcerpt": 76.4,
+   "tShare": 412.89,
+   "tFilm": 412.89,
+   "at": {
+    "map": [
+     679.4,
+     1028.3
+    ],
+    "px": [
+     962,
+     247
+    ],
+    "nx": 0.501,
+    "ny": 0.228,
+    "onScreen": true,
+    "camDist": 177.36
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.21,
+   "t": 77.1,
+   "tExcerpt": 77.1,
+   "tShare": 413.59,
+   "tFilm": 413.59,
+   "at": {
+    "map": [
+     610.06,
+     947.62
+    ],
+    "px": [
+     107,
+     316
+    ],
+    "nx": 0.056,
+    "ny": 0.293,
+    "onScreen": true,
+    "camDist": 162.67
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.21,
+   "t": 77.1,
+   "tExcerpt": 77.1,
+   "tShare": 413.59,
+   "tFilm": 413.59,
+   "at": {
+    "map": [
+     602.06,
+     960.08
+    ],
+    "px": [
+     126,
+     408
+    ],
+    "nx": 0.066,
+    "ny": 0.378,
+    "onScreen": true,
+    "camDist": 151.96
+   },
+   "unit": {
+    "unit": 4,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_stop",
+   "duration": 5.5,
+   "t": 82.6,
+   "tExcerpt": 82.6,
+   "tShare": 419.09,
+   "tFilm": 419.09,
+   "at": {
+    "map": [
+     618.97,
+     953.35
+    ],
+    "px": [
+     292,
+     267
+    ],
+    "nx": 0.152,
+    "ny": 0.247,
+    "onScreen": true,
+    "camDist": 105.81
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_stop",
+   "duration": 5.5,
+   "t": 82.6,
+   "tExcerpt": 82.6,
+   "tShare": 419.09,
+   "tFilm": 419.09,
+   "at": {
+    "map": [
+     610.97,
+     965.8
+    ],
+    "px": [
+     290,
+     402
+    ],
+    "nx": 0.151,
+    "ny": 0.373,
+    "onScreen": true,
+    "camDist": 94.67
+   },
+   "unit": {
+    "unit": 4,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.26,
+   "t": 84.4,
+   "tExcerpt": 84.4,
+   "tShare": 420.89,
+   "tFilm": 420.89,
+   "at": {
+    "map": [
+     618.98,
+     953.35
+    ],
+    "px": [
+     273,
+     262
+    ],
+    "nx": 0.142,
+    "ny": 0.243,
+    "onScreen": true,
+    "camDist": 105.14
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.22,
+   "t": 84.6,
+   "tExcerpt": 84.6,
+   "tShare": 421.09,
+   "tFilm": 421.09,
+   "at": {
+    "map": [
+     610.98,
+     965.8
+    ],
+    "px": [
+     262,
+     398
+    ],
+    "nx": 0.137,
+    "ny": 0.368,
+    "onScreen": true,
+    "camDist": 93.88
+   },
+   "unit": {
+    "unit": 4,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_stop",
+   "duration": 3.1,
+   "t": 87.5,
+   "tExcerpt": 87.5,
+   "tShare": 423.99,
+   "tFilm": 423.99,
+   "at": {
+    "map": [
+     624.54,
+     956.48
+    ],
+    "px": [
+     328,
+     243
+    ],
+    "nx": 0.171,
+    "ny": 0.225,
+    "onScreen": true,
+    "camDist": 103.48
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_stop",
+   "duration": 3.1,
+   "t": 87.7,
+   "tExcerpt": 87.7,
+   "tShare": 424.19,
+   "tFilm": 424.19,
+   "at": {
+    "map": [
+     614.94,
+     970.79
+    ],
+    "px": [
+     309,
+     399
+    ],
+    "nx": 0.161,
+    "ny": 0.369,
+    "onScreen": true,
+    "camDist": 90.13
+   },
+   "unit": {
+    "unit": 4,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_leaves",
+   "t": 88.6,
+   "tExcerpt": 88.6,
+   "tShare": 425.09,
+   "tFilm": 425.09,
+   "at": {
+    "map": [
+     624.54,
+     956.48
+    ],
+    "px": [
+     30,
+     -672
+    ],
+    "nx": 0.016,
+    "ny": -0.622,
+    "onScreen": false,
+    "camDist": 1301.02
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_leaves",
+   "t": 88.6,
+   "tExcerpt": 88.6,
+   "tShare": 425.09,
+   "tFilm": 425.09,
+   "at": {
+    "map": [
+     614.94,
+     970.79
+    ],
+    "px": [
+     6,
+     -672
+    ],
+    "nx": 0.003,
+    "ny": -0.622,
+    "onScreen": false,
+    "camDist": 1294.47
+   },
+   "unit": {
+    "unit": 4,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  }
+ ]
+}

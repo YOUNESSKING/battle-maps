@@ -1,0 +1,1585 @@
+[
+{
+"type": "march",
+"t": 0,
+"until": 1.1,
+"unit": 0
+},
+{
+"type": "march",
+"t": 0.1,
+"until": 1.4,
+"unit": 1
+},
+{
+"type": "march",
+"t": 0.1,
+"until": 1.8,
+"unit": 2
+},
+{
+"type": "march",
+"t": 0.1,
+"until": 2.2,
+"unit": 3
+},
+{
+"type": "march",
+"t": 0.2,
+"until": 5.9,
+"unit": 4
+},
+{
+"type": "march",
+"t": 0.2,
+"until": 6.2,
+"unit": 5
+},
+{
+"type": "march",
+"t": 1.2,
+"until": 5.5,
+"unit": 0
+},
+{
+"type": "march",
+"t": 1.6,
+"until": 5.9,
+"unit": 1
+},
+{
+"type": "march",
+"t": 2,
+"until": 6.3,
+"unit": 2
+},
+{
+"type": "march",
+"t": 2.4,
+"until": 6.7,
+"unit": 3
+},
+{
+"type": "march",
+"t": 20,
+"until": 23.4,
+"unit": 0
+},
+{
+"type": "march",
+"t": 20.9,
+"until": 24.1,
+"unit": 5
+},
+{
+"type": "march",
+"t": 20.9,
+"until": 24.4,
+"unit": 6
+},
+{
+"type": "march",
+"t": 21,
+"until": 23.8,
+"unit": 4
+},
+{
+"type": "musket_volley",
+"t": 22.45,
+"K": 12,
+"ripple": 0.45,
+"d": 0.77,
+"shot_times": [
+22.45,
+22.45,
+22.544,
+22.627,
+22.702,
+22.749,
+22.751,
+22.758,
+22.803,
+22.809,
+22.846,
+22.9
+],
+"onset": 22.45,
+"peak_db": -14.9
+},
+{
+"type": "musket_volley",
+"t": 22.5,
+"K": 12,
+"ripple": 0.74,
+"d": 0.51,
+"shot_times": [
+22.5,
+22.525,
+22.579,
+22.671,
+22.737,
+22.752,
+22.842,
+22.934,
+22.98,
+23.014,
+23.06,
+23.238
+],
+"onset": 22.5,
+"peak_db": -13.3
+},
+{
+"type": "musket_volley",
+"t": 22.55,
+"K": 11,
+"ripple": 0.29,
+"d": 0.51,
+"shot_times": [
+22.55,
+22.55,
+22.561,
+22.578,
+22.632,
+22.681,
+22.729,
+22.747,
+22.764,
+22.8,
+22.843
+],
+"onset": 22.55,
+"peak_db": -13.7
+},
+{
+"type": "capture",
+"t": 25.54
+},
+{
+"type": "capture",
+"t": 25.69
+},
+{
+"type": "capture",
+"t": 25.84
+},
+{
+"type": "march",
+"t": 32,
+"until": 36.3,
+"unit": 7
+},
+{
+"type": "march",
+"t": 32.4,
+"until": 36.6,
+"unit": 8
+},
+{
+"type": "march",
+"t": 32.8,
+"until": 36.9,
+"unit": 9
+},
+{
+"type": "march",
+"t": 33.2,
+"until": 37.2,
+"unit": 10
+},
+{
+"type": "march",
+"t": 40.1,
+"until": 44.6,
+"unit": 7
+},
+{
+"type": "march",
+"t": 40.4,
+"until": 43.1,
+"unit": 10
+},
+{
+"type": "march",
+"t": 40.4,
+"until": 43.1,
+"unit": 11
+},
+{
+"type": "march",
+"t": 40.4,
+"until": 43.1,
+"unit": 12
+},
+{
+"type": "march",
+"t": 40.9,
+"until": 45.4,
+"unit": 9
+},
+{
+"type": "march",
+"t": 56.1,
+"until": 58.5,
+"unit": 0
+},
+{
+"type": "musket_volley",
+"t": 63.63,
+"K": 14,
+"ripple": 0.92,
+"d": 0.07,
+"shot_times": [
+63.63,
+63.759,
+63.769,
+63.81,
+63.889,
+63.92,
+63.966,
+64.081,
+64.083,
+64.095,
+64.269,
+64.364,
+64.403,
+64.551
+],
+"onset": 63.63,
+"peak_db": -10.0
+},
+{
+"type": "musket_volley",
+"t": 67.7,
+"K": 14,
+"ripple": 0.87,
+"d": 0.16,
+"shot_times": [
+67.7,
+67.7,
+67.844,
+67.942,
+68.012,
+68.077,
+68.149,
+68.179,
+68.231,
+68.244,
+68.339,
+68.359,
+68.477,
+68.571
+],
+"onset": 67.7,
+"peak_db": -10.6
+},
+{
+"type": "march",
+"t": 100.78,
+"until": 103.28,
+"unit": 5
+},
+{
+"type": "march",
+"t": 102.08,
+"until": 104.68,
+"unit": 3
+},
+{
+"type": "march",
+"t": 102.38,
+"until": 104.98,
+"unit": 4
+},
+{
+"type": "march",
+"t": 105.68,
+"until": 110.18,
+"unit": 0
+},
+{
+"type": "march",
+"t": 105.88,
+"until": 110.58,
+"unit": 1
+},
+{
+"type": "march",
+"t": 106.18,
+"until": 112.18,
+"unit": 2
+},
+{
+"type": "march",
+"t": 174.42,
+"until": 176.32,
+"unit": 10
+},
+{
+"type": "bridge_stream",
+"t": 175.2,
+"until": 177.1
+},
+{
+"type": "march",
+"t": 178.72,
+"until": 182.62,
+"unit": 0
+},
+{
+"type": "march",
+"t": 179.92,
+"until": 183.22,
+"unit": 1
+},
+{
+"type": "bridge_stream",
+"t": 181.52,
+"until": 183.42
+},
+{
+"type": "bridge_stream",
+"t": 182.1,
+"until": 183.99
+},
+{
+"type": "march",
+"t": 183.12,
+"until": 188.42,
+"unit": 2
+},
+{
+"type": "march",
+"t": 184.32,
+"until": 186.82,
+"unit": 3
+},
+{
+"type": "march",
+"t": 186.72,
+"until": 192.62,
+"unit": 4
+},
+{
+"type": "bridge_stream",
+"t": 187.33,
+"until": 189.22
+},
+{
+"type": "march",
+"t": 188.32,
+"until": 194.32,
+"unit": 5
+},
+{
+"type": "march",
+"t": 190.32,
+"until": 196.32,
+"unit": 6
+},
+{
+"type": "bridge_stream",
+"t": 191.54,
+"until": 193.43
+},
+{
+"type": "march",
+"t": 193.12,
+"until": 199.12,
+"unit": 7
+},
+{
+"type": "bridge_stream",
+"t": 193.46,
+"until": 195.35
+},
+{
+"type": "bridge_stream",
+"t": 196.54,
+"until": 198.44
+},
+{
+"type": "bridge_stream",
+"t": 199.89,
+"until": 201.78
+},
+{
+"type": "bridge_stream",
+"t": 203.4,
+"until": 205.3
+},
+{
+"type": "bridge_stream",
+"t": 207.73,
+"until": 209.63
+},
+{
+"type": "march",
+"t": 210.12,
+"until": 214.12,
+"unit": 11
+},
+{
+"type": "march",
+"t": 210.72,
+"until": 214.32,
+"unit": 12
+},
+{
+"type": "march",
+"t": 211.42,
+"until": 214.62,
+"unit": 13
+},
+{
+"type": "march",
+"t": 220.72,
+"until": 223.22,
+"unit": 11
+},
+{
+"type": "march",
+"t": 221.32,
+"until": 223.82,
+"unit": 12
+},
+{
+"type": "march",
+"t": 221.92,
+"until": 224.42,
+"unit": 13
+},
+{
+"type": "march",
+"t": 231.02,
+"until": 233.72,
+"unit": 14
+},
+{
+"type": "march",
+"t": 231.02,
+"until": 233.52,
+"unit": 15
+},
+{
+"type": "bridge_stream",
+"t": 232.38,
+"until": 234.27
+},
+{
+"type": "bridge_stream",
+"t": 232.61,
+"until": 234.5
+},
+{
+"type": "march",
+"t": 233.12,
+"until": 235.62,
+"unit": 16
+},
+{
+"type": "march",
+"t": 236.92,
+"until": 241.72,
+"unit": 17
+},
+{
+"type": "march",
+"t": 237.12,
+"until": 241.92,
+"unit": 18
+},
+{
+"type": "march",
+"t": 237.42,
+"until": 242.22,
+"unit": 19
+},
+{
+"type": "march",
+"t": 237.62,
+"until": 242.42,
+"unit": 20
+},
+{
+"type": "march",
+"t": 237.92,
+"until": 242.72,
+"unit": 21
+},
+{
+"type": "march",
+"t": 258.42,
+"until": 264.42,
+"unit": 0
+},
+{
+"type": "march",
+"t": 271.46,
+"until": 277.46,
+"unit": 0
+},
+{
+"type": "march",
+"t": 271.66,
+"until": 277.66,
+"unit": 2
+},
+{
+"type": "capture",
+"t": 282.25
+},
+{
+"type": "march",
+"t": 298.46,
+"until": 301.36,
+"unit": 3
+},
+{
+"type": "march",
+"t": 299.06,
+"until": 301.96,
+"unit": 4
+},
+{
+"type": "march",
+"t": 299.66,
+"until": 302.56,
+"unit": 5
+},
+{
+"type": "march",
+"t": 302.56,
+"until": 304.46,
+"unit": 0
+},
+{
+"type": "bridge_stream",
+"t": 302.95,
+"until": 304.32
+},
+{
+"type": "march",
+"t": 303.26,
+"until": 305.36,
+"unit": 1
+},
+{
+"type": "bridge_stream",
+"t": 303.78,
+"until": 305.15
+},
+{
+"type": "march",
+"t": 303.96,
+"until": 305.86,
+"unit": 2
+},
+{
+"type": "bridge_stream",
+"t": 304.34,
+"until": 305.71
+},
+{
+"type": "march",
+"t": 306.16,
+"until": 311.16,
+"unit": 11
+},
+{
+"type": "march",
+"t": 306.56,
+"until": 311.56,
+"unit": 12
+},
+{
+"type": "march",
+"t": 306.96,
+"until": 311.96,
+"unit": 13
+},
+{
+"type": "march",
+"t": 374.09,
+"until": 375.89,
+"unit": 0
+},
+{
+"type": "bridge_stream",
+"t": 374.84,
+"until": 377.29
+},
+{
+"type": "march",
+"t": 377.49,
+"until": 379.29,
+"unit": 2
+},
+{
+"type": "bridge_stream",
+"t": 378.33,
+"until": 380.77
+},
+{
+"type": "march",
+"t": 382.29,
+"until": 384.09,
+"unit": 4
+},
+{
+"type": "bridge_stream",
+"t": 383.14,
+"until": 385.58
+},
+{
+"type": "march",
+"t": 387.79,
+"until": 393.79,
+"unit": 9
+},
+{
+"type": "march",
+"t": 391.59,
+"until": 397.59,
+"unit": 10
+},
+{
+"type": "march",
+"t": 394.79,
+"until": 397.29,
+"unit": 14
+},
+{
+"type": "march",
+"t": 396.39,
+"until": 402.39,
+"unit": 11
+},
+{
+"type": "march",
+"t": 397.69,
+"until": 401.19,
+"unit": 12
+},
+{
+"type": "march",
+"t": 413.59,
+"until": 419.09,
+"unit": 3
+},
+{
+"type": "march",
+"t": 413.59,
+"until": 419.09,
+"unit": 4
+},
+{
+"type": "march",
+"t": 420.89,
+"until": 423.99,
+"unit": 3
+},
+{
+"type": "march",
+"t": 421.09,
+"until": 424.19,
+"unit": 4
+},
+{
+"type": "march",
+"t": 426.39,
+"until": 428.89,
+"unit": 2
+},
+{
+"type": "march",
+"t": 427.99,
+"until": 430.49,
+"unit": 3
+},
+{
+"type": "musket_volley",
+"t": 428.99,
+"K": 6,
+"ripple": 0.77,
+"d": 0.27,
+"shot_times": [
+428.987,
+429.304,
+429.445,
+429.519,
+429.52,
+429.762
+],
+"onset": 428.987,
+"peak_db": -14.9
+},
+{
+"type": "musket_volley",
+"t": 429.79,
+"K": 6,
+"ripple": 0.52,
+"d": 0.21,
+"shot_times": [
+429.787,
+429.957,
+430.001,
+430.143,
+430.154,
+430.308
+],
+"onset": 429.787,
+"peak_db": -14.5
+},
+{
+"type": "musket_volley",
+"t": 439.99,
+"K": 6,
+"ripple": 0.92,
+"d": 0.0,
+"shot_times": [
+439.987,
+440.062,
+440.395,
+440.496,
+440.844,
+440.914
+],
+"onset": 439.987,
+"peak_db": -13.2
+},
+{
+"type": "musket_volley",
+"t": 440.09,
+"K": 6,
+"ripple": 0.87,
+"d": 0.0,
+"shot_times": [
+440.087,
+440.326,
+440.45,
+440.579,
+440.79,
+440.959
+],
+"onset": 440.087,
+"peak_db": -13.2
+},
+{
+"type": "march",
+"t": 442.09,
+"until": 448.09,
+"unit": 8
+},
+{
+"type": "march",
+"t": 442.49,
+"until": 448.49,
+"unit": 9
+},
+{
+"type": "march",
+"t": 450.09,
+"until": 452.79,
+"unit": 11
+},
+{
+"type": "march",
+"t": 450.39,
+"until": 453.09,
+"unit": 12
+},
+{
+"type": "musket_volley",
+"t": 452.84,
+"K": 6,
+"ripple": 0.5,
+"d": 0.18,
+"shot_times": [
+452.837,
+452.93,
+452.963,
+453.045,
+453.058,
+453.342
+],
+"onset": 452.837,
+"peak_db": -14.4
+},
+{
+"type": "musket_volley",
+"t": 453.14,
+"K": 6,
+"ripple": 0.44,
+"d": 0.13,
+"shot_times": [
+453.137,
+453.14,
+453.288,
+453.314,
+453.418,
+453.579
+],
+"onset": 453.137,
+"peak_db": -14.0
+},
+{
+"type": "capture",
+"t": 453.86
+},
+{
+"type": "capture",
+"t": 454.11
+},
+{
+"type": "march",
+"t": 458.99,
+"until": 461.19,
+"unit": 13
+},
+{
+"type": "bridge_stream",
+"t": 460.04,
+"until": 462.14
+},
+{
+"type": "capture",
+"t": 462.92
+},
+{
+"type": "march",
+"t": 504.43,
+"until": 507.93,
+"unit": 1
+},
+{
+"type": "march",
+"t": 505.13,
+"until": 508.63,
+"unit": 3
+},
+{
+"type": "march",
+"t": 505.83,
+"until": 509.33,
+"unit": 5
+},
+{
+"type": "march",
+"t": 508.43,
+"until": 510.33,
+"unit": 0
+},
+{
+"type": "bridge_stream",
+"t": 508.77,
+"until": 510.13
+},
+{
+"type": "march",
+"t": 509.13,
+"until": 511.13,
+"unit": 2
+},
+{
+"type": "bridge_stream",
+"t": 509.57,
+"until": 510.94
+},
+{
+"type": "march",
+"t": 509.83,
+"until": 512.33,
+"unit": 4
+},
+{
+"type": "bridge_stream",
+"t": 510.17,
+"until": 512.37
+},
+{
+"type": "march",
+"t": 512.93,
+"until": 517.03,
+"unit": 6
+},
+{
+"type": "march",
+"t": 512.93,
+"until": 517.03,
+"unit": 7
+},
+{
+"type": "march",
+"t": 512.93,
+"until": 517.03,
+"unit": 8
+},
+{
+"type": "march",
+"t": 512.93,
+"until": 517.03,
+"unit": 9
+},
+{
+"type": "musket_volley",
+"t": 515.23,
+"K": 2,
+"ripple": 0.15,
+"d": 1.0,
+"shot_times": [
+515.226,
+515.376
+],
+"onset": 515.226,
+"peak_db": -24.0
+},
+{
+"type": "musket_volley",
+"t": 516.03,
+"K": 2,
+"ripple": 0.18,
+"d": 1.0,
+"shot_times": [
+516.026,
+516.212
+],
+"onset": 516.026,
+"peak_db": -24.0
+},
+{
+"type": "march",
+"t": 523.93,
+"until": 527.83,
+"unit": 10
+},
+{
+"type": "march",
+"t": 524.93,
+"until": 529.03,
+"unit": 6
+},
+{
+"type": "march",
+"t": 524.93,
+"until": 529.03,
+"unit": 7
+},
+{
+"type": "march",
+"t": 524.93,
+"until": 529.03,
+"unit": 8
+},
+{
+"type": "musket_volley",
+"t": 527.83,
+"K": 2,
+"ripple": 0.12,
+"d": 1.0,
+"shot_times": [
+527.826,
+527.942
+],
+"onset": 527.826,
+"peak_db": -24.0
+},
+{
+"type": "musket_volley",
+"t": 528.83,
+"K": 2,
+"ripple": 0.12,
+"d": 1.0,
+"shot_times": [
+528.826,
+528.857
+],
+"onset": 528.826,
+"peak_db": -24.0
+},
+{
+"type": "musket_volley",
+"t": 530.38,
+"K": 2,
+"ripple": 0.22,
+"d": 1.0,
+"shot_times": [
+530.376,
+530.603
+],
+"onset": 530.376,
+"peak_db": -24.0
+},
+{
+"type": "march",
+"t": 536.73,
+"until": 542.03,
+"unit": 8
+},
+{
+"type": "march",
+"t": 539.63,
+"until": 544.63,
+"unit": 9
+},
+{
+"type": "musket_volley",
+"t": 542.43,
+"K": 6,
+"ripple": 0.15,
+"d": 0.06,
+"shot_times": [
+542.426,
+542.426,
+542.525,
+542.551,
+542.557,
+542.582
+],
+"onset": 542.426,
+"peak_db": -13.6
+},
+{
+"type": "musket_volley",
+"t": 542.53,
+"K": 6,
+"ripple": 0.18,
+"d": 0.19,
+"shot_times": [
+542.526,
+542.526,
+542.545,
+542.618,
+542.689,
+542.705
+],
+"onset": 542.526,
+"peak_db": -14.4
+},
+{
+"type": "musket_volley",
+"t": 542.58,
+"K": 6,
+"ripple": 0.12,
+"d": 0.07,
+"shot_times": [
+542.576,
+542.576,
+542.597,
+542.613,
+542.656,
+542.693
+],
+"onset": 542.576,
+"peak_db": -13.7
+},
+{
+"type": "musket_volley",
+"t": 545.53,
+"K": 6,
+"ripple": 0.2,
+"d": 0.06,
+"shot_times": [
+545.526,
+545.526,
+545.585,
+545.626,
+545.64,
+545.729
+],
+"onset": 545.526,
+"peak_db": -13.6
+},
+{
+"type": "musket_volley",
+"t": 545.68,
+"K": 6,
+"ripple": 0.12,
+"d": 0.06,
+"shot_times": [
+545.676,
+545.693,
+545.714,
+545.745,
+545.781,
+545.805
+],
+"onset": 545.676,
+"peak_db": -13.6
+},
+{
+"type": "musket_volley",
+"t": 545.73,
+"K": 6,
+"ripple": 0.2,
+"d": 0.21,
+"shot_times": [
+545.726,
+545.734,
+545.789,
+545.833,
+545.888,
+545.933
+],
+"onset": 545.726,
+"peak_db": -14.5
+},
+{
+"type": "musket_volley",
+"t": 549.28,
+"K": 6,
+"ripple": 0.18,
+"d": 0.08,
+"shot_times": [
+549.276,
+549.276,
+549.276,
+549.368,
+549.422,
+549.455
+],
+"onset": 549.276,
+"peak_db": -13.7
+},
+{
+"type": "musket_volley",
+"t": 549.43,
+"K": 6,
+"ripple": 0.12,
+"d": 0.08,
+"shot_times": [
+549.426,
+549.426,
+549.491,
+549.521,
+549.532,
+549.549
+],
+"onset": 549.426,
+"peak_db": -13.7
+},
+{
+"type": "musket_volley",
+"t": 549.53,
+"K": 6,
+"ripple": 0.19,
+"d": 0.23,
+"shot_times": [
+549.526,
+549.582,
+549.631,
+549.643,
+549.663,
+549.717
+],
+"onset": 549.526,
+"peak_db": -14.6
+},
+{
+"type": "march",
+"t": 549.53,
+"until": 555.23,
+"unit": 8
+},
+{
+"type": "march",
+"t": 552.43,
+"until": 557.83,
+"unit": 9
+},
+{
+"type": "march",
+"t": 555.93,
+"until": 561.63,
+"unit": 10
+},
+{
+"type": "march",
+"t": 588.32,
+"until": 594.32,
+"unit": 0
+},
+{
+"type": "march",
+"t": 588.62,
+"until": 594.62,
+"unit": 1
+},
+{
+"type": "march",
+"t": 589.32,
+"until": 595.32,
+"unit": 4
+},
+{
+"type": "march",
+"t": 589.62,
+"until": 595.62,
+"unit": 5
+},
+{
+"type": "march",
+"t": 598.82,
+"until": 604.82,
+"unit": 2
+},
+{
+"type": "march",
+"t": 613.82,
+"until": 619.82,
+"unit": 3
+},
+{
+"type": "march",
+"t": 623.42,
+"until": 626.62,
+"unit": 4
+},
+{
+"type": "march",
+"t": 627.32,
+"until": 631.32,
+"unit": 2
+},
+{
+"type": "march",
+"t": 627.52,
+"until": 631.52,
+"unit": 3
+},
+{
+"type": "march",
+"t": 627.82,
+"until": 631.62,
+"unit": 0
+},
+{
+"type": "march",
+"t": 627.82,
+"until": 631.82,
+"unit": 1
+},
+{
+"type": "musket_volley",
+"t": 632.55,
+"K": 6,
+"ripple": 0.47,
+"d": 0.1,
+"shot_times": [
+632.545,
+632.545,
+632.667,
+632.864,
+633.0,
+633.02
+],
+"onset": 632.545,
+"peak_db": -13.8
+},
+{
+"type": "musket_volley",
+"t": 632.8,
+"K": 6,
+"ripple": 0.51,
+"d": 0.1,
+"shot_times": [
+632.795,
+632.954,
+632.975,
+633.019,
+633.284,
+633.314
+],
+"onset": 632.795,
+"peak_db": -13.8
+},
+{
+"type": "march",
+"t": 633.82,
+"until": 635.82,
+"unit": 0
+},
+{
+"type": "march",
+"t": 633.82,
+"until": 636.02,
+"unit": 1
+},
+{
+"type": "musket_volley",
+"t": 635.03,
+"K": 6,
+"ripple": 0.5,
+"d": 0.02,
+"shot_times": [
+635.025,
+635.037,
+635.115,
+635.342,
+635.484,
+635.528
+],
+"onset": 635.025,
+"peak_db": -13.4
+},
+{
+"type": "musket_volley",
+"t": 635.33,
+"K": 6,
+"ripple": 0.58,
+"d": 0.02,
+"shot_times": [
+635.325,
+635.339,
+635.421,
+635.731,
+635.833,
+635.913
+],
+"onset": 635.325,
+"peak_db": -13.4
+},
+{
+"type": "march",
+"t": 644.52,
+"until": 648.02,
+"unit": 2
+},
+{
+"type": "march",
+"t": 644.82,
+"until": 648.32,
+"unit": 3
+},
+{
+"type": "march",
+"t": 644.82,
+"until": 647.22,
+"unit": 5
+},
+{
+"type": "musket_volley",
+"t": 655.7,
+"K": 6,
+"ripple": 0.55,
+"d": 0.05,
+"shot_times": [
+655.695,
+655.751,
+655.849,
+656.011,
+656.157,
+656.246
+],
+"onset": 655.695,
+"peak_db": -13.6
+},
+{
+"type": "musket_volley",
+"t": 655.9,
+"K": 6,
+"ripple": 0.5,
+"d": 0.06,
+"shot_times": [
+655.895,
+655.895,
+656.049,
+656.175,
+656.358,
+656.403
+],
+"onset": 655.895,
+"peak_db": -13.6
+},
+{
+"type": "musket_volley",
+"t": 656.25,
+"K": 6,
+"ripple": 0.74,
+"d": 0.0,
+"shot_times": [
+656.245,
+656.537,
+656.656,
+656.7,
+656.808,
+656.993
+],
+"onset": 656.245,
+"peak_db": -13.2
+},
+{
+"type": "musket_volley",
+"t": 656.3,
+"K": 6,
+"ripple": 0.59,
+"d": 0.0,
+"shot_times": [
+656.295,
+656.477,
+656.481,
+656.546,
+656.777,
+656.886
+],
+"onset": 656.295,
+"peak_db": -13.2
+},
+{
+"type": "musket_volley",
+"t": 656.45,
+"K": 6,
+"ripple": 0.5,
+"d": 0.0,
+"shot_times": [
+656.445,
+656.487,
+656.635,
+656.662,
+656.829,
+656.945
+],
+"onset": 656.445,
+"peak_db": -13.2
+},
+{
+"type": "march",
+"t": 661.61,
+"until": 665.11,
+"unit": 5
+},
+{
+"type": "march",
+"t": 661.71,
+"until": 664.61,
+"unit": 2
+},
+{
+"type": "march",
+"t": 661.91,
+"until": 664.81,
+"unit": 3
+},
+{
+"type": "march",
+"t": 662.31,
+"until": 664.81,
+"unit": 0
+},
+{
+"type": "march",
+"t": 662.71,
+"until": 665.21,
+"unit": 1
+},
+{
+"type": "musket_volley",
+"t": 663.32,
+"K": 6,
+"ripple": 0.5,
+"d": 0.04,
+"shot_times": [
+663.315,
+663.398,
+663.539,
+663.698,
+663.743,
+663.817
+],
+"onset": 663.315,
+"peak_db": -13.5
+},
+{
+"type": "musket_volley",
+"t": 663.62,
+"K": 6,
+"ripple": 0.54,
+"d": 0.05,
+"shot_times": [
+663.615,
+663.76,
+663.906,
+664.076,
+664.135,
+664.159
+],
+"onset": 663.615,
+"peak_db": -13.6
+},
+{
+"type": "capture",
+"t": 671.87
+},
+{
+"type": "march",
+"t": 699.21,
+"until": 701.71,
+"unit": 8
+},
+{
+"type": "march",
+"t": 699.21,
+"until": 701.71,
+"unit": 12
+},
+{
+"type": "march",
+"t": 699.51,
+"until": 702.01,
+"unit": 9
+},
+{
+"type": "march",
+"t": 699.51,
+"until": 702.01,
+"unit": 13
+},
+{
+"type": "march",
+"t": 699.81,
+"until": 702.31,
+"unit": 10
+},
+{
+"type": "march",
+"t": 699.81,
+"until": 702.31,
+"unit": 14
+},
+{
+"type": "march",
+"t": 700.11,
+"until": 702.61,
+"unit": 11
+},
+{
+"type": "march",
+"t": 707.75,
+"until": 713.75,
+"unit": 0
+},
+{
+"type": "march",
+"t": 713.25,
+"until": 719.25,
+"unit": 1
+},
+{
+"type": "march",
+"t": 713.55,
+"until": 719.55,
+"unit": 2
+},
+{
+"type": "march",
+"t": 713.85,
+"until": 719.85,
+"unit": 3
+},
+{
+"type": "march",
+"t": 714.15,
+"until": 720.15,
+"unit": 4
+}
+]

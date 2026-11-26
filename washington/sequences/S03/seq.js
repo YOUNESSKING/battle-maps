@@ -55,11 +55,12 @@ const units = [];
 const U = (o) => { units.push({ type: "inf", n: 2, region: BK, arrive: false, ...o }); return units.length - 1; };
 // the army packed inside the lines (blocks between the works and the ferry), each regiment leaves on its own, nearest the ferry first
 const CAMP = [   // [position, pier, escape t0]
-  [[2483.6, 1151.6], PA, 53.0], [[2479.0, 1152.4], PB, 54.2], [[2487.6, 1152.6], PA, 57.4], [[2481.4, 1156.0], PB, 58.6],
-  [[2485.4, 1156.4], PA, 61.0], [[2477.6, 1158.6], PB, 62.6], [[2489.6, 1156.6], PA, 64.6], [[2483.6, 1160.4], PB, 67.4],
-  [[2488.0, 1160.6], PA, 70.4], [[2492.6, 1159.8], PA, 73.6],
+  [[2485.0, 1151.4], PA, 59.4], [[2479.0, 1152.4], PB, 60.6], [[2487.6, 1152.6], PA, 63.8], [[2481.4, 1156.0], PB, 65.0],
+  [[2485.4, 1156.4], PA, 67.4], [[2477.6, 1158.6], PB, 69.0], [[2489.6, 1156.6], PA, 71.0], [[2483.6, 1160.4], PB, 73.8],
+  [[2488.0, 1160.6], PA, 76.8], [[2492.6, 1159.8], PA, 80.0],
 ];
-CAMP.forEach(([p, P, t0]) => U({ side: "u", face: FSE, keys: [[0, ...p]], escape: ESC(P, t0) }));
+// round 2 (critic A): each regiment already faces its landing (formed to march), so it walks straight there front first (no crab)
+CAMP.forEach(([p, P, t0]) => U({ side: "u", face: Math.atan2(P.near[1] - p[1], P.near[0] - p[0]), keys: [[0, ...p]], escape: ESC(P, t0) }));
 // Glover's Marblehead regiment: at the landing on "regiment", first into the boats (they row them)
 U({ side: "u", n: 1, face: -Math.PI / 2, t0: T.regiment - 0.2, keys: [[0, 2481.6, 1149.3]], escape: ESC(PA, 53.6) });
 // the covering force (Mifflin): stays in the front line; ordered out by mistake (~2 a.m.), stops when met on the road, faces about, back in
@@ -76,8 +77,8 @@ RCAMP.forEach((k, i) => { const a = line(k, 8.0), b = line(k, 1.6);
   U({ side: "r", face: FNW, keys: [[0, ...a], [T.walked - 0.4 + i * 0.25, ...a], [T.walked + 4.6 + i * 0.25, ...b]] }); });
 // colonies (tail): the army falls back up Manhattan; the British hold Brooklyn
 const NYC = VX.place("New York", CO), FW = VX.place("Fort Washington", CO), BKC = [OVB[0] / 4 + 1.5, OVB[1] / 4 + 1.0];
-U({ side: "u", region: CO, face: -Math.PI / 2, t0: 138.6, keys: [[0, NYC[0] + 1.0, NYC[1] - 4.0], [T.beginning, NYC[0] + 1.0, NYC[1] - 4.0], [151.6, 633.6, 241.0]] });
-U({ side: "r", region: CO, face: -Math.PI / 2 - 0.6, t0: 138.6, keys: [[0, ...BKC]] });
+U({ side: "u", region: CO, face: -Math.PI / 2, t0: 139.9, keys: [[0, NYC[0] + 1.0, NYC[1] - 4.0], [140.8, NYC[0] + 1.0, NYC[1] - 4.0], [151.6, 633.6, 241.0]] });
+U({ side: "r", region: CO, face: -Math.PI / 2 - 0.6, t0: 139.9, keys: [[0, ...BKC]] });
 
 // ---------------- boats: every boat its own path, speed, dock and timing ----------------
 const DOWN = [-0.91, 0.40];                                         // downstream (the ebb runs SW toward the harbour)
@@ -106,7 +107,7 @@ function shuttle(k, o) {
   const legs = [[o.tA0, o.tA1, 0, S[0]], ...trips.map((q, i) => [q.t0, q.t1, S[i], S[i + 1]])];
   const sAt = (tt) => { let s = 0; for (const [a0, a1, s0, s1] of legs) { if (tt < a0) return s; if (tt < a1) return s0 + (s1 - s0) * sst(a0, a1, tt); s = s1; } return s; };
   const moving = (tt) => legs.some(([a0, a1]) => tt > a0 + 0.15 && tt < a1 - 0.2);
-  return { region: BK, kind: o.kind || "barge", n: 1, path: P, sAt, wake: moving, t0: o.t0, t1: o.t1 ?? 139.2, size: o.size || 0.42, lamp: false, _legs: legs, _P: P };
+  return { region: BK, kind: o.kind || "barge", n: 1, path: P, sAt, wake: moving, t0: o.t0, t1: o.t1 ?? 141.2, size: o.size || 0.6, lamp: false, _legs: legs, _P: P };
 }
 // docks: Brooklyn along the shore by the ferry (two at the stairs), Manhattan between the Fly Market and Peck Slip
 const BX = [2480.25, 2477.3, 2481.6, 2478.6, 2483.0, 2476.0, 2479.6, 2482.3, 2475.0, 2484.2, 2480.9, 2477.9];
@@ -144,7 +145,7 @@ const arrows = [
   // the twist: the whole army from the lines down to the ferry and across the river to New York
   { side: "u", region: BK, width: 0.4, maxWidth: 0.4, pts: [[2497.0, 1163.4], [2489.0, 1155.4], [2482.4, 1149.4], [2476.6, 1142.0], [2469.0, 1133.6]], t0: T.take - 0.1, dur: 2.6, t1: 46.4 },
   // colonies: back up Manhattan
-  { side: "u", region: CO, width: 0.85, maxWidth: 0.85, pts: [[615.0, 279.0], [626.0, 266.0], [630.5, 249.0], [636.0, 236.0]], t0: T.beginning, dur: 2.0, t1: T.D + 1 },
+  { side: "u", region: CO, width: 0.85, maxWidth: 0.85, pts: [[615.0, 279.0], [626.0, 266.0], [630.5, 249.0], [636.0, 236.0]], t0: 140.6, dur: 2.0, t1: T.D + 1 },
 ];
 
 // ---------------- fx ----------------
@@ -163,7 +164,7 @@ const banners = [
   { general: "washington", region: BK, keys: [[0, 2486.6, 1155.6]], t0: T.general - 0.05, t1: 58.8 },
   { general: "washington", region: BK, keys: [[0, 2494.4, 1161.6]], t0: T.met - 0.05, t1: 105.2 },
   { general: "washington", region: BK, keys: [[0, 2479.4, 1149.0], [115.4, 2479.4, 1149.0], [116.0, ...lbAt(116.0)], ...wBoat], t0: 105.6, t1: 118.0 },
-  { general: "howe", region: BK, keys: [[0, ...line(0.5, 6.4)]], t0: T.walked - 0.2, t1: 131.6 },
+  { general: "howe", region: BK, keys: [[0, ...line(0.5, 6.4)]], t0: T.walked - 0.2, t1: T.about - 0.3 },   // round 1: out before the result card
 ];
 
 // ---------------- labels ----------------
@@ -174,7 +175,7 @@ const labels = [
 ];
 
 // ---------------- weather: rain + the NE wind (28-29 Aug), fog only at first light (30 Aug) ----------------
-const RAIN = VX.rain([[25.9, 0], [26.7, 0.8], [31.2, 0.8], [32.6, 0.35], [58.8, 0.35], [61.0, 0.55], [86.6, 0.55], [88.6, 0]], { slant: 0.3 });
+const RAIN = VX.rain([[25.9, 0], [26.7, 0.8], [31.2, 0.8], [32.6, 0.35], [58.8, 0.3], [61.0, 0.38], [86.6, 0.38], [88.6, 0]], { slant: 0.3 });   // round 1: rain -30 % at night
 let FOGC = null;
 function fogBuild() { const cv = document.createElement("canvas"); cv.width = 640; cv.height = 360; cv.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none";
   const tr = document.getElementById("troops"); tr.parentNode.insertBefore(cv, tr); FOGC = cv.getContext("2d"); }
@@ -191,13 +192,36 @@ const pulses = VX.pulses([
   { region: BK, at: [2479.4, 1147.2], r: 1.6, t0: T.boat - 0.05, t1: 48.0, period: 1.4, color: [255, 214, 120] },
 ]);
 
-const DS = 4.0, NI = 0.85, NG = 0.5;
+// ---------------- result card (round 1, critic B: the big centred card of moves 2-3, S05 recipe) ----------------
+const RCSS = `.aj-res{position:absolute;left:330px;top:170px;width:1260px;height:640px;color:#EEE7D6;text-align:center;font-family:"GM Cormorant",Georgia,serif;
+  background:linear-gradient(180deg,#232b33 0%,#182027 60%,#141a20 100%);box-shadow:0 14px 40px rgba(0,0,0,.7),inset 0 0 0 4px #151E25,inset 0 0 0 5.5px rgba(201,178,122,.85)}
+.aj-res .hd{position:absolute;left:0;right:0;top:44px;font-family:"GM Cinzel",serif;font-weight:700;font-size:28px;letter-spacing:.42em;color:#C9B27A;padding-left:.42em}
+.aj-res .col{position:absolute;top:120px;width:560px}.aj-res .c1{left:40px}.aj-res .c2{right:40px}
+.aj-res .sd{font-family:"GM Cinzel",serif;font-weight:700;font-size:30px;letter-spacing:.3em;padding-left:.3em}
+.aj-res .c1 .sd{color:#9FB8DC}.aj-res .c2 .sd{color:#9FB8DC}
+.aj-res .nb{font-family:"GM Cinzel",serif;font-weight:700;font-size:150px;line-height:1.05;letter-spacing:.02em;
+  background:linear-gradient(180deg,#fff1c4,#e8c46c 45%,#b98a35 70%,#f0d28a);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 4px rgba(0,0,0,.7))}
+.aj-res .nt{font-style:italic;font-weight:600;font-size:31px;color:#E8E0CC;margin-top:4px}
+.aj-res .gn{font-family:"GM Cinzel",serif;font-weight:700;font-size:24px;letter-spacing:.22em;color:#9FB8DC;margin-top:10px}
+.aj-res .vr{position:absolute;left:629px;top:130px;width:1.5px;height:300px;background:linear-gradient(180deg,transparent,#C9B27A,transparent)}
+.aj-res .src{position:absolute;left:0;right:0;top:560px;font-style:italic;font-weight:500;font-size:22px;color:#B7A57C}`;
+function buildResult(c) { const st = document.createElement("style"); st.textContent = RCSS; document.head.appendChild(st);
+  const host = document.querySelector("#ov .gmo") || document.getElementById("ov"), el = document.createElement("div"); el.className = "aj-res";
+  el.innerHTML = `<div class="hd">Brooklyn · 29-30 August 1776</div><div class="col c1"><div class="sd">Across</div><div class="nb">9,000</div><div class="nt">crossed in a single night</div><div class="gn">with nearly all their guns</div></div>
+    <div class="vr"></div><div class="col c2"><div class="sd">Left behind</div><div class="nb">A FEW</div><div class="nt">a handful of stragglers</div></div>
+    <div class="src">Johnston, The Campaign of 1776 around New York and Brooklyn</div>`;
+  host.appendChild(el); const tl = c.tl, gs = window.gsap, on = (sel, t) => { const e = el.querySelector(sel); gs.set(e, { autoAlpha: 0 }); tl.fromTo(e, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, t); };
+  gs.set(el, { autoAlpha: 0 }); tl.fromTo(el, { autoAlpha: 0, scale: 0.97 }, { autoAlpha: 1, scale: 1, duration: 0.4, ease: "power2.out", immediateRender: false }, T.about - 0.3); tl.to(el, { autoAlpha: 0, duration: 0.45 }, 131.0);
+  on(".c1 .sd", T.about - 0.1); on(".c1 .nb", T.ninek); on(".c1 .gn", T.guns - 0.9); on(".c1 .nt", T.crossed2 - 0.1); on(".vr", T.handful - 0.1); on(".c2 .nb", T.handful);
+  on(".c2 .nt", T.stragglers - 0.1); on(".c2 .sd", T.behind - 0.25); on(".src", T.behind + 0.2); }
+
+const DS = 4.0, NI = 0.7, NG = 0.45;   // round 1 (critic A): night +15 % lighter than 0.85
 window.SEQ = {
   grade: { wide: { toe: 14, ct: 1.03, sat: 1.04 } },   // as Jackson (owner 2026-11-23: richer wide overhead maps)
   name: "S03", D: T.D, T, seed: 1776, date: "1776-08-29",
   regions: [CO, BK],
   troops: "blocks", troopsOpts: { look: "lineblocks" },
-  regionOpts: { [BK]: { troopScale: 1.6, decks: [deck(PA), deck(PB)] }, [CO]: { troopScale: 11 } },
+  regionOpts: { [BK]: { troopScale: 1.6, decks: [deck(PA), deck(PB)] }, [CO]: { troopScale: 16 } },
   keys: [
     { t: 0, region: CO, at: [OV[0] - 6, OV[1] + 14], dist: 300, tilt: 36, yaw: 0, fov: 30 },
     // dive 2: colonies -> Brooklyn Heights (push 0.2, swap 4.0, land 7.35)
@@ -212,23 +236,24 @@ window.SEQ = {
     { t: 58.4, region: BK, at: [2479.6, 1146.0], dist: 25, tilt: 51, yaw: -2, fov: 30, ease: "lin" },
     { t: 62.4, region: BK, at: [2481.0, 1148.6], dist: 23, tilt: 50, yaw: -2, fov: 30, night: NI, ease: "io" },   // night: the regiments leave, break rank, board
     { t: 67.4, region: BK, at: [2481.4, 1149.0], dist: 22, tilt: 51, yaw: 2, fov: 30, night: NI, ease: "lin" },
-    { t: 70.2, region: BK, at: [2483.2, 1151.6], dist: 28, tilt: 49, yaw: 2, fov: 30, night: NI, ease: "io" },
-    { t: 73.0, region: BK, at: [2499.0, 1165.0], dist: 34, tilt: 48, yaw: 0, fov: 30, night: NI, ease: "io" },   // the covering force in the line
+    { t: 70.9, region: BK, at: [2482.4, 1150.6], dist: 25, tilt: 50, yaw: 2, fov: 30, night: NI, ease: "lin" },
+    { t: 70.9, region: BK, at: [2499.4, 1165.4], dist: 33, tilt: 48, yaw: 0, fov: 30, night: NI, ease: "cut", dissolve: 0.9 },   // the covering force (round 2: a dissolve, no fast pan over the marching blocks)
     { t: 76.6, region: BK, at: [2498.6, 1164.6], dist: 33, tilt: 48, yaw: 0, fov: 30, night: NI, ease: "lin" },
-    { t: 76.6, region: BK, at: [2474.8, 1139.8], dist: 35, tilt: 48, yaw: -8, fov: 30, night: NI, ease: "cut", dissolve: 0.9 },  // the river at night
-    { t: 90.9, region: BK, at: [2474.0, 1138.8], dist: 31, tilt: 49, yaw: -4, fov: 30, night: NI, ease: "lin" },
+    { t: 76.6, region: BK, at: [2474.8, 1139.8], dist: 28, tilt: 50, yaw: -8, fov: 30, night: NI, ease: "cut", dissolve: 0.9 },  // the river at night (round 1: 20 % closer)
+    { t: 90.9, region: BK, at: [2474.0, 1138.8], dist: 26, tilt: 50, yaw: -4, fov: 30, night: NI, ease: "lin" },
     { t: 90.9, region: BK, at: [2498.6, 1164.4], dist: 29, tilt: 50, yaw: 0, fov: 30, night: NI, ease: "cut", dissolve: 0.9 },   // the covering force goes out and back
     { t: 104.6, region: BK, at: [2497.0, 1163.4], dist: 30, tilt: 50, yaw: 2, fov: 30, night: NI, ease: "lin" },
     { t: 105.3, region: BK, at: [2479.2, 1146.6], dist: 28, tilt: 50, yaw: -6, fov: 30, night: NG, ease: "cut", dissolve: 0.9 },   // first light
     { t: 117.8, region: BK, at: [2477.4, 1143.6], dist: 31, tilt: 49, yaw: -2, fov: 30, night: 0.3, ease: "lin" },
     { t: 118.3, region: BK, at: [2504.0, 1165.0], dist: 30, tilt: 47, yaw: 0, fov: 30, night: 0.16, ease: "cut", dissolve: 0.9 },  // empty forts
     { t: 131.0, region: BK, at: [2502.0, 1162.4], dist: 38, tilt: 46, yaw: 0, fov: 30, night: 0, ease: "lin" },
-    { t: 138.9, region: BK, at: [2496.0, 1158.0], dist: 50, tilt: 44, yaw: 0, fov: 30, ease: "io" },
-    { t: 138.9, region: CO, at: [606.0, 274.0], dist: 300, tilt: 34, yaw: 0, fov: 30, ease: "cut", dissolve: 0.9 },   // colonies: up Manhattan
+    { t: 140.2, region: BK, at: [2496.0, 1158.0], dist: 50, tilt: 44, yaw: 0, fov: 30, ease: "io" },
+    { t: 140.2, region: CO, at: [606.0, 274.0], dist: 300, tilt: 34, yaw: 0, fov: 30, ease: "cut", dissolve: 0.9 },   // colonies: up Manhattan
     { t: T.D, region: CO, at: [610.0, 264.0], dist: 285, tilt: 35, yaw: 0, fov: 30, ease: "lin" },
   ],
   dives: [{ t: DS, over: OV, overTo: OVB, from: { region: CO, at: [OV[0] - 3, OV[1] + 8], dist: 230, tilt: 38, yaw: 0 },
-            to: { region: BK, at: [2493.0, 1161.0], dist: 74, tilt: 40, yaw: 0, fov: 30 } }],
+            to: { region: BK, at: [2493.0, 1161.0], dist: 74, tilt: 40, yaw: 0, fov: 30 },
+            whooshAt: 1.4, off: { warm: 0.05, emerge: 0.1, clear: 0.28, haze: 0.85 } }],   // round 2: whoosh before "General William Howe"; no flat cream hold (S05 values)
   clouds: { [CO]: { scatter: { seed: 5 } }, [BK]: { shadows: true } },
   units, arrows, boats, fx, generals, banners, labels,
   overlay: [
@@ -241,18 +266,14 @@ window.SEQ = {
     ["plaque.note", T.dark - 0.1, "after dark · rain"],
     ["plaque.note", T.changed - 0.05, "the wind changes"],
     ["plaque.note", T.middle - 0.1, "the middle of the night"],
-    ["plaque.date", T.firstlight - 0.05, { month: "August 1776", day: "30", weekday: "Friday", note: "first light" }],
+    ["plaque.date", T.firstlight - 0.05, { month: "August 1776", day: "", weekday: "", note: "" }],   // round 1: no unspoken day
     ["plaque.note", T.fog - 0.05, "fog"],
     ["film.dim", T.about - 0.3, 131.3, 0.75],
-    ["ledger.show", T.about - 0.2, { title: "Brooklyn", sub: "29-30 August 1776" }],
-    ["ledger.add", T.ninek + 0.5, { who: "About 9,000 men", note: "with nearly all their guns", stamp: false }],
-    ["ledger.add", T.crossed2 + 0.3, { who: "Across in one night", note: "the East River", stamp: false }],
-    ["ledger.add", T.handful, { who: "Left behind", note: "a handful of stragglers", stamp: false }],
-    ["ledger.hide", 131.1],
-    ["letter", T.method - 0.15, 138.75, { header: "Move 1 · Brooklyn", title: "The Washington Method", sub: "", marks: false, quote: "1. Save the army first", qSize: 34, cps: 14, qAt: T.save - 0.05, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
-    ["engage.subscribe", T.subscribing - 0.6, T.subscribing + 4.0],
+    ["letter", T.method - 0.15, T.beginning - 0.1, { header: "Move 1 · Brooklyn", title: "The Washington Method", sub: "", marks: false, quote: "1. Save the army first", qSize: 34, cps: 30, qAt: T.save - 0.05, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
+    ["plaque.date", 140.25, { month: "1776", day: "", weekday: "", note: "" }],   // round 1: no stale August plate over the colonies tail
+    ["engage.subscribe", T.subscribing - 0.1, T.subscribing + 4.0],
   ],
-  build: (ctx) => { RAIN.build(ctx); fogBuild(); pulses.build(ctx); },
+  build: (ctx) => { RAIN.build(ctx); fogBuild(); pulses.build(ctx); buildResult(ctx); },
   draw: (t, ctx) => { RAIN.draw(t, ctx); fogDraw(t); pulses.draw(t, ctx); },
 };
 })();

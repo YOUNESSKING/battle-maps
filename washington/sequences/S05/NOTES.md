@@ -40,3 +40,20 @@ flags from `washington/assets/flags/`.
 - Jersey wide: town house clusters (Maidenhead, Pennington, Birmingham...) still read a little like crosses from far away; the 7 bridge meshes are hidden.
 - Cadwalader's grey arrow is drawn on the river below Trenton (Bristol is outside the jersey box).
 - `check_troops_motion` trenton/crossing: remaining flags = turn spikes at the cuts (95.4, 118.65) and world front-vs-velocity 30-45 deg on oblique moves (on-screen correction); the boarding blocks report ~160 deg (men about-face, plate stays, as the bridge streams); 0 opposing-block overlaps (`check_side_gap` 88-128: 0 / 0).
+
+## Round 1 fixes (critics A 5.8 / B 7.3)
+- Night march (68.4-88): two WIDE line blocks side by side (4.6 u apart, n 1, troopScale 8) Johnson's Ferry -> Birmingham long side first, stop, turn, then each walks under its own arrow (Greene east, Sullivan south); night 0.8 -> 0.6 (brighter units). Jersey check 68-88: 0 overlaps, max 20 deg.
+- Crossing: boarding blocks face the river and walk FRONT FIRST into the stream (`escape.front`, no backward walk: 23-33 deg, was 148-176); Durham boats x1.5 (size 0.75) with half-size lamp glow (new boat `lampK`); camera 15 % closer. Floes are world data (not touched).
+- Dive: `off { warm 0.05, emerge 0.1, clear 0.28, haze 0.85 }` (shorter flat grey).
+- Trenton: Greene's blocks walk straight down past the WEST side of the ring wood, facing the way they walk (no wheel into the wood); guns moved off words (100.95, 106.0).
+- Method card 2: held to 150.7 (T.letgo), colonies cut moved 149.0 -> 150.8. Label "The Marblehead men / who saved the army at Brooklyn". `plaque.note` calls (which do not update the plate) replaced with `plaque.date` notes.
+- Remaining: front-vs-velocity 40-60 deg (world) on the Trenton approach after the 95.4 cut = engine on-screen correction under the oblique camera (screen long-side <= 13 deg); NJ landing blocks still fade in formed. "black Durham boats" voice kept (lead).
+
+## Round 2 fixes (critics A 7.0 / B 7.9)
+- Night march: troopScale 12, both wide blocks walk <= 2 u/s (10.6 u to the split, then 6.4 u each along its own arrow; the arrows carry the distance), night 0.6 -> 0.45, camera ~20 % closer on 80-88. Check 68-88: no pops, no overlaps (only the halt turn at the 88.0 cut).
+- Street fight (99-110): gun 99.45 on "fired" with no boom; the rest at 100.9, 103.55, 107.65, 108.2 (boom +0.3, in the word gaps); Hessian volleys 103.5-103.9, Sullivan's 107.75-108.6.
+- Dive whoosh cue at 32.25 (`dives[].whooshAt`, look unchanged).
+- NJ landing: boatloads and guns walk straight up the bank along their facing (no along-bank component). The motion check still reports 44-55 deg world front-vs-velocity there, but on screen the blocks stay within 17 deg: this is the engine's on-screen correction under the oblique camera, not a crab walk.
+- Assunpink escape walks front first (faces the bridge, `escape.front`): 37 deg (was 145).
+- Ferry flats lamp glow halved (`lampK` 0.5); Marblehead label at 50.5 (on "saved"); Rall banner anchor 108.85.
+- Trenton approach camera shifted west (ring wood toward the frame edge; the wood itself is world data). Greene's three blocks walk parallel paths (no crossing).

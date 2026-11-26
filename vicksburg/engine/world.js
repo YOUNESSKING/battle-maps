@@ -98,8 +98,13 @@ export function initWorld(canvas, opts = {}) {
   function buildIce(R, d, ys, exag) {
     // winter (Delaware, Dec 1776): a thin pale shore-ice rim on both banks + flat ice floes drifting downstream (pts are upstream first).
     // d.winter.ice (0..1, default 1) scales the rim, d.winter.floes = floes per square unit of water (default 0.05 close / 0.004 wide); min river width 1.0 unit.
-    const W = d.winter || {}, wide = d.kind === "wide", dens = W.floes ?? (wide ? 0.02 : 0.2), ice = W.ice ?? 1;
-    const imat = new THREE.MeshLambertMaterial({ color: 0xffffff }); const fl = [];
+    const W = d.winter || {}, wide = d.kind === "wide", dens = (W.floes ?? (wide ? 0.02 : 0.2)) * 0.6, ice = W.ice ?? 1;
+    // critic A r2: fewer floes (x0.6), 3 irregular outlines, wider size / squash range, toned toward the water, soft alpha edge
+    const ac = document.createElement("canvas"); ac.width = ac.height = 64; { const g = ac.getContext("2d"), gr = g.createRadialGradient(32, 32, 6, 32, 32, 32);
+      gr.addColorStop(0, "#fff"); gr.addColorStop(0.62, "#fff"); gr.addColorStop(1, "#000"); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); }
+    const imat = new THREE.MeshLambertMaterial({ color: 0xffffff, alphaMap: new THREE.CanvasTexture(ac), transparent: true, opacity: 0.9, depthWrite: false }); const fl = [];
+    const FG = [0, 1, 2].map((v) => { const g = new THREE.CircleGeometry(1, 12); g.rotateX(-Math.PI / 2); const pa = g.attributes.position;
+      for (let q = 1; q < pa.count; q++) { const k = 0.55 + 0.6 * hash(q + v * 31, 98 + v) * (v === 2 ? 0.8 + 0.4 * Math.sin(q * 1.7) : 1); pa.setX(q, pa.getX(q) * k); pa.setZ(q, pa.getZ(q) * k); } return g; });
     for (const rv of d.rivers || []) {
       const P = rv.pts, n = P.length, w = rv.w * 1.08; if (w < 1.0 || n < 3) continue;
       const arc = [0]; for (let i = 1; i < n; i++) arc.push(arc[i - 1] + Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]));
@@ -114,12 +119,12 @@ export function initWorld(canvas, opts = {}) {
         const m = new THREE.Mesh(g, new THREE.MeshLambertMaterial({ color: 0x9da5a8, side: THREE.DoubleSide })); m.receiveShadow = true; R.scene.add(m);
       }
       const N = Math.min(4000, Math.round(L * w * dens)); if (!N) continue;
-      const fg = new THREE.CircleGeometry(1, 9); fg.rotateX(-Math.PI / 2); { const pa = fg.attributes.position; for (let q = 1; q < pa.count; q++) { const k = 0.65 + 0.55 * hash(q, 98); pa.setX(q, pa.getX(q) * k); pa.setZ(q, pa.getZ(q) * k); } }   // irregular plate
-      const im = new THREE.InstancedMesh(fg, imat, N); im.receiveShadow = true; R.scene.add(im);
-      const F = []; for (let k = 0; k < N; k++) F.push({ s: hash(k, 91) * L, off: (hash(k, 92) - 0.5) * (w - 2 * rim) * 0.85, r: (wide ? 0.3 : 0.17) * (0.4 + 1.6 * Math.pow(hash(k, 93), 2.2)) * Math.min(1.6, Math.max(0.6, w / 6)),
-        rot: hash(k, 94) * 6.28, sq: 0.55 + 0.45 * hash(k, 95), v: (wide ? 0.6 : 0.12) * (0.8 + 0.4 * hash(k, 96)), c: 0.9 + 0.12 * hash(k, 97) });
-      const c = new THREE.Color(); F.forEach((f, k) => { c.setHex(0x9ea7aa).multiplyScalar(f.c); im.setColorAt(k, c); });
-      fl.push({ im, F, P, arc, L, tan });
+      const F = []; for (let k = 0; k < N; k++) F.push({ s: hash(k, 91) * L, off: (hash(k, 92) - 0.5) * (w - 2 * rim) * 0.85, r: (wide ? 0.3 : 0.17) * (0.3 + 2.0 * Math.pow(hash(k, 93), 2.6)) * Math.min(1.6, Math.max(0.6, w / 6)),
+        rot: hash(k, 94) * 6.28, sq: 0.4 + 0.6 * hash(k, 95), v: (wide ? 0.6 : 0.12) * (0.8 + 0.4 * hash(k, 96)), c: 0.82 + 0.22 * hash(k, 97), g: Math.floor(hash(k, 99) * 3) });
+      for (let v = 0; v < 3; v++) { const Fv = F.filter((f) => f.g === v); if (!Fv.length) continue;
+        const im = new THREE.InstancedMesh(FG[v], imat, Fv.length); im.receiveShadow = true; im.renderOrder = 1; R.scene.add(im);
+        const c = new THREE.Color(); Fv.forEach((f, k) => { c.setHex(0x8d9a9f).multiplyScalar(f.c); im.setColorAt(k, c); });
+        fl.push({ im, F: Fv, P, arc, L, tan }); }
     }
     const dm = new THREE.Object3D();
     const place = (t) => { for (const { im, F, P, arc, L, tan } of fl) { let j = 0;
@@ -357,7 +362,7 @@ export function initWorld(canvas, opts = {}) {
     R.sun.target.position.set(cs.at[0], ty, cs.at[1] - sd * 0.25); R.sun.position.copy(R.sun.target.position).addScaledVector(dir, sd * 2.5);
     const sc = R.sun.shadow.camera, half = sd * 0.95; sc.left = -half; sc.right = half; sc.top = half; sc.bottom = -half; sc.near = sd * 0.5; sc.far = sd * 5; sc.updateProjectionMatrix();
     const wk = R.kind === "wide" ? 1 : 0;   // clip critic: stronger relief on the wide map (more sun, less sky fill)
-    R.sun.color.copy(DAY.sun).lerp(NIGHT.sun, n); R.sun.intensity = lerp(DAY.sunI, NIGHT.sunI, n) * (1 + 0.35 * wk * (1 - n));
+    R.sun.color.copy(DAY.sun).lerp(NIGHT.sun, n); R.sun.intensity = lerp(DAY.sunI, NIGHT.sunI, n) * (1 + (R.data.wideSunK ?? 0.35) * wk * (1 - n));   // region.js wideSunK (project configs; default = the approved 0.35)
     R.hemi.color.copy(DAY.sky).lerp(NIGHT.sky, n); R.hemi.groundColor.copy(DAY.gnd).lerp(NIGHT.gnd, n); R.hemi.intensity = lerp(DAY.hemiI, NIGHT.hemiI, n) * (1 - 0.3 * wk * (1 - n));
     // v4 haze: on the oblique close camera the far ground fades into a pale sky-blue haze (GM 640-700 / 800 / 910-950 s):
     // smoothstep over view depth 0.78 d .. 2.3 d -> ~0 at the frame centre, ~0.45 at the top edge (tilt 52, fov 30)

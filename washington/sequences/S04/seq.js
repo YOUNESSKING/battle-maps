@@ -37,13 +37,13 @@ const HW = 1.3;                                                     // half the 
 const units = [];
 const U = (o) => { units.push({ type: "inf", n: 1, arrive: false, ...o }); return units.length - 1; };
 // colonies: the army off Manhattan to White Plains; the Fort Washington garrison (taken); the army across NJ to Trenton
-U({ side: "u", region: CO, n: 2, face: -Math.PI / 2, keys: [[0, ...HARLEM], [T.drove, ...HARLEM], [T.white + 0.4, WP[0] - 8, WP[1] + 14]], t1: 12.4 });
+U({ side: "u", region: CO, n: 2, face: -Math.PI / 2, keys: [[0, ...HARLEM], [0.6, ...HARLEM], [12.0, 662.0, 216.0]], t1: 12.4 });   // round 1: <= 4 u/s, the arrow carries the rest
 U({ side: "u", region: CO, n: 1, face: Math.PI, keys: [[0, FW[0] + 1.5, FW[1] + 2.0]], t0: T.sixteenth - 0.4, cap: T.stormed + 1.2, t1: T.D });
-U({ side: "r", region: CO, n: 2, face: -Math.PI / 2, keys: [[0, HARLEM[0] - 2, HARLEM[1] + 22], [T.drove, HARLEM[0] - 2, HARLEM[1] + 22], [T.white + 0.6, WP[0] - 14, WP[1] + 34]], t0: 1.0, t1: 12.4 });
+U({ side: "r", region: CO, n: 2, face: -Math.PI / 2, keys: [[0, HARLEM[0] - 2, HARLEM[1] + 22], [0.8, HARLEM[0] - 2, HARLEM[1] + 22], [12.0, 652.0, 234.0]], t0: 1.0, t1: 12.4 });
 U({ side: "u", region: CO, n: 2, face: Math.PI * 0.75, keys: [[0, TRc[0] + 6, TRc[1] - 6]], t0: T.delaware - 0.3 });
 U({ side: "r", region: CO, n: 2, face: Math.PI * 0.75, keys: [[0, NB[0] - 6, NB[1] + 8], [T.delaware + 0.4, NB[0] - 40, NB[1] + 44]], t0: T.chased + 0.4 });
 // jersey: the army on the NJ bank at Trenton crosses (break rank onto the boats at three landings), reappears on the PA bank
-const LAND = [kT - 0.012, kT, kT + 0.012];
+const LAND = [kT - 0.032, kT, kT + 0.032];   // round 1: wider spacing for the bigger wide-map blocks
 const decks = [], ESC = [];
 LAND.forEach((k, i) => { const r = RV(k), near = bank(k, "NJ", HW + 0.55), far = bank(k, "NJ", HW - 0.35), out = bank(k, "NJ", HW - 1.0), back = bank(k, "NJ", HW + 1.6);
   decks.push({ x: (near[0] + far[0]) / 2, z: (near[1] + far[1]) / 2, angle: Math.atan2(far[1] - near[1], far[0] - near[0]), len: Math.hypot(far[0] - near[0], far[1] - near[1]), deck: r.h + 1.5, wl: r.h });
@@ -52,16 +52,16 @@ const toPA = (k) => Math.atan2(-RV(k).dx, RV(k).dy);                // facing ac
 LAND.forEach((k, i) => { const p = bank(k, "NJ", HW + 4.2 + (i % 2) * 1.2);
   U({ side: "u", region: JE, face: toPA(k), keys: [[0, ...p]], escape: { ...ESC[i], t0: 23.0 + i * 0.7 } }); });
 // the PA bank: the army that crossed + the camp along the river up to McConkey's (blocks thin out from "melting away")
-const CAMPK = [[kT - 0.012, 4.2, 27.4], [kT, 5.4, 28.0], [kT + 0.012, 4.2, 28.6], [kT - 0.07, 4.0, 0], [kT - 0.12, 4.6, 0], [kT - 0.17, 4.2, 0], [kT - 0.22, 4.8, 0], [kT - 0.27, 4.4, 0]];
+const CAMPK = [[kT - 0.032, 4.2, 27.4], [kT, 5.4, 28.0], [kT + 0.032, 4.2, 28.6], [kT - 0.07, 4.0, 0], [kT - 0.12, 4.6, 0], [kT - 0.17, 4.2, 0], [kT - 0.22, 4.8, 0], [kT - 0.27, 4.4, 0]];
 const FADE = [null, 62.6, null, 56.2, null, 58.4, 60.9, null];
 CAMPK.forEach(([k, d, t0], i) => { const p = bank(k, "PA", HW + d), inl = bank(k, "PA", HW + d + 1.6), f = Math.atan2(RV(k).dx, -RV(k).dy);
   U({ side: "u", region: JE, face: f, t0: t0 || 23.0, t1: FADE[i] || 1e9, keys: t0 ? [[0, ...p], [t0, ...p], [t0 + 3.4, ...inl]] : [[0, ...inl]] }); });
 // the British winter posts: three Hessian regiments into Trenton (Rall, Lossberg, Knyphausen), Bordentown, Princeton
-const HESS = [[TRj[0] - 3.2, TRj[1] - 5.2], [TRj[0] + 3.6, TRj[1] - 5.0], [TRj[0] + 0.6, TRj[1] - 9.6]];
+const HESS = [[TRj[0] - 4.4, TRj[1] - 5.2], [TRj[0] + 4.8, TRj[1] - 5.0], [TRj[0] + 0.6, TRj[1] - 11.4]];
 const PN = (p, dx, dy) => [p[0] + dx, p[1] + dy];
 HESS.forEach((p, i) => U({ side: "r", region: JE, face: Math.PI * 0.75, t0: T.settled - 0.6 + i * 0.4, keys: [[0, p[0] + 7, p[1] - 9], [T.settled - 0.4 + i * 0.4, p[0] + 7, p[1] - 9], [T.posts + 3.6 + i * 0.4, ...p]] }));
-U({ side: "r", region: JE, face: 2.24, t0: T.settled - 0.2, keys: [[0, ...PN(BOR, 6, -8)], [T.settled, ...PN(BOR, 6, -8)], [T.posts + 3.8, ...PN(BOR, 2, -3)]] });
-U({ side: "r", region: JE, n: 2, face: 2.19, t0: T.settled, keys: [[0, ...PN(PRI, 6, -6)], [T.settled + 0.2, ...PN(PRI, 6, -6)], [T.posts + 4.0, ...PN(PRI, 1, 1)]] });
+U({ side: "r", region: JE, face: 2.24, t0: T.settled - 0.2, keys: [[0, ...PN(BOR, 2, -3)]] });   // round 1: settles in place (no oblique walk)
+U({ side: "r", region: JE, n: 2, face: 2.19, t0: T.settled, keys: [[0, ...PN(PRI, 1, 1)]] });
 
 // ---------------- boats: every boat on the river pulled over to the PA bank, one by one ----------------
 const BK_ = [0.08, 0.16, 0.24, 0.31, 0.37, kT - 0.03, kT + 0.03, kT + 0.08, kT + 0.13, 0.03];
@@ -74,11 +74,11 @@ LAND.forEach((k, i) => { const a = bank(k, "NJ", HW - 0.9), b = bank(k, "PA", HW
 
 // ---------------- arrows ----------------
 const arrows = [
-  { side: "r", region: CO, width: 0.85, maxWidth: 0.85, pts: [[HARLEM[0] - 2, HARLEM[1] + 24], [HARLEM[0] + 8, HARLEM[1] - 20], [WP[0] - 16, WP[1] + 30]], t0: T.drove, dur: 2.2, t1: 9.6 },
+  { side: "r", region: CO, width: 0.85, maxWidth: 0.85, pts: [[HARLEM[0] - 8, HARLEM[1] + 24], [HARLEM[0] - 4, HARLEM[1] - 26], [WP[0] - 22, WP[1] + 30]], t0: T.drove, dur: 2.2, t1: 9.6 },
   ...[[[FW[0] + 6, FW[1] - 22], FW], [[FW[0] + 22, FW[1] + 4], FW], [[FW[0] - 3, FW[1] + 26], FW]].map(([a, b], i) =>
     ({ side: "r", region: CO, width: 0.7, maxWidth: 0.7, pts: [a, [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], [b[0] + (a[0] - b[0]) * 0.12, b[1] + (a[1] - b[1]) * 0.12]], t0: T.stormed - 0.1 + i * 0.25, dur: 1.2, t1: 16.4 })),
   // the retreat across New Jersey, the British close behind
-  { side: "u", region: CO, width: 0.95, maxWidth: 0.95, pts: [[FL[0] - 4, FL[1] + 6], [560, 300], [NB[0] + 4, NB[1] - 4], [TRc[0] + 40, TRc[1] - 40], [TRc[0] + 8, TRc[1] - 6]], t0: T.across - 0.2, dur: 2.8, t1: T.D },
+  { side: "u", region: CO, width: 0.95, maxWidth: 0.95, pts: [[FL[0] - 4, FL[1] + 6], [560, 300], [NB[0] + 4, NB[1] - 4], [TRc[0] + 40, TRc[1] - 40], [TRc[0] + 17, TRc[1] - 16]], t0: T.across - 0.2, dur: 2.8, t1: T.D },
   { side: "r", region: CO, width: 0.8, maxWidth: 0.8, pts: [[FL[0] - 10, FL[1] + 26], [575, 318], [NB[0] + 14, NB[1] - 2]], t0: T.chased + 0.1, dur: 2.4, t1: T.D },
 ];
 
@@ -88,7 +88,7 @@ const generals = {
   rall: { img: "seq/rall.png", flag: "seq/gb1707_union_flag.png", side: "cs", name: "Rall", full: "Johann Rall", role: "Colonel" },   // no likeness: initials (as Jackson's Keane)
 };
 const banners = [
-  { general: "washington", region: CO, keys: [[0, HARLEM[0] + 4, HARLEM[1] - 4], [T.drove, HARLEM[0] + 4, HARLEM[1] - 4], [T.white + 0.4, WP[0] - 10, WP[1] + 24]], t0: T.drove - 0.05, t1: 9.0 },
+  { general: "washington", region: CO, keys: [[0, HARLEM[0] + 4, HARLEM[1] - 4], [T.drove, HARLEM[0] + 4, HARLEM[1] - 4], [12.0, 666.0, 208.0]], t0: T.drove - 0.05, t1: 9.0 },
   { general: "washington", region: JE, keys: [[0, ...bank(kT, "PA", HW + 7.4)]], t0: 28.4, t1: 34.6 },
   { general: "rall", region: JE, keys: [[0, TRj[0] + 5.6, TRj[1] - 11.4]], t0: T.colonel - 0.05, t1: 51.0 },
   { general: "washington", region: JE, keys: [[0, ...bank(kT - 0.15, "PA", HW + 7.6)]], t0: T.army - 0.05, t1: T.D + 1 },
@@ -111,7 +111,7 @@ window.SEQ = {
   name: "S04", D: T.D, T, seed: 1776, date: "1776-11-16",
   regions: [CO, JE],
   troops: "blocks", troopsOpts: { look: "lineblocks" },
-  regionOpts: { [CO]: { troopScale: 11 }, [JE]: { troopScale: 3.2, decks } },
+  regionOpts: { [CO]: { troopScale: 16 }, [JE]: { troopScale: 7, decks } },
   features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })), houseK: 0.35 } },   // creek bridges hidden; smaller houses (long houses on crossed streets read as crosses from far away)
   keys: [
     { t: 0, region: CO, at: [610.0, 264.0], dist: 285, tilt: 35, yaw: 0, fov: 30 },                    // = S03's last camera
@@ -123,16 +123,16 @@ window.SEQ = {
     { t: 23.2, region: JE, at: [652.0, 1022.0], dist: 92, tilt: 44, yaw: 0, fov: 30, ease: "cut", dissolve: 0.9 },   // jersey: the crossing at Trenton
     { t: 30.0, region: JE, at: [640.0, 1010.0], dist: 128, tilt: 42, yaw: 0, fov: 30, ease: "io" },       // the boats along the river
     { t: 34.6, region: JE, at: [636.0, 1004.0], dist: 134, tilt: 42, yaw: 0, fov: 30, ease: "lin" },
-    { t: 38.4, region: JE, at: [690.0, 1006.0], dist: 196, tilt: 36, yaw: 0, fov: 30, ease: "io" },       // the winter posts
+    { t: 38.4, region: JE, at: [682.0, 1010.0], dist: 166, tilt: 36, yaw: 0, fov: 30, ease: "io" },       // the winter posts
     { t: 42.0, region: JE, at: [679.0, 1024.0], dist: 66, tilt: 46, yaw: 0, fov: 30, ease: "io" },        // Trenton: the Hessians
     { t: 49.6, region: JE, at: [677.0, 1024.0], dist: 62, tilt: 47, yaw: 0, fov: 30, ease: "lin" },
     { t: 53.0, region: JE, at: [632.0, 1004.0], dist: 104, tilt: 43, yaw: 0, fov: 30, ease: "io" },       // the blue camp across the river
     { t: T.D, region: JE, at: [640.0, 1010.0], dist: 112, tilt: 42, yaw: 0, fov: 30, ease: "lin" },
   ],
-  clouds: { [CO]: { scatter: { seed: 5 }, keepClear: [[480, 380, 200, 1, 1], [636, 224, 70, 1, 1]] }, [JE]: { scatter: { seed: 7 } } },
+  clouds: { [CO]: { scatter: { seed: 5, n: 34, med: 12 }, keepClear: [[480, 380, 40, 1, 1], [636, 224, 30, 1, 1]] }, [JE]: { scatter: { seed: 7, n: 8, med: 40 } } },   // round 2 (author A for the lead): visible wide clouds
   units, arrows, boats, generals, banners, labels,
   overlay: [
-    ["plaque.date", 0.4, { month: "August 1776", day: "30", weekday: "Friday", note: "first light" }],   // continues S03's plate
+    ["plaque.date", 0.4, { month: "1776", day: "", weekday: "", note: "" }],   // = S03's last plate (round 1: no stale 30 August)
     (O, c) => stamp(c, "WHITE PLAINS", T.white - 0.05, T.white + 3.4, [WP[0] - 6, WP[1] + 16]),
     ["plaque.date", T.sixteenth - 0.05, { month: "November 1776", day: "16", weekday: "Saturday", note: "Fort Washington" }],
     (O, c) => stamp(c, "FORT WASHINGTON", T.fortw - 0.05, T.nearly - 0.2, [FW[0] + 4, FW[1] + 8]),
@@ -140,6 +140,7 @@ window.SEQ = {
     ["label", T.prisoner - 0.05, T.then + 0.2, { name: "Nearly 3,000 prisoners", sub: "", world: [FW[0] + 10, FW[1] + 30], side: "us", marker: false }],
     ["plaque.date", T.eighth - 0.05, { month: "December 1776", day: "8", weekday: "Sunday", note: "into Pennsylvania" }],
     ["plaque.note", T.congress - 0.05, "Congress flees Philadelphia"],
+    ["plaque.date", T.settled - 0.1, { month: "December 1776", day: "", weekday: "", note: "" }],   // round 2: no "8 December" over the winter posts
     ["label", T.hessian - 0.05, T.ralls - 0.3, { name: "Hessians", sub: "three regiments", world: [TRj[0] + 0.6, TRj[1] - 14.0], side: "uk", marker: false }],
     ["label", T.fourteen - 0.05, T.colonel - 0.3, { name: "About 1,400 men", sub: "", world: [TRj[0] + 0.6, TRj[1] - 14.0], side: "uk", marker: false }],
     ["label", T.thirtyfirst - 0.05, T.D, { name: "Enlistments end", sub: "31 December", world: bank(kT - 0.15, "PA", HW + 12.0), side: "us", marker: false }],
