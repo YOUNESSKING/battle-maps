@@ -33,3 +33,10 @@ Packaging `youtube/`: title A "George Washington's Top 3 Legendary Tactical Move
   flattened/feathered field patches, the opt-in `detail` layer: otherwise they read as camouflage next to Jackson's wide maps.
 - `troop_sfx`: unit ids repeat between scenes: pair stream start/end events within one scene only.
 - Background jobs must be detached (`setsid nohup`), or a finished shell kills them mid-run.
+
+## Delivery (2026-11-26)
+Gofile: **https://gofile.io/d/9Fe1zD3P** (md5 checked against the server on upload)
+- `Washington-Top3-1080p.mp4` master 1920x1080, 12:53, -14.0 LUFS, md5 56f48c09341e543043986b6566511cd5
+- `Washington-Top3-720p-preview.mp4` md5 6d086b9a52c57d9cb199cb279320c1ea
+- `Washington-publishing-guide.pdf`, `thumb_A_MAIN_HE_SNUCK_OUT.jpg`, `thumb_B_HE_SNUCK_OUT.jpg`
+Publish around 19-22 December (the Trenton anniversary is 25-26 Dec), or earlier if the channel is hot.
