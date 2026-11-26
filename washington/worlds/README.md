@@ -94,7 +94,7 @@ unless the name starts "British"), the rest -> moves; units as given (+ `moves_t
   wide field mosaic (no `field_look gm`), box extended 15 units W + N to [560, 874, 220, 255] (same frame: coordinates unchanged).
 - Round 3 (critic A): config `crown_u` (canopy speckle size, wide; 0.4 jersey / 0.55 colonies so it reads at dist 100-300), winter `crown_k`
   (speckle contrast x1.45), `wood_soft` blur 0.08 / 0.15 (crisp edges), `field_patch_k` (patch-to-patch contrast x0.6-0.65: soft Voronoi
-  facets, strips kept), `wide_near_k` / `wide_slope_k` (woods along valleys / steep ground). **Engine `detail`** (opt-in, region.js
+  facets, strips kept; jersey 0.4 + `field_feather` 0.5 units = blur blended in along the patch borders only, round 4), `wide_near_k` / `wide_slope_k` (woods along valleys / steep ground). **Engine `detail`** (opt-in, region.js
   `detail: {k, u, far}` from the config): procedural high-frequency ground detail in the terrain shader, stronger on the dark wood canopy,
   faded out beyond `far` units from the camera (jersey k 0.1 u 0.35 far 320; colonies k 0.08 u 0.6 far 420). Regions without it render
   unchanged (Jackson `_smoke` snapped before/after: 0.0 mean pixel difference).
