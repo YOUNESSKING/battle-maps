@@ -133,7 +133,8 @@ const DG = [65.0, 78.0, 93.1].map((d) => d * Math.PI / 180);   // the on-screen 
 const sPos = [[1353.4, 2062.4], [1352.0, 2067.8]];   // v2 r3: the second block clear of the clock plate in the bridge shot   // v2 r2 critic B: Sullivan's lead block in the frame, among the houses
 // v2 r3 (critic A #2): up from the River road into the lower town, straight north (front first, long side across the screen), after the dissolve
 const DS = (77.0 + 180) * Math.PI / 180;   // on-screen 'up' at the lower town (camera at 103 s)
-add({ side: "u", region: TR, face: DS, t0: 95.4, arrive: false, keys: [[0, sPos[0][0] - Math.cos(DS) * 2.4, sPos[0][1] - Math.sin(DS) * 2.4], [103.2, sPos[0][0] - Math.cos(DS) * 2.4, sPos[0][1] - Math.sin(DS) * 2.4], [107.4, ...sPos[0]], [T.D, ...sPos[0]]] });
+// v2 r4 (critic A R3): fades in walking, once it is above the timeline (it stood under it 103-106)
+add({ side: "u", region: TR, face: DS, t0: 105.7, arrive: false, keys: [[0, sPos[0][0] - Math.cos(DS) * 1.8, sPos[0][1] - Math.sin(DS) * 1.8], [103.2, sPos[0][0] - Math.cos(DS) * 1.8, sPos[0][1] - Math.sin(DS) * 1.8], [107.4, ...sPos[0]], [T.D, ...sPos[0]]] });
 add({ side: "u", region: TR, face: N, t0: 95.4, arrive: false, keys: [[0, ...sPos[1]]] });   // the second brigade waits below the frame (no walk)
 // Knox's guns race to the head of King and Queen streets
 const G1 = [1355.2, 2053.2], G2 = [1356.6, 2053.3];
@@ -343,12 +344,14 @@ window.SEQ = {
     K(CUT2, TR, [1334.9, 2031.6], 12.4, 52, 14, "cut", 0.10, { dissolve: 0.9 }),   // v2 r3 fix (critic A R2): ~30 % closer (dist 16.5 -> 12.4), framed on the picket + Greene's blocks
     K(95.0, TR, [1335.6, 2032.8], 12.4, 52, 10, "lin", 0.08),
     // 6. the head of the town: guns down both streets, the Hessians in the streets
-    K(95.4, TR, [1352.8, 2054.9], 16.8, 58, 8, "cut", 0.06, { dissolve: 0.9 }),   // v2 r3 (critic A #12): pulled out, blocks ~70 px; r3 fix (A R1): 0.7 u north + the banner 1.6 u south: inside the frame
-    K(102.8, TR, [1353.3, 2055.6], 16.6, 58, 7, "lin", 0.06),
-    K(108.0, TR, [1355.6, 2059.6], 15, 57, 4, "io", 0.05),   // r3 fix (A R3): pans south to Sullivan after the banner steps out
+    K(95.4, TR, [1353.6, 2052.9], 11.6, 60, 11, "cut", 0.06, { dissolve: 0.9 }),   // v2 r4 (critic A N3): tighter (16.8 -> 11.6) on Greene's blocks + the banner + Knox's guns at the town head
+    K(100.9, TR, [1353.8, 2053.5], 11.4, 60, 10, "io", 0.06),
+    K(103.9, TR, [1354.0, 2056.8], 12.6, 59, 6, "io", 0.06),   // v2 r4: slides south onto the King St volley (103.5) + the 103.55 shot after the banner steps out (102.4)
+    K(106.0, TR, [1354.6, 2060.2], 13.8, 58, 5, "io", 0.05),   // v2 r4 (critic A R3): on down to Sullivan's block (bottom 12 % clear)
+    K(108.0, TR, [1355.6, 2060.4], 15, 57, 4, "io", 0.05),   // v2 r4: 0.8 u south (bottom 12 % clear); r3 fix (A R3): pans south to Sullivan after the banner steps out
     // 7. Rall, the fields east of the town, the surrender
-    K(110.5, TR, [1360.2, 2059.6], 13.5, 56, 0, "io", 0.04),   // v2 r3: 1.2 u west (the ring round the Hessians nearer the frame centre)
-    K(118.6, TR, [1362.0, 2057.0], 14, 56, -4, "lin", 0.03),
+    K(110.5, TR, [1359.0, 2060.5], 13.5, 56, 0, "io", 0.04),   // v2 r4 (critic A R3): 1.2 u west + 0.9 u south: the ring's south block walks in above the timeline   // v2 r3: 1.2 u west (the ring round the Hessians nearer the frame centre)
+    K(118.6, TR, [1360.6, 2059.2], 14, 56, -4, "lin", 0.03),
     // 8. the Assunpink bridge
     K(118.65, TR, [1356.6, 2069.4], 9.5, 57, 6, "cut", 0.03, { dissolve: 0.9 }),
     K(127.4, TR, [1357.0, 2069.6], 9.0, 58, 2, "lin", 0.03),

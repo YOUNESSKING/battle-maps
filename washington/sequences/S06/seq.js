@@ -148,9 +148,9 @@ window.SEQ = {
     { t: 10.6, region: JE, at: [660.0, 1022.0], dist: 84, tilt: 45, yaw: 0, fov: 30, ease: "lin" },
     { t: 13.6, region: JE, at: [RD(52)[0], RD(52)[1]], dist: 60, tilt: 44, yaw: 0, fov: 30, ease: "io" },   // 2 January: the post road
     { t: 19.0, region: JE, at: [RD(47)[0], RD(47)[1]], dist: 60, tilt: 43, yaw: 0, fov: 30, ease: "io" },
-    { t: 22.4, region: JE, at: [RD(30)[0] - 4, RD(30)[1] + 4], dist: 100, tilt: 42, yaw: 0, fov: 30, ease: "io" },   // the plan: against the river
-    { t: 26.0, region: JE, at: [RD(36)[0], RD(36)[1]], dist: 56, tilt: 45, yaw: 0, fov: 30, ease: "io" },    // Hand's riflemen
-    { t: 32.45, region: JE, at: [RD(34)[0], RD(34)[1]], dist: 54, tilt: 46, yaw: 0, fov: 30, ease: "lin" },
+    { t: 22.4, region: JE, at: [RD(33)[0] - 3, RD(33)[1] + 3], dist: 84, tilt: 43, yaw: 0, fov: 30, ease: "io" },   // the plan: against the river
+    { t: 26.0, region: JE, at: [RD(38.5)[0], RD(38.5)[1]], dist: 37, tilt: 46, yaw: 0, fov: 30, ease: "io" },    // Hand's riflemen; v2 r4 (critic A N5): ~35 % closer (56 -> 37)
+    { t: 32.45, region: JE, at: [RD(36)[0], RD(36)[1]], dist: 36, tilt: 47, yaw: 0, fov: 30, ease: "lin" },
     { t: 32.45, region: TR, at: [1357.0, 2067.5], dist: 46, tilt: 45, yaw: 0, fov: 30, night: 0.3, ease: "cut", dissolve: 0.9 },   // dusk: the creek, the town   // v2 r3: 3.5 u south (the timeline stays up: the blue block on the right was in the bottom 12 %)
     { t: 40.0, region: TR, at: [1356.8, 2071.6], dist: 18.5, tilt: 48, yaw: 0, fov: 30, night: 0.4, ease: "io" },
     { t: 44.8, region: TR, at: [1356.6, 2071.8], dist: 17, tilt: 49, yaw: 0, fov: 30, night: 0.45, ease: "io" },   // the bridge: three assaults

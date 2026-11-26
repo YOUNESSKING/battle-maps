@@ -208,8 +208,9 @@ window.SEQ = {
   keys: [
     // 1. trenton night (= S06's last frame), down onto the creek
     K(0, TR, [1353.0, 2071.0], 58, 42, 0, "io", NI),
-    K(7.0, TR, [1355.0, 2072.6], 38, 46, 0, "io", NI),
-    K(CUT1, TR, [1356.4, 2073.8], 30, 48, 2, "lin", NI),
+    K(7.0, TR, [1355.0, 2073.0], 38, 46, 0, "io", NI),
+    K(14.0, TR, [1356.0, 2076.8], 32, 47.5, 1.5, "io", NI),   // v2 r4 (A N2): the camera walks south with Washington's banner (6.8 -> 14.0)
+    K(CUT1, TR, [1356.4, 2077.6], 30, 48, 2, "lin", NI),
     // 2. jersey night: the back road round the British left; the frost
     K(CUT1, JE, [698, 1036], 100, 44, 0, "cut", 0.85, { dissolve: 0.9 }),
     K(25.0, JE, [703, 1036], 98, 45, 2, "lin", 0.85),
@@ -240,7 +241,7 @@ window.SEQ = {
     // the decision card continues from S06 (shown through S06's end): the real choice (B) lights on "He slipped away"
     ["engage.decide", { t: 0, instant: true, sub: "2 JANUARY 1777 · YOU ARE WASHINGTON", a: "HOLD THE CREEK\nAND FIGHT", b: "SLIP AWAY\nIN THE NIGHT", real: "b",
       tReveal: 0.3, until: 2.0, dim: 0.55 }],
-    ["label", T.five - 0.05, T.covering + 1.2, { name: "About 500 men", sub: "keep the fires burning and dig", world: [1356.4, 2079.6], side: "us", marker: false }],
+    ["label", T.five - 0.05, T.covering + 1.2, { name: "About 500 men", sub: "keep the fires burning and dig", world: [1356.9, 2081.3], offset: [240, -135], side: "us", marker: false }],   // v2 r4 (A N2): mid-walk anchor, ~120 px right of the banner
     ["plaque.clock", T.road - 0.05, { time: "2:00", note: "the back road", header: "2 - 3 January 1777" }],   // V2: on the road by 2 a.m. (FACT G3)
     // v2 r2 critic B: "froze" once on screen (the plate below)
     ["label", T.froze - 0.05, 31.3, { name: "The mud froze", sub: "", world: [702.0, 1021.0], marker: false }],   // v2 r1: dark v8 plate, not a stamp
