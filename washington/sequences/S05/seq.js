@@ -127,7 +127,7 @@ add({ side: "r", region: TR, face: Math.atan2(-0.95, -0.3), keys: [[0, 1338.0, 2
 // round 3 (critic A): Greene's blocks stay on open ground WEST of the ring wood: abreast west of the Pennington road, straight south past
 // the wood (facing south), hold, turn in place toward their deploy spots at the head of the town, walk
 // v2 r3 (critic A #2): each block walks straight along its front normal (south), steps off on "burst", stops (and settles) before the 95.4 dissolve
-const DG = [68.5, 76.8, 85.8].map((d) => d * Math.PI / 180);   // the on-screen 'down' direction at each block (camera at 93.5 s)
+const DG = [65.0, 78.0, 93.1].map((d) => d * Math.PI / 180);   // the on-screen 'down' direction at each block (camera at 93 s; r3 fix: re-measured for the closer approach camera)
 [0, 1, 2].forEach((i) => { const s0 = [1333.0 + i * 2.2 - (i === 0 ? 1.5 : 0) + (i === 2 ? 1.6 : 0), 2033.0], p = [s0[0] + Math.cos(DG[i]) * 1.3, s0[1] + Math.sin(DG[i]) * 1.3];   /* v2 r2 critic B: west block clear of the farm; v2 r3 (critic A N5): east block clear of the wood clump */
   add({ side: "u", region: TR, face: DG[i], t0: 88.0, keepTimes: true, keys: [[0, ...s0], [91.4 + i * 0.1, ...s0], [94.0 + i * 0.1, ...p], [T.D, ...p]] }); });
 const sPos = [[1353.4, 2062.4], [1352.0, 2067.8]];   // v2 r3: the second block clear of the clock plate in the bridge shot   // v2 r2 critic B: Sullivan's lead block in the frame, among the houses
@@ -340,8 +340,8 @@ window.SEQ = {
     K(80.5, JE, [626, 970], 96, 48, -44, "io", 0.85),
     K(CUT2, JE, [630, 974], 90, 49, -40, "lin", 0.85),
     // 5. trenton grey dawn: the picket, Greene down the Pennington road
-    K(CUT2, TR, [1335.6, 2031.0], 11.6, 52, 14, "cut", 0.10, { dissolve: 0.9 }),   // v2 r3 fix (critic A R2): ~30 % closer (dist 16.5 -> 11.6), framed on the picket + Greene's blocks
-    K(95.0, TR, [1336.4, 2032.6], 11.6, 52, 10, "lin", 0.08),
+    K(CUT2, TR, [1334.9, 2031.6], 12.4, 52, 14, "cut", 0.10, { dissolve: 0.9 }),   // v2 r3 fix (critic A R2): ~30 % closer (dist 16.5 -> 12.4), framed on the picket + Greene's blocks
+    K(95.0, TR, [1335.6, 2032.8], 12.4, 52, 10, "lin", 0.08),
     // 6. the head of the town: guns down both streets, the Hessians in the streets
     K(95.4, TR, [1352.8, 2054.9], 16.8, 58, 8, "cut", 0.06, { dissolve: 0.9 }),   // v2 r3 (critic A #12): pulled out, blocks ~70 px; r3 fix (A R1): 0.7 u north + the banner 1.6 u south: inside the frame
     K(102.8, TR, [1353.3, 2055.6], 16.6, 58, 7, "lin", 0.06),
