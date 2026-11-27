@@ -94,9 +94,17 @@ if BORROW:   # the GM overlay (pocket watch, seals, THE ARMIES, ledger) + the bo
         if f.endswith(".woff2"): shutil.copy(f"{VX}/assets/fonts/{f}", f"{out}/assets/gmfonts/{f}")
     kit += "\n" + open(f"{VX}/overlay.js").read() + "\n" + open(f"{KIT}/js/borrow.js").read()
     body += "\nBW.finish();\n"
+    os.makedirs(f"{out}/gl", exist_ok=True)   # r4: the 3D engine layer (three r169 module, fx.js + one extra smoke look, the cloud noise, bwgl.mjs)
+    shutil.copy(f"{VX}/vendor/three.module.min.js", f"{out}/gl/three.module.min.js")
+    fxs = open(f"{VX}/fx.js").read(); _k = "const LOOKS = {"; assert fxs.count(_k) == 1
+    open(f"{out}/gl/fx.js", "w").write(fxs.replace(_k, _k + "\n  bwTall: { tint: [0.31, 0.32, 0.336], alpha: 0.27, s0: 9.0, grow: 3.6, rise: 0.22, turb: 0.4, life: 18, mode: 5.2 },   // BW r4: gmTall stretched x3.4 (curtains ~4x taller than wide)"))
+    if os.path.exists(f"{out}/gl/noise128.bin"): os.remove(f"{out}/gl/noise128.bin")
+    os.link(f"{VX}/cloudtex/noise128.bin", f"{out}/gl/noise128.bin")
+    shutil.copy(f"{KIT}/js/bwgl.mjs", f"{out}/gl/bwgl.mjs")
 js = WXDATA + "\nconst GD = " + json.dumps(GD, separators=(",", ":")) + ";\n" + kit + "\n// ================= SCENE scenes-src/" + (src or name) + ".js =================\n" + body
 html = open(f"{ROOT}/tools/scene_template_w.html").read()
 html = html.replace("{{DURATION}}", str(dur)).replace("{{CREDIT}}", "").replace("{{SCENE_JS}}", js)
+if BORROW: html = html.replace("</body>", '<script type="importmap">{ "imports": { "three": "./gl/three.module.min.js" } }</script>\n<script type="module" src="gl/bwgl.mjs"></script>\n</body>')
 open(f"{out}/index.html", "w").write(html)
 open(f"{out}/.scene_check.js", "w").write(js); _chk = subprocess.run(["node", "--check", f"{out}/.scene_check.js"], capture_output=True, text=True); os.remove(f"{out}/.scene_check.js")   # an inline-script syntax error renders a blank map
 if _chk.returncode: print("!! SCENE SCRIPT SYNTAX ERROR:\n" + _chk.stderr[:800])

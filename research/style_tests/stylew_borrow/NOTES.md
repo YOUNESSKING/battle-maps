@@ -71,3 +71,27 @@ Where a borrowed element overlaps one of ours, the borrowed one REPLACES ours. E
    (ambush) in the final mix; the -3 / -1.5 dBFS peaks at those moments are the VOICE (identical with the muskets muted).
 3. 70 plaque starts on "seventy" (10.50 s). 4. Timeline slides in just after the spoken date (26.6 s clip). 5. Year line 24 px; every
    date plaque 310 x 95. 6. Low clouds fade before they blur into grey blobs (`bigFadeAfter`). 7. Sheet labels in r3 wording.
+
+## r4 (owner: "the dive, the clouds and the smoke don't look right like the film") -> `stylew_borrow_test_r4_share.mp4` (63.8 s, 20 MB, -14.0 LUFS) + `sheet_r4.jpg`
+The CSS sprite clouds and the 2D puffs are gone. The REAL 3D engine now draws clouds, the dive and the smoke: `marion/kit/js/bwgl.mjs`
+(ES module, `--borrow` builds add it with three r169, `vicksburg/engine/fx.js` (unchanged except one extra look `bwTall` = gmTall stretched
+x3.4) and `cloudtex/noise128.bin`) renders a transparent three.js canvas over the 2D Style W map. Its camera is solved every frame from the
+DOM camera (#world translate/scale inside #bw-tilt perspective(1700) rotateX(deg) scale(k), origin 50 % 62 %): eye at
+((960-wx)/ws, P cos/(k ws), (669.6 + P sin/k - wy)/ws), fov 2 atan(669.6/P) with a view offset, so ground shadows and smoke sit on the map.
+World units = base-map px (lowcountry z10 ~ the engine's own map px; every engine length x F because our camera is F x farther).
+- Dive (hook): high oblique (38 deg) over the Lowcountry with `fx.vclouds` fair-weather cumulus at 3 heights (49/78/108 x F), soft ground
+  shadows (`patchGround` on a transparent shadow-only plane), the road / Charleston / ONE ROAD kept clear; then the engine's v8 deck over
+  Nelson's Ferry with `VX.DIVE_OFF_V8` timings (swap SW = 7.0 s: deck in 5.3, white 6.45-7.85, emerge 7.85, clear 8.15, haze 8.75, landed 8.9),
+  the DOM camera falls with it (scale 1 -> 8, tilt 38 -> 10) and lands on the santee map under the white; the engine's close stratus tear away
+  on the landing. "Nelson's Ferry" label from its word (7.4 s, under the white) held to ~11.6 s.
+- Clouds in every map shot: a few big soft cumulus + shadows (name slam, title, Parker's Ferry), placed off the banner, the titles, the
+  action and the result list.
+- Smoke: `fx.smokeLine` with SMOKE_GM {cluster [1,1], fadeAfter 6, fadeTo 0.12} and the `bwTall` look: 2 short night curtains east of the
+  guard (alpha 0.11), one curtain per ripple at Parker's Ferry behind the hidden line, west / east of the banner (alpha 0.2); flashes +
+  flintlock shots unchanged (r3 audio reused: same shots); the 1.25 s puffs and the charge's road dust are dropped.
+- Gold titles (owner: "it swings"): no turn, no drift, no shake: they land on the word with a 0.45 s 0.94 -> 1 settle and sit still
+  (sheet_r4: every 0.2 s next to v8's ONE DAY); they are screen-space (not inside the tilted map).
+- First frame: no fade from black.
+- Rendered on RunPod (`tools/render_pod_bw.sh`: no A4500, no RTX 3090 (a 3090 render came out corrupted: black ellipse / blocky clouds,
+  discarded), 10-min no-answer kill): RTX A4000 + RTX 4000 Ada + one bad 3090 run, ~25 pod-minutes, ~$0.08; pods list verified empty.
+Open: smoke curtains are single columns (v8 has many along long lines); the far side of the map at 38 deg is a haze band (the 2D map ends).

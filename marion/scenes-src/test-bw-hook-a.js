@@ -42,9 +42,15 @@ const C0 = [1352, 850, 0.72], C1 = [1345, 858, 0.76];
 const CEND = [...PP(1575, 950), SP(1.62)];          // the ferry (bottom) + the Great Savannah house (top) in one frame
 const CH2 = [...PP(1535, 745), SP(1.9)];            // hook-2: slow push up the road onto the house
 const CW = [1440, 780, 0.74];                       // the wide frame after the pull back (= hook-b frame 0)
-const TZ0 = T_SANTEE - 0.35, TZ1 = T_NF + 0.3;
-seg(0, 3.0, [C0[0], C0[1], 0.667], C0, "power2.out"); seg(3.0, TZ0, C0, C1);   // BW: the lens still falling as the deck clears
-seg(TZ0, TZ1, C1, CEND, "power2.inOut", [[C1[0], C1[1]], [1370, 940], [CEND[0], CEND[1]]]);
+// BW r4: the v8 cloud dive with the real engine (kit/js/bwgl.mjs): a high oblique view over the whole Lowcountry (tilt ~38 deg) drifting down
+// while "one road ... Charleston ... Santee River" is spoken, then the fall into the deck over Nelson's Ferry, the white-out around the swap
+// (SW), the landing on the santee map under it, emerging through torn stratus; settled by ~8.9 s ("There, before dawn" 9.0 s)
+const SW = 7.0, NFL = PP(1581.8, 1085.8);
+const TZ0 = T_SANTEE - 0.35, TZ1 = SW + 1.9;
+const A0 = [1395, 905, 0.86], A1 = [1440, 950, 1.05], AD = [NFL[0], NFL[1] - 6, 8.0];
+seg(0, 5.3, A0, A1, "sine.inOut");
+seg(5.3, SW, A1, AD, "power2.in", [[A1[0], A1[1]], [AD[0], AD[1]]]);
+seg(SW, TZ1, [AD[0], AD[1], 9.2], CEND, "power2.out");
 SFX("whoosh", TZ0 - 0.1);
 seg(TZ1 + 0.02, T_DAWN + 1.4, CEND, CH2, "sine.inOut");
 seg(T_DAWN + 1.42, T_4M - 0.05, CH2, [CH2[0] + 2, CH2[1] - 1, CH2[2] * 1.05]);
@@ -92,7 +98,7 @@ focus(LYT(32.80, -79.95), 150, T_CHS, TZ0 + 0.3);
 // units of hook-1 that would sit as huge-spaced boxes at the frame edge in the dive fade out
 hideU(["pC", "pK", "pM", "pN"], TZ0 + 0.5);
 // "Nelson's Ferry": the carved place name on the word (the camera arrives on it)
-PLACE_LABEL("Nelson's Ferry", PP(1582, 1081), T_NF, { dy: 30, size: 40, hold: 3.2 });
+PLACE_LABEL("Nelson's Ferry", PP(1582, 1081), T_NF, { dy: 30, size: 40, hold: 4.2 });   // r4: on its word (under the white-out), held to ~11.6 s
 // ---------------------------------------------------------------------------------------------------------------------------------
 // hook-2 (santee inset): the Great Savannah raid, before dawn
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -129,7 +135,10 @@ mg(PP(1478, 702), PP(...REND[0]), T_GUNS + 0.05, 5, 1.3 / CH2[2]);
 mg(PP(1478, 702), PP(...REND[1]), T_GUNS + 1.1, 4, 1.3 / CH2[2]);
 // muzzle flashes at the guard (constant size on screen; visual only, the mg sound carries them)
 // BW: every shot of the guard = one muzzle flash + one flintlock shot cue (6 shots, ragged)
-[0.05, 0.27, 0.42, 1.1, 1.31, 1.58].forEach((dt, i) => BW.shot(PP(1478 - 16 + 7 * i, 702 + (i % 2 ? 8 : -6)), T_GUNS + dt, { k: 0.9, aim: PP(...REND[i % 2]), ps: 0.8 }));
+[0.05, 0.27, 0.42, 1.1, 1.31, 1.58].forEach((dt, i) => BW.shot(PP(1478 - 16 + 7 * i, 702 + (i % 2 ? 8 : -6)), T_GUNS + dt, { k: 0.9, aim: PP(...REND[i % 2]), puff: false }));
+// r4: two short tall smoke curtains beside the guard (engine fx.smokeLine, GM settings), clear of the prisoners (east)
+BW.smokeGL([PP(1520, 694), PP(1526, 690)], T_GUNS + 0.05, T_GUNS + 0.6, { h: 1.2, opts: { look: "bwTall", rate: 14, alpha: 0.11 } });   // night: thinner; east of the guard
+BW.smokeGL([PP(1536, 716), PP(1542, 712)], T_GUNS + 1.1, T_GUNS + 1.7, { h: 1.2, opts: { look: "bwTall", rate: 14, alpha: 0.11 } });   // (the guard box stays clear)
 // BW r3: the kit smoke is replaced by the per-shot puffs (<= 6 per volley)
 B.move("r1", T_GUARD - 0.25, 0.45, ...PP(1440, 698)); B.move("r2", T_GUARD - 0.15, 0.45, ...PP(1478, 740));
 hideU(["g1"], T_GUARD + 0.35);
@@ -162,17 +171,12 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
 // ================================================================================================================================
 // BW (borrowed from the 3D films): cloud dive, pocket-watch plaque, THE ARMIES, tilt
 // ================================================================================================================================
-// the cloud dive: the lens falls through a white cumulus deck over the wide map (0 - ~2.6 s), then through scattered fair-weather
-// cumulus (with their shadows on the ground) all the way down the existing continuous zoom, landing clear on "Nelson's Ferry"
-// r2: 8 soft v6 cumulus in all, no deck, no white veil: two big ones pass the lens in the first ~2 s (thinning), two small ones drift at the
-// edges of the wide map, four low ones beside the descent; none over the road corridor while "one road ... Nelson's Ferry" is spoken
-{ const E = gsap.parseEase("sine.inOut"), KC = [[[...R_CN, ...R_NC].filter((q, i) => i % 3 === 0), 260], [[LYT(32.80, -79.95)], 260]];
-  const QC = LYT(32.99, -80.10), QK = LYT(34.12, -80.70), RD = Math.atan2(QK[1] - QC[1], QK[0] - QC[0]) + Math.PI / 2;
-  BW.clouds({ seed: 1781, until: T_THERE, bigFadeAfter: 3.0, clear: { t0: 2.0, t1: 6.3, box: [850, 360, 1400, 1000] },
-    sv: (t, ws) => (t < 3.0 ? BW.lerp(0.42, Math.max(ws, 0.7), E(t / 3.0)) : ws),
-    deck: { n: 2, at: [C0[0] - 60, C0[1] - 40], spread: [520, 260], h: [1.9, 2.25], r: [430, 520] },
-    field: { n: 2, at: [C1[0], C1[1]], spread: [1250, 700], h: [0.12, 0.2], r: 700, keep: KC },
-    path: { camAt, t0: 2.8, t1: TZ1, n: 4, h: [0.1, 0.22], r: 760, spread: 1400, cones: [[RD, 0.5], [RD + Math.PI, 0.5]] } }); }
+// r4: the real engine (fx.vclouds + the v8 dive + the close stratus + cloud shadows on the ground), camera solved from the DOM camera
+{ const ROADP = [...R_CN, ...R_NC].filter((q, i) => i % 2 === 0), CHS = LYT(32.80, -79.95);
+  BW.gl({ mpu: 128, dive: { t: SW, over: NFL }, diveOff: { haze: 1.75, land: 1.9 },
+    fair: { F: 3.3, box: [150, 120, 2600, 1400], n: 18, med: 24, seed: 5, tiers: [49, 78, 108], diveClear: 60, keepLines: [[ROADP, 80]], keep: [[CHS[0], CHS[1], 110], [860, 1110, 130]],
+      on: (t) => t < SW + 1.2 },
+    stratus: { F: 3.1, at: [CEND[0], CEND[1]] }, smokeScale: 130, smokeWind: [3, -1] }); }
 // hook-2: "before dawn" is the script's only time: the pocket watch comes in (hands ~4:30, no clock time is spoken)
 BW.time(T_DAWN, { label: "Before dawn", header: "1780" });   // r2: no clock time is spoken: text only, no watch
 BW.date("1780", T_4M + 0.1);
@@ -181,4 +185,5 @@ BW.date("1780", T_4M + 0.1);
 { const ENT = [{ name: "Americans", sub: "militia", color: "#2c57b7" }, { name: "British", sub: "and Loyalists", color: "#bc2528" }];
   BW.legend(8.5, T70 - 0.15, ENT); BW.legend(Math.min(T_GUARD, 16.9) + 0.5, END + 1, ENT); }
 // gentle tilt: flat while falling, then a slow push with ~8 deg of perspective once the lens is below the clouds
-BW.tilt([[0, 0, 1.0], [TZ0, 3, 1.03], [TZ1 + 0.5, 6, 1.05, "power1.inOut"], [END, 7, 1.06]]);   // r2: capped (sharpness)
+// r4: high oblique (38 deg) for the overview, straightening during the fall (10 deg at the swap), 7 deg on the landed 2D map
+BW.tilt([[0, 38, 1.0], [5.3, 36, 1.0], [SW - 0.02, 10, 1.0, "power2.in"], [SW, 16, 1.0, "none"], [TZ1, 7, 1.05, "power2.out"], [END, 7, 1.06]]);

@@ -85,8 +85,8 @@ tl.to(B.units.dc.el, { autoAlpha: 0, duration: 0.5 }, T_GAL + 2.5);
 B.move("fr", T_LOY - 0.2, 1.4, 1434, 826); B.move("fr", T_LOY + 1.2, 0.7, 1450, RY + 2);
 B.move("fr2", T_LOY + 0.2, T_CHARGE - T_LOY, 1436, 822);
 const FRP = CW.filter((q) => q[0] > 1452 && q[0] < 1540), FR2P = CW.filter((q) => q[0] > 1440 && q[0] < 1512);
-march("fr", [[1450, RY + 2], ...FRP], T_CHARGE + 0.05, T_PACK - T_CHARGE + 0.6, { dustSize: 26, dustOp: 0.45, trail: false });
-march("fr2", [[1436, 822], [1444, 812], ...FR2P], T_CHARGE + 0.35, T_PACK - T_CHARGE + 0.7, { dustSize: 26, dustOp: 0.45, trail: false });
+march("fr", [[1450, RY + 2], ...FRP], T_CHARGE + 0.05, T_PACK - T_CHARGE + 0.6, { dust: false, trail: false });
+march("fr2", [[1436, 822], [1444, 812], ...FR2P], T_CHARGE + 0.35, T_PACK - T_CHARGE + 0.7, { dust: false, trail: false });
 // ---------------------------------------------------------------------------------------------------------------------------------
 // m3-12 "packed so tight on the narrow road": the two boxes jam nose to tail (red cavalry boxes pulse on "narrow road")
 B.move("fr2", T_NARROW, 0.5, 1522, RY + 1, "power2.out");
@@ -95,12 +95,12 @@ B.move("fr2", T_NARROW, 0.5, 1522, RY + 1, "power2.out");
 const ROADHIT = (x) => [x, RY + 1];
 AIDS.forEach((id) => tl.to(B.units[id].el.querySelector(".blk"), { filter: "brightness(1) saturate(1) opacity(1)", duration: 0.25 }, T_EVERY - 0.05));
 // BW: one muzzle flash (+ flintlock shot) per musket along the whole hidden line, a ragged ripple from the west flank
-BW.volley([[1484, 795], [1602, 797]], T_EVERY, 0.62, 18, { k: 0.9, jy: 7, seed: 31, ps: 0.85, puffEvery: 3, aim: (x) => [x + (1528 - x) * 0.35, RY + 2] });
+BW.volley([[1484, 795], [1602, 797]], T_EVERY, 0.62, 18, { k: 0.9, jy: 7, seed: 31, noPuff: true, aim: (x) => [x + (1528 - x) * 0.35, RY + 2] });
 mg([1498, 794], ROADHIT(1528), T_EVERY + 0.02, 5, 1.1); mg([1560, 794], ROADHIT(1536), T_EVERY + 0.1, 5, 1.1);
 /* BW r3: kit smoke replaced by the per-shot puffs (<= 6 per volley) */
 MARK([1568, RY + 1], T_EVERY + 0.35, T_COUNT + 0.2);   // BW r2: east of the jammed boxes, off the FRASER tag
 // "firing buckshot": a second ripple down the line
-BW.volley([[1488, 796], [1600, 798]], T_BUCK + 0.05, 0.8, 13, { k: 0.9, jy: 7, seed: 57, ps: 0.85, puffEvery: 3, aim: (x) => [x + (1524 - x) * 0.35, RY + 2] });   // BW: the buckshot ripple, shot by shot
+BW.volley([[1488, 796], [1600, 798]], T_BUCK + 0.05, 0.8, 13, { k: 0.9, jy: 7, seed: 57, noPuff: true, aim: (x) => [x + (1524 - x) * 0.35, RY + 2] });   // BW: the buckshot ripple, shot by shot
 mg([1528, 794], ROADHIT(1520), T_BUCK + 0.08, 4, 1.1); mg([1588, 796], ROADHIT(1540), T_BUCK + 0.2, 4, 1.1);
 /* BW r3: kit smoke replaced by the per-shot puffs (<= 6 per volley) */
 // the red cavalry breaks: "killed on the spot" -> fast fade; a few flee back toward the ferry
@@ -148,5 +148,12 @@ BW.O.ledger.hide(T_GUN + 0.4);
   BW.O.timeline.hide(TH); }
 // r2: THE ARMIES steps out before the result list (end: ledger + date plaque + banner only)
 BW.legend(0, T_COUNT - 0.2, [{ name: "Marion's men", sub: "South Carolina", color: "#2c57b7" }, { name: "British", sub: "and Loyalists", color: "#bc2528" }]);
-BW.tilt([[0, 6, 1.05], [END, 7, 1.06]]);   // r2: capped (sharpness)
+BW.tilt([[0, 6, 1.05], [END, 7, 1.06]]);
+// r4: the real engine: one tall smoke curtain per ripple (fx.smokeLine, GM settings) behind the hidden line, west and east of Marion's banner
+// (never over the jammed red boxes, the FRASER tag or the banner); big soft cumulus drifting over the map away from the action and the result list
+BW.smokeGL([[1490, 738], [1500, 738]], T_EVERY, T_EVERY + 0.62, { h: 14, opts: { look: "bwTall", rate: 26, alpha: 0.2 } });   // h: lifted off the ground (the engine fades sprites that touch it)
+BW.smokeGL([[1590, 740], [1600, 741]], T_BUCK + 0.05, T_BUCK + 0.85, { h: 14, opts: { look: "bwTall", rate: 22, alpha: 0.2 } });
+BW.gl({ mpu: 16, smokeScale: 70, smokeWind: [2.5, -0.6],
+  fair: { F: 1.5, box: [1150, 620, 720, 440], n: 9, med: 22, seed: 21, tiers: [49, 58], drift: [0.5, -0.15], diveClear: 0,
+    keep: [[1525, 790, 95], [1470, 815, 70], [1400, 850, 80], [1745, 705, 110], [1440, 815, 60]] } });   // r2: capped (sharpness)
 }

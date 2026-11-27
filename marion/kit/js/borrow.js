@@ -98,8 +98,8 @@ const BW = (() => {
     G.dim.style.opacity = ((G.o.dim || 0) * a * (1 - fly)).toFixed(3);
     G.box.style.visibility = a > 0.002 && fly < 0.999 ? "visible" : "hidden"; if (G.box.style.visibility === "hidden") { if (G.subEl) G.subEl.style.opacity = 0; continue; }
     if (!G.painted && document.fonts.check('700 100px "GM Cormorant"')) G.paint();
-    const grow = 0.94 + 0.06 * sstep(G.tOn - 0.55, G.tGrow, t), drift = clamp((t - G.tOn + 0.55) / Math.max(0.5, G.tOff - G.tOn + 0.55));
-    const ry = lerp(9, -4, drift), rx = lerp(16, 11, drift), z = lerp(-60, 30, drift) + fly * 1250;
+    const grow = 0.94 + 0.06 * sstep(G.o.exact ? G.tOn : G.tOn - 0.55, G.tGrow, t), drift = clamp((t - G.tOn + 0.55) / Math.max(0.5, G.tOff - G.tOn + 0.55));
+    const ry = 0, rx = 9, z = fly * 1250;   // r4 (owner: "it swings"): lands on its word with the short 0.94 -> 1 settle, then rock steady (no turn, no drift)
     G.rig.style.transform = `translateZ(${z.toFixed(1)}px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) scale(${grow.toFixed(4)})`;
     G.rig.style.opacity = (a * (1 - fly)).toFixed(3); G.shadow.style.opacity = "0";
     G.shadow.style.transform = `translate(${(-ry * 2).toFixed(1)}px,0) scale(${grow.toFixed(4)})`;
@@ -172,16 +172,22 @@ const BW = (() => {
   const volley = (pts, t0, span, n, o = {}) => { const R = R0(o.seed || Math.round(t0 * 1000)); const L = pts.length;
     for (let i = 0; i < n; i++) { const u = clamp((i + (R() - 0.5) * 1.6) / Math.max(1, n - 1)) ** lerp(0.85, 1.3, R()), f = i / Math.max(1, n - 1) * (L - 1), a = pts[Math.floor(f)], b = pts[Math.min(L - 1, Math.floor(f) + 1)], q = f - Math.floor(f);
       const x = lerp(a[0], b[0], q) + (R() - 0.5) * (o.jx || 6), y = lerp(a[1], b[1], q) + (R() - 0.5) * (o.jy || 5);
-      shot([x, y], t0 + (i === 0 ? 0 : u * span), { k: o.k || 1, aim: o.aim ? o.aim(x, y) : null, ps: o.ps, puff: i % (o.puffEvery || 2) === 0 }); } };
+      shot([x, y], t0 + (i === 0 ? 0 : u * span), { k: o.k || 1, aim: o.aim ? o.aim(x, y) : null, ps: o.ps, puff: !o.noPuff && i % (o.puffEvery || 2) === 0 }); } };
   // ================================================================== 8. tilt camera (gentle; keys [t, deg, scale])
   const TS = { d: 0, s: 1 }; const tiltApply = () => { WR.style.transform = TS.d || TS.s !== 1 ? `perspective(1700px) rotateX(${TS.d.toFixed(3)}deg) scale(${TS.s.toFixed(4)})` : ""; };
   const tilt = (keys) => { TS.d = keys[0][1]; TS.s = keys[0][2]; tiltApply(); for (let i = 1; i < keys.length; i++) tl.to(TS, { d: keys[i][1], s: keys[i][2], duration: Math.max(0.01, keys[i][0] - keys[i - 1][0]), ease: keys[i][3] || "sine.inOut", onUpdate: tiltApply }, keys[i - 1][0]); tl.call(tiltApply, null, 0); };
   // ================================================================== frame driver (pure function of t) + finish (cue screen positions for the sound pan)
-  const drive = () => { const t = tl.time(); O.update(t); for (const u of updaters) u(t); };
+  const drive = () => { const t = tl.time(); O.update(t); for (const u of updaters) u(t); if (window.__BWGL) window.__BWGL.draw(t); };
+  // r4: the real 3D engine layer (kit/js/bwgl.mjs, an ES module that runs after this script): config collected here, rendered from drive()
+  const gl = (cfg) => { window.BWGL_CFG = Object.assign(window.BWGL_CFG || {}, { on: true }, cfg); return O; };
+  const smokeGL = (pts, t0, t1, o = {}) => { gl({}); (window.BWGL_CFG.smoke = window.BWGL_CFG.smoke || []).push({ pts, t0, t1, ...o }); return O; };
+  window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+  window.__hf.buildReady.bwgl = new Promise((res) => { window.__bwglReady = res; });
   tl.to({ v: 0 }, { v: 1, duration: Math.max(0.1, END), ease: "none", onUpdate: drive }, 0); tl.call(drive, null, 0);
   { const prev = tl.eventCallback("onUpdate"); tl.eventCallback("onUpdate", function () { if (prev) prev.apply(this, arguments); drive(); }); }   // again after every child tween rendered (ledger rows grow: the frame follows)
   const finish = () => { const px = SHOTS.map(([t, x, y]) => { tl.seek(t, false); const wx = gsap.getProperty(WORLD, "x"), ws = gsap.getProperty(WORLD, "scaleX"), wy = gsap.getProperty(WORLD, "y");
       return [t, +(wx + x * ws).toFixed(1), +(wy + y * ws).toFixed(1)]; });
     document.documentElement.setAttribute("data-shots", JSON.stringify(px)); tl.seek(0, false); drive(); };
-  return { O, date, note, dateNow, time, rowParts, legend, row, gold, clouds, shot, volley, tilt, finish, WR, sstep, lerp, clamp };
+  return { O, TS, gl, smokeGL, date, note, dateNow, time, rowParts, legend, row, gold, clouds, shot, volley, tilt, finish, WR, sstep, lerp, clamp };
 })();
+window.BW = BW;
