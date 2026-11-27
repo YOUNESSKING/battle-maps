@@ -1,6 +1,6 @@
 #!/bin/bash
 # Render Vicksburg scenes on ONE RunPod GPU pod (recipe: research/runpod/README.md). The key stays in $RUNPOD_API_KEY (never printed).
-# BW copy of vicksburg/tools/render_pod.sh (Style W borrow test): never an RTX A4500, no RTX 3090 (its frames came out corrupted: black ellipse / blocky clouds, r4); a pod that does not answer within 10 min is terminated.
+# BW copy of vicksburg/tools/render_pod.sh (Style W borrow test): never an RTX A4500, no RTX 3090 and (r12) no RTX 4000 Ada (black-ellipse frames too) (its frames came out corrupted: black ellipse / blocky clouds, r4); a pod that does not answer within 10 min is terminated.
 # usage: SCENES_DIR=marion/scenes bash research/style_tests/stylew_borrow/tools/render_pod_bw.sh OUTDIR S05 [S07 ...]   (or NAME:START-END for a window, e.g. S09_gm:55-110)     -> OUTDIR/S05.mp4 ...; the pod is ALWAYS terminated at exit.
 # Env: GPU (default "NVIDIA RTX A5000"), WORKERS (3), POD (reuse an existing pod id; then it is not terminated), KEEP=1 (r9: keep the new pod alive for more iterations; terminate it yourself).
 set -u
@@ -12,7 +12,7 @@ ctl() { (cd $R && ./ctl.sh "$@"); }
 OWN=0
 if [ -z "${POD:-}" ]; then
   # budget (owner <= $2): only cards <= ~$0.30/h (A6000 / 4090 / SECURE 3090 were $0.5-0.7/h)
-  for GC in "${GPU:-NVIDIA RTX A5000}:COMMUNITY" "NVIDIA RTX A4000:COMMUNITY" "NVIDIA RTX 4000 Ada Generation:COMMUNITY" "NVIDIA RTX A5000:SECURE" "NVIDIA RTX A4000:SECURE"; do
+  for GC in "${GPU:-NVIDIA RTX A5000}:COMMUNITY" "NVIDIA RTX A4000:COMMUNITY" "NVIDIA RTX A5000:SECURE" "NVIDIA RTX A4000:SECURE"; do
     G=${GC%:*}; C=${GC##*:}; for _once in 1; do
       python3 $R/deploy.py "$G" $C $CTL_TOKEN_FILE 0.8.226 | sed 's/ gpus { id }//' > $W/m.gql
       rp "$(cat $W/m.gql)" > $W/deploy.json; POD=$(python3 -c "import json;d=json.load(open('$W/deploy.json'));print(((d.get('data') or {}).get('podFindAndDeployOnDemand') or {}).get('id',''))")

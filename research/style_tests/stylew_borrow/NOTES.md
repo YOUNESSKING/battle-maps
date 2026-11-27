@@ -217,3 +217,16 @@ REFERENCE row from `ajackson/sequences/S07/sheet.jpg` next to the r10 cannon, th
 - Audio: a -3 dBFS peak limiter after the loudness pass (loudnorm target -13.8 -> -14.0 LUFS out); the cannon boom stays on the flash frame
   with the Jackson-style mix.
 - RunPod: one RTX A4000 kept alive (3 micro-clips, then the 3 full windows), ~$0.04; pods terminated, list empty.
+
+## r12 (critics r11: B 9 YES; A 8 / 8 "close": the musket bank is right, the cannon is the weak part)
+`stylew_borrow_test_r12_share.mp4` (76.7 s, 21.6 MB, -14.0 LUFS, peak -2.7 dBFS; audio = r11's, unchanged), `sheet_r12.jpg`, `smoke_closeup_r12.jpg`.
+Only these changed (hook window = r11 render):
+- Cannon cloud: denser and darker: jet lumps r 30-50 px, alpha ~0.9, almost no "white" boost; shading for cannon smoke now tops ~(230,227,220),
+  undersides ~(95,98,105); the jet ends in a heavy head (7 big lumps r 40-55 px round the jet's end, 160-200 px across) within 0.4 s; the 3D-film
+  plume underneath at alpha 0.25 with a darker tint; composite cap 0.9 in this window. Drift / linger as in r11.
+- Cannon fireball: the cone outline is jagged and irregular (random tongues), 4-6 spark streaks 20-30 px; frame 1 full, frame 2 at 40 %;
+  white core and the r 120 px ground glow kept.
+- Rout pieces: x1.5 (measured 12-14 px in r11) = 20 x 14 px on screen; each visible >= 1.2 s.
+- Wipe-out starts 0.15 s earlier: with "KILLED" (71.10 s in the share).
+- RunPod: the first pod came up as an RTX 4000 Ada and rendered black-ellipse frames (like the 3090 in r4): terminated, the Ada is now excluded
+  in render_pod_bw.sh; a kept-alive RTX A4000 did the micro-clips + both windows. r12 ~$0.04; pods terminated, list empty.

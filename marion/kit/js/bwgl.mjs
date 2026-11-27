@@ -193,9 +193,12 @@ else {
       const G = (o) => PL.push(Object.assign({ i: -1, g: 1, t: ts + 2 / 30, x, z, h: R(), cell: Math.floor(R() * 8), eT: 0.5, g0: 0.4, gT: 0.6, gr: 0.015, ain: 0.04, rise: 6, wind: CW_, white: 0, fo: 4 }, o));
       // r11: a dense jet 180-220 x 70-90 px reached in 0.3 s (alpha ~0.9, big from the start), which then billows into a 140-180 px cloud,
       // tops (235,232,225) / undersides (105,108,115), drifting ~6 px/s, lingering 12-15 s; the dust is a flat ground ring (2D, below)
-      for (let k = 0; k < 16; k++) { const u = (k + R()) / 16, f = (180 + 40 * R()) * u, q = (R() - 0.5) * 50 * (0.5 + 0.5 * u);
-        G({ ex: dx * f + nx * q, ez: dz * f + nz * q, eT: 0.3, sz: (30 + 12 * R()) / 0.42, g0: 0.75, gT: 1.6, gr: 0.03, a0: 0.92, ain: 0.02, tau: 11, life: 12 + 3 * R(), fo: 3.5, w: 1, white: 0.3 }); }
-      for (let k = 0; k < 6; k++) { const f = 10 + 40 * R(), q = (R() - 0.5) * 30; G({ ex: dx * f + nx * q, ez: dz * f + nz * q, eT: 0.3, sz: (38 + 12 * R()) / 0.42, g0: 0.6, gT: 1.2, gr: 0.02, a0: 0.9, ain: 0.02, tau: 11, life: 12 + 3 * R(), fo: 3.5, w: 1, white: 0.2 }); }
+      for (let k = 0; k < 16; k++) { const u = (k + R()) / 16, f = (170 + 30 * R()) * u, q = (R() - 0.5) * 50 * (0.5 + 0.5 * u);
+        G({ ex: dx * f + nx * q, ez: dz * f + nz * q, eT: 0.3, sz: (30 + 20 * R()) / 0.42, g0: 0.75, gT: 1.6, gr: 0.03, a0: 0.9, ain: 0.02, tau: 11, life: 12 + 3 * R(), fo: 3.5, w: 1, white: 0.04 }); }
+      // r12: the jet ends (within 0.4 s) in a heavy head 160-200 px across: 7 big lumps r 40-55 px round the jet's end
+      for (let k = 0; k < 7; k++) { const a = (k / 7) * 6.283 + R() * 0.5, rr = 35 + 30 * R(), f = 190 + 25 * R() + Math.cos(a) * rr * 0.6, q = Math.sin(a) * rr;
+        G({ t: ts + 2 / 30 + 0.05, ex: dx * f + nx * q, ez: dz * f + nz * q, eT: 0.38, sz: (40 + 15 * R()) / 0.42, g0: 0.6, gT: 1.4, gr: 0.03, a0: 0.9, ain: 0.04, tau: 11, life: 12 + 3 * R(), fo: 3.5, w: 1, white: 0.03 }); }
+      for (let k = 0; k < 6; k++) { const f = 10 + 40 * R(), q = (R() - 0.5) * 30; G({ ex: dx * f + nx * q, ez: dz * f + nz * q, eT: 0.3, sz: (38 + 12 * R()) / 0.42, g0: 0.6, gT: 1.2, gr: 0.02, a0: 0.9, ain: 0.02, tau: 11, life: 12 + 3 * R(), fo: 3.5, w: 1, white: 0.03 }); }
       if (ti >= 0) { const T1 = ts + ti;
         for (let k = 0; k < 7; k++) { const a = R() * 6.283, f = 10 + 18 * R(); G({ t: T1, x: tx, z: tz, ex: Math.cos(a) * f, ez: Math.sin(a) * f * 0.7 - 6 * R(), eT: 0.3, sz: (12 + 10 * R()) / 0.42, g0: 0.4, gT: 0.4, a0: 0.75, tau: 1.2, life: 3, fo: 1.5, rise: 4, w: 2 }); }
         for (let k = 0; k < 5; k++) { const a = R() * 6.283, f = 6 + 10 * R(); G({ t: T1 + 0.08, x: tx, z: tz, ex: Math.cos(a) * f, ez: Math.sin(a) * f * 0.7, eT: 0.6, sz: (20 + 12 * R()) / 0.42, g0: 0.35, gT: 1.0, a0: 0.55, tau: 6, life: 10 + 4 * R(), rise: 10, w: 0.5, white: 0.1 }); } } });
@@ -203,7 +206,7 @@ else {
     // washington) at the Fort Motte gun, scaled to the 2D map (jet/size x V.c3), its flash off (the 2D fireball above owns frames 1-2)
     if (CN.length) { const sys3 = mkFX({ seed: 1866, wind: V.c3wind || [5, -2] }), K3 = V.c3 ?? 3;
       CN.forEach(([ts, x, z, ax, az]) => { const l = Math.hypot(ax - x, az - z) || 1;
-        sys3.fx.cannon([x, 0.06, z], ts + 2 / 30, { dir: [(ax - x) / l, (az - z) / l], size: K3, jet: K3, plume: 1.1, puffs: 12, dust: 0, life: 13, flash: 0, flashCore: 0, nightPool: 0, alpha: 0.42, tint: [0.24, 0.245, 0.26] }); }); }
+        sys3.fx.cannon([x, 0.06, z], ts + 2 / 30, { dir: [(ax - x) / l, (az - z) / l], size: K3, jet: K3, plume: 1.1, puffs: 12, dust: 0, life: 13, flash: 0, flashCore: 0, nightPool: 0, alpha: 0.25, tint: [0.2, 0.205, 0.22] }); }); }
     // r10: a dark smoke column (burning roof): [x, z, t0, t1, {rise, wind, r}] -> a soot puff every 0.16 s, 16 -> ~50 px, rising up-screen
     (C.vcolumn || []).forEach(([x, z, t0, t1, o = {}], j) => { const R = mb(9001 + j * 17); for (let t = t0; t < t1; t += 0.16) {
       PL.push({ i: -1, g: 1, t, x, z, h: R(), cell: Math.floor(R() * 8), ex: (R() - 0.5) * 8, ez: -6, eT: 0.6, g0: 0.35, gT: 3.0, gr: 0.03, ain: 0.3, rise: o.rise ?? 70,
@@ -225,7 +228,7 @@ else {
           vec3 col = tx.rgb; float lum = dot(col, vec3(0.333));
           if (vQ.w > 1.5) col *= vec3(0.9, 0.74, 0.52);                                                   // ground dust
           else if (vQ.w > 1.05) col *= vec3(0.46, 0.45, 0.44) * (0.85 + 0.3 * lum);                    // soot (the burning roof's column)
-          else col *= mix(1.0, 0.97, vQ.w) * mix(1.0, 0.78, vQ.w * clamp(1.15 - lum, 0.0, 1.0));       // cannon smoke: undersides ~(110,112,118)
+          else col *= mix(1.0, 0.96, vQ.w) * mix(1.0, 0.72, vQ.w * clamp(1.4 * (1.0 - lum), 0.0, 1.0));   // r12 cannon smoke: tops ~(230,227,220), undersides ~(95,98,105)
           col *= 1.0 + uFl * clamp(1.15 - lum, 0.0, 1.0) * vec3(1.0, 0.9, 0.72);                         // r10: each flash lifts the bank's underside (+20 %, 2 frames)                                  // heavier, darker (cannon) smoke: undersides darken most
           col = mix(col, vec3(0.965, 0.955, 0.93), vQ.z * 0.75) * uNT; gl_FragColor = vec4(col * d, d); }` });
     const mesh = new THREE.Mesh(geo, mat); mesh.frustumCulled = false; const sScene = new THREE.Scene(); sScene.add(mesh);
@@ -329,13 +332,17 @@ else {
         // a ground-lighting glow r 110 px for 3 frames (screen blend); 14 spark streaks over 0.25 s
         for (let i = 0; i < CN.length; i++) { const [ts, x, z, ax, az] = CN[i], age = t - ts; if (age < -1e-4 || age > 0.3) continue;
           const [mx, my] = proj(x, z), [tx, ty] = proj(ax, az), ang = Math.atan2(ty - my, tx - mx), R = mb(i * 53 + 11), ca = Math.cos(ang), sa = Math.sin(ang);
-          if (age < 2 * F - 1e-4) { const A = age < F - 1e-4 ? 1 : 0.6; fg.save(); fg.globalAlpha = A; fg.filter = "none";   // r10: no canvas filter (frame 2 was dropped on the GPU renderer)
+          if (age < 2 * F - 1e-4) { const A = age < F - 1e-4 ? 1 : 0.4; fg.save(); fg.globalAlpha = A; fg.filter = "none";   // r10: no canvas filter (frame 2 was dropped on the GPU renderer)
             // r11: ONE ragged cone 110 x 60 px from the muzzle (white -> yellow -> orange -> red edge), jittered outline both sides
             fg.translate(mx, my); fg.rotate(ang); const CL = 110 * (0.95 + 0.1 * R()), CW = 60 * (0.92 + 0.16 * R()), up = [], dn = [];
-            for (let k = 0; k <= 14; k++) { const u = k / 14, hw = (CW / 2) * Math.min(1, 0.32 + 1.5 * u) * Math.sqrt(Math.max(0, 1 - Math.pow(Math.max(0, u - 0.55) / 0.45, 2)));
-              up.push([u * CL, -hw * (0.78 + 0.4 * R())]); dn.push([u * CL, hw * (0.78 + 0.4 * R())]); }
+            const jag = () => (R() < 0.3 ? 1.25 + 0.4 * R() : 0.6 + 0.5 * R());   // r12: ragged, irregular (random tongues, no regular sawtooth)
+            for (let k = 0; k <= 26; k++) { const u = k / 26, hw = (CW / 2) * Math.min(1, 0.32 + 1.5 * u) * Math.sqrt(Math.max(0, 1 - Math.pow(Math.max(0, u - 0.55) / 0.45, 2)));
+              up.push([u * CL + (R() - 0.5) * 8, -hw * jag()]); dn.push([u * CL + (R() - 0.5) * 8, hw * jag()]); }
             const lg = fg.createLinearGradient(0, 0, CL, 0); lg.addColorStop(0, "rgba(255,255,245,1)"); lg.addColorStop(0.18, "rgba(255,236,150,1)"); lg.addColorStop(0.45, "rgba(255,178,60,.95)"); lg.addColorStop(0.75, "rgba(236,100,26,.8)"); lg.addColorStop(1, "rgba(190,60,18,0)");
             fg.fillStyle = lg; fg.beginPath(); fg.moveTo(0, 0); for (const q of up) fg.lineTo(q[0], q[1]); for (let k = dn.length - 1; k >= 0; k--) fg.lineTo(dn[k][0], dn[k][1]); fg.closePath(); fg.fill();
+            const ns = 4 + Math.floor(R() * 3); for (let k = 0; k < ns; k++) { const a2 = (R() - 0.5) * 1.3, r0 = 30 + 60 * R(), L2 = 20 + 10 * R(), x0 = Math.cos(a2) * r0, y0 = Math.sin(a2) * r0 * 1.4;   // r12: 4-6 spark streaks 20-30 px
+              const sg = fg.createLinearGradient(x0, y0, x0 + Math.cos(a2) * L2, y0 + Math.sin(a2) * L2); sg.addColorStop(0, "rgba(255,200,90,0)"); sg.addColorStop(1, "rgba(255,246,200,1)");
+              fg.strokeStyle = sg; fg.lineWidth = 1.8; fg.beginPath(); fg.moveTo(x0, y0); fg.lineTo(x0 + Math.cos(a2) * L2, y0 + Math.sin(a2) * L2); fg.stroke(); }
             fg.setTransform(1, 0, 0, 1, 0, 0);
             const cg = fg.createRadialGradient(mx + ca * 4, my + sa * 4, 0, mx + ca * 4, my + sa * 4, 10); cg.addColorStop(0, "rgba(255,255,255,1)"); cg.addColorStop(0.75, "rgba(255,255,248,1)"); cg.addColorStop(1, "rgba(255,250,220,0)");
             fg.fillStyle = cg; fg.beginPath(); fg.arc(mx + ca * 4, my + sa * 4, 10, 0, 7); fg.fill(); fg.restore(); fg.filter = "none"; fg.globalAlpha = 1; }

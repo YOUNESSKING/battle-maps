@@ -220,13 +220,13 @@ const BW = (() => {
     hideBox(id, t + 0.05); shake(id, t, 2.5);
     // r11: 4 pieces 20 x 14 px that keep the box's white slash, scattering 80-140 px away over 1.2 s, 0.1 s apart (0.3 s stagger); the first
     // is a wounded straggler that stops at ~45 px and turns grey
-    const q = (blk.offsetWidth || 54) / 52;   // local px per screen px (the box shows ~52 px wide on screen)
+    const q = 1.5 * (blk.offsetWidth || 54) / 52;   // r12: measured 12-14 px -> x1.5 = 20 x 14 px ON SCREEN
     for (let k = 0; k < n; k++) { const d = overlay(id, `background:linear-gradient(to top right,${col} 44%,#f4efe6 44%,#f4efe6 56%,${col} 56%);border:${(1.6 * q).toFixed(2)}px solid rgba(20,16,12,.9);box-sizing:border-box`), strag = k === 0 && o.strag !== 0;
       gsap.set(d, { width: 20 * q, height: 14 * q, left: blk.offsetLeft + blk.offsetWidth * (0.12 + 0.5 * R()), top: blk.offsetTop + blk.offsetHeight * (0.15 + 0.4 * R()) });
       const a = Math.atan2(dir[1], dir[0]) + (R() - 0.5) * 1.0, D = (strag ? 40 + 10 * R() : 80 + 60 * R()) * q, t0 = t + 0.05 + 0.1 * k;
       tl.set(d, { opacity: 1 }, t0); tl.to(d, { x: Math.cos(a) * D, y: Math.sin(a) * D, rotation: (R() - 0.5) * 40, duration: strag ? 0.8 : 1.2, ease: "power2.out" }, t0);
       if (strag) { tl.to(d, { filter: "grayscale(1)", opacity: 0.85, duration: 0.5 }, t0 + 0.7); tl.to(d, { opacity: 0, duration: 0.6 }, t0 + 3.2); }
-      else tl.to(d, { opacity: 0, duration: 0.5, ease: "power1.in" }, t0 + 0.75); }
+      else tl.to(d, { opacity: 0, duration: 0.5, ease: "power1.in" }, t0 + 1.05); }   // r12: each visible >= 1.2 s
     if (o.banner) dip(o.banner, t);
     return O; };
   // captured = grey with its side-colour edge: two overlays above the box (a grey "color" blend = greyscale, a side-colour edge), so no
