@@ -74,7 +74,7 @@ const AMB = [[1498, 782], [1528, 780], [1558, 781], [1588, 783]], AIDS = ["a1", 
 AMB.forEach((p, i) => { UNIT(AIDS[i], "allies", p, "infantry", { ech: "", t: T_HID + 0.1 + i * 0.12 }); gsap.set(B.units[AIDS[i]].el.querySelector(".blk"), { filter: HIDE }); });
 BANNER("marion", "Francis Marion", "sc", "a2", T_HID + 0.05, { side: "up", pop: 1.3, bright: 1.12, until: T_INTO + 1.2 });
 // "in a thick wood": the canopy over the line glows faintly (focus); "within forty yards of a causeway": pale ink trace along the causeway
-focus([1543, 792], 70, T_WOOD, T_40 + 0.2);
+focus([1530, 811], 70, T_WOOD, T_40 + 0.2);   // r13c: ~60 px lower, 40 px left on screen: the road junction, the British column inside the feather
 inkTrace(CW.filter((q, i) => i % 2 === 0), T_40 + 0.3, T_SHOW - 0.1, 2.6).setAttribute("stroke", "#efe3c8");
 // "A few of his riders showed themselves, and then galloped away": a small blue rider box near the ferry end, then east past the hidden line
 UNIT("dc", "allies", [1462, RY + 1], "cavalry", { ech: "", t: T_SHOW + 0.1 });
@@ -164,7 +164,7 @@ BW.tilt([[0, 6, 1.05], [END, 7, 1.06]]);
 // (never over the jammed red boxes, the FRASER tag or the banner); big soft cumulus drifting over the map away from the action and the result list
 // r7: the smoke is the engine volley smoke from each shot (pan puff + jet + billows -> one bank in front of the line), drifting east
 // r5: the close battle field: no cumulus on screen, only faint cloud shadows (<= 0.3)
-BW.gl({ mpu: 16, shadowK: 0.3, volley: { K: 1 / 3.1, wind: [42, -6], jet: [60, 80], front: 20, lumps: 0.3, cap: 0.4, a0: 0.36, haze: 1, burstCap: 0.8, life: 5.5, fade: 2.6, tau: 3, windAt: 0.5, shear: 0.8, stretch: 0.12 },   // r13 (owner: too thick, never goes away): <= 0.48, carried downwind ~42 px/s with shear + stretch, gone 4-6 s after each volley   // r11: the bank 15-25 px in front of the line (toward the road), lumpier, denser   // r9: north ~4 px/s, away from the road
+BW.gl({ mpu: 16, shadowK: 0.3, volley: { K: 1 / 3.1, wind: [42, -6], jet: [60, 80], front: 20, cap: 0.4, a0: 0.36, haze: 1, burstCap: 0.8, burstLen: [150, 185], lumps: 0.45, life: 5.5, fade: 2.6, tau: 3, windAt: 0.5, shear: 0.8, stretch: 0.05 },   // r13 (owner: too thick, never goes away): <= 0.48, carried downwind ~42 px/s with shear + stretch, gone 4-6 s after each volley   // r11: the bank 15-25 px in front of the line (toward the road), lumpier, denser   // r9: north ~4 px/s, away from the road
   fair: { F: 1.5, box: [1150, 620, 720, 440], n: 9, med: 22, seed: 21, tiers: [49, 58], drift: [0.5, -0.15], diveClear: 0, opacity: () => 0,
     keep: [[1525, 790, 95], [1470, 815, 70], [1400, 850, 80], [1745, 705, 110], [1440, 815, 60]] } });   // r2: capped (sharpness)
 }

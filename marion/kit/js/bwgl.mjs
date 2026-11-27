@@ -184,7 +184,9 @@ else {
     const W0 = (V.wind || [3, -4]), PL = [], RV = V.rise ?? 10, GONE = V.gone ?? 1e9;
     SH.forEach(([ts, x, z, ax, az], i) => { const R = mb(i * 7919 + 101); let dx = ax - x, dz = az - z; const l = Math.hypot(dx, dz) || 1; dx /= l; dz /= l;
       const J = V.jet || [60, 80], Lj = J[0] + R() * (J[1] - J[0]);
-      for (let j = 0; j < 5; j++) { const u = j / 4; PL.push({ i, t: ts, x, z, dx, dz, jet: 1, s: Lj * (0.12 + 0.88 * u), lat: (R() - 0.5) * 4 * u, sz: (11 + 15 * u) * (0.9 + 0.2 * R()), a0: 0.85 * (1 - 0.25 * u), life: 1.0, h: R(), cell: Math.floor(R() * 8) }); }
+      if (V.burstLen) { const BL = V.burstLen[0] + R() * (V.burstLen[1] - V.burstLen[0]);   // r13c (critic A): the muzzle burst 160-200 x 35-45 px on screen
+        for (let j = 0; j < 7; j++) { const u = j / 6; PL.push({ i, t: ts, x, z, dx, dz, jet: 1, s: BL * (0.08 + 0.76 * u), lat: (R() - 0.5) * 6 * u, sz: (44 + 16 * Math.sin(Math.PI * Math.min(1, u * 1.2))) * (0.9 + 0.2 * R()), a0: 0.85, life: 1.0, h: R(), cell: Math.floor(R() * 8) }); } }
+      else for (let j = 0; j < 5; j++) { const u = j / 4; PL.push({ i, t: ts, x, z, dx, dz, jet: 1, s: Lj * (0.12 + 0.88 * u), lat: (R() - 0.5) * 4 * u, sz: (11 + 15 * u) * (0.9 + 0.2 * R()), a0: 0.85 * (1 - 0.25 * u), life: 1.0, h: R(), cell: Math.floor(R() * 8) }); }
       const nB = V.billows ?? (6 + Math.floor(R() * 3));
       // r10: density varies +-40 % along the line (smooth in x), puffs spread over ~20 px across the line, and ~1 shot in 4 adds a big
       // cauliflower lump (r 25-40 px) on the bank's top edge -> a 55-70 px bank with 3-5 lumps on top
@@ -240,7 +242,7 @@ else {
           col *= 1.0 + uFl * clamp(1.15 - lum, 0.0, 1.0) * vec3(1.0, 0.9, 0.72);                         // r10: each flash lifts the bank's underside (+20 %, 2 frames)                                  // heavier, darker (cannon) smoke: undersides darken most
           if (uHz > 0.5 && vQ.w < 0.01) {   // r13: the musket haze colour (see-through, capped 0.40; the burst in its own pass)
             float tL = clamp((lum - 0.42) / 0.45, 0.0, 1.0), gy = clamp(-vQ.w, 0.0, 1.0);   // r13b (owner): white while dense, a soft warm grey as it thins
-            col = mix(mix(vec3(0.745, 0.745, 0.737), vec3(0.910, 0.902, 0.878), tL), mix(vec3(0.627, 0.624, 0.608), vec3(0.784, 0.780, 0.765), tL), gy);   // tops 232 -> ~200, undersides 190 -> ~160 (core ~185)
+            col = mix(mix(vec3(0.667, 0.667, 0.659), vec3(0.941, 0.933, 0.910), tL), mix(vec3(0.588, 0.584, 0.573), vec3(0.804, 0.800, 0.784), tL), gy);   // r13c: ~25 levels of lump contrast after the 0.40 cap   // tops 232 -> ~200, undersides 190 -> ~160 (core ~185)
             col = mix(col, vec3(0.941, 0.933, 0.910), vQ.z); }   // the muzzle burst ~(240,238,232)
           else col = mix(col, vec3(0.965, 0.955, 0.93), vQ.z * 0.75);
           col *= uNT; gl_FragColor = vec4(col * d, d); }` });
@@ -291,7 +293,7 @@ else {
             P[n * 4] = p.x + sx * K; P[n * 4 + 1] = (2 + p.h * 4) * K; P[n * 4 + 2] = p.z + sz * K; P[n * 4 + 3] = size * K;
             Q[n * 4] = A; Q[n * 4 + 1] = p.cell; Q[n * 4 + 2] = p.white * (1 - sstep(0.1, 0.8, age)); Q[n * 4 + 3] = p.w; n++; continue; }
           let Lr = 1; if (p.jet && age < 1.0) { if (!JL.has(p.i)) { const [ts, x, z, ax, az] = SH[p.i], [mx, my] = proj(x, z), [tx, ty] = proj(ax, az), ll = Math.hypot(tx - mx, ty - my) || 1;
-              JL.set(p.i, jetLen(mx, my, (tx - mx) / ll, (ty - my) / ll, 90, ur) / 80); } Lr = Math.min(1, JL.get(p.i) / Math.max(0.3, p.s / 80)); }
+              JL.set(p.i, jetLen(mx, my, (tx - mx) / ll, (ty - my) / ll, V.burstLen ? 220 : 90, ur) / 80); } Lr = Math.min(1, JL.get(p.i) / Math.max(0.3, p.s / 80)); }
           const eo = 1 - Math.pow(1 - Math.min(1, age / 0.15), 3), s = p.s * Lr * (p.jet ? eo : lerp(0.35, 1, eo));
           const wk = Math.max(0, age - (V.windAt ?? 0.3)), sh = (V.shear ? 1 - V.shear / 2 + V.shear * p.h : 0.8 + 0.4 * p.h), rise = RV * (1 - Math.exp(-age / 2.5));
           const sx = p.dx * s - p.dz * p.lat + Wx * sh * wk, sz = p.dz * s + p.dx * p.lat + Wz * sh * wk - rise - (p.up || 0) * Math.min(1, age / 0.6);
