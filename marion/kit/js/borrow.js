@@ -177,9 +177,9 @@ const BW = (() => {
   const SCOL = (id) => /rome|british/.test(B.units[id].el.className) ? "#bc2528" : "#2c57b7";
   const away = (from, at) => { if (!from || !at) return [1, 0]; const dx = at[0] - from[0], dy = at[1] - from[1], l = Math.hypot(dx, dy) || 1; return [dx / l, dy / l]; };
   const cmarks = (at, n, t, spread, dir, seed, until) => { const R = R0(seed), out = [], f = 1 / (typeof CAM_AT === "function" ? CAM_AT(t)[2] : 1); spread *= f;   // sizes in screen px at the camera scale of t
-    for (let i = 0; i < n; i++) { const d = document.createElement("div"), w = (9 + R() * 4) * f, h = w * (0.6 + 0.2 * R());   // r10: >= 8 px on screen
+    for (let i = 0; i < n; i++) { const d = document.createElement("div"), w = (18 + R() * 5) * f, h = w * (0.55 + 0.2 * R());   // r11: ~18-23 px on screen (>= 6 px at 640x360)
       const px = at[0] + dir[0] * (2 + R() * spread) + (R() - 0.5) * spread * 1.2 * Math.abs(dir[1]) + (R() - 0.5) * 6 * f, py = at[1] + dir[1] * (2 + R() * spread) + (R() - 0.5) * spread * 1.2 * Math.abs(dir[0]) + (R() - 0.5) * 6 * f;
-      d.style.cssText = `position:absolute;left:${(px - w / 2).toFixed(2)}px;top:${(py - h / 2).toFixed(2)}px;width:${w.toFixed(2)}px;height:${h.toFixed(2)}px;border-radius:50%;background:rgba(30,24,18,.88);box-shadow:0 0 1px rgba(20,16,12,.7);transform:rotate(${(R() * 180).toFixed(0)}deg);opacity:0;pointer-events:none`;
+      d.style.cssText = `position:absolute;left:${(px - w / 2).toFixed(2)}px;top:${(py - h / 2).toFixed(2)}px;width:${w.toFixed(2)}px;height:${h.toFixed(2)}px;border-radius:50%;background:radial-gradient(ellipse,rgba(62,50,38,.9) 0%,rgba(70,58,44,.85) 55%,rgba(70,58,44,0) 100%);transform:rotate(${(R() * 180).toFixed(0)}deg);opacity:0;pointer-events:none`;
       PIN().insertBefore(d, PIN().firstChild); tl.to(d, { opacity: 0.85, duration: 0.25 }, t + 0.05 + i * 0.07); if (until != null) tl.to(d, { opacity: 0, duration: 0.8 }, until); out.push(d); } return out; };
   // r10 (critics r9: "pixel confetti, ~3 px on a phone"): everything on the box itself, sized in SCREEN px inside the unit's counter-scaled
   // container (blk.parentElement), so it reads at phone size. hit: the box shakes ~2 px, a 0.25 s red-white flash on it, it dims, loses a
@@ -193,7 +193,7 @@ const BW = (() => {
     blk.parentElement.appendChild(d); return d; };
   const flashBox = (id, t) => { const d = overlay(id, "background:radial-gradient(ellipse at 50% 50%,rgba(255,252,245,.95) 0%,rgba(255,215,200,.85) 45%,rgba(230,40,30,.7) 100%);mix-blend-mode:screen");
     tl.to(d, { opacity: 1, duration: 0.04 }, t); tl.to(d, { opacity: 0, duration: 0.21, ease: "power1.in" }, t + 0.04); return d; };
-  const dustPuff = (id, t, r = 40) => { const blk = B.units[id].el.querySelector(".blk"), d = document.createElement("div");
+  const dustPuff = (id, t, r = 40) => { const blk = B.units[id].el.querySelector(".blk"), d = document.createElement("div"); r *= (blk.offsetWidth || 54) / 52;
     d.style.cssText = `position:absolute;left:${blk.offsetLeft + blk.offsetWidth / 2 - r}px;top:${blk.offsetTop + blk.offsetHeight / 2 - r}px;width:${2 * r}px;height:${2 * r}px;border-radius:50%;pointer-events:none;opacity:0;background:radial-gradient(circle,rgba(196,178,146,.85) 0%,rgba(176,160,132,.6) 40%,rgba(160,146,120,0) 72%)`;
     blk.parentElement.appendChild(d); tl.fromTo(d, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: "power2.out", immediateRender: false }, t);
     tl.to(d, { opacity: 0, scale: 1.3, duration: 1.1, ease: "power1.in" }, t + 0.3); return d; };
@@ -208,22 +208,25 @@ const BW = (() => {
     return O; };
   const hideBox = (id, t) => { const u = B.units[id]; tl.to([u.el.querySelector(".blk"), u.el.querySelector(".tag")].filter(Boolean), { autoAlpha: 0, duration: 0.12 }, t); };
   const wipe = (id, t, o = {}) => { const u = B.units[id], blk = u.el.querySelector(".blk"), tg = u.el.querySelector(".tag"), dir = away(o.from, o.at), hold = o.hold ?? 1.5;
-    shake(id, t, 3); shake(id, t + 0.1, 2.5); flashBox(id, t); dustPuff(id, t + 0.05, o.dust ?? 40);
-    tl.to(blk, { filter: "grayscale(.6) saturate(.4) brightness(.85)", duration: 0.2 }, t + 0.05);
-    tl.to([blk, tg].filter(Boolean), { opacity: 0.55, duration: 0.8, ease: "power1.inOut" }, t + 0.1);          // grey remnants ...
-    tl.to(blk, { filter: "grayscale(1) brightness(.9)", duration: 0.6 }, t + 0.3);
+    shake(id, t, 3); shake(id, t + 0.1, 2.5); dustPuff(id, t + 0.05, o.dust ?? 40);   // r11: no white pop: the box dims from red to dark
+    tl.fromTo(blk, { filter: "brightness(1) saturate(1) grayscale(0)" }, { filter: "brightness(.38) saturate(.6) grayscale(0)", duration: 0.18, immediateRender: false }, t);
+    tl.to(blk, { filter: "brightness(.75) saturate(0) grayscale(1)", duration: 0.7 }, t + 0.25);                 // dark -> grey
+    tl.to([blk, tg].filter(Boolean), { opacity: 0.55, duration: 0.8, ease: "power1.inOut" }, t + 0.2);          // grey remnants ...
     tl.to([blk, tg].filter(Boolean), { opacity: 0, duration: 0.6 }, t + 0.9 + hold);                              // ... hold 1.5 s, then fade
     if (o.at) cmarks(o.at, o.marks ?? 3, t + 0.2, o.spread || 30, [dir[0] * 0.2, dir[1] * 0.2], (o.seed || 7) + 11, o.until);
     if (o.banner) dip(o.banner, t + 0.1);
     return O; };
   const rout = (id, t, o = {}) => { const u = B.units[id], blk = u.el.querySelector(".blk"), R = R0(o.seed || 9), dir = o.dir || [0, 1], n = o.n || 4, col = SCOL(id);
     hideBox(id, t + 0.05); shake(id, t, 2.5);
-    for (let k = 0; k < n; k++) { const d = overlay(id, `background:${col};border:1.6px solid rgba(20,16,12,.9);box-sizing:border-box`), strag = k === 0 && o.strag !== 0;
-      gsap.set(d, { width: 18 + 3 * R(), height: 12 + 2 * R(), left: blk.offsetLeft + blk.offsetWidth * (0.15 + 0.6 * R()), top: blk.offsetTop + blk.offsetHeight * (0.2 + 0.4 * R()) });
-      const a = Math.atan2(dir[1], dir[0]) + (R() - 0.5) * 1.1, D = strag ? 35 + 10 * R() : 60 + 60 * R();
-      tl.set(d, { opacity: 1 }, t + 0.05); tl.to(d, { x: Math.cos(a) * D, y: Math.sin(a) * D, rotation: (R() - 0.5) * 50, duration: strag ? 0.9 : 1.5, ease: "power2.out" }, t + 0.05 + 0.04 * k);
-      if (strag) { tl.to(d, { backgroundColor: "#8b8880", duration: 0.5 }, t + 0.8); tl.to(d, { opacity: 0, duration: 0.6 }, t + 2.4); }
-      else tl.to(d, { opacity: 0, duration: 1.5, ease: "power1.in" }, t + 0.1 + 0.04 * k); }
+    // r11: 4 pieces 20 x 14 px that keep the box's white slash, scattering 80-140 px away over 1.2 s, 0.1 s apart (0.3 s stagger); the first
+    // is a wounded straggler that stops at ~45 px and turns grey
+    const q = (blk.offsetWidth || 54) / 52;   // local px per screen px (the box shows ~52 px wide on screen)
+    for (let k = 0; k < n; k++) { const d = overlay(id, `background:linear-gradient(to top right,${col} 44%,#f4efe6 44%,#f4efe6 56%,${col} 56%);border:${(1.6 * q).toFixed(2)}px solid rgba(20,16,12,.9);box-sizing:border-box`), strag = k === 0 && o.strag !== 0;
+      gsap.set(d, { width: 20 * q, height: 14 * q, left: blk.offsetLeft + blk.offsetWidth * (0.12 + 0.5 * R()), top: blk.offsetTop + blk.offsetHeight * (0.15 + 0.4 * R()) });
+      const a = Math.atan2(dir[1], dir[0]) + (R() - 0.5) * 1.0, D = (strag ? 40 + 10 * R() : 80 + 60 * R()) * q, t0 = t + 0.05 + 0.1 * k;
+      tl.set(d, { opacity: 1 }, t0); tl.to(d, { x: Math.cos(a) * D, y: Math.sin(a) * D, rotation: (R() - 0.5) * 40, duration: strag ? 0.8 : 1.2, ease: "power2.out" }, t0);
+      if (strag) { tl.to(d, { filter: "grayscale(1)", opacity: 0.85, duration: 0.5 }, t0 + 0.7); tl.to(d, { opacity: 0, duration: 0.6 }, t0 + 3.2); }
+      else tl.to(d, { opacity: 0, duration: 0.5, ease: "power1.in" }, t0 + 0.75); }
     if (o.banner) dip(o.banner, t);
     return O; };
   // captured = grey with its side-colour edge: two overlays above the box (a grey "color" blend = greyscale, a side-colour edge), so no

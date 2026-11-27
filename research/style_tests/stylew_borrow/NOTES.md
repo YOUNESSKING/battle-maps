@@ -200,3 +200,20 @@ REFERENCE row from `ajackson/sequences/S07/sheet.jpg` next to the r10 cannon, th
   filter fight): the hook guard is grey at 17.03 s, right after "guard".
 - RunPod: one RTX A4000 kept alive per round (micro-clips: 4 windows, then a 0.6 s cannon check, then the full windows); r10 ~$0.08; pods
   terminated, list empty.
+
+## r11 (critics r10: B 9 YES; A 7.5 / 7 NO)
+`stylew_borrow_test_r11_share.mp4` (76.7 s, 21.6 MB, -14.0 LUFS, peak -2.9 dBFS before AAC / -2.7 after), `sheet_r11.jpg`, `smoke_closeup_r11.jpg`
+(r10 | r11 musket rows, 3D-film reference row, CANNON / HIT / WIPE-OUT / ROUT frame by frame).
+- Cannon fireball: ONE ragged cone 110 x 60 px from the muzzle (white -> yellow -> orange -> red edge) + 20 px white core, frames 1-2
+  (100 / 60 %); ground glow r 120 px at 40 / 26 / 11 % over 3 frames.
+- Cannon smoke: a dense jet 180-220 x 70-90 px reached in 0.3 s (16 big puffs, alpha 0.92) + a muzzle cloud, billowing to a ~140-180 px cloud
+  (tops ~(235,232,225), undersides ~(105,108,115)), wind ~6 px/s, 12-15 s; the 3D films' plume (fx.cannon) kept underneath, its dust off.
+  The dust blobs are replaced by a flat ground ring (a canvas under the smoke): 120-160 px across, alpha 0.35, (150,130,100), spreads in 0.4 s.
+- Musket bank: 15-25 px IN FRONT of the line (`volley.front` 20 px toward the road), lumps on ~40 % of shots with heights varying +-15 px,
+  denser (a0 0.55-0.65, cap 0.8) and darker undersides (116,121,131): >= 80 levels between lit tops and undersides on the map.
+- Wipe-out: no white pop; the box dims from red to dark (brightness 0.38), then to grey remnants (0.55) inside the dust puff, holds 1.5 s.
+- Rout: 4 pieces 20 x 14 px (screen) that keep the white slash, scattering 80-140 px over 1.2 s, 0.1 s apart; one straggler stops grey.
+- Casualty marks: 18-23 px on screen (>= 6 px at 640x360), lighter brown (62-70,50-58,38-44), soft edge, held until the line slips away.
+- Audio: a -3 dBFS peak limiter after the loudness pass (loudnorm target -13.8 -> -14.0 LUFS out); the cannon boom stays on the flash frame
+  with the Jackson-style mix.
+- RunPod: one RTX A4000 kept alive (3 micro-clips, then the 3 full windows), ~$0.04; pods terminated, list empty.

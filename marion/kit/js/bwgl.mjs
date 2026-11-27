@@ -150,7 +150,7 @@ else {
     const mb = (a) => () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let q = Math.imul(a ^ (a >>> 15), 1 | a); q = (q + Math.imul(q ^ (q >>> 7), 61 | q)) ^ q; return ((q ^ (q >>> 14)) >>> 0) / 4294967296; };
     // --- 8 cauliflower textures (128 px cells in a 512 x 256 atlas): RGB = lit colour, A = density
     const CS = 128, AW = CS * 4, AH = CS * 2, atl = new Uint8Array(AW * AH * 4);
-    const RIM = [240, 236, 226], MID = [204, 204, 205], UND = [125, 130, 140], Ld = (() => { const l = Math.hypot(-0.35, 0.8, 0.55); return [-0.35 / l, 0.8 / l, 0.55 / l]; })();
+    const RIM = [240, 236, 226], MID = [204, 204, 205], UND = [116, 121, 131], Ld = (() => { const l = Math.hypot(-0.35, 0.8, 0.55); return [-0.35 / l, 0.8 / l, 0.55 / l]; })();
     for (let c = 0; c < 8; c++) { const R = mb(977 + c * 131), G = 8, g = new Float32Array(G * G); for (let i = 0; i < g.length; i++) g[i] = R();
       const vn = (x, y) => { const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi, u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf), at = (a, b) => g[(((b % G) + G) % G) * G + (((a % G) + G) % G)];
         return lerp(lerp(at(xi, yi), at(xi + 1, yi), u), lerp(at(xi, yi + 1), at(xi + 1, yi + 1), u), v); };
@@ -181,9 +181,9 @@ else {
       // r10: density varies +-40 % along the line (smooth in x), puffs spread over ~20 px across the line, and ~1 shot in 4 adds a big
       // cauliflower lump (r 25-40 px) on the bank's top edge -> a 55-70 px bank with 3-5 lumps on top
       const dm = 1 + 0.4 * Math.sin(x * 0.085 + 1.3) * (0.7 + 0.3 * Math.sin(x * 0.21));
-      for (let b = 0; b < nB; b++) { const u = (b + R()) / nB; PL.push({ i, t: ts + 0.03 + 0.22 * R(), x, z, dx, dz, jet: 0, s: Lj * lerp(0.15, 0.85, u), lat: (R() - 0.5) * 20, up: 4 + 10 * R(), sz: (26 + 9 * R()) / 0.42,
-        a0: (0.46 + 0.1 * R()) * dm, life: 9.5 + 1.5 * R(), h: R(), cell: Math.floor(R() * 8) }); }
-      if (R() < (V.lumps ?? 0.24)) PL.push({ i, t: ts + 0.12 + 0.2 * R(), x, z, dx, dz, jet: 0, s: Lj * (0.35 + 0.3 * R()), lat: 0, up: 22 + 8 * R(), sz: (25 + 15 * R()) / 0.42,
+      for (let b = 0; b < nB; b++) { const u = (b + R()) / nB; PL.push({ i, t: ts + 0.03 + 0.22 * R(), x, z, dx, dz, jet: 0, s: Lj * lerp(0.15, 0.85, u), lat: (R() - 0.5) * 20, up: (V.front ? -V.front : 0) + 4 + 8 * R(), sz: (26 + 9 * R()) / 0.42,
+        a0: (0.55 + 0.1 * R()) * dm, life: 9.5 + 1.5 * R(), h: R(), cell: Math.floor(R() * 8) }); }
+      if (R() < (V.lumps ?? 0.24)) PL.push({ i, t: ts + 0.12 + 0.2 * R(), x, z, dx, dz, jet: 0, s: Lj * (0.35 + 0.3 * R()), lat: 0, up: (V.front ? -V.front : 0) + 12 + 30 * R(), sz: (25 + 15 * R()) / 0.42,
         a0: 0.55 * Math.min(1.25, dm), life: 9.5 + 1.5 * R(), h: R(), cell: Math.floor(R() * 8) }); });
     // r9 cannon (owner r9): per shot a heavy muzzle cloud, a smoke burst thrown 150-250 px forward, a quick smoke ring, a ground dust ring at the
     // muzzle, and at the target (round shot) a dirt burst + lingering smoke. Darker grey than musket smoke (w = darkness, >= 2 = dust tint),
@@ -191,10 +191,11 @@ else {
     const CW_ = V.cwind || [5, -2];
     CN.forEach(([ts, x, z, ax, az, ti, tx, tz], i) => { const R = mb(i * 4421 + 77); let dx = ax - x, dz = az - z; const l = Math.hypot(dx, dz) || 1; dx /= l; dz /= l; const nx = -dz, nz = dx;
       const G = (o) => PL.push(Object.assign({ i: -1, g: 1, t: ts + 2 / 30, x, z, h: R(), cell: Math.floor(R() * 8), eT: 0.5, g0: 0.4, gT: 0.6, gr: 0.015, ain: 0.04, rise: 6, wind: CW_, white: 0, fo: 4 }, o));
-      for (let k = 0; k < 6; k++) { const f = 10 + 55 * R(), q = (R() - 0.5) * 34; G({ ex: dx * f + nx * q, ez: dz * f + nz * q, eT: 0.35, sz: (55 + 20 * R()) / 0.42, a0: 0.92, tau: 10, life: 15 + 3 * R(), w: 1, white: 0.2 }); }
-      for (let k = 0; k < 12; k++) { const u = (k + R()) / 12, f = (150 + 50 * R()) * Math.pow(u, 0.6), q = (R() - 0.5) * 70 * u; G({ t: ts + 2 / 30 + 0.01 * k, ex: dx * f + nx * q, ez: dz * f + nz * q, eT: 0.3, sz: (34 + 22 * R()) / 0.42, g0: 0.35, gT: 0.9, a0: 0.85, tau: 9, life: 14 + 3 * R(), w: 0.9, white: 0.3 }); }
-      for (let k = 0; k < 9; k++) { const a = (k / 9) * 6.283 + R() * 0.4; G({ ex: dx * 40 + Math.cos(a) * 32, ez: dz * 40 + Math.sin(a) * 26, eT: 0.35, sz: (16 + 6 * R()) / 0.42, g0: 0.5, gT: 0.4, a0: 0.6, tau: 1.4, life: 4, fo: 2, w: 0.15, white: 0.5 }); }
-      for (let k = 0; k < 14; k++) { const a = (k / 14) * 6.283 + R() * 0.5, f = 55 + 15 * R(); G({ ex: Math.cos(a) * f - dx * 6, ez: Math.sin(a) * f * 0.75 - dz * 6, eT: 0.4, sz: (16 + 9 * R()) / 0.42, g0: 0.5, gT: 0.5, a0: 0.95, tau: 1.0, life: 2.6, fo: 1.2, rise: 2, w: 2 }); }
+      // r11: a dense jet 180-220 x 70-90 px reached in 0.3 s (alpha ~0.9, big from the start), which then billows into a 140-180 px cloud,
+      // tops (235,232,225) / undersides (105,108,115), drifting ~6 px/s, lingering 12-15 s; the dust is a flat ground ring (2D, below)
+      for (let k = 0; k < 16; k++) { const u = (k + R()) / 16, f = (180 + 40 * R()) * u, q = (R() - 0.5) * 50 * (0.5 + 0.5 * u);
+        G({ ex: dx * f + nx * q, ez: dz * f + nz * q, eT: 0.3, sz: (30 + 12 * R()) / 0.42, g0: 0.75, gT: 1.6, gr: 0.03, a0: 0.92, ain: 0.02, tau: 11, life: 12 + 3 * R(), fo: 3.5, w: 1, white: 0.3 }); }
+      for (let k = 0; k < 6; k++) { const f = 10 + 40 * R(), q = (R() - 0.5) * 30; G({ ex: dx * f + nx * q, ez: dz * f + nz * q, eT: 0.3, sz: (38 + 12 * R()) / 0.42, g0: 0.6, gT: 1.2, gr: 0.02, a0: 0.9, ain: 0.02, tau: 11, life: 12 + 3 * R(), fo: 3.5, w: 1, white: 0.2 }); }
       if (ti >= 0) { const T1 = ts + ti;
         for (let k = 0; k < 7; k++) { const a = R() * 6.283, f = 10 + 18 * R(); G({ t: T1, x: tx, z: tz, ex: Math.cos(a) * f, ez: Math.sin(a) * f * 0.7 - 6 * R(), eT: 0.3, sz: (12 + 10 * R()) / 0.42, g0: 0.4, gT: 0.4, a0: 0.75, tau: 1.2, life: 3, fo: 1.5, rise: 4, w: 2 }); }
         for (let k = 0; k < 5; k++) { const a = R() * 6.283, f = 6 + 10 * R(); G({ t: T1 + 0.08, x: tx, z: tz, ex: Math.cos(a) * f, ez: Math.sin(a) * f * 0.7, eT: 0.6, sz: (20 + 12 * R()) / 0.42, g0: 0.35, gT: 1.0, a0: 0.55, tau: 6, life: 10 + 4 * R(), rise: 10, w: 0.5, white: 0.1 }); } } });
@@ -202,7 +203,7 @@ else {
     // washington) at the Fort Motte gun, scaled to the 2D map (jet/size x V.c3), its flash off (the 2D fireball above owns frames 1-2)
     if (CN.length) { const sys3 = mkFX({ seed: 1866, wind: V.c3wind || [5, -2] }), K3 = V.c3 ?? 3;
       CN.forEach(([ts, x, z, ax, az]) => { const l = Math.hypot(ax - x, az - z) || 1;
-        sys3.fx.cannon([x, 0.06, z], ts + 2 / 30, { dir: [(ax - x) / l, (az - z) / l], size: K3, jet: K3, plume: 1.1, puffs: 16, dust: 6, life: 14, flash: 0, flashCore: 0, nightPool: 0, alpha: 0.42, tint: [0.24, 0.245, 0.26] }); }); }
+        sys3.fx.cannon([x, 0.06, z], ts + 2 / 30, { dir: [(ax - x) / l, (az - z) / l], size: K3, jet: K3, plume: 1.1, puffs: 12, dust: 0, life: 13, flash: 0, flashCore: 0, nightPool: 0, alpha: 0.42, tint: [0.24, 0.245, 0.26] }); }); }
     // r10: a dark smoke column (burning roof): [x, z, t0, t1, {rise, wind, r}] -> a soot puff every 0.16 s, 16 -> ~50 px, rising up-screen
     (C.vcolumn || []).forEach(([x, z, t0, t1, o = {}], j) => { const R = mb(9001 + j * 17); for (let t = t0; t < t1; t += 0.16) {
       PL.push({ i: -1, g: 1, t, x, z, h: R(), cell: Math.floor(R() * 8), ex: (R() - 0.5) * 8, ez: -6, eT: 0.6, g0: 0.35, gT: 3.0, gr: 0.03, ain: 0.3, rise: o.rise ?? 70,
@@ -244,6 +245,8 @@ else {
     const mkC = (blend) => { const c = document.createElement("canvas"); c.width = 1920; c.height = 1080; c.style.cssText = `position:absolute;left:0;top:0;width:1920px;height:1080px;pointer-events:none;${blend ? "mix-blend-mode:screen;" : ""}`;
       SCN.insertBefore(c, WO); return c; };
     const FC = mkC(false), GC = mkC(true), fg = FC.getContext("2d"), gg = GC.getContext("2d");
+    // r11: the cannon's ground dust = a flat ring on the ground (a canvas BELOW the smoke layer): 120-160 px across, alpha 0.35, (150,130,100), spreads in 0.4 s
+    const GD = document.createElement("canvas"); GD.width = 1920; GD.height = 1080; GD.style.cssText = "position:absolute;left:0;top:0;width:1920px;height:1080px;pointer-events:none"; cv.parentNode.insertBefore(GD, cv); const gd = GD.getContext("2d");
     const proj = (x, z) => { const v = new THREE.Vector3(x, 0, z).project(camera); return [(v.x + 1) / 2 * 1920, (1 - v.y) / 2 * 1080]; };
     const unitRects = () => { const out = [], add = (el, m, red, pad = 2) => { if (!el || out.length >= MAXR) return; const cs = getComputedStyle(el); if (cs.visibility === "hidden") return;
         const r = el.getBoundingClientRect(); if (r.width < 2 || r.right < 0 || r.left > 1920 || r.bottom < 0 || r.top > 1080) return; out.push([r.left - pad, r.top - pad, r.right + pad, r.bottom + pad, m, red]); };
@@ -286,7 +289,13 @@ else {
         for (let i = 0; i < MAXR; i++) { const r = ur[i]; if (r) { rects[i].set(r[0], r[1], r[2], r[3]); rmax[i] = r[4]; } else rects[i].set(-1, -1, -1, -1); }
         if (n) renderer.render(cScene, oCam);
         // flashes (x FS = 0.7)
-        fg.clearRect(0, 0, 1920, 1080); gg.clearRect(0, 0, 1920, 1080); const F = 1 / 30, FS = V.flashScale ?? 1;
+        fg.clearRect(0, 0, 1920, 1080); gg.clearRect(0, 0, 1920, 1080);
+        gd.clearRect(0, 0, 1920, 1080);
+        for (let i = 0; i < CN.length; i++) { const [ts, x, z] = CN[i], age = t - ts; if (age < 0 || age > 2.0) continue; const [mx, my] = proj(x, z);
+          const r = 18 + 60 * (1 - Math.pow(1 - Math.min(1, age / 0.4), 3)), A = 0.35 * Math.min(1, age / 0.05) * (1 - sstep(0.6, 2.0, age));
+          gd.save(); gd.translate(mx, my); gd.scale(1, 0.8); const gr = gd.createRadialGradient(0, 0, 0, 0, 0, r);
+          gr.addColorStop(0, "rgba(150,130,100,0)"); gr.addColorStop(0.5, `rgba(150,130,100,${(A * 0.35).toFixed(3)})`); gr.addColorStop(0.8, `rgba(150,130,100,${A.toFixed(3)})`); gr.addColorStop(1, "rgba(150,130,100,0)");
+          gd.fillStyle = gr; gd.beginPath(); gd.arc(0, 0, r, 0, 7); gd.fill(); gd.restore(); } const F = 1 / 30, FS = V.flashScale ?? 1;
         for (let i = 0; i < SH.length; i++) { const [ts, x, z, ax, az] = SH[i], age = t - ts; if (age < -2.5 * F || age > 0.25) continue;
           const [mx, my] = proj(x, z), [tx, ty] = proj(ax, az), ang = Math.atan2(ty - my, tx - mx), R = mb(i * 31 + 7);
           if (age >= -2 * F - 1e-4 && age < -F - 1e-4) {   // priming pan: a small spark, 1 frame, 2 frames early, just behind the muzzle
@@ -321,13 +330,17 @@ else {
         for (let i = 0; i < CN.length; i++) { const [ts, x, z, ax, az] = CN[i], age = t - ts; if (age < -1e-4 || age > 0.3) continue;
           const [mx, my] = proj(x, z), [tx, ty] = proj(ax, az), ang = Math.atan2(ty - my, tx - mx), R = mb(i * 53 + 11), ca = Math.cos(ang), sa = Math.sin(ang);
           if (age < 2 * F - 1e-4) { const A = age < F - 1e-4 ? 1 : 0.6; fg.save(); fg.globalAlpha = A; fg.filter = "none";   // r10: no canvas filter (frame 2 was dropped on the GPU renderer)
-            [[20, 40], [52, 46], [88, 32]].forEach(([d, r]) => { const jx = (R() - 0.5) * 8, jy = (R() - 0.5) * 8, cx = mx + ca * d - sa * jy + jx * 0.3, cy = my + sa * d + ca * jy + jy * 0.3, rr = r * (0.85 + 0.3 * R());
-              const gr = fg.createRadialGradient(cx, cy, 0, cx, cy, rr); gr.addColorStop(0, "rgba(255,246,200,1)"); gr.addColorStop(0.35, "rgba(255,196,90,.95)"); gr.addColorStop(0.7, "rgba(240,110,30,.7)"); gr.addColorStop(1, "rgba(200,70,20,0)");
-              fg.fillStyle = gr; fg.beginPath(); for (let k = 0; k <= 12; k++) { const a2 = k / 12 * 6.283, q = rr * (0.8 + 0.35 * R()); k ? fg.lineTo(cx + Math.cos(a2) * q, cy + Math.sin(a2) * q) : fg.moveTo(cx + Math.cos(a2) * q, cy + Math.sin(a2) * q); } fg.fill(); });
-            const cg = fg.createRadialGradient(mx + ca * 3, my + sa * 3, 0, mx + ca * 3, my + sa * 3, 10); cg.addColorStop(0, "rgba(255,255,255,1)"); cg.addColorStop(0.75, "rgba(255,255,248,1)"); cg.addColorStop(1, "rgba(255,250,220,0)");
-            fg.fillStyle = cg; fg.beginPath(); fg.arc(mx + ca * 3, my + sa * 3, 10, 0, 7); fg.fill(); fg.restore(); fg.filter = "none"; fg.globalAlpha = 1; }
-          if (age < 3 * F - 1e-4) { const A = [0.42, 0.26, 0.11][Math.min(2, Math.floor(age / F + 1e-3))], gx = mx + ca * 20, gy = my + sa * 20, gr = gg.createRadialGradient(gx, gy, 0, gx, gy, 110);
-            gr.addColorStop(0, `rgba(255,205,120,${A})`); gr.addColorStop(0.4, `rgba(255,150,60,${A * 0.45})`); gr.addColorStop(1, "rgba(255,120,40,0)"); gg.fillStyle = gr; gg.fillRect(gx - 111, gy - 111, 222, 222); }
+            // r11: ONE ragged cone 110 x 60 px from the muzzle (white -> yellow -> orange -> red edge), jittered outline both sides
+            fg.translate(mx, my); fg.rotate(ang); const CL = 110 * (0.95 + 0.1 * R()), CW = 60 * (0.92 + 0.16 * R()), up = [], dn = [];
+            for (let k = 0; k <= 14; k++) { const u = k / 14, hw = (CW / 2) * Math.min(1, 0.32 + 1.5 * u) * Math.sqrt(Math.max(0, 1 - Math.pow(Math.max(0, u - 0.55) / 0.45, 2)));
+              up.push([u * CL, -hw * (0.78 + 0.4 * R())]); dn.push([u * CL, hw * (0.78 + 0.4 * R())]); }
+            const lg = fg.createLinearGradient(0, 0, CL, 0); lg.addColorStop(0, "rgba(255,255,245,1)"); lg.addColorStop(0.18, "rgba(255,236,150,1)"); lg.addColorStop(0.45, "rgba(255,178,60,.95)"); lg.addColorStop(0.75, "rgba(236,100,26,.8)"); lg.addColorStop(1, "rgba(190,60,18,0)");
+            fg.fillStyle = lg; fg.beginPath(); fg.moveTo(0, 0); for (const q of up) fg.lineTo(q[0], q[1]); for (let k = dn.length - 1; k >= 0; k--) fg.lineTo(dn[k][0], dn[k][1]); fg.closePath(); fg.fill();
+            fg.setTransform(1, 0, 0, 1, 0, 0);
+            const cg = fg.createRadialGradient(mx + ca * 4, my + sa * 4, 0, mx + ca * 4, my + sa * 4, 10); cg.addColorStop(0, "rgba(255,255,255,1)"); cg.addColorStop(0.75, "rgba(255,255,248,1)"); cg.addColorStop(1, "rgba(255,250,220,0)");
+            fg.fillStyle = cg; fg.beginPath(); fg.arc(mx + ca * 4, my + sa * 4, 10, 0, 7); fg.fill(); fg.restore(); fg.filter = "none"; fg.globalAlpha = 1; }
+          if (age < 3 * F - 1e-4) { const A = [0.4, 0.26, 0.11][Math.min(2, Math.floor(age / F + 1e-3))], gx = mx + ca * 20, gy = my + sa * 20, gr = gg.createRadialGradient(gx, gy, 0, gx, gy, 120);   // r11: ground glow r 120 px, 40 %
+            gr.addColorStop(0, `rgba(255,205,120,${A})`); gr.addColorStop(0.4, `rgba(255,150,60,${A * 0.45})`); gr.addColorStop(1, "rgba(255,120,40,0)"); gg.fillStyle = gr; gg.fillRect(gx - 121, gy - 121, 242, 242); }
           if (age < 0.25) for (let k = 0; k < 14; k++) { const a2 = ang + (R() - 0.5) * 1.0, sp = 250 + 200 * R(), d1 = sp * age + 16, d0 = Math.max(10, d1 - 14), al = 1 - age / 0.25;
             const x0 = mx + Math.cos(a2) * d0, y0 = my + Math.sin(a2) * d0, x1 = mx + Math.cos(a2) * d1, y1 = my + Math.sin(a2) * d1, lg = fg.createLinearGradient(x0, y0, x1, y1);
             lg.addColorStop(0, "rgba(255,170,60,0)"); lg.addColorStop(1, `rgba(255,236,170,${al.toFixed(3)})`); fg.strokeStyle = lg; fg.lineWidth = 1.4; fg.beginPath(); fg.moveTo(x0, y0); fg.lineTo(x1, y1); fg.stroke(); }

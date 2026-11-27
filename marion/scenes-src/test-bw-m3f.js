@@ -164,7 +164,7 @@ BW.tilt([[0, 6, 1.05], [END, 7, 1.06]]);
 // (never over the jammed red boxes, the FRASER tag or the banner); big soft cumulus drifting over the map away from the action and the result list
 // r7: the smoke is the engine volley smoke from each shot (pan puff + jet + billows -> one bank in front of the line), drifting east
 // r5: the close battle field: no cumulus on screen, only faint cloud shadows (<= 0.3)
-BW.gl({ mpu: 16, shadowK: 0.3, volley: { K: 1 / 3.1, wind: [3, -4], jet: [60, 80] },   // r9: north ~4 px/s, away from the road
+BW.gl({ mpu: 16, shadowK: 0.3, volley: { K: 1 / 3.1, wind: [3, -2], jet: [60, 80], front: 20, lumps: 0.4, cap: 0.8 },   // r11: the bank 15-25 px in front of the line (toward the road), lumpier, denser   // r9: north ~4 px/s, away from the road
   fair: { F: 1.5, box: [1150, 620, 720, 440], n: 9, med: 22, seed: 21, tiers: [49, 58], drift: [0.5, -0.15], diveClear: 0, opacity: () => 0,
     keep: [[1525, 790, 95], [1470, 815, 70], [1400, 850, 80], [1745, 705, 110], [1440, 815, 60]] } });   // r2: capped (sharpness)
 }

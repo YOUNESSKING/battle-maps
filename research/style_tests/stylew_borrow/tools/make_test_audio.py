@@ -111,11 +111,11 @@ f = ["[0:a]asplit=3[vo][key][key2]", "[2:a][key2]sidechaincompress=threshold=0.0
      "[vo][musd][sfx]amix=inputs=3:normalize=0,alimiter=limit=0.5:level=false[aout]"]
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{tmp}vo.wav", "-i", f"{tmp}mu.wav", "-i", f"{tmp}fx.wav", "-filter_complex", ";".join(f),
                 "-map", "[aout]", "-c:a", "pcm_s16le", f"{tmp}mix.wav"], check=True)
-LN = "loudnorm=I=-14:TP=-1.5:LRA=11"
+LN = "loudnorm=I=-13.8:TP=-1.5:LRA=11"   # r11: -13.8 before the -3 dBFS peak limiter -> -14.0 LUFS out
 r = subprocess.run(["ffmpeg", "-nostats", "-i", f"{tmp}mix.wav", "-af", LN + ":print_format=json", "-f", "null", "-"], capture_output=True, text=True).stderr
 m = json.loads(r[r.rindex("{"):r.rindex("}") + 1])
 af = (f"{LN}:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}:measured_thresh={m['input_thresh']}"
-      f":offset={m['target_offset']}:linear=true,aresample=48000")
+      f":offset={m['target_offset']}:linear=true,aresample=48000,alimiter=limit=0.708:attack=2:release=80:level=false")   # r11: peaks (the cannon boom) <= -3 dBFS
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{tmp}mix.wav", "-af", af, "-c:a", "pcm_s16le", OUT], check=True)
 for nm in ("vo", "mu", "fx", "mix"): os.remove(f"{tmp}{nm}.wav")
 json.dump(dict(gain_db=round(GAIN, 2), segments=SEGS, volleys=log), open(OUT.rsplit(".", 1)[0] + "_log.json", "w"), indent=0, default=float)
