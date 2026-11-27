@@ -16,7 +16,7 @@ sys.path.insert(0, f"{REPO}/vicksburg/tools"); sys.path.insert(0, f"{M}/tools")
 import troop_sfx as T
 import sfx_mix_lib as K
 SR = 48000; OUT, VC = sys.argv[1], sys.argv[2]
-SEGS = [(0.0, 17.8, "test-bw-hook-a"), (56.35, 58.85, "test-bw-hook-b"), (71.45, 75.85, "test-bw-hook-b"), (801.5, 839.5, "test-bw-m3f")]
+SEGS = [(0.0, 17.8, "test-bw-hook-a"), (56.35, 59.95, "test-bw-hook-b"), (71.45, 75.85, "test-bw-hook-b"), (801.5, 839.5, "test-bw-m3f")]
 VOICE = [(0.0, "out_a.wav"), (56.0, "out_b.wav"), (797.5, "out_c.wav")]
 CHROME = glob.glob("/root/.cache/hyperframes/chrome/chrome-headless-shell/*/chrome-headless-shell-linux64/chrome-headless-shell")[0]
 rd = lambda p, a=None, s=0, d=None: T.load_ff(p, af=a, start=s, dur=d)
@@ -55,7 +55,7 @@ print(f"cannon impact {rms_peak(imp):.1f} dB, raw volley {rms_peak(probe):.1f} d
 parts, log = [], []
 for (a, b, name) in SEGS:
     d = b - a; n = int(round(d * SR)); t0, cues, shots = scene(name)
-    vo = voice(a, d)
+    vo = voice(a, d); vo = np.pad(vo, ((0, max(0, n - len(vo))), (0, 0)))[:n]
     mu = rd(f"{M}/assets/media/music.wav", s=a, d=d); mu = np.pad(mu, ((0, max(0, n - len(mu))), (0, 0)))[:n]
     kit = [[t + t0 - a, k, name] for k, t in cues if a <= t + t0 < b and k not in ("mg", "musket")]
     K.render(kit, d, "/tmp/_bw_kit.wav"); fx = rd("/tmp/_bw_kit.wav"); fx = np.pad(fx, ((0, max(0, n - len(fx))), (0, 0)))[:n]; os.remove("/tmp/_bw_kit.wav")
@@ -66,11 +66,17 @@ for (a, b, name) in SEGS:
         if groups and s[0] - groups[-1][-1][0] < 0.9: groups[-1].append(s)
         else: groups.append([s])
     rng = np.random.default_rng(int(a * 10) + 7); L = T.Lib(rng)
+    front = np.zeros(len(st), np.float32)   # r2: mask: the first shot of each ripple (up to the second shot) stays at full level; the tail is ducked 6 dB under the voice
     for g in groups:
         e = dict(type="musket_volley", tShare=g[0][0], unit=dict(men=len(g) * 9), at=dict(camDist=20, px=[g[0][1], g[0][2]]),
                  shots=[dict(tShare=t, at=dict(px=[x, y])) for t, x, y in g])
         T.render_volley(L, st, e, rng, log)
-    fx = fx + st[:n] * db(GAIN)
+        i0 = max(0, int((g[0][0] - 0.12) * SR)); i1 = int(((g[1][0] if len(g) > 1 else g[0][0] + 1.5) - 0.01) * SR); front[i0:i1] = 1
+    f = int(0.01 * SR); front = np.convolve(front, np.ones(f) / f, "same")
+    tail = st * (1 - front)[:, None]; st = st * front[:, None]
+    w = int(0.05 * SR); env = np.sqrt(np.convolve((vo ** 2).mean(1), np.ones(w) / w, "same")); env = (env > 0.01).astype(np.float32)
+    k = int(0.25 * SR); env = np.clip(np.convolve(env, np.hanning(k) / np.hanning(k).sum(), "same") * 1.2, 0, 1)
+    fx = fx + (st[:n] + tail[:n] * (1 - 0.5 * env)[:, None]) * db(GAIN)
     print(f"{name:16s} {a:7.2f}-{b:7.2f}  kit cues {len(kit):3d}  musket shots {len(sh):3d} in {len(groups)} ripples")
     parts.append((vo, mu, fx))
 

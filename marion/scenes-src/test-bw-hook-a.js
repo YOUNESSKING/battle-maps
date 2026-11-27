@@ -112,12 +112,14 @@ const REND = [[1405, 690], [1470, 772], [1560, 765], [1392, 775]];
 RID.forEach(([id, ll], i) => { const P = [...LLYT(ll.slice(0, 2)), PP(...REND[i])]; UNITF(id, "allies", P[0], "cavalry", { ech: "", t: T_DAWN + 0.1 * i });
   march(id, P, T_DAWN + 0.3 + 0.12 * i, T_FREE - T_DAWN - 0.5 - 0.1 * i, { trail: false, dust: false }); });
 // "seventy men on horseback": the big number card (slam + hit + shake)
-const CARD = (big, l1, l2, col) => `<div style="padding:12px 54px 18px;background:rgb(18,16,12);border-top:6px solid ${col};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 22px 46px rgba(0,0,0,.6)">
-  <div class="v" style="font-size:112px;letter-spacing:.03em;line-height:1.02">${big}</div><div style="font-size:30px;letter-spacing:.28em;color:#9fc0ea">${l1}</div>${l2 ? `<div style="font-size:24px;letter-spacing:.34em;color:#d8c9a3;margin-top:4px">${l2}</div>` : ""}</div>`;
-{ const el = scr(CARD("70", "MEN ON HORSEBACK"), "right:140px;top:110px;display:flex;justify-content:center;transform-origin:50% 30%;", T_70, null, { autoAlpha: 0 });
-  slam(el, T_70 - 0.05, { from: 1.9, shake: 5, until: T_150 - 0.3 }); }
-{ const el = scr(CARD("0", "AMERICAN PRISONERS", "SET FREE"), "right:140px;top:110px;display:flex;justify-content:center;transform-origin:50% 30%;", T_150, null, { autoAlpha: 0 });
-  slam(el, T_150, { from: 1.9, shake: 5, until: Math.min(T_GUARD, 16.9) });
+// BW r2: one design language: the number cards are ivory/gold plaques (~300 x 130, Cinzel), the watch plaque's style, top-right
+const CARD = (big, l1, l2, col) => `<div style="box-sizing:border-box;width:300px;min-height:130px;padding:12px 18px 12px;background:linear-gradient(170deg,#E6DEC5,#D2C6A3);border:1.5px solid #4E4532;border-radius:3px;box-shadow:inset 0 0 0 4px #DED5BA,inset 0 0 0 5px #7D7158,0 10px 24px rgba(0,0,0,.45);font-family:'GM Cinzel',serif;font-weight:700;color:#1E180E;text-align:center">
+  <div class="v" style="font-size:62px;line-height:1;letter-spacing:.04em;font-variant-numeric:lining-nums">${big}</div><div style="font-size:16px;letter-spacing:.2em;color:#2a4a8e;margin-top:6px">${l1}</div>${l2 ? `<div style="font-size:14px;letter-spacing:.24em;color:#5A4F3A;margin-top:3px">${l2}</div>` : ""}</div>`;
+const T70 = T_70 + 0.1;   // r2: lands on "seventy" (was 0.15 s early)
+{ const el = scr(CARD("70", "MEN ON HORSEBACK"), "right:58px;top:63px;display:flex;justify-content:center;transform-origin:50% 30%;", T70, null, { autoAlpha: 0 });
+  slam(el, T70 - 0.2, { from: 1.35, shake: 4, until: T_150 - 0.3 }); }
+{ const el = scr(CARD("0", "AMERICAN PRISONERS", "SET FREE"), "right:58px;top:63px;display:flex;justify-content:center;transform-origin:50% 30%;", T_150, null, { autoAlpha: 0 });
+  slam(el, T_150, { from: 1.35, shake: 4, until: Math.min(T_GUARD, 16.9) });
   const sf = el.firstElementChild.lastElementChild; gsap.set(sf, { autoAlpha: 0 }); tl.fromTo(sf, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_FREE);
   const v = el.querySelector(".v"), st = { x: 0 };
   tl.fromTo(st, { x: 0 }, { x: 150, duration: 0.9, ease: "power2.out", immediateRender: false, onUpdate: () => { v.textContent = String(Math.round(st.x / 10) * 10); } }, T_150 + 0.2);
@@ -127,7 +129,7 @@ mg(PP(1478, 702), PP(...REND[0]), T_GUNS + 0.05, 5, 1.3 / CH2[2]);
 mg(PP(1478, 702), PP(...REND[1]), T_GUNS + 1.1, 4, 1.3 / CH2[2]);
 // muzzle flashes at the guard (constant size on screen; visual only, the mg sound carries them)
 // BW: every shot of the guard = one muzzle flash + one flintlock shot cue (6 shots, ragged)
-[0.05, 0.27, 0.42, 1.1, 1.31, 1.58].forEach((dt, i) => BW.shot(PP(1478 - 16 + 7 * i, 702 + (i % 2 ? 8 : -6)), T_GUNS + dt, { k: 0.85, sk: 0.06, puff: i % 2 === 0 }));
+[0.05, 0.27, 0.42, 1.1, 1.31, 1.58].forEach((dt, i) => BW.shot(PP(1478 - 16 + 7 * i, 702 + (i % 2 ? 8 : -6)), T_GUNS + dt, { k: 0.9, aim: PP(...REND[i % 2]), ps: 0.8 }));
 K.smoke(...PP(1490, 700), T_GUNS + 0.15, { n: 4, r: 22 / CH2[2], rise: 20 / CH2[2], drift: 14 / CH2[2], life: 3.0, alpha: 0.6 });
 B.move("r1", T_GUARD - 0.25, 0.45, ...PP(1440, 698)); B.move("r2", T_GUARD - 0.15, 0.45, ...PP(1478, 740));
 hideU(["g1"], T_GUARD + 0.35);
@@ -162,18 +164,21 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
 // ================================================================================================================================
 // the cloud dive: the lens falls through a white cumulus deck over the wide map (0 - ~2.6 s), then through scattered fair-weather
 // cumulus (with their shadows on the ground) all the way down the existing continuous zoom, landing clear on "Nelson's Ferry"
-{ const E = gsap.parseEase("sine.inOut"), KC = [[[...R_CN, ...R_NC].filter((q, i) => i % 3 === 0), 150], [[LYT(32.80, -79.95)], 170]];
-  const QC = LYT(32.99, -80.10), QK = LYT(34.12, -80.70), RD = Math.atan2(QK[1] - QC[1], QK[0] - QC[0]) + Math.PI / 2;   // across the road (clouds beside it, never on it)
-  BW.clouds({ seed: 1780, until: T_THERE,
-    sv: (t, ws) => (t < 3.0 ? BW.lerp(0.36, Math.max(ws, 0.7), E(t / 3.0)) : ws),
-    deck: { n: 40, at: [C0[0], C0[1]], spread: [1350, 760], h: [1.45, 2.75], r: [300, 470] },
-    field: { n: 16, at: [C1[0], C1[1]], spread: [1300, 720], h: [0.07, 0.2], r: 700, keep: KC },
-    path: { camAt, t0: 2.8, t1: TZ1, n: 22, h: [0.1, 0.3], r: 700, spread: 1350, cones: [[RD, 0.6]] },
-    veil: (t) => 0.55 * (1 - BW.sstep(0, 1.7, t)) }); }
+// r2: 8 soft v6 cumulus in all, no deck, no white veil: two big ones pass the lens in the first ~2 s (thinning), two small ones drift at the
+// edges of the wide map, four low ones beside the descent; none over the road corridor while "one road ... Nelson's Ferry" is spoken
+{ const E = gsap.parseEase("sine.inOut"), KC = [[[...R_CN, ...R_NC].filter((q, i) => i % 3 === 0), 260], [[LYT(32.80, -79.95)], 260]];
+  const QC = LYT(32.99, -80.10), QK = LYT(34.12, -80.70), RD = Math.atan2(QK[1] - QC[1], QK[0] - QC[0]) + Math.PI / 2;
+  BW.clouds({ seed: 1781, until: T_THERE, clear: { t0: 2.0, t1: 6.3, box: [850, 360, 1400, 1000] },
+    sv: (t, ws) => (t < 3.0 ? BW.lerp(0.42, Math.max(ws, 0.7), E(t / 3.0)) : ws),
+    deck: { n: 2, at: [C0[0] - 60, C0[1] - 40], spread: [520, 260], h: [1.9, 2.25], r: [430, 520] },
+    field: { n: 2, at: [C1[0], C1[1]], spread: [1250, 700], h: [0.12, 0.2], r: 700, keep: KC },
+    path: { camAt, t0: 2.8, t1: TZ1, n: 4, h: [0.1, 0.22], r: 760, spread: 1400, cones: [[RD, 0.5], [RD + Math.PI, 0.5]] } }); }
 // hook-2: "before dawn" is the script's only time: the pocket watch comes in (hands ~4:30, no clock time is spoken)
-BW.time(T_DAWN, { hands: "4:30", label: "Before dawn", header: "1780" });
+BW.time(T_DAWN, { label: "Before dawn", header: "1780" });   // r2: no clock time is spoken: text only, no watch
 BW.date("1780", T_4M + 0.1);
 // THE ARMIES (replaces the side-colour key plate)
-BW.legend(1.2, END + 1, [{ name: "Marion's men", sub: "South Carolina", color: "#2c57b7" }, { name: "British", sub: "and Loyalists", color: "#bc2528" }]);
+// r2: enters after the dive lands; "Americans" in the hook (no hero name before the name slam); steps out 0.15 s before the number cards
+{ const ENT = [{ name: "Americans", sub: "militia", color: "#2c57b7" }, { name: "British", sub: "and Loyalists", color: "#bc2528" }];
+  BW.legend(8.5, T70 - 0.35, ENT); BW.legend(Math.min(T_GUARD, 16.9) + 0.5, END + 1, ENT); }
 // gentle tilt: flat while falling, then a slow push with ~8 deg of perspective once the lens is below the clouds
-BW.tilt([[0, 0, 1.0], [TZ0, 3, 1.04], [TZ1 + 0.5, 7.5, 1.1, "power1.inOut"], [END, 9, 1.12]]);
+BW.tilt([[0, 0, 1.0], [TZ0, 3, 1.03], [TZ1 + 0.5, 6, 1.05, "power1.inOut"], [END, 7, 1.06]]);   // r2: capped (sharpness)

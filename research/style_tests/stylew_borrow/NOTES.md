@@ -5,10 +5,33 @@ Owner decision (2026-11-27): back to the 2D Style W main style (STYLE_LOCK 2d/2e
 Where a borrowed element overlaps one of ours, the borrowed one REPLACES ours. Everything else stays locked Style W.
 **This is a test: nothing here is in STYLE_LOCK yet; apply only after the owner approves.**
 
-- `stylew_borrow_test_share.mp4`: 62.7 s, 1920x1080, 19 MB, -14.0 LUFS (TP -1.4). Four windows of the published Marion #18, same voice (voice A) and words:
+- `stylew_borrow_test_share.mp4` (r1): 62.7 s, 1920x1080, 19 MB, -14.0 LUFS (TP -1.4). Four windows of the published Marion #18, same voice (voice A) and words:
   film 0:00.0-0:17.8 (hook-1/2: dive, watch, guard's muskets) | 0:56.35-0:58.85 (name slam) | 1:11.45-1:15.85 (title) |
   13:21.5-13:59.5 (move 3, Parker's Ferry: date + seal, ambush volleys, result list). Joins = 0.08 s fades.
 - `sheet.jpg`: 9 matched moments, published Marion (left, side key burned in as in the film) | this test (right).
+- **r2 (critics A 6/10, B 5/10):** `stylew_borrow_test_r2_share.mp4` (63.8 s, 20 MB, -14.0 LUFS; same windows, the name window now runs to 0:59.95 so the
+  caption follows the gold slam) + `sheet_r2.jpg` (published | r1 | r2). r1 files are kept for comparison.
+
+## r2 changes (critic round 1)
+1. Dive: 8 soft v6 cumulus in all (#EDEBE4 tops, #9AA3AD undersides, 7-8 px blurred lobes); no deck, NO white veil (1a); two large
+   clouds pass the lens in the first second and thin out; clouds fade off the screen box x 850-1400 / y 360-1000 while "one road ...
+   Nelson's Ferry" is spoken (2.0-6.3 s, `clear` option); four low clouds beside the descent after 6.3 s.
+2. Gold name: fades in exactly on "Francis Marion", map dimmed 35 % under it, 3 px #1a1208 outline + drop-shadow(0 8 24 .6); the banner
+   name plate hides while it is up; the PAINTED LONG AFTER HIS DEATH caption comes after it. Title card: units / flags under the letters fade to 0.
+3. 70 / 150 cards = ivory/gold Cinzel plaques (~300 x 130, top-right, watch-plaque style); 70 lands on "seventy" (+0.15 s).
+4. THE ARMIES: enters at 8.5 s (after the dive), "Americans / British" until the name slam, "Marion's men" after it; steps out 0.15 s
+   before each card / the gold slam / the result list and comes back after.
+5. Timeline: only around the date beat (slides in on the date roll, holds ~4 s, slides out); three seals, one per move (Parker's Ferry is
+   move 3: no 4th seal, so no seal drops in these windows); seals on the progress line, labels never covered, 13 cells x 72 px
+   (AUG 1780 - AUG 1781), year tabs 1780 / 1781 above the cells + a divider before JAN; no seal text.
+6. Date plaque: one 310 x 95 plaque for every scene (readable year line + "30 August" / "1780" / "Before dawn"); the watch dial only
+   with a spoken clock time (none in these windows), no hands; no place note under the date.
+7. Result list: 1.35x, no row numbers, lining numerals, each value on its word ("about 20" then "killed", ...), "3 wounded" ~0.9 s before the cut.
+8. Flashes: directional cones (~40 x 18 px, white-hot #FFF6D0 -> #FF9A2A, 2 frames) aimed at the target + a grey 60-90 px puff that
+   hangs ~1.5 s (smoke line); sync unchanged (shot cue = the flash frame).
+9. Musket mix: the first shot of each ripple at full level on its word, the ripple tail ducked 6 dB while the voice speaks; -14 LUFS.
+10. Tilt capped at rotateX 7 deg / scale 1.06 (sharper map edges).
+11. Crossed sabres moved east of the jammed boxes (off the FRASER tag); at the end only the result list + the date plaque + the banner.
 
 ## The borrowed elements (where each one replaced ours)
 | # | element | replaces | how (2D) |

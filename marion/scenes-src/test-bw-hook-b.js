@@ -196,12 +196,15 @@ SFX("hit", T_FM + 0.05); K.shake(T_FM + 0.05, 5, 0.3);
 const NAME = scr0(`<div style="padding:12px 46px 16px;background:rgb(18,16,12);border-top:7px solid #1f4fc4;color:#f7f3ea;font-family:Oswald;font-weight:700;text-align:center;box-shadow:0 16px 34px rgba(0,0,0,.6)"><div style="font-size:92px;letter-spacing:0.08em;line-height:1.1">FRANCIS MARION</div></div>`,
   "left:0;right:0;top:800px;display:flex;justify-content:center;transform-origin:50% 40%;");
 // BW: the name card becomes the 3D gold title (extruded, painted bevel, shadow on the map), over the 2D map
-gsap.set(NAME, { display: "none" }); BW.gold("FRANCIS MARION", T_FM - 0.12, T1 - 0.35, { y: 850, w: 1240, tGrow: T_FM + 0.7 });
+// r2: fades in exactly on "Francis Marion", map dimmed 35 % under it, dark outline + drop shadow; the banner's name plate hides while it is up
+const TG1 = T_FM + 1.45;
+gsap.set(NAME, { display: "none" }); BW.gold("FRANCIS MARION", T_FM, TG1, { y: 850, w: 1240, tGrow: T_FM + 0.7, exact: true, dim: 0.35 });
+{ const nm = () => [...document.querySelectorAll(".bn-name, .bn-name ~ div")]; tl.to(nm(), { autoAlpha: 0, duration: 0.2 }, T_FM - 0.05); tl.to(nm(), { autoAlpha: 1, duration: 0.3 }, TG1 + 0.2); }
 const CAPDX = 130, CAPDY = -150;
 // the caption on the Marion picture (MAP_BRIEF: once, here): small, under the banner, ~2.2 s
 { const el = scr0(`<div style="font-family:Oswald;font-weight:600;font-size:21px;letter-spacing:.2em;color:#efe3c8;background:rgba(21,17,12,.82);padding:5px 14px;border-left:3px solid #c8a86a">PAINTED LONG AFTER HIS DEATH</div>`, "left:0;top:0;");
   { const c = camAt(T_FM + 0.4), sx = 960 + (BANP[0] - c[0]) * c[2], sy = 540 + (BANP[1] - c[1]) * c[2]; gsap.set(el, { x: sx + CAPDX, y: sy + CAPDY }); }
-  el.dataset.cap = "1"; window.__CAP = el; tl.to(el, { autoAlpha: 1, duration: 0.3 }, T_FM + 0.35); tl.to(el, { autoAlpha: 0, duration: 0.3 }, Math.min(T_FM + 2.6, T1 - 0.3)); }
+  el.dataset.cap = "1"; window.__CAP = el; tl.to(el, { autoAlpha: 1, duration: 0.3 }, TG1 + 0.25); tl.to(el, { autoAlpha: 0, duration: 0.3 }, T1 - 0.3); }   // r2: after the gold slam
 // ---------------------------------------------------------------------------------------------------------------------------------
 // the three snap cuts (layers of the nested maps, full frame; whoosh + hit)
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -266,9 +269,12 @@ const TITLE = scr0(`<div style="text-align:center;font-family:Oswald;font-weight
   <div class="sub" style="font-size:36px;letter-spacing:.3em;color:#c9b48a;margin-top:6px">THREE GREATEST TACTICAL MOVES</div></div>`, "left:0;right:0;top:330px;display:flex;justify-content:center;");
 // BW: the title card becomes the 3D gold title + gold Cinzel subtitle on its words
 gsap.set(TITLE, { display: "none" }); K.shake(T_FMS + 0.1, 6, 0.3); SFX("hit", T_FMS + 0.1);
+tl.to([...PINS.children, ...[...OVL.children].filter((e) => !["defs", "style"].includes(e.tagName.toLowerCase()))], { autoAlpha: 0, duration: 0.4 }, T_FMS - 0.3);   // r2: no units / flags under the letters
 BW.gold("FRANCIS MARION", T_FMS - 0.15, END + 5, { y: 470, w: 1420, tGrow: T_MOVES, sub: ["THREE GREATEST TACTICAL MOVES", T_MOVES] });
 { const sb = TITLE.querySelector(".sub"); gsap.set(sb, { autoAlpha: 0 }); tl.fromTo(sb, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, T_MOVES); }
 // BW: THE ARMIES (replaces the side-colour key plate); steps out for the title (one big thing at a time)
-BW.legend(0, T4 - 0.3, [{ name: "Marion's men", sub: "South Carolina", color: "#2c57b7" }, { name: "British", sub: "and Loyalists", color: "#bc2528" }]);
-BW.tilt([[0, 7, 1.1], [END, 9, 1.12]]);
+// r2: "Americans" until the name is spoken; steps out 0.15 s before the gold slam, back after it as "Marion's men"; out for the title
+BW.legend(0, T_FM - 0.15, [{ name: "Americans", sub: "militia", color: "#2c57b7" }, { name: "British", sub: "and Loyalists", color: "#bc2528" }]);
+BW.legend(TG1 + 0.4, T4 - 0.3, [{ name: "Marion's men", sub: "South Carolina", color: "#2c57b7" }, { name: "British", sub: "and Loyalists", color: "#bc2528" }]);
+BW.tilt([[0, 6, 1.05], [END, 7, 1.06]]);   // r2: capped (sharpness)
 }

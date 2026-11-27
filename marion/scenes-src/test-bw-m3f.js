@@ -95,12 +95,12 @@ B.move("fr2", T_NARROW, 0.5, 1522, RY + 1, "power2.out");
 const ROADHIT = (x) => [x, RY + 1];
 AIDS.forEach((id) => tl.to(B.units[id].el.querySelector(".blk"), { filter: "brightness(1) saturate(1) opacity(1)", duration: 0.25 }, T_EVERY - 0.05));
 // BW: one muzzle flash (+ flintlock shot) per musket along the whole hidden line, a ragged ripple from the west flank
-BW.volley([[1484, 795], [1602, 797]], T_EVERY, 0.62, 18, { k: 0.8, sk: 0.35, jy: 7, seed: 31 });
+BW.volley([[1484, 795], [1602, 797]], T_EVERY, 0.62, 18, { k: 0.9, jy: 7, seed: 31, ps: 0.85, puffEvery: 3, aim: (x) => [x + (1528 - x) * 0.35, RY + 2] });
 mg([1498, 794], ROADHIT(1528), T_EVERY + 0.02, 5, 1.1); mg([1560, 794], ROADHIT(1536), T_EVERY + 0.1, 5, 1.1);
 smoke(AMB.map((p) => [p[0], p[1] + 10]), T_EVERY + 0.1, 0.55);
-MARK([1530, RY + 2], T_EVERY + 0.35, T_COUNT + 0.2);
+MARK([1568, RY + 1], T_EVERY + 0.35, T_COUNT + 0.2);   // BW r2: east of the jammed boxes, off the FRASER tag
 // "firing buckshot": a second ripple down the line
-BW.volley([[1488, 796], [1600, 798]], T_BUCK + 0.05, 0.8, 13, { k: 0.8, sk: 0.35, jy: 7, seed: 57 });   // BW: the buckshot ripple, shot by shot
+BW.volley([[1488, 796], [1600, 798]], T_BUCK + 0.05, 0.8, 13, { k: 0.9, jy: 7, seed: 57, ps: 0.85, puffEvery: 3, aim: (x) => [x + (1524 - x) * 0.35, RY + 2] });   // BW: the buckshot ripple, shot by shot
 mg([1528, 794], ROADHIT(1520), T_BUCK + 0.08, 4, 1.1); mg([1588, 796], ROADHIT(1540), T_BUCK + 0.2, 4, 1.1);
 smoke([[1513, 792], [1573, 794]], T_BUCK + 0.15, 0.5);
 // the red cavalry breaks: "killed on the spot" -> fast fade; a few flee back toward the ferry
@@ -129,22 +129,24 @@ if (GD.var.audit) LABEL_AUDIT([2, 8, 14, 20, 26, 32, 38, 44], { show: true });
 // ================================================================================================================================
 // BW: the parchment result list (top-right), the wax-seal timeline, THE ARMIES, tilt
 // ================================================================================================================================
-BW.note(T_PF + 0.1, "Parker's Ferry");
+// r2: the result list 1.35x, no row numbers, every value on its word
+const T_KIL = at(P2, "killed on the spot"), T_WND = at(P2, "wounded. He lost"), T_MK = at(P2, "man killed");
 BW.O.ledger.show(T_COUNT - 0.05, { title: "PARKER'S FERRY", sub: "by Marion's own count" });
-BW.row(T_20 + 0.05, "red", "about 20 killed", "Loyalist cavalry");
-BW.row(T_80 + 0.05, "red", "some 80 wounded");
-BW.row(T_LOST + 0.05, "blue", "Marion: 1 killed");
-BW.O.ledger.note(T_3W + 0.05, 3, "and 3 wounded");
+BW.rowParts("red", [["about 20", T_20 + 0.05], [" killed", T_KIL]]);
+BW.rowParts("red", [["some 80", T_80 + 0.05], [" wounded", T_WND]]);
+BW.rowParts("blue", [["Marion: 1", T_LOST + 0.25], [" killed", T_MK + 0.1], [", 3 wounded", T_3W + 0.05]]);
 BW.O.ledger.hide(T_GUN + 0.4);
-// the timeline: months Aug 1780 - Sep 1781; the seals of moves 1-3 (Great Savannah 25 Aug 1780, the chase 8 Nov 1780, Fort Watson 15 Apr 1781) are already down; the progress runs on to August 1781 and the
-// Parker's Ferry seal drops on "thirtieth of August"
-{ const M = ["AUG", "SEP", "OCT", "NOV", "DEC", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP"];
-  BW.O.timeline.show(0, { month: "1780", year: "1781", cells: M, at: 10.25, cellW: 67 });
-  [[0.81, "m1"], [3.26, "m2"], [8.48, "m3"]].forEach(([a], i) => BW.O.timeline.seal(0.01, { at: a }));
-  const TLE = BW.O.root.querySelector(".tline"); [TLE, ...TLE.children].forEach((e) => { if (e.tagName === "svg") return; tl.getTweensOf(e).filter((tw) => tw.startTime() < 0.05).forEach((tw) => tw.kill()); });
-  gsap.set(TLE, { autoAlpha: 1, y: 0 }); [...TLE.children].slice(2).forEach((e) => gsap.set(e, { autoAlpha: 1, scale: 1, rotation: 0 }));
-  BW.O.timeline.go(T_30 + 0.1, { at: 12.97, d: 1.4 });
-  BW.O.timeline.seal(T_30 + 1.45, { at: 12.97, name: "Parker's Ferry" }); SFX("hit", T_30 + 1.75); }
-{ const LG = () => BW.legend(0, END + 1, [{ name: "Marion's men", sub: "South Carolina", color: "#2c57b7" }, { name: "British", sub: "and Loyalists", color: "#bc2528" }]); LG(); }
-BW.tilt([[0, 7, 1.1], [END, 9, 1.12]]);
+// r2: the timeline only around the date beat (slides in on the date roll, holds ~4 s, slides out); one seal per move, all three already
+// down (Parker's Ferry belongs to move 3: no 4th seal); 13 months AUG 1780 - AUG 1781, year tabs over the cells, seals on the progress line
+{ const M = ["AUG", "SEP", "OCT", "NOV", "DEC", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG"], CW = 72, TS = T_30 - 0.1, TH = T_30 + 4.2;
+  BW.O.timeline.show(TS, { month: "1780", year: "1781", cells: M, at: 10.23, cellW: CW });
+  [0.81, 3.26, 8.48].forEach((a) => BW.O.timeline.seal(TS, { at: a }));
+  const TLE = BW.O.root.querySelector(".tline"); [...TLE.children].slice(2).forEach((e) => { tl.getTweensOf(e).forEach((tw) => tw.kill()); gsap.set(e, { autoAlpha: 1, scale: 1, rotation: 0 }); });
+  [["1780", 0], ["1781", 5]].forEach(([y, i]) => { const d = document.createElement("div"); d.className = "yr"; d.textContent = y; d.style.left = `${99 + i * CW + 4}px`; TLE.appendChild(d); });
+  { const d = document.createElement("div"); d.className = "ydiv"; d.style.left = `${99 + 5 * CW - 1}px`; TLE.appendChild(d); }
+  BW.O.timeline.go(T_30 + 0.3, { at: 12.97, d: 1.4 });
+  BW.O.timeline.hide(TH); }
+// r2: THE ARMIES steps out before the result list (end: ledger + date plaque + banner only)
+BW.legend(0, T_COUNT - 0.2, [{ name: "Marion's men", sub: "South Carolina", color: "#2c57b7" }, { name: "British", sub: "and Loyalists", color: "#bc2528" }]);
+BW.tilt([[0, 6, 1.05], [END, 7, 1.06]]);   // r2: capped (sharpness)
 }
