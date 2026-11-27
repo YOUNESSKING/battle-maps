@@ -90,7 +90,11 @@ else {
     // 2-3 heights (parallax while the camera drops): each cluster picks a tier
     const TIERS = C.fair.tiers || [49, 49]; const tierOf = (c) => TIERS[Math.floor(hsh(c, 71) * TIERS.length)];
     const deck = [];
-    if (DV && C.fair.deck !== false) { const cx0 = DV.over[0], cz0 = DV.over[1] + 6 * F;
+    if (DV && C.fair.masses) {   // r13b (critic A): the deck = 2-3 big merged masses (+ the centre) of tightly packed lumps, no separate puffs
+      let i = 0; for (const [mx, mz, MR] of C.fair.masses) for (let gx = -MR; gx <= MR; gx += 11) for (let gz = -MR; gz <= MR; gz += 11, i++) {
+        const x = gx + (hsh(i, 5) - 0.5) * 8, z = gz + (hsh(i, 6) - 0.5) * 8; if (Math.hypot(x, z * 1.1) > MR) continue;
+        deck.push([DV.over[0] + (mx + x) * F, DV.over[1] + (mz + z) * F, (15 + hsh(i, 8) * 8) * F]); } }
+    else if (DV && C.fair.deck !== false) { const cx0 = DV.over[0], cz0 = DV.over[1] + 6 * F;
       for (let i = 0, gx = cx0 - 118 * F; gx < cx0 + 122 * F; gx += 27 * F) for (let gz = cz0 - 112 * F; gz < cz0 + 108 * F; gz += 27 * F, i++) {   // r13: fewer, bigger, merging lumps
         const x = gx + (hsh(i, 5) - 0.5) * 18 * F, z = gz + (hsh(i, 6) - 0.5) * 18 * F, r = Math.hypot(x - cx0, (z - cz0) * 1.15);
         if (hsh(i, 7) < lerp(0.97, 0.55, clamp((r - 30 * F) / (90 * F)))) deck.push([x, z, (20 + hsh(i, 8) * 16) * F]); }
@@ -100,19 +104,23 @@ else {
     window.__bwglClouds = cl.length;
     const D0 = DV || NODIVE, AD = (t) => (t > D0.SW + 1 ? NODIVE : D0);
     const slabTop = Math.max(104, ...TIERS.map((v) => v + 55)) * F;
-    if (cl.length) sys.vc = sys.fx.vclouds({ noise: NOISE, clouds: cl, bounds: [B[0] - 40 * F, B[1] - 70 * F, B[0] + B[2] + 40 * F, B[1] + B[3] + 40 * F], texel: F, skip: 30 * F,
+    const mkVC = (sx, list, dk) => { if (list.length) sx.vc = sx.fx.vclouds({ noise: NOISE, clouds: list, bounds: [B[0] - 40 * F, B[1] - 70 * F, B[0] + B[2] + 40 * F, B[1] + B[3] + 40 * F], texel: F, skip: 30 * F,
       slab: [28 * F, slabTop]   /* r13: low enough that no cloud bottom is cut flat */, tile: 125 * F, groupScale: 3.0, amp: 5 * F, soft: 1.7 * F, flatPow: 0.3, sigma: 0.75 / F,
       stepIn: 0.25 * F, stepK: 0.0035, lightStep: 1.4 * F, lodDist: 260 * F, nearFade: 9 * F,   /* r13: no planar cut where the camera passes through a cloud */ maxSteps: C.fair.maxSteps ?? 200, resolution: C.fair.res ?? 0.75, warp: 0.06, fine: 0.12, wisp: 0.45, inner: 0.8,
-      weights: [1.0, 0.5, 1, 0.5], group0: [0.55, 0.3, 1.4, 0.5], blur: 1.0, sharp: 1, shadow: 0.75, shadowDir: [0.3, 1, 0.65], drift: (C.fair.drift || [0.10, -0.035]).map((v) => v * F), evolve: 0.0025 / F, floor: 0.05,
+      weights: [1.0, 0.5, 1, 0.5], group0: [0.55, 0.3, 1.4, 0.5], blur: 1.0, sharp: 1, shadow: 0.75, shadowDir: [0.3, 1, 0.65], drift: (C.fair.drift || [0.10, -0.035]).map((v) => v * F * dk), evolve: 0.0025 / F, floor: 0.05,
       sunK: 1.4, ambK: 0.18, lightK: 3.2,
       erode: (t) => { const d = D0; return [C.fair.erode0 ? C.fair.erode0(t) : 0, t > d.SW + 0.5 ? 9 : lerp(9, lerp(1.6, 0, sstep(d.deckIn - 0.1, d.deckIn + 0.6, t)), sstep(d.deckIn - 0.15, d.deckIn + 0.15, t))]; },   // r5: the deck does not exist before deckIn (spoken places read)
       deck: (t) => { const d = D0; return { x: d.over[0], z: d.over[1], r: 110 * F, front: 3.5 * (1 - sstep(d.deckIn + 0.1, d.full, t)), k: lerp(0, 1, sstep(d.deckIn, d.deckIn + 0.6, t)) }; },
       ms: (t) => { const d = AD(t); return lerp(0.22, 0.42, sstep(d.full - 0.2, d.inside, t)); }, expo: (t) => { const d = AD(t); return lerp(1, 0.93, sstep(d.full - 0.2, d.inside, t)); },
       colors: (t) => { const d = AD(t), k = sstep(d.full - 0.2, d.inside, t), c = sstep(d.deckIn, d.deckIn + 0.5, t) * (1 - k), q = Math.max(k, c);
-        return { sun: [lerp(1.0, 0.95, q), lerp(0.96, 0.97, q), lerp(0.88, 0.94, q)], ambTop: [lerp(0.58, 0.66, q), lerp(0.63, 0.71, q), lerp(0.72, 0.76, q)], ambBot: [lerp(0.32, 0.40, q), lerp(0.36, 0.46, q), lerp(0.44, 0.54, q)],   // r13: whiter lit tops, softer grey undersides (v6)
+        return { sun: [lerp(1.0, 0.95, q), lerp(0.96, 0.97, q), lerp(0.88, 0.94, q)], ambTop: [lerp(0.58, 0.66, q), lerp(0.63, 0.71, q), lerp(0.72, 0.76, q)], ambBot: [lerp((C.fair.ambBot || [0.32])[0], 0.40, q), lerp((C.fair.ambBot || [0, 0.36])[1], 0.46, q), lerp(0.44, 0.54, q)],   // r13: whiter lit tops, softer grey undersides (v6)
           nSun: CW_DAY.nSun, nAmbTop: CW_DAY.nAmbTop, nAmbBot: CW_DAY.nAmbBot, ambK: lerp(0.24, 0.36, q), lightK: lerp(3.2, 1.4, k) * lerp(1, 0.8, c), sunK: lerp(1.65, 1.2, q) }; },
       sigmaK: (t) => { const d = AD(t); return lerp(1, 0.5, sstep(d.full, d.inside, t)); },
-      opacity: C.fair.opacity || (() => 1) });
+      opacity: C.fair.opacity || (() => 1) }); };
+    // r13b (critic A): two heights, the near (higher) layer drifts 1.6x faster (its own vclouds system)
+    const NT = C.fair.nearTier; if (NT != null) { const far = cl.filter((c) => c[5] === 1 || c[4] < NT * F), near = cl.filter((c) => !(c[5] === 1 || c[4] < NT * F));
+      mkVC(sys, far, 1); const s2 = mkFX({ seed: 1864, on: C.fair.on }); mkVC(s2, near, C.fair.nearK ?? 1.6); ground(s2, [B[0] - 400 * F, B[1] - 400 * F, B[2] + 800 * F, B[3] + 800 * F]); s2.on = C.fair.on || (() => true); }
+    else mkVC(sys, cl, 1);
     ground(sys, [B[0] - 400 * F, B[1] - 400 * F, B[2] + 800 * F, B[3] + 800 * F]);
     sys.on = C.fair.on || (() => true);
   }
@@ -230,12 +238,17 @@ else {
           else if (vQ.w > 1.05) col *= vec3(0.46, 0.45, 0.44) * (0.85 + 0.3 * lum);                    // soot (the burning roof's column)
           else col *= mix(1.0, 0.96, vQ.w) * mix(1.0, 0.72, vQ.w * clamp(1.4 * (1.0 - lum), 0.0, 1.0));   // r12 cannon smoke: tops ~(230,227,220), undersides ~(95,98,105)
           col *= 1.0 + uFl * clamp(1.15 - lum, 0.0, 1.0) * vec3(1.0, 0.9, 0.72);                         // r10: each flash lifts the bank's underside (+20 %, 2 frames)                                  // heavier, darker (cannon) smoke: undersides darken most
-          if (uHz > 0.5 && vQ.w < 0.01) {   // r13 (owner: musket smoke too white): a soft grey-blue haze, core ~(196,198,200), shadows ~(150,152,158), a faint lit rim
-            col = mix(vec3(0.588, 0.596, 0.620), vec3(0.769, 0.776, 0.784), clamp((lum - 0.42) / 0.45, 0.0, 1.0)) + vec3(0.025) * smoothstep(0.86, 0.95, lum);
-            col = mix(col, vec3(0.85, 0.85, 0.84), vQ.z * 0.6); }
+          if (uHz > 0.5 && vQ.w < 0.01) {   // r13: the musket haze colour (see-through, capped 0.40; the burst in its own pass)
+            col = mix(vec3(0.745, 0.745, 0.737), vec3(0.910, 0.902, 0.878), clamp((lum - 0.42) / 0.45, 0.0, 1.0));   // r13b (owner: white is OK, 'white's milk'): milky white haze, tops ~(232,230,224) / undersides ~(190,190,188)
+            col = mix(col, vec3(0.882, 0.882, 0.863), vQ.z); }   // the muzzle burst ~(225,225,220)
           else col = mix(col, vec3(0.965, 0.955, 0.93), vQ.z * 0.75);
           col *= uNT; gl_FragColor = vec4(col * d, d); }` });
     const mesh = new THREE.Mesh(geo, mat); mesh.frustumCulled = false; const sScene = new THREE.Scene(); sScene.add(mesh);
+    // r13b (critic A): the muzzle burst (jets) in its own pass with its own cap (V.burstCap), so the shot itself reads above the 0.40 haze
+    const geo2 = new THREE.InstancedBufferGeometry(); geo2.setAttribute("position", geo.getAttribute("position")); geo2.setIndex(geo.getIndex());
+    const iP2 = new THREE.InstancedBufferAttribute(new Float32Array(N * 4), 4), iQ2 = new THREE.InstancedBufferAttribute(new Float32Array(N * 4), 4);
+    iP2.setUsage(THREE.DynamicDrawUsage); iQ2.setUsage(THREE.DynamicDrawUsage); geo2.setAttribute("iP", iP2); geo2.setAttribute("iQ", iQ2); geo2.instanceCount = 0;
+    const mesh2 = new THREE.Mesh(geo2, mat); mesh2.frustumCulled = false; const sScene2 = new THREE.Scene(); sScene2.add(mesh2); const BC = V.burstCap;
     const RT = new THREE.WebGLRenderTarget(1280, 720, { type: THREE.HalfFloatType, depthBuffer: false });
     const MAXR = 24, rects = Array.from({ length: MAXR }, () => new THREE.Vector4(-1, -1, -1, -1)), rmax = new Float32Array(MAXR), rfe = new Float32Array(MAXR).fill(1.5);
     const comp = new THREE.ShaderMaterial({ transparent: true, depthTest: false, depthWrite: false, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
@@ -268,7 +281,7 @@ else {
       draw(t) {
         const e = camera.matrixWorld.elements; mat.uniforms.uR.value.set(e[0], e[1], e[2]).normalize(); mat.uniforms.uU.value.set(e[4], e[5], e[6]).normalize();
         const ur = unitRects(), JL = new Map(), gone = 1 - sstep(GONE - 0.8, GONE, t);
-        let n = 0; const P = iP.array, Q = iQ.array, Wx = W0[0], Wz = W0[1];
+        let n = 0, n2 = 0; const P = iP.array, Q = iQ.array, P2 = iP2.array, Q2 = iQ2.array, Wx = W0[0], Wz = W0[1];
         for (const p of PL) { const age = t - p.t; if (age < 0) break; if (age > p.life) continue;
           if (p.g) { const eo = 1 - Math.pow(1 - Math.min(1, age / p.eT), 3), wk = Math.max(0, age - 0.4), sh = 0.8 + 0.4 * p.h, rise = p.rise * (1 - Math.exp(-age / 3));
             const sx = p.ex * eo + p.wind[0] * sh * wk, sz = p.ez * eo + p.wind[1] * sh * wk - rise;
@@ -282,12 +295,13 @@ else {
           const wk = Math.max(0, age - (V.windAt ?? 0.3)), sh = (V.shear ? 1 - V.shear / 2 + V.shear * p.h : 0.8 + 0.4 * p.h), rise = RV * (1 - Math.exp(-age / 2.5));
           const sx = p.dx * s - p.dz * p.lat + Wx * sh * wk, sz = p.dz * s + p.dx * p.lat + Wz * sh * wk - rise - (p.up || 0) * Math.min(1, age / 0.6);
           const size = (p.jet ? 1 : 1 + (V.stretch ?? 0) * Math.max(0, age - 0.5)) * (p.jet ? p.sz * (1 + 0.35 * Math.min(1, age / 0.3)) : p.sz * (0.55 + 0.45 * (1 - Math.pow(1 - Math.min(1, age / 0.8), 2))) * (1 + 0.015 * age));
-          const a = p.jet ? p.a0 * (age < 0.3 ? 1 : 1 - sstep(0.3, 0.9, age)) * Math.min(1, age / 0.03)
+          const a = p.jet ? (BC ? 0.85 : p.a0) * (BC ? 1 - sstep(0.4, 1.0, age) : age < 0.3 ? 1 : 1 - sstep(0.3, 0.9, age)) * Math.min(1, age / 0.03)
                           : p.a0 * Math.min(1, age / 0.25) * Math.exp(-age / (V.tau ?? 2.5)) * (1 - sstep(p.life - (V.fade ?? 3.2), p.life, age));
           const A = a * gone; if (A < 0.003) continue;
+          if (BC && p.jet) { const j = n2 * 4; P2[j] = p.x + sx * K; P2[j + 1] = (2 + p.h * 4) * K; P2[j + 2] = p.z + sz * K; P2[j + 3] = size * K; Q2[j] = A; Q2[j + 1] = p.cell; Q2[j + 2] = 1; Q2[j + 3] = 0; n2++; continue; }
           P[n * 4] = p.x + sx * K; P[n * 4 + 1] = (2 + p.h * 4) * K; P[n * 4 + 2] = p.z + sz * K; P[n * 4 + 3] = size * K;
-          Q[n * 4] = A; Q[n * 4 + 1] = p.cell; Q[n * 4 + 2] = p.jet ? 1 : 0.5 * (1 - sstep(0.1, 0.6, age)); Q[n * 4 + 3] = 0; n++; }
-        geo.instanceCount = n; iP.needsUpdate = true; iQ.needsUpdate = true;
+          Q[n * 4] = A; Q[n * 4 + 1] = p.cell; Q[n * 4 + 2] = p.jet ? 1 : (BC ? 0.15 : 0.5) * (1 - sstep(0.1, 0.6, age)); Q[n * 4 + 3] = 0; n++; }
+        geo.instanceCount = n; iP.needsUpdate = true; iQ.needsUpdate = true; geo2.instanceCount = n2; iP2.needsUpdate = true; iQ2.needsUpdate = true;
         { let c = 0; for (const q of SH) { const ag = t - q[0]; if (ag >= -1e-4 && ag < 2 / 30 - 1e-4) c++; } for (const q of CN) { const ag = t - q[0]; if (ag >= -1e-4 && ag < 2 / 30 - 1e-4) c += 3; }
           mat.uniforms.uFl.value = 0.2 * Math.min(1, c / 2); }
         const prev = renderer.getRenderTarget(); renderer.setRenderTarget(RT); renderer.setClearColor(0, 0); renderer.clear(true, false, false);
@@ -297,6 +311,8 @@ else {
           const a = proj(bx[0], bx[1]), b = proj(bx[2], bx[3]); ur.push([Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.max(a[0], b[0]), Math.max(a[1], b[1]), cv, false, fe ?? 30]); }
         for (let i = 0; i < MAXR; i++) { const r = ur[i]; if (r) { rects[i].set(r[0], r[1], r[2], r[3]); rmax[i] = r[4]; rfe[i] = r[6] ?? 1.5; } else rects[i].set(-1, -1, -1, -1); }
         if (n) renderer.render(cScene, oCam);
+        if (n2) { renderer.setRenderTarget(RT); renderer.clear(true, false, false); renderer.render(sScene2, camera); renderer.setRenderTarget(prev);
+          const c0 = comp.uniforms.uCap.value; comp.uniforms.uCap.value = BC; renderer.render(cScene, oCam); comp.uniforms.uCap.value = c0; }
         // flashes (x FS = 0.7)
         fg.clearRect(0, 0, 1920, 1080); gg.clearRect(0, 0, 1920, 1080);
         gd.clearRect(0, 0, 1920, 1080);
@@ -361,7 +377,7 @@ else {
   }
   // ---------------- per frame
   const whiteAt = (t) => { const d = DV; if (!d) return [0, 0];
-    let a; if (t < d.emerge) { const v6 = t < d.SW + 0.05 ? 0.45 * sstep(d.wIn, d.SW, t) : t < d.warm + 0.1 ? lerp(0.86, 1, sstep(d.warm - 0.05, d.warm + 0.1, t)) : 1;
+    let a; if (t < d.emerge) { const v6 = t < d.SW + 0.05 ? (C.dive.grey ? C.dive.grey * sstep(d.wIn, d.wIn + 0.2, t) : 0.45 * sstep(d.wIn, d.SW, t)) :   /* r13b: inside the deck an even grey (WO base ~(208,211,204)) at C.dive.grey */ t < d.warm + 0.1 ? lerp(0.86, 1, sstep(d.warm - 0.05, d.warm + 0.1, t)) : 1;
       a = Math.max(v6, sstep(d.SW - 0.12, d.SW - 0.067, t) * (1 - sstep(d.SW + 0.067, d.SW + 0.13, t))); }
     else a = t < d.clear ? lerp(1, 0.1, 1 - (1 - clamp((t - d.emerge) / (d.clear - d.emerge))) ** 2) : lerp(0.1, 0, sstep(d.clear, d.haze, t));
     return [a, sstep(d.warm - 0.05, d.warm + 0.15, t)]; };
