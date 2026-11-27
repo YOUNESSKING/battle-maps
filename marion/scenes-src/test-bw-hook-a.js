@@ -182,7 +182,7 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
     diveOff: { push: -1.4, deckIn: -1.2, full: -0.25, deck: -0.2, wIn: -0.25, inside: -0.1, warm: 0.05, emerge: 0.2, clear: 0.35, haze: 0.6, land: 0.75 },   // r6: the deck closes in from the frame edges from 5.8 s (clear window over the crossing to ~6.45), full by 6.75
     fair: { F: 3.3, box: [150, 120, 2600, 1400], n: 18, med: 24, seed: 5, tiers: [49, 78, 108], diveClear: 110, keepLines: [[ROADP, 80]], keep: [[CHS[0], CHS[1], 110], [860, 1110, 130]],
       on: (t) => t < SW + 1.2, screenClear: { t: [0.5, 6.4], boxes: [[550, 380, 1000, 560], [0, 0, 470, 200]] } },   // r13: + the date plate
-    stratus: { F: 3.1, at: [CEND[0], CEND[1]], speed: 0.45 }, volley: { K: 1 / 15.2, night: 1, wind: [0, -5], jet: [55, 75], billows: 8, gone: 17.0 } }); }   // r9: gone 0.5 s before it reaches the riders   // r8: the guard smoke blows north, away from every box
+    stratus: { F: 3.1, at: [CEND[0], CEND[1]], speed: 0.45 }, volley: { K: 1 / 15.2, night: 1, wind: [-14, -36], jet: [55, 75], billows: 8, gone: 17.0, cap: 0.48, a0: 0.45, life: 5, fade: 2.4, tau: 3, windAt: 0.5, shear: 0.8, stretch: 0.12 } }); }   // r13: thinner, carried off north-west, gone in ~5 s   // r9: gone 0.5 s before it reaches the riders   // r8: the guard smoke blows north, away from every box
 // hook-2: "before dawn" is the script's only time: the pocket watch comes in (hands ~4:30, no clock time is spoken)
 BW.time(T_DAWN, { label: "Before dawn", header: "1780" });   // r2: no clock time is spoken: text only, no watch
 BW.date("1780", T_4M + 0.1);
