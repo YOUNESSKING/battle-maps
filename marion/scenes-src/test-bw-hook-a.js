@@ -115,9 +115,9 @@ RID.forEach(([id, ll], i) => { const P = [...LLYT(ll.slice(0, 2)), PP(...REND[i]
 // BW r2: one design language: the number cards are ivory/gold plaques (~300 x 130, Cinzel), the watch plaque's style, top-right
 const CARD = (big, l1, l2, col) => `<div style="box-sizing:border-box;width:300px;min-height:130px;padding:12px 18px 12px;background:linear-gradient(170deg,#E6DEC5,#D2C6A3);border:1.5px solid #4E4532;border-radius:3px;box-shadow:inset 0 0 0 4px #DED5BA,inset 0 0 0 5px #7D7158,0 10px 24px rgba(0,0,0,.45);font-family:'GM Cinzel',serif;font-weight:700;color:#1E180E;text-align:center">
   <div class="v" style="font-size:62px;line-height:1;letter-spacing:.04em;font-variant-numeric:lining-nums">${big}</div><div style="font-size:16px;letter-spacing:.2em;color:#2a4a8e;margin-top:6px">${l1}</div>${l2 ? `<div style="font-size:14px;letter-spacing:.24em;color:#5A4F3A;margin-top:3px">${l2}</div>` : ""}</div>`;
-const T70 = T_70 + 0.1;   // r2: lands on "seventy" (was 0.15 s early)
+const T70 = T_70 + 0.02;   // r3: the plaque starts on "seventy" (10.50 s), not before
 { const el = scr(CARD("70", "MEN ON HORSEBACK"), "right:58px;top:63px;display:flex;justify-content:center;transform-origin:50% 30%;", T70, null, { autoAlpha: 0 });
-  slam(el, T70 - 0.2, { from: 1.35, shake: 4, until: T_150 - 0.3 }); }
+  slam(el, T70, { from: 1.35, shake: 4, until: T_150 - 0.3 }); }
 { const el = scr(CARD("0", "AMERICAN PRISONERS", "SET FREE"), "right:58px;top:63px;display:flex;justify-content:center;transform-origin:50% 30%;", T_150, null, { autoAlpha: 0 });
   slam(el, T_150, { from: 1.35, shake: 4, until: Math.min(T_GUARD, 16.9) });
   const sf = el.firstElementChild.lastElementChild; gsap.set(sf, { autoAlpha: 0 }); tl.fromTo(sf, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_FREE);
@@ -130,7 +130,7 @@ mg(PP(1478, 702), PP(...REND[1]), T_GUNS + 1.1, 4, 1.3 / CH2[2]);
 // muzzle flashes at the guard (constant size on screen; visual only, the mg sound carries them)
 // BW: every shot of the guard = one muzzle flash + one flintlock shot cue (6 shots, ragged)
 [0.05, 0.27, 0.42, 1.1, 1.31, 1.58].forEach((dt, i) => BW.shot(PP(1478 - 16 + 7 * i, 702 + (i % 2 ? 8 : -6)), T_GUNS + dt, { k: 0.9, aim: PP(...REND[i % 2]), ps: 0.8 }));
-K.smoke(...PP(1490, 700), T_GUNS + 0.15, { n: 4, r: 22 / CH2[2], rise: 20 / CH2[2], drift: 14 / CH2[2], life: 3.0, alpha: 0.6 });
+// BW r3: the kit smoke is replaced by the per-shot puffs (<= 6 per volley)
 B.move("r1", T_GUARD - 0.25, 0.45, ...PP(1440, 698)); B.move("r2", T_GUARD - 0.15, 0.45, ...PP(1478, 740));
 hideU(["g1"], T_GUARD + 0.35);
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -168,7 +168,7 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
 // edges of the wide map, four low ones beside the descent; none over the road corridor while "one road ... Nelson's Ferry" is spoken
 { const E = gsap.parseEase("sine.inOut"), KC = [[[...R_CN, ...R_NC].filter((q, i) => i % 3 === 0), 260], [[LYT(32.80, -79.95)], 260]];
   const QC = LYT(32.99, -80.10), QK = LYT(34.12, -80.70), RD = Math.atan2(QK[1] - QC[1], QK[0] - QC[0]) + Math.PI / 2;
-  BW.clouds({ seed: 1781, until: T_THERE, clear: { t0: 2.0, t1: 6.3, box: [850, 360, 1400, 1000] },
+  BW.clouds({ seed: 1781, until: T_THERE, bigFadeAfter: 3.0, clear: { t0: 2.0, t1: 6.3, box: [850, 360, 1400, 1000] },
     sv: (t, ws) => (t < 3.0 ? BW.lerp(0.42, Math.max(ws, 0.7), E(t / 3.0)) : ws),
     deck: { n: 2, at: [C0[0] - 60, C0[1] - 40], spread: [520, 260], h: [1.9, 2.25], r: [430, 520] },
     field: { n: 2, at: [C1[0], C1[1]], spread: [1250, 700], h: [0.12, 0.2], r: 700, keep: KC },
@@ -179,6 +179,6 @@ BW.date("1780", T_4M + 0.1);
 // THE ARMIES (replaces the side-colour key plate)
 // r2: enters after the dive lands; "Americans" in the hook (no hero name before the name slam); steps out 0.15 s before the number cards
 { const ENT = [{ name: "Americans", sub: "militia", color: "#2c57b7" }, { name: "British", sub: "and Loyalists", color: "#bc2528" }];
-  BW.legend(8.5, T70 - 0.35, ENT); BW.legend(Math.min(T_GUARD, 16.9) + 0.5, END + 1, ENT); }
+  BW.legend(8.5, T70 - 0.15, ENT); BW.legend(Math.min(T_GUARD, 16.9) + 0.5, END + 1, ENT); }
 // gentle tilt: flat while falling, then a slow push with ~8 deg of perspective once the lens is below the clouds
 BW.tilt([[0, 0, 1.0], [TZ0, 3, 1.03], [TZ1 + 0.5, 6, 1.05, "power1.inOut"], [END, 7, 1.06]]);   // r2: capped (sharpness)

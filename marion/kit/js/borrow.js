@@ -24,8 +24,8 @@ const BW = (() => {
   const O = GMOverlay.create(host, { tl, fontBase: "assets/gmfonts/", hook: false, seed: 1780 });
   O.film.set({ grain: 0, paper: 0, vignette: 0 });                    // the 2D map keeps its own Style W look (no GM film veils)
   { const st = document.createElement("style"); st.textContent = `
-    .gmo .pdate .ct{width:310px;height:95px;box-sizing:border-box;padding:10px 22px 10px 24px;display:flex;flex-direction:column;justify-content:center}
-    .gmo .pdate .hd{font-size:17px;letter-spacing:.28em;color:#4E4532;padding:0 0 5px 2px;font-variant-numeric:lining-nums}
+    .gmo .pdate .ct{width:310px !important;height:95px !important;min-height:95px;box-sizing:border-box;padding:10px 22px 10px 24px;display:flex;flex-direction:column;justify-content:center}
+    .gmo .pdate .hd{font-size:24px;letter-spacing:.28em;color:#4E4532;padding:0 0 5px 2px;font-variant-numeric:lining-nums}
     .gmo .pdate .rw{min-height:0}.gmo .pdate .dn{width:auto;text-align:left;font-size:40px;white-space:nowrap;padding:2px 0 0 2px;font-variant-numeric:lining-nums}
     .gmo .pdate .vr,.gmo .pdate .wd,.gmo .pdate .nt{display:none}.gmo .pdate.monly .dn{font-size:46px;letter-spacing:.06em;padding:0 0 0 2px}
     .gmo .tline .cl{padding:5px 0 0 0;text-align:center}.gmo .tline .cl .d{font-size:16px;letter-spacing:.08em;padding-top:0}.gmo .tline .cl .bn{display:none}
@@ -139,13 +139,14 @@ const BW = (() => {
     const sv = o.sv ? o.sv(t, ws) : ws, wind = o.wind || [6, -2];
     const off = o.until != null && t > o.until;
     const cw = o.clear ? sstep(o.clear.t0 - 0.35, o.clear.t0, t) * (1 - sstep(o.clear.t1, o.clear.t1 + 0.4, t)) : 0;   // keep-clear box (screen px) while the story there is spoken
-    for (const c of CLOUDS) { const hs = c.h * sv; let a = off ? 0 : (1 - sstep(0.80, 0.99, hs)) * (o.alpha ?? 0.95);
+    for (const c of CLOUDS) { const hs = c.h * sv; let a = off ? 0 : (1 - sstep(0.62, 0.86, hs)) * (o.alpha ?? 0.95);   // r3: fade before the lens blur hides the lobe detail
       const gx = wx + (c.x + wind[0] * t) * ws, gy = wy + (c.y + wind[1] * t) * ws;   // the cloud's ground point on screen
       if (a < 0.003 || hs >= 0.995) { c.im.style.visibility = "hidden"; if (c.sh) c.sh.style.visibility = "hidden"; continue; }
       const k = 1 / (1 - hs), sx = 960 + (gx - 960) * k, sy = 540 + (gy - 540) * k, rs = c.r * ws * k;   // perspective: nearer the lens = bigger + farther out
       if (sx + rs < -200 || sx - rs > W + 200 || sy + rs < -200 || sy - rs > H + 200) { c.im.style.visibility = "hidden"; } else {
         c.im.style.visibility = "visible"; const sc = (2 * rs) / 520; c.im.style.transform = `translate(${(sx - rs).toFixed(1)}px,${(sy - rs * 0.69).toFixed(1)}px) scale(${(c.flip ? -sc : sc).toFixed(4)},${sc.toFixed(4)})${c.flip ? " translateX(-520px)" : ""}`;
         if (cw > 0) { const [x0, y0, x1, y1] = o.clear.box, dx = Math.max(x0 - sx, 0, sx - x1), dy = Math.max(y0 - sy, 0, sy - y1), dd = Math.hypot(dx, dy) - rs * 0.6; a *= 1 - cw * (1 - sstep(0, 60, dd)); }
+        if (o.bigFadeAfter != null && t > o.bigFadeAfter) a *= 1 - sstep(380, 620, rs);   // r3: low clouds near the lens fade before they blur into grey blobs
         c.im.style.opacity = a.toFixed(3);
       }
       if (c.sh) { const shs = c.r * ws * 0.9; c.sh.style.visibility = "visible";
@@ -159,12 +160,13 @@ const BW = (() => {
       clip-path:polygon(0 38%,100% 0,100% 100%,0 62%);background:radial-gradient(ellipse 100% 70% at 0% 50%,#FFF6D0 0%,#FFE7A0 28%,#FF9A2A 70%,rgba(255,154,42,0) 100%);filter:drop-shadow(0 0 4px rgba(255,190,90,.9))"></div></div>`, p[0], p[1], {}));
     tl.set(el, { autoAlpha: 1 }, t); tl.set(el, { autoAlpha: 0 }, t + 2 / 30);
     // a grey powder puff (60-90 px) that hangs ~1.5 s: each volley leaves a smoke line
-    if (o.puff !== false) { const R = R0(Math.round(t * 997 + p[0])), sz = Math.round((60 + 30 * R()) * (o.ps || 1)), dx = Math.cos(ang * Math.PI / 180) * 6, dy = Math.sin(ang * Math.PI / 180) * 6;
-      const pf = pinS(GG.pin(`<div style="position:absolute;left:${-sz / 2}px;top:${-sz / 2}px;width:${sz}px;height:${sz}px;border-radius:50%;background:radial-gradient(circle,rgba(206,204,196,.42) 0%,rgba(190,188,180,.26) 45%,rgba(180,178,170,0) 72%)"></div>`, p[0] + dx, p[1] + dy, {}));
-      const inner = pf.firstElementChild.firstElementChild || pf.firstElementChild;
-      tl.fromTo(pf, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.12, immediateRender: false }, t + 0.03);
-      tl.fromTo(inner, { scale: 0.45 }, { scale: 1.15, duration: 1.6, ease: "power2.out", immediateRender: false }, t + 0.03);
-      tl.to(pf, { autoAlpha: 0, duration: 0.6, ease: "power1.in" }, t + 1.2); }
+    if (o.puff !== false) { const R = R0(Math.round(t * 997 + p[0])), sz = Math.round(Math.min(90, Math.max(40, (55 + 30 * R()) * (o.ps || 1)))), dx = Math.cos(ang * Math.PI / 180) * 6, dy = Math.sin(ang * Math.PI / 180) * 6;
+      // r3: the counter-scaled pin (constant screen size) wraps the puff; only the INNER div grows (r2 scaled the pin itself: a fog bank at high zoom)
+      const pf = pinS(GG.pin(`<div style="width:0;height:0"><div class="pfi" style="position:absolute;left:${-sz / 2}px;top:${-sz / 2}px;width:${sz}px;height:${sz}px;border-radius:50%;background:radial-gradient(circle,rgba(206,204,196,.48) 0%,rgba(190,188,180,.3) 45%,rgba(180,178,170,0) 72%)"></div></div>`, p[0] + dx, p[1] + dy, {}));
+      const inner = pf.querySelector(".pfi");
+      tl.fromTo(pf, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1, immediateRender: false }, t + 0.03);
+      tl.fromTo(inner, { scale: 0.55 }, { scale: 1.0, duration: 1.0, ease: "power2.out", immediateRender: false }, t + 0.03);
+      tl.to(pf, { autoAlpha: 0, duration: 0.55, ease: "power1.in" }, t + 0.7); }
     SFX("musket", t); SHOTS.push([+t.toFixed(3), p[0], p[1]]); return el; };
   // a ragged ripple along a firing line: n shots spread over `span` s between the points `pts` (one flank first, stragglers at the end)
   const volley = (pts, t0, span, n, o = {}) => { const R = R0(o.seed || Math.round(t0 * 1000)); const L = pts.length;

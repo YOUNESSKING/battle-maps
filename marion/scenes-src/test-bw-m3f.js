@@ -97,12 +97,12 @@ AIDS.forEach((id) => tl.to(B.units[id].el.querySelector(".blk"), { filter: "brig
 // BW: one muzzle flash (+ flintlock shot) per musket along the whole hidden line, a ragged ripple from the west flank
 BW.volley([[1484, 795], [1602, 797]], T_EVERY, 0.62, 18, { k: 0.9, jy: 7, seed: 31, ps: 0.85, puffEvery: 3, aim: (x) => [x + (1528 - x) * 0.35, RY + 2] });
 mg([1498, 794], ROADHIT(1528), T_EVERY + 0.02, 5, 1.1); mg([1560, 794], ROADHIT(1536), T_EVERY + 0.1, 5, 1.1);
-smoke(AMB.map((p) => [p[0], p[1] + 10]), T_EVERY + 0.1, 0.55);
+/* BW r3: kit smoke replaced by the per-shot puffs (<= 6 per volley) */
 MARK([1568, RY + 1], T_EVERY + 0.35, T_COUNT + 0.2);   // BW r2: east of the jammed boxes, off the FRASER tag
 // "firing buckshot": a second ripple down the line
 BW.volley([[1488, 796], [1600, 798]], T_BUCK + 0.05, 0.8, 13, { k: 0.9, jy: 7, seed: 57, ps: 0.85, puffEvery: 3, aim: (x) => [x + (1524 - x) * 0.35, RY + 2] });   // BW: the buckshot ripple, shot by shot
 mg([1528, 794], ROADHIT(1520), T_BUCK + 0.08, 4, 1.1); mg([1588, 796], ROADHIT(1540), T_BUCK + 0.2, 4, 1.1);
-smoke([[1513, 792], [1573, 794]], T_BUCK + 0.15, 0.5);
+/* BW r3: kit smoke replaced by the per-shot puffs (<= 6 per volley) */
 // the red cavalry breaks: "killed on the spot" -> fast fade; a few flee back toward the ferry
 along("fr2", [[1522, RY + 1], [1490, RY + 2], [1458, RY + 4]], T_20 + 0.2, 1.0); tl.to(B.units.fr2.el, { autoAlpha: 0, duration: 0.45 }, T_20 + 0.75);
 tl.to(B.units.fr.el, { autoAlpha: 0, duration: 0.45 }, T_20 + 0.3);
@@ -138,7 +138,7 @@ BW.rowParts("blue", [["Marion: 1", T_LOST + 0.25], [" killed", T_MK + 0.1], [", 
 BW.O.ledger.hide(T_GUN + 0.4);
 // r2: the timeline only around the date beat (slides in on the date roll, holds ~4 s, slides out); one seal per move, all three already
 // down (Parker's Ferry belongs to move 3: no 4th seal); 13 months AUG 1780 - AUG 1781, year tabs over the cells, seals on the progress line
-{ const M = ["AUG", "SEP", "OCT", "NOV", "DEC", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG"], CW = 72, TS = T_30 - 0.1, TH = T_30 + 4.2;
+{ const M = ["AUG", "SEP", "OCT", "NOV", "DEC", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG"], CW = 72, TS = T_30 + 0.1, TH = T_30 + 4.3;   // r3: slides in just after the spoken date
   BW.O.timeline.show(TS, { month: "1780", year: "1781", cells: M, at: 10.23, cellW: CW });
   [0.81, 3.26, 8.48].forEach((a) => BW.O.timeline.seal(TS, { at: a }));
   const TLE = BW.O.root.querySelector(".tline"); [...TLE.children].slice(2).forEach((e) => { tl.getTweensOf(e).forEach((tw) => tw.kill()); gsap.set(e, { autoAlpha: 1, scale: 1, rotation: 0 }); });

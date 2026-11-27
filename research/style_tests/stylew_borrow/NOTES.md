@@ -63,3 +63,11 @@ Where a borrowed element overlaps one of ours, the borrowed one REPLACES ours. E
 5. Seal ribbons partly cover the month names under them; 14 month cells are tight (cell 67 px).
 6. Cannon level rule (~8 dB over a volley) is applied by measurement; no cannon fires in these windows (Parker's Ferry gun is not fired, FACT_NOTES), so it is not audible here.
 7. Muzzle flashes are round (not directional); powder puffs are small at this zoom.
+
+## r3 changes (critic round 2: A 7.5, B 7) -> `stylew_borrow_test_r3_share.mp4` (63.8 s, 20 MB, -14.0 LUFS) + `sheet_r3.jpg` (published | r2 | r3)
+1. Smoke: r2's fog bank was a bug (the puff's grow tween scaled the counter-scaled pin, so at 15x zoom a 60 px puff became ~900 px). Now the
+   inner puff grows, 40-90 px, peak opacity ~0.48, gone in ~1.25 s, <= 6 puffs per volley; the kit smoke calls in these two scenes are replaced.
+2. Mix: first shot of each ripple -4 dB, tail -6 dB under the voice. Measured: the musket stem peaks at -16 dBFS (guard) / -13 dBFS
+   (ambush) in the final mix; the -3 / -1.5 dBFS peaks at those moments are the VOICE (identical with the muskets muted).
+3. 70 plaque starts on "seventy" (10.50 s). 4. Timeline slides in just after the spoken date (26.6 s clip). 5. Year line 24 px; every
+   date plaque 310 x 95. 6. Low clouds fade before they blur into grey blobs (`bigFadeAfter`). 7. Sheet labels in r3 wording.

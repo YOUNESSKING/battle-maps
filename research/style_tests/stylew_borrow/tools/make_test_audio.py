@@ -76,7 +76,8 @@ for (a, b, name) in SEGS:
     tail = st * (1 - front)[:, None]; st = st * front[:, None]
     w = int(0.05 * SR); env = np.sqrt(np.convolve((vo ** 2).mean(1), np.ones(w) / w, "same")); env = (env > 0.01).astype(np.float32)
     k = int(0.25 * SR); env = np.clip(np.convolve(env, np.hanning(k) / np.hanning(k).sum(), "same") * 1.2, 0, 1)
-    fx = fx + (st[:n] + tail[:n] * (1 - 0.5 * env)[:, None]) * db(GAIN)
+    EX = float(os.environ.get("MUSKET_EXTRA_DB", "0"))   # r3: first shot -4 dB, tail -6 dB under the voice (+ EX on both) so the bangs peak <= -6 dBFS
+    fx = fx + (st[:n] * db(-4 + EX) + tail[:n] * (1 - 0.5 * env)[:, None] * db(EX)) * db(GAIN)
     print(f"{name:16s} {a:7.2f}-{b:7.2f}  kit cues {len(kit):3d}  musket shots {len(sh):3d} in {len(groups)} ripples")
     parts.append((vo, mu, fx))
 
