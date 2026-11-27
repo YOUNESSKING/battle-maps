@@ -116,7 +116,7 @@ mg([1528, 794], ROADHIT(1520), T_BUCK + 0.08, 4, 1.1); mg([1588, 796], ROADHIT(1
   BW.wipe("fr2", T_KIL9 - 0.02, { from: LINE, at: P_FR2, marks: 3, until: T_SLIP + 0.8 });   // r10: with the KILLED ledger row
   BW.hit("fr", T_KIL9 + 0.3, { from: LINE, at: P_FR, loss: 0.15, marks: 2, shaken: true, until: T_SLIP + 0.8 });
   BW.rout("fr", T_WND9, { dir: [-0.5, 0.87], n: 4 }); }   // r10: 4 pieces scatter away from Marion's line (south-west), one wounded straggler
-document.documentElement.setAttribute("data-bwt", JSON.stringify([T_EVERY, T_BUCK, T_20, at(P2, "killed on the spot"), T_80, at(P2, "wounded. He lost"), T_SLIP]));   // BW: word times for the test windows
+document.documentElement.setAttribute("data-bwt", JSON.stringify([T_WOOD, T_40, T_EVERY, T_BUCK, T_20, at(P2, "killed on the spot"), T_80, at(P2, "wounded. He lost"), T_SLIP]));   // BW: word times for the test windows
 // casualty card (Marion's estimate, both sides spoken; each part on its words)
 { const row = (flag, side, html, col) => `<div class="cr" style="display:flex;align-items:center;gap:20px;margin-top:10px"><img src="assets/media/${flag}" alt="" style="height:40px;border:1px solid #f7f3ea">
     <div style="font-size:38px;letter-spacing:.1em;min-width:250px">${side}</div><div style="font-size:46px;color:${col};letter-spacing:.04em">${html}</div></div>`;
