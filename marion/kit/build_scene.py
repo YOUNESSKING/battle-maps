@@ -14,6 +14,8 @@ sys.path.insert(0, KIT); sys.path.insert(0, f"{KIT}/data")
 from proj import ll2px  # noqa
 from places import PLACES, RIVER_LINES  # noqa
 a = sys.argv[1:]; insets = []; src = None
+BORROW = "--borrow" in a   # opt-in TEST (research/style_tests/stylew_borrow): + vicksburg/engine/overlay.js + kit/js/borrow.js; scenes without it build unchanged
+if BORROW: a.remove("--borrow")
 while "--inset" in a: i = a.index("--inset"); insets.append(a[i + 1]); del a[i:i + 2]
 VARS = {}
 while "--var" in a: i = a.index("--var"); k_, v_ = a[i + 1].split("=", 1); VARS[k_] = v_; del a[i:i + 2]   # GD.var.<k> in the scene (one source, variants)
@@ -86,6 +88,12 @@ AT = ("const at = (k, ph, off = 0) => { const e = B.at(k, ph), A = B.T.anchors |
 assert kit.count("const { at } = B;") == 1
 kit = kit.replace("const { at } = B;", AT)
 body = open(f"{ROOT}/scenes-src/{src or name}.js").read()
+if BORROW:   # the GM overlay (pocket watch, seals, THE ARMIES, ledger) + the borrow module, between the kit and the scene; BW.finish() after it
+    VX = os.path.join(ROOT, "..", "vicksburg", "engine"); os.makedirs(f"{out}/assets/gmfonts", exist_ok=True)
+    for f in os.listdir(f"{VX}/assets/fonts"):
+        if f.endswith(".woff2"): shutil.copy(f"{VX}/assets/fonts/{f}", f"{out}/assets/gmfonts/{f}")
+    kit += "\n" + open(f"{VX}/overlay.js").read() + "\n" + open(f"{KIT}/js/borrow.js").read()
+    body += "\nBW.finish();\n"
 js = WXDATA + "\nconst GD = " + json.dumps(GD, separators=(",", ":")) + ";\n" + kit + "\n// ================= SCENE scenes-src/" + (src or name) + ".js =================\n" + body
 html = open(f"{ROOT}/tools/scene_template_w.html").read()
 html = html.replace("{{DURATION}}", str(dur)).replace("{{CREDIT}}", "").replace("{{SCENE_JS}}", js)
