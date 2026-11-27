@@ -333,7 +333,15 @@ const FOC = document.createElement("div"); FOC.style.cssText = "position:absolut
 SCN.insertBefore(FOC, document.getElementById("fx"));
 const FS = { x: 1440, y: 810, r: 120, k: 0 };
 const focApply = () => { const sx = CAM_X0 + FS.x * CAM_S, sy = CAM_Y0 + FS.y * CAM_S, r = Math.max(70, FS.r * CAM_S);
-  FOC.style.background = `radial-gradient(ellipse ${(r * 1.3).toFixed(0)}px ${r.toFixed(0)}px at ${sx.toFixed(0)}px ${sy.toFixed(0)}px, rgba(8,8,4,0) 0%, rgba(8,8,4,0) 45%, rgba(8,8,4,${CAM_S > 2.5 ? 0.22 : 0.16}) 100%)`;
+  const fk = K.FOCUS_DIM || 1, fl = K.FOCUS_LIT || 0;   // borrow test (owner 2026-11-27 "turn it up a bit"): stronger dim outside + a faint warm light inside; default builds unchanged
+  FOC.style.background = (fl ? `radial-gradient(ellipse ${(r * 1.0).toFixed(0)}px ${(r * 0.77).toFixed(0)}px at ${sx.toFixed(0)}px ${sy.toFixed(0)}px, rgba(255,236,190,${fl}) 0%, rgba(255,236,190,0) 100%), ` : "") +
+    `radial-gradient(ellipse ${(r * 1.3).toFixed(0)}px ${r.toFixed(0)}px at ${sx.toFixed(0)}px ${sy.toFixed(0)}px, rgba(8,8,4,0) 0%, rgba(8,8,4,0) 45%, rgba(8,8,4,${((CAM_S > 2.5 ? 0.22 : 0.16) * fk).toFixed(3)}) 100%)`;
+  if (K.FOCUS_CORE) {   // r13b opt-in (borrow test, critic A): a findable edge: clear core K.FOCUS_CORE px + K.FOCUS_FEATHER px feather in screen space,
+    // ~30 % darker outside, the warm light inside; drawn UNDER the pins (FOC moved into #world by borrow.js, mapped back to screen space here)
+    const C0 = K.FOCUS_CORE, C1 = C0 + (K.FOCUS_FEATHER || 200), D = K.FOCUS_OUT || 0.32;
+    FOC.style.background = `radial-gradient(circle at ${sx.toFixed(0)}px ${sy.toFixed(0)}px, rgba(255,236,190,${fl}) 0px, rgba(255,236,190,0) ${C0}px), ` +
+      `radial-gradient(circle at ${sx.toFixed(0)}px ${sy.toFixed(0)}px, rgba(8,8,4,0) ${C0}px, rgba(8,8,4,${D}) ${C1}px)`;
+    if (FOC.parentElement && FOC.parentElement.id === "world") FOC.style.transform = `translate(${(-CAM_X0 / CAM_S).toFixed(3)}px,${(-CAM_Y0 / CAM_S).toFixed(3)}px) scale(${(1 / CAM_S).toFixed(5)})`; }
   FOC.style.opacity = FS.k.toFixed(3); };
 const focus = (p, r, t, until) => { until = Math.min(until ?? 1e9, t + 3.5);
   tl.to(FS, { x: p[0], y: p[1], r, duration: 0.6, ease: "sine.inOut", onUpdate: focApply }, t);
