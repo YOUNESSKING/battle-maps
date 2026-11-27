@@ -13,6 +13,7 @@ const BW = (() => {
   const W = 1920, H = 1080, R0 = (seed) => () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
   const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x)), sstep = (a, b, x) => { const u = clamp((x - a) / (b - a)); return u * u * (3 - 2 * u); }, lerp = (a, b, k) => a + (b - a) * k;
   document.getElementById("date").style.display = "none";            // the black date plate is replaced by the pocket-watch plaque
+  K.FOCUS_DIM = 1.9; K.FOCUS_LIT = 0.10;                               // the soft focus "light circle" turned up (owner 2026-11-27): darker outside, faint warm light on the place named
   // ---- tilt wrapper: #world (map + pins + svg) and #fx (screen-space smoke) tilt together, the HUD and the cards stay flat
   const WR = document.createElement("div"); WR.id = "bw-tilt"; WR.style.cssText = "position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:50% 62%;";
   WORLD.parentNode.insertBefore(WR, WORLD); WR.appendChild(WORLD);
