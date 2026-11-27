@@ -116,3 +116,23 @@ Open: smoke curtains are single columns (v8 has many along long lines); the far 
 - Joins: the name window starts at film 56.55 and ends at 59.55, and the test copy drops the hook's own black snap-cut frame at T_NAME
   (it read as a dip at the join); no dark frames left in the clip (checked: no frame darker than 30/255).
 - RunPod: no community GPU for ~15 min (retried every ~2.5 min), then one RTX A5000 SECURE ($0.27/h, ~12 min, ~$0.06); pods list empty.
+
+## Musket smoke + flash spec (r7, owner: "the smoke and the shooting are not convincing")
+Reference (descriptions only, nothing downloaded or committed): Wikimedia Commons "Musket volley by Sealed Knot.JPG" (Fernhurst, 2010) and
+"Musketeers.jpg" (Thirty Years' War reenactment, CC BY 4.0, M. Maňas); NPS / state-park black-powder demonstration pages; reenactor accounts
+(civilwartalk: damp still air keeps the smoke low and lingering; after a few volleys a whole line is hidden except for the flashes).
+| phase | real black powder | r7 (bwgl.mjs volley smoke + borrow.js shot) |
+|---|---|---|
+| priming pan | small puff + flash at the lock ~50-100 ms before the shot | yellow pan flash at the lock (1-2 frames) 70 ms before + a small lit puff (life 1.4 s) |
+| flash | short orange-yellow tongue, white-hot core, 1-2 frames, sparks of burning powder | tongue 34 x 12 px (x k) aimed at the target, white core dot, 2 frames; 3 sparks thrown 26-48 px forward in 0.16 s |
+| jet | dense white-grey jet 1-2 m forward from the muzzle in 0.1-0.2 s, decelerating | 4 lit puffs per shot thrown 13-31 screen px forward, decay k 5-10 /s (90 % out in ~0.25 s), start 7-16 px |
+| billow | the jet slows, swells, rises slightly | 4 billows per shot 0.1-0.5 s after, swelling 12 -> 60-90 px, rise ~5 px over the life |
+| bank | neighbouring muzzles merge into one thick lumpy bank IN FRONT of the line | ~9 overlapping lit puffs per shot along the ripple (lateral spread +-11 px) = one bank between the line and the target |
+| drift / linger | drifts downwind, lingers 5-15 s, thinner and more transparent | wind 4-7 px/s after 0.25 s; alpha x (0.35 + 0.65 e^(-age/4.5-5)), fade to 0 at 10-17 s |
+| look | bright sunlit tops, grey undersides, soft edges, never a column | the engine's lit sprite mode 0 (normal-mapped cauliflower puffs: sun-lit tops, grey-blue undersides), tint 0.92; night: setNight 0.45 |
+| ripple | volleys roll along the line | ragged ripple (BW.volley): first flank on its word, the rest over 0.6-0.8 s; each shot = one flash + one sound + its own smoke |
+| clarity | (film rule) | bank alpha capped (x 0.7): units, banner, tags stay >= ~50 % visible; the guard company's bank x2 per-shot size at night |
+Sizes are screen px at the scene's camera scale (`volley.K` = 1 / camera scale). The r4-r6 tall curtains (`smokeGL`) are no longer used.
+r7 deliverables: `stylew_borrow_test_r7_share.mp4` (62.45 s, 20 MB, -14.0 LUFS; hook + Parker's Ferry re-rendered, name/title windows = r6),
+`sheet_r7.jpg` (dive every 0.25 s vs v6, smoke vs v8, titles), `smoke_closeup_sheet.jpg` (one volley over 6 s against the spec above).
+RunPod: one RTX A4000 SECURE ($0.25/h, ~10 min, ~$0.04); pods list verified empty.

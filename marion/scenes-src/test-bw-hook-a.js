@@ -138,9 +138,7 @@ mg(PP(1478, 702), PP(...REND[1]), T_GUNS + 1.1, 4, 1.3 / CH2[2]);
 [0.05, 0.27, 0.42, 1.1, 1.31, 1.58].forEach((dt, i) => BW.shot(PP(1478 - 16 + 7 * i, 702 + (i % 2 ? 8 : -6)), T_GUNS + dt, { k: 0.9, aim: PP(...REND[i % 2]), puff: false }));
 // r4: two short tall smoke curtains beside the guard (engine fx.smokeLine, GM settings), clear of the prisoners (east)
 // r5: real curtains: wider (gmTall), leaning downwind (west-north), from the guard's muzzles east of the box; boxes stay >= 50 % visible
-// r6: both curtains WEST of the guard (upwind), off the red guard box, drifting east-north
-BW.smokeGL([PP(1416, 690), PP(1428, 686)], T_GUNS + 0.05, T_GUNS + 0.6, { h: 1.2, opts: { look: "gmTall", rate: 16, alpha: 0.13 } });
-BW.smokeGL([PP(1400, 714), PP(1412, 710)], T_GUNS + 1.1, T_GUNS + 1.7, { h: 1.2, opts: { look: "gmTall", rate: 16, alpha: 0.13 } });
+// r7: the smoke is the engine volley smoke from each shot (pan puff + jet + billows -> bank), see NOTES "musket smoke + flash spec"
 // BW r3: the kit smoke is replaced by the per-shot puffs (<= 6 per volley)
 B.move("r1", T_GUARD - 0.25, 0.45, ...PP(1440, 698)); B.move("r2", T_GUARD - 0.15, 0.45, ...PP(1478, 740));
 hideU(["g1"], T_GUARD + 0.35);
@@ -180,7 +178,7 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
     diveOff: { push: -1.4, deckIn: -1.2, full: -0.25, deck: -0.2, wIn: -0.25, inside: -0.1, warm: 0.05, emerge: 0.2, clear: 0.35, haze: 0.6, land: 0.75 },   // r6: the deck closes in from the frame edges from 5.8 s (clear window over the crossing to ~6.45), full by 6.75
     fair: { F: 3.3, box: [150, 120, 2600, 1400], n: 18, med: 24, seed: 5, tiers: [49, 78, 108], diveClear: 110, keepLines: [[ROADP, 80]], keep: [[CHS[0], CHS[1], 110], [860, 1110, 130]],
       on: (t) => t < SW + 1.2, screenClear: { t: [2, 6.4], box: [550, 380, 1000, 560] } },
-    stratus: { F: 3.1, at: [CEND[0], CEND[1]], speed: 0.45 }, smokeScale: 150, smokeWind: [160, -70] }); }
+    stratus: { F: 3.1, at: [CEND[0], CEND[1]], speed: 0.45 }, volley: { K: 2 / 15.2, night: 0.45, wind: [4, -2], alpha: 1.0 } }); }   // r7: a guard company: bank x2 the per-shot size (it reads at night)
 // hook-2: "before dawn" is the script's only time: the pocket watch comes in (hands ~4:30, no clock time is spoken)
 BW.time(T_DAWN, { label: "Before dawn", header: "1780" });   // r2: no clock time is spoken: text only, no watch
 BW.date("1780", T_4M + 0.1);

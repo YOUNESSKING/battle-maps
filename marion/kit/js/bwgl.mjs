@@ -135,6 +135,32 @@ else {
     const SMOKE_GM = { cluster: [1.0, 1.0], fadeAfter: 6, fadeTo: 0.12, look: "gmTall" };
     for (const e of C.smoke) sys.fx.smokeLine(e.pts.map((p) => [p[0], e.h ?? 0.06, p[1]]), e.t0, e.t1, { ...SMOKE_GM, flash: false, ...(e.opts || {}) });
   }
+  // ---------------- r7: black-powder volley smoke, one emitter per visible shot (NOTES.md "musket smoke + flash spec"): the priming-pan puff
+  // at the lock 70 ms before the shot, a dense jet thrown FORWARD from the muzzle (decelerating in ~0.25 s), then billows that slow, swell, rise a
+  // little and drift downwind; neighbouring shots merge into one lumpy bank in front of the line that thins over 5-15 s. Lit sprites (mode 0:
+  // the engine's normal-mapped cauliflower puffs: bright sunlit tops, grey undersides). Sizes in screen px at the scene's camera scale (K = 1/scale).
+  if ((C.vshots || []).length) {
+    const V = C.volley || {}, K = V.K || 1, sys = mkFX({ seed: 1790, fxScale: 1, wind: [0, 0] }), B = sys.fx.batch;
+    if (V.night) sys.fx.setNight(V.night);
+    const mb = (a) => () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let q = Math.imul(a ^ (a >>> 15), 1 | a); q = (q + Math.imul(q ^ (q >>> 7), 61 | q)) ^ q; return ((q ^ (q >>> 14)) >>> 0) / 4294967296; };
+    const Wx = (V.wind || [6, -2])[0] * K, Wz = (V.wind || [6, -2])[1] * K, T = V.tint || [0.92, 0.92, 0.9], AK = V.alpha ?? 0.7, PL = [];
+    C.vshots.forEach(([ts, x, z, ax, az], i) => { const R = mb(i * 7919 + 101); let dx = ax - x, dz = az - z; const l = Math.hypot(dx, dz) || 1; dx /= l; dz /= l;
+      const px = -dz, pz = dx, add = (o) => PL.push({ cell: Math.floor(R() * 4), rot: R() * 6.283, spin: (R() - 0.5) * 0.25, tt: o.t, ...o });
+      add({ t: ts - 0.07, x: x - dx * 4 * K, z: z - dz * 4 * K, dx, dz, L: 0, k: 1, s0: 7 * K, g: 7 * K, a: 0.32, life: 1.4, tau: 0.5, rise: 3 * K, lat: 0 });   // priming pan
+      for (let j = 0; j < 4; j++) add({ t: ts + 0.012 * j, x, z, dx, dz, L: (13 + 6 * j) * K * (0.8 + 0.4 * R()), k: 10 - 1.6 * j, s0: (7 + 3 * j) * K, g: (15 + 5 * j) * K,
+        a: 0.2, life: 10 + 5 * R(), tau: 4.5, rise: 2.5 * K, lat: (R() - 0.5) * 7 * K });   // the jet: 1-2 m forward in 0.1-0.25 s
+      for (let b = 0; b < 4; b++) { const f = 0.55 + 0.6 * R(); add({ t: ts + 0.08 + 0.12 * b + 0.08 * R(), x: x + dx * 20 * K * f, z: z + dz * 20 * K * f, dx, dz, L: 6 * K, k: 2.5,
+        s0: 12 * K, g: (22 + 10 * R()) * K, a: 0.15, life: 12 + 5 * R(), tau: 5, rise: 5 * K, lat: (R() - 0.5) * 22 * K }); }   // billows: slow, swell, merge
+    });
+    PL.sort((a, b) => a.t - b.t);
+    sys.fx.custom((t) => {
+      for (const p of PL) { const age = t - p.t; if (age < 0) break; if (age > p.life) continue;
+        const e = 1 - Math.exp(-p.k * age), wk = Math.max(0, age - 0.25);
+        const x = p.x + p.dx * p.L * e + p.dz * -p.lat * e + Wx * wk, z = p.z + p.dz * p.L * e + p.dx * p.lat * e + Wz * wk;
+        const y = 3 * K + p.rise * Math.pow(age, 0.85), size = p.s0 + p.g * Math.sqrt(age);
+        const a = AK * p.a * Math.min(1, age / 0.05) * (0.35 + 0.65 * Math.exp(-age / p.tau)) * (1 - sstep(p.life * 0.55, p.life, age));
+        if (a > 0.003) B.push(x, y, z, size, p.rot + p.spin * age, a, p.cell, 0, T[0], T[1], T[2], -1e9); } });
+  }
   // ---------------- per frame
   const whiteAt = (t) => { const d = DV; if (!d) return [0, 0];
     let a; if (t < d.emerge) { const v6 = t < d.SW + 0.05 ? 0.45 * sstep(d.wIn, d.SW, t) : t < d.warm + 0.1 ? lerp(0.86, 1, sstep(d.warm - 0.05, d.warm + 0.1, t)) : 1;

@@ -154,19 +154,22 @@ const BW = (() => {
         c.sh.style.opacity = (a * 0.16 * (1 - sstep(0.4, 0.8, hs))).toFixed(3); } } });   // r2: no white veil (1a: no white flash)
   // ================================================================== 7. musket shots: one flash + one powder puff per shot, a "musket" cue per shot (flintlock stem)
   const SHOTS = [];
-  const shot = (p, t, o = {}) => { const k = o.k || 1, aim = o.aim || [p[0] + 10, p[1]], ang = Math.atan2(aim[1] - p[1], aim[0] - p[0]) * 180 / Math.PI;
-    // directional muzzle cone ~40 x 18 px aimed at the target, white-hot core -> orange, 2 frames, then gone
-    const el = pinS(GG.pin(`<div style="width:0;height:0"><div style="position:absolute;left:0;top:${-9 * k}px;width:${40 * k}px;height:${18 * k}px;transform-origin:0 50%;transform:rotate(${ang.toFixed(1)}deg);
-      clip-path:polygon(0 38%,100% 0,100% 100%,0 62%);background:radial-gradient(ellipse 100% 70% at 0% 50%,#FFF6D0 0%,#FFE7A0 28%,#FF9A2A 70%,rgba(255,154,42,0) 100%);filter:drop-shadow(0 0 4px rgba(255,190,90,.9))"></div></div>`, p[0], p[1], {}));
+  // r7: one flintlock shot: priming-pan flash at the lock (70 ms before), then the muzzle tongue (orange-yellow, white-hot core, 1-2 frames) aimed at
+  // the target + 3 sparks thrown forward; the smoke (pan puff, jet, billows, bank) is the 3D engine's (bwgl.mjs, C.vshots); "musket" cue on the flash frame
+  const shot = (p, t, o = {}) => { const k = o.k || 1, aim = o.aim || [p[0] + 10, p[1]], ang = Math.atan2(aim[1] - p[1], aim[0] - p[0]), deg = ang * 180 / Math.PI;
+    const R = R0(Math.round(t * 1000 + p[0] * 7));
+    const sparks = [0, 1, 2].map(() => { const a = (R() - 0.5) * 0.5, d = (26 + 22 * R()) * k; return `<i style="position:absolute;left:-1.5px;top:-1.5px;width:3px;height:3px;border-radius:50%;background:#fff3c0;box-shadow:0 0 4px 1px rgba(255,170,60,.9);--sx:${(Math.cos(a) * d).toFixed(1)}px;--sy:${(Math.sin(a) * d).toFixed(1)}px"></i>`; }).join("");
+    const el = pinS(GG.pin(`<div style="width:0;height:0"><div style="position:absolute;left:0;top:0;transform:rotate(${deg.toFixed(1)}deg)">
+      <div style="position:absolute;left:${-3 * k}px;top:${-6 * k}px;width:${34 * k}px;height:${12 * k}px;border-radius:30% 70% 70% 30% / 50%;background:radial-gradient(ellipse 62% 50% at 10% 50%,#ffffff 0%,#fffbe6 18%,#fff0a8 34%,#ffbe55 58%,rgba(255,120,30,0) 100%);filter:blur(.35px) drop-shadow(0 0 4px rgba(255,200,110,.8))"></div>
+      <div style="position:absolute;left:${-3 * k}px;top:${-3 * k}px;width:${6 * k}px;height:${6 * k}px;border-radius:50%;background:#fff;box-shadow:0 0 6px 2px rgba(255,236,170,.95)"></div>
+      <div class="sp" style="position:absolute;left:${6 * k}px;top:0">${sparks}</div></div></div>`, p[0], p[1], {}));
     tl.set(el, { autoAlpha: 1 }, t); tl.set(el, { autoAlpha: 0 }, t + 2 / 30);
-    // a grey powder puff (60-90 px) that hangs ~1.5 s: each volley leaves a smoke line
-    if (o.puff !== false) { const R = R0(Math.round(t * 997 + p[0])), sz = Math.round(Math.min(90, Math.max(40, (55 + 30 * R()) * (o.ps || 1)))), dx = Math.cos(ang * Math.PI / 180) * 6, dy = Math.sin(ang * Math.PI / 180) * 6;
-      // r3: the counter-scaled pin (constant screen size) wraps the puff; only the INNER div grows (r2 scaled the pin itself: a fog bank at high zoom)
-      const pf = pinS(GG.pin(`<div style="width:0;height:0"><div class="pfi" style="position:absolute;left:${-sz / 2}px;top:${-sz / 2}px;width:${sz}px;height:${sz}px;border-radius:50%;background:radial-gradient(circle,rgba(206,204,196,.48) 0%,rgba(190,188,180,.3) 45%,rgba(180,178,170,0) 72%)"></div></div>`, p[0] + dx, p[1] + dy, {}));
-      const inner = pf.querySelector(".pfi");
-      tl.fromTo(pf, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1, immediateRender: false }, t + 0.03);
-      tl.fromTo(inner, { scale: 0.55 }, { scale: 1.0, duration: 1.0, ease: "power2.out", immediateRender: false }, t + 0.03);
-      tl.to(pf, { autoAlpha: 0, duration: 0.55, ease: "power1.in" }, t + 0.7); }
+    const sp = el.querySelectorAll(".sp i"); tl.set(sp, { x: 0, y: 0, autoAlpha: 1 }, t);
+    sp.forEach((s_) => tl.to(s_, { x: s_.style.getPropertyValue("--sx"), y: s_.style.getPropertyValue("--sy"), autoAlpha: 0, duration: 0.16, ease: "power1.out" }, t)); tl.set(sp, { autoAlpha: 0 }, t + 0.17);
+    // priming pan: a small yellow flash at the lock, behind the muzzle, 70 ms before the shot
+    const pan = pinS(GG.pin(`<div style="position:absolute;left:${-5 * k}px;top:${-5 * k}px;width:${10 * k}px;height:${10 * k}px;border-radius:50%;background:radial-gradient(circle,#fffbe0 0%,#ffd060 45%,rgba(255,150,40,0) 75%)"></div>`, p[0] - Math.cos(ang) * 3, p[1] - Math.sin(ang) * 3, {}));
+    tl.set(pan, { autoAlpha: 1 }, t - 0.07); tl.set(pan, { autoAlpha: 0 }, t - 0.07 + 2 / 30);
+    if (o.smoke !== false) { gl({}); (window.BWGL_CFG.vshots = window.BWGL_CFG.vshots || []).push([+t.toFixed(3), p[0], p[1], aim[0], aim[1]]); }
     SFX("musket", t); SHOTS.push([+t.toFixed(3), p[0], p[1]]); return el; };
   // a ragged ripple along a firing line: n shots spread over `span` s between the points `pts` (one flank first, stragglers at the end)
   const volley = (pts, t0, span, n, o = {}) => { const R = R0(o.seed || Math.round(t0 * 1000)); const L = pts.length;
