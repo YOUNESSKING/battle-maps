@@ -95,17 +95,28 @@ B.move("fr2", T_NARROW, 0.5, 1522, RY + 1, "power2.out");
 const ROADHIT = (x) => [x, RY + 1];
 AIDS.forEach((id) => tl.to(B.units[id].el.querySelector(".blk"), { filter: "brightness(1) saturate(1) opacity(1)", duration: 0.25 }, T_EVERY - 0.05));
 // BW: one muzzle flash (+ flintlock shot) per musket along the whole hidden line, a ragged ripple from the west flank
-BW.volley([[1484, 795], [1602, 797]], T_EVERY, 0.62, 18, { k: 0.9, jy: 7, seed: 31, noPuff: true, aim: (x) => [x + 25, RY + 2] });
+BW.volley([[1488, 790], [1598, 792]], T_EVERY, 0.62, 18, { k: 0.9, jy: 3, seed: 31, noPuff: true, aim: (x) => [x + 70, RY + 2] });   // r9: muzzles at the line front, jets along the road side
 mg([1498, 794], ROADHIT(1528), T_EVERY + 0.02, 5, 1.1); mg([1560, 794], ROADHIT(1536), T_EVERY + 0.1, 5, 1.1);
 /* BW r3: kit smoke replaced by the per-shot puffs (<= 6 per volley) */
 MARK([1568, RY + 1], T_EVERY + 0.35, T_COUNT + 0.2);   // BW r2: east of the jammed boxes, off the FRASER tag
 // "firing buckshot": a second ripple down the line
-BW.volley([[1488, 796], [1600, 798]], T_BUCK + 0.05, 0.8, 13, { k: 0.9, jy: 7, seed: 57, noPuff: true, aim: (x) => [x + 25, RY + 2] });   // BW: the buckshot ripple, shot by shot
+BW.volley([[1490, 790], [1596, 792]], T_BUCK + 0.05, 0.8, 13, { k: 0.9, jy: 3, seed: 57, noPuff: true, aim: (x) => [x + 70, RY + 2] });   // BW: the buckshot ripple, shot by shot
 mg([1528, 794], ROADHIT(1520), T_BUCK + 0.08, 4, 1.1); mg([1588, 796], ROADHIT(1540), T_BUCK + 0.2, 4, 1.1);
 /* BW r3: kit smoke replaced by the per-shot puffs (<= 6 per volley) */
 // the red cavalry breaks: "killed on the spot" -> fast fade; a few flee back toward the ferry
-along("fr2", [[1522, RY + 1], [1490, RY + 2], [1458, RY + 4]], T_20 + 0.2, 1.0); tl.to(B.units.fr2.el, { autoAlpha: 0, duration: 0.45 }, T_20 + 0.75);
-tl.to(B.units.fr.el, { autoAlpha: 0, duration: 0.45 }, T_20 + 0.3);
+// r9 (owner: show the EFFECT of fire): every ripple hits the jammed red boxes ~0.3 s after its flashes: a shudder, the colour dims, a chunk of
+// frontage/depth lost, a stagger back off the road, small dark casualty marks on the ground behind them (no gore, no blood);
+// "killed on the spot": the front box (fr2) breaks apart into fragments -> grey remnants + marks (wiped out); fr loses another chunk;
+// "wounded": fr breaks and flees back toward the ferry (routed), two wounded stragglers fall behind and stop, grey.
+{ const LINE = [1543, 790], P_FR = FRP[FRP.length - 1], P_FR2 = [1522, RY + 1], T_KIL9 = at(P2, "killed on the spot"), T_WND9 = at(P2, "wounded. He lost");
+  BW.hit("fr2", T_EVERY + 0.3, { from: LINE, at: P_FR2, loss: 0.1, marks: 3, until: T_SLIP + 0.8 });
+  BW.hit("fr", T_EVERY + 0.45, { from: LINE, at: P_FR, loss: 0.1, marks: 3, until: T_SLIP + 0.8 });
+  BW.hit("fr2", T_BUCK + 0.4, { from: LINE, at: P_FR2, loss: 0.12, marks: 3, shaken: true, until: T_SLIP + 0.8 });
+  BW.hit("fr", T_BUCK + 0.6, { from: LINE, at: P_FR, loss: 0.12, marks: 3, shaken: true, until: T_SLIP + 0.8 });
+  BW.wipe("fr2", T_KIL9, { from: LINE, at: P_FR2, marks: 6, n: 6, until: T_SLIP + 0.8 });
+  BW.hit("fr", T_KIL9 + 0.15, { from: LINE, at: P_FR, loss: 0.15, marks: 2, shaken: true, until: T_SLIP + 0.8 });
+  BW.rout("fr", T_WND9, { dir: [-0.99, 0.1], dist: 190, n: 6, strag: 2, until: T_SLIP + 0.8 }); }
+document.documentElement.setAttribute("data-bwt", JSON.stringify([T_EVERY, T_BUCK, T_20, at(P2, "killed on the spot"), T_80, at(P2, "wounded. He lost"), T_SLIP]));   // BW: word times for the test windows
 // casualty card (Marion's estimate, both sides spoken; each part on its words)
 { const row = (flag, side, html, col) => `<div class="cr" style="display:flex;align-items:center;gap:20px;margin-top:10px"><img src="assets/media/${flag}" alt="" style="height:40px;border:1px solid #f7f3ea">
     <div style="font-size:38px;letter-spacing:.1em;min-width:250px">${side}</div><div style="font-size:46px;color:${col};letter-spacing:.04em">${html}</div></div>`;
@@ -153,7 +164,7 @@ BW.tilt([[0, 6, 1.05], [END, 7, 1.06]]);
 // (never over the jammed red boxes, the FRASER tag or the banner); big soft cumulus drifting over the map away from the action and the result list
 // r7: the smoke is the engine volley smoke from each shot (pan puff + jet + billows -> one bank in front of the line), drifting east
 // r5: the close battle field: no cumulus on screen, only faint cloud shadows (<= 0.3)
-BW.gl({ mpu: 16, shadowK: 0.3, volley: { K: 1 / 3.1, wind: [15, -2], jet: [70, 95] },
+BW.gl({ mpu: 16, shadowK: 0.3, volley: { K: 1 / 3.1, wind: [3, -4], jet: [60, 80] },   // r9: north ~4 px/s, away from the road
   fair: { F: 1.5, box: [1150, 620, 720, 440], n: 9, med: 22, seed: 21, tiers: [49, 58], drift: [0.5, -0.15], diveClear: 0, opacity: () => 0,
     keep: [[1525, 790, 95], [1470, 815, 70], [1400, 850, 80], [1745, 705, 110], [1440, 815, 60]] } });   // r2: capped (sharpness)
 }

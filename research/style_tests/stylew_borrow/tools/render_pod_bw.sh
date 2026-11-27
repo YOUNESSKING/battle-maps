@@ -2,7 +2,7 @@
 # Render Vicksburg scenes on ONE RunPod GPU pod (recipe: research/runpod/README.md). The key stays in $RUNPOD_API_KEY (never printed).
 # BW copy of vicksburg/tools/render_pod.sh (Style W borrow test): never an RTX A4500, no RTX 3090 (its frames came out corrupted: black ellipse / blocky clouds, r4); a pod that does not answer within 10 min is terminated.
 # usage: SCENES_DIR=marion/scenes bash research/style_tests/stylew_borrow/tools/render_pod_bw.sh OUTDIR S05 [S07 ...]   (or NAME:START-END for a window, e.g. S09_gm:55-110)     -> OUTDIR/S05.mp4 ...; the pod is ALWAYS terminated at exit.
-# Env: GPU (default "NVIDIA RTX A5000"), WORKERS (3), POD (reuse an existing pod id; then it is not terminated).
+# Env: GPU (default "NVIDIA RTX A5000"), WORKERS (3), POD (reuse an existing pod id; then it is not terminated), KEEP=1 (r9: keep the new pod alive for more iterations; terminate it yourself).
 set -u
 R=/home/user/battle-maps/research/runpod; V=/home/user/battle-maps/vicksburg; OUT=$1; shift; mkdir -p "$OUT"
 W=/tmp/vx_pod/run_$$; mkdir -p $W; export CTL_TOKEN_FILE=${CTL_TOKEN_FILE:-$W/token.txt}   # to reuse a running pod pass POD + its CTL_TOKEN_FILE
@@ -23,7 +23,8 @@ if [ -z "${POD:-}" ]; then
   [ -n "$POD" ] || { echo "deploy failed: $(head -c 300 $W/deploy.json)"; exit 1; }
   OWN=1
 fi
-cleanup() { if [ $OWN = 1 ]; then rp "mutation { podTerminate(input: {podId: \"$POD\"}) }"; echo; fi
+cleanup() { if [ $OWN = 1 ] && [ "${KEEP:-0}" != 1 ]; then rp "mutation { podTerminate(input: {podId: \"$POD\"}) }"; echo; fi
+  [ "${KEEP:-0}" = 1 ] && echo "KEPT pod $POD (token $CTL_TOKEN_FILE): reuse with POD=$POD CTL_TOKEN_FILE=$CTL_TOKEN_FILE, terminate yourself"
   rp 'query { myself { clientBalance pods { id } } }'; echo; }
 trap cleanup EXIT
 echo "$POD" > $W/pod_id

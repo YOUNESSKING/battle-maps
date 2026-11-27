@@ -135,77 +135,93 @@ else {
     const SMOKE_GM = { cluster: [1.0, 1.0], fadeAfter: 6, fadeTo: 0.12, look: "gmTall" };
     for (const e of C.smoke) sys.fx.smokeLine(e.pts.map((p) => [p[0], e.h ?? 0.06, p[1]]), e.t0, e.t1, { ...SMOKE_GM, flash: false, ...(e.opts || {}) });
   }
-  // ---------------- r8: black-powder volley smoke + flintlock flashes (NOTES "musket smoke + flash spec" r8)
-  // Smoke = many soft, noise-textured billboard particles per shot (8 procedural fbm smoke textures with domain warp + feathered edges, normals
-  // from the density), lit from the screen top (sunlit tops ~(235,232,222), undersides ~(140,145,155)), alpha-blended into their own target,
-  // then composited with an alpha cap: <= 0.55 over any unit, <= 0.3 over red boxes, ~0.1 over unit name tags (read from the DOM every frame).
-  // A shot = a jet cone thrown 70-110 px forward in ~0.15 s (ease-out, 18 -> 45 px, alpha 0.9) that billows into log-normal 40-140 px puffs
-  // with a lumpy top, rising ~10 px/s for 2 s, drifting 12-18 px/s with shear, spreading x2.5 by 6 s, ~0.35 at 6 s, gone by 12-14 s.
-  // Flashes on a 2D canvas above the smoke: pan flash (12 px, 1 frame, 2 frames early), muzzle tongue (55-70 x 16-24 px, #FFFBE0 -> #FFB030 ->
-  // #E04A10, frame 1 100 % frame 2 60 %), an additive glow (r 45 px, 30 %, 3 frames, screen-blended: lights the map and the smoke), 8 motion-
-  // blurred spark streaks over 0.2 s. All sizes are 1080p screen px; K = world px per screen px at the scene's camera scale.
+  // ---------------- r9: black-powder volley smoke + flintlock flashes (NOTES "musket smoke + flash spec" r9)
+  // Smoke = lit cauliflower puffs: 8 baked textures (a union of 5-7 round lobes, low-frequency noise only: period >= 30 px on screen, edges
+  // softened over ~8 px), colour baked from the lobes' height field with light from the screen top: sunlit rims ~(240,236,226), undersides
+  // ~(130,135,145). A shot = 5 small jet puffs thrown 60-80 px forward in 0.15 s (alpha 0.85, whiter than the bank, for 0.3 s; clamped >= 10 px
+  // short of any red box) + 6-10 puffs (r 25-37 px) that grow to ~1.1x, rise <= 12 px and drift north ~4 px/s (+ a little east), fading out by
+  // ~11 s. Composite with an alpha cap (0.6); unit boxes, name tags and banners (read from the DOM every frame) are cut out: drawn above the smoke.
+  // Flashes on a 2D canvas above the smoke: an 8 px white core AT the muzzle + a ragged yellow-orange tongue (35 x 10 px with 2-3 side lobes),
+  // both x0.7, frame 1 100 % / frame 2 50 %; a pan spark 2 frames early; an additive glow (r 40 px, 30 %); 8 spark streaks over 0.2 s.
+  // All sizes are 1080p screen px; K = world px per screen px at the scene's camera scale.
   let SMOKE = null;
-  if ((C.vshots || []).length) {
-    const V = C.volley || {}, K = V.K || 1, SH = C.vshots.slice().sort((a, b) => a[0] - b[0]);
+  if ((C.vshots || []).length || (C.vcannon || []).length) {
+    const V = C.volley || {}, K = V.K || 1, SH = (C.vshots || []).slice().sort((a, b) => a[0] - b[0]), CN = (C.vcannon || []).slice().sort((a, b) => a[0] - b[0]);
     const mb = (a) => () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let q = Math.imul(a ^ (a >>> 15), 1 | a); q = (q + Math.imul(q ^ (q >>> 7), 61 | q)) ^ q; return ((q ^ (q >>> 14)) >>> 0) / 4294967296; };
-    // --- 8 procedural smoke textures (128 px cells in a 512 x 256 atlas): RGB = normal, A = density
+    // --- 8 cauliflower textures (128 px cells in a 512 x 256 atlas): RGB = lit colour, A = density
     const CS = 128, AW = CS * 4, AH = CS * 2, atl = new Uint8Array(AW * AH * 4);
-    for (let c = 0; c < 8; c++) { const R = mb(977 + c * 131), G = 32, g = new Float32Array(G * G); for (let i = 0; i < g.length; i++) g[i] = R();
-      const vn = (x, y) => { const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi, u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf), at = (a, b) => g[((b % G + G) % G) * G + ((a % G + G) % G)];
+    const RIM = [240, 236, 226], MID = [204, 204, 205], UND = [130, 135, 145], Ld = (() => { const l = Math.hypot(-0.35, 0.8, 0.55); return [-0.35 / l, 0.8 / l, 0.55 / l]; })();
+    for (let c = 0; c < 8; c++) { const R = mb(977 + c * 131), G = 8, g = new Float32Array(G * G); for (let i = 0; i < g.length; i++) g[i] = R();
+      const vn = (x, y) => { const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi, u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf), at = (a, b) => g[(((b % G) + G) % G) * G + (((a % G) + G) % G)];
         return lerp(lerp(at(xi, yi), at(xi + 1, yi), u), lerp(at(xi, yi + 1), at(xi + 1, yi + 1), u), v); };
-      const fbm = (x, y) => { let s_ = 0, a = 0.55, f = 1; for (let o = 0; o < 4; o++) { s_ += a * vn(x * f, y * f); a *= 0.45; f *= 2.1; } return s_ / 0.95; };
-      const ox = R() * 20, oy = R() * 20, D = new Float32Array(CS * CS);
-      for (let y = 0; y < CS; y++) for (let x = 0; x < CS; x++) { const u = x / CS - 0.5, v = y / CS - 0.5;
-        const wx = fbm(u * 2 + ox, v * 2 + oy) - 0.5, wy = fbm(u * 2 + oy + 5, v * 2 + ox + 3) - 0.5;       // domain warp: wisps
-        const r = Math.hypot(u + wx * 0.22, v + wy * 0.22) * 2;
-        const n = fbm(u * 2.6 + ox + wx * 1.2, v * 2.6 + oy + wy * 1.2);
-        const fall = clamp((1 - r) / 0.55);                                                                        // feathered edge
-        D[y * CS + x] = clamp((n * 1.5 - 0.42) * Math.pow(fall, 1.6) * 1.9); }
-      for (let y = 0; y < CS; y++) for (let x = 0; x < CS; x++) { const i = y * CS + x, hx = D[y * CS + Math.min(CS - 1, x + 1)] - D[y * CS + Math.max(0, x - 1)], hy = D[Math.min(CS - 1, y + 1) * CS + x] - D[Math.max(0, y - 1) * CS + x];
-        let nx = -hx * 22, ny = -hy * 22, nz = 1; const l = Math.hypot(nx, ny, nz); nx /= l; ny /= l; nz /= l;
-        const o = (((c >> 2) * CS + y) * AW + (c & 3) * CS + x) * 4; atl[o] = (nx * 0.5 + 0.5) * 255; atl[o + 1] = (ny * 0.5 + 0.5) * 255; atl[o + 2] = (nz * 0.5 + 0.5) * 255; atl[o + 3] = D[i] * 255; } }
+      // lobes (cell units, centre 0, y up): a main body + 4-6 lobes round the top and sides, a flatter base
+      const L = [[0, -0.03, 0.27 + 0.03 * R()]], nl = 4 + Math.floor(R() * 3);
+      for (let k = 0; k < nl; k++) { const a = lerp(-0.25, Math.PI + 0.25, (k + 0.2 + 0.6 * R()) / nl), d = 0.15 + 0.08 * R(); L.push([Math.cos(a) * d * 1.15, Math.sin(a) * d * 0.9 + 0.02, 0.15 + 0.07 * R()]); }
+      const ox = R() * 8, oy = R() * 8, H = new Float32Array(CS * CS), SD = new Float32Array(CS * CS);
+      for (let y = 0; y < CS; y++) for (let x = 0; x < CS; x++) { const u = (x + 0.5) / CS - 0.5, v = 0.5 - (y + 0.5) / CS;
+        const w = (vn(u * 2 + ox, v * 2 + oy) - 0.5) * 0.05;                            // low-frequency wobble of the outline (period = half the sprite)
+        let h = 0, sd = -1; for (const [lx, ly, lr] of L) { const d = Math.hypot(u - lx, v - ly), r = lr + w; sd = Math.max(sd, r - d); if (d < r) h = Math.max(h, Math.sqrt(r * r - d * d)); }
+        H[y * CS + x] = h; SD[y * CS + x] = sd; }
+      for (let y = 0; y < CS; y++) for (let x = 0; x < CS; x++) { const i = y * CS + x, v = 0.5 - (y + 0.5) / CS, u = (x + 0.5) / CS - 0.5;
+        const hx = (H[y * CS + Math.min(CS - 1, x + 2)] - H[y * CS + Math.max(0, x - 2)]) * CS / 4, hy = (H[Math.max(0, y - 2) * CS + x] - H[Math.min(CS - 1, y + 2) * CS + x]) * CS / 4;
+        let nx = -hx, ny = -hy, nz = 1; const l = Math.hypot(nx, ny, nz); nx /= l; ny /= l; nz /= l;
+        const lam = nx * Ld[0] + ny * Ld[1] + nz * Ld[2], glob = clamp(0.5 + 1.4 * v);       // per-lobe form light + the whole puff darker underneath
+        const n2 = vn(u * 2.2 + oy + 3, v * 2.2 + ox + 5);                                       // low-frequency tone variation (period >= 30 px)
+        const s = clamp(0.6 * clamp((lam + 0.1) / 0.95) + 0.4 * clamp(0.5 + 1.8 * v) + (n2 - 0.5) * 0.1);
+        const col = s < 0.5 ? MID.map((m, k) => lerp(UND[k], m, s * 2)) : MID.map((m, k) => lerp(m, RIM[k], clamp((s - 0.5) / 0.32)));
+        const dens = sstep(0, 0.075, SD[i]) * (0.86 + 0.14 * n2);                               // edge softened over ~0.075 cell (~8 px)
+        const o = (((c >> 2) * CS + y) * AW + (c & 3) * CS + x) * 4; atl[o] = col[0]; atl[o + 1] = col[1]; atl[o + 2] = col[2]; atl[o + 3] = Math.round(dens * 255); } }
     const ATL = new THREE.DataTexture(atl, AW, AH, THREE.RGBAFormat); ATL.magFilter = THREE.LinearFilter; ATL.minFilter = THREE.LinearMipmapLinearFilter; ATL.generateMipmaps = true; ATL.flipY = false; ATL.needsUpdate = true;
-    // --- particles (precomputed, pure functions of t)
-    const W0 = (V.wind || [15, -3]), PL = [], lnorm = (R, med, sg, lo, hi) => { const g1 = Math.max(1e-4, R()), g2 = R(); return clamp(med * Math.exp(sg * Math.sqrt(-2 * Math.log(g1)) * Math.cos(6.2832 * g2)), lo, hi); };
+    // --- particles (precomputed, pure functions of t); offsets in screen px
+    const W0 = (V.wind || [3, -4]), PL = [], RV = V.rise ?? 10, GONE = V.gone ?? 1e9;
     SH.forEach(([ts, x, z, ax, az], i) => { const R = mb(i * 7919 + 101); let dx = ax - x, dz = az - z; const l = Math.hypot(dx, dz) || 1; dx /= l; dz /= l;
-      const Lj = (V.jet || [70, 110])[0] + R() * ((V.jet || [70, 110])[1] - (V.jet || [70, 110])[0]), nJ = 9, nB = V.billows ?? 9;
-      for (let j = 0; j < nJ; j++) { const u = j / (nJ - 1); PL.push({ t: ts, x, z, dx, dz, kind: 0, s: Lj * (0.12 + 0.88 * u) * (0.9 + 0.2 * R()), lat: (R() - 0.5) * 8 * u, sz0: lerp(18, 45, u), sz1: lerp(40, 85, u) * (0.8 + 0.4 * R()),
-        a0: 0.9 * (1 - 0.35 * u), tau: 1.3, life: 4, h: R(), cell: Math.floor(R() * 8), rot: R() * 6.283, spin: (R() - 0.5) * 0.3 }); }
-      for (let b = 0; b < nB; b++) { const u = R(); PL.push({ t: ts + 0.04 + 0.35 * R(), x, z, dx, dz, kind: 1, s: Lj * (0.25 + 0.8 * u), lat: (R() - 0.5) * 34, sz0: 22, sz1: lnorm(R, 62, 0.45, 40, 140),
-        a0: 0.3, tau: 5.0, life: 11.5 + 2.5 * R(), h: R(), cell: Math.floor(R() * 8), rot: R() * 6.283, spin: (R() - 0.5) * 0.15 }); } });
-    PL.sort((a, b) => a.t - b.t);
+      const J = V.jet || [60, 80], Lj = J[0] + R() * (J[1] - J[0]);
+      for (let j = 0; j < 5; j++) { const u = j / 4; PL.push({ i, t: ts, x, z, dx, dz, jet: 1, s: Lj * (0.12 + 0.88 * u), lat: (R() - 0.5) * 4 * u, sz: (11 + 15 * u) * (0.9 + 0.2 * R()), a0: 0.85 * (1 - 0.25 * u), life: 1.0, h: R(), cell: Math.floor(R() * 8) }); }
+      const nB = V.billows ?? (6 + Math.floor(R() * 3));
+      for (let b = 0; b < nB; b++) { const u = (b + R()) / nB; PL.push({ i, t: ts + 0.03 + 0.22 * R(), x, z, dx, dz, jet: 0, s: Lj * lerp(0.15, 0.85, u), lat: (R() - 0.5) * 10, sz: (25 + 8 * R()) / 0.42,
+        a0: 0.46 + 0.1 * R(), life: 9.5 + 1.5 * R(), h: R(), cell: Math.floor(R() * 8) }); } });
+    // r9 cannon (owner r9): per shot a heavy muzzle cloud, a smoke burst thrown 150-250 px forward, a quick smoke ring, a ground dust ring at the
+    // muzzle, and at the target (round shot) a dirt burst + lingering smoke. Darker grey than musket smoke (w = darkness, >= 2 = dust tint),
+    // low (rise <= 8 px), slow (V.cwind), lingering 12-19 s. Generic particles: e = thrown offset (screen px) reached with an ease-out over eT.
+    const CW_ = V.cwind || [5, -2];
+    CN.forEach(([ts, x, z, ax, az, ti, tx, tz], i) => { const R = mb(i * 4421 + 77); let dx = ax - x, dz = az - z; const l = Math.hypot(dx, dz) || 1; dx /= l; dz /= l; const nx = -dz, nz = dx;
+      const G = (o) => PL.push(Object.assign({ i: -1, g: 1, t: ts, x, z, h: R(), cell: Math.floor(R() * 8), eT: 0.5, g0: 0.4, gT: 0.6, gr: 0.015, ain: 0.04, rise: 6, wind: CW_, white: 0, fo: 4 }, o));
+      for (let k = 0; k < 6; k++) { const f = 10 + 55 * R(), q = (R() - 0.5) * 34; G({ ex: dx * f + nx * q, ez: dz * f + nz * q, eT: 0.35, sz: (40 + 16 * R()) / 0.42, a0: 0.9, tau: 9, life: 16 + 3 * R(), w: 0.85, white: 0.25 }); }
+      for (let k = 0; k < 12; k++) { const u = (k + R()) / 12, f = (150 + 50 * R()) * Math.pow(u, 0.7), q = (R() - 0.5) * 90 * u; G({ t: ts + 0.02 * k, ex: dx * f + nx * q, ez: dz * f + nz * q, eT: 0.55 + 0.35 * u, sz: (30 + 20 * R()) / 0.42, g0: 0.3, gT: 1.0, a0: 0.8, tau: 7, life: 13 + 4 * R(), w: 0.75, white: 0.15 }); }
+      for (let k = 0; k < 9; k++) { const a = (k / 9) * 6.283 + R() * 0.4; G({ ex: dx * 40 + Math.cos(a) * 32, ez: dz * 40 + Math.sin(a) * 26, eT: 0.35, sz: (16 + 6 * R()) / 0.42, g0: 0.5, gT: 0.4, a0: 0.6, tau: 1.4, life: 4, fo: 2, w: 0.15, white: 0.5 }); }
+      for (let k = 0; k < 10; k++) { const a = (k / 10) * 6.283 + R() * 0.5, f = 34 + 14 * R(); G({ ex: Math.cos(a) * f - dx * 6, ez: Math.sin(a) * f * 0.75 - dz * 6, eT: 0.4, sz: (13 + 8 * R()) / 0.42, g0: 0.5, gT: 0.5, a0: 0.75, tau: 1.0, life: 2.6, fo: 1.2, rise: 2, w: 2 }); }
+      if (ti >= 0) { const T1 = ts + ti;
+        for (let k = 0; k < 7; k++) { const a = R() * 6.283, f = 10 + 18 * R(); G({ t: T1, x: tx, z: tz, ex: Math.cos(a) * f, ez: Math.sin(a) * f * 0.7 - 6 * R(), eT: 0.3, sz: (12 + 10 * R()) / 0.42, g0: 0.4, gT: 0.4, a0: 0.75, tau: 1.2, life: 3, fo: 1.5, rise: 4, w: 2 }); }
+        for (let k = 0; k < 5; k++) { const a = R() * 6.283, f = 6 + 10 * R(); G({ t: T1 + 0.08, x: tx, z: tz, ex: Math.cos(a) * f, ez: Math.sin(a) * f * 0.7, eT: 0.6, sz: (20 + 12 * R()) / 0.42, g0: 0.35, gT: 1.0, a0: 0.55, tau: 6, life: 10 + 4 * R(), rise: 10, w: 0.5, white: 0.1 }); } } });
+    PL.sort((a, b) => a.t - b.t || (a.jet || 0) - (b.jet || 0));
     const N = PL.length, geo = new THREE.InstancedBufferGeometry(); geo.setAttribute("position", new THREE.Float32BufferAttribute([-0.5, -0.5, 0, 0.5, -0.5, 0, 0.5, 0.5, 0, -0.5, 0.5, 0], 3)); geo.setIndex([0, 1, 2, 0, 2, 3]);
-    const iP = new THREE.InstancedBufferAttribute(new Float32Array(N * 4), 4), iQ = new THREE.InstancedBufferAttribute(new Float32Array(N * 4), 4);   // xyz size | alpha cell rot shade
+    const iP = new THREE.InstancedBufferAttribute(new Float32Array(N * 4), 4), iQ = new THREE.InstancedBufferAttribute(new Float32Array(N * 4), 4);   // xyz size | alpha cell white -
     iP.setUsage(THREE.DynamicDrawUsage); iQ.setUsage(THREE.DynamicDrawUsage); geo.setAttribute("iP", iP); geo.setAttribute("iQ", iQ); geo.instanceCount = 0;
     const NT = V.night ? [0.42, 0.47, 0.58] : [1, 1, 1];
     const mat = new THREE.ShaderMaterial({ transparent: true, depthTest: false, depthWrite: false, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
       blendSrcAlpha: THREE.OneFactor, blendDstAlpha: THREE.OneMinusSrcAlphaFactor,
-      uniforms: { uA: { value: ATL }, uR: { value: new THREE.Vector3() }, uU: { value: new THREE.Vector3() }, uNT: { value: new THREE.Vector3(...NT) } },
-      vertexShader: `attribute vec4 iP; attribute vec4 iQ; uniform vec3 uR; uniform vec3 uU; varying vec2 vUv; varying vec4 vQ; varying vec2 vL;
-        void main(){ float c = cos(iQ.z), s = sin(iQ.z); vec2 q = vec2(c * position.x - s * position.y, s * position.x + c * position.y);
-          vec3 wp = iP.xyz + (uR * q.x + uU * q.y) * iP.w; vec2 cell = vec2(mod(iQ.y, 4.0), floor(iQ.y / 4.0));
-          vUv = (cell + (position.xy + 0.5) * 0.98 + 0.01) / vec2(4.0, 2.0); vQ = iQ; vL = vec2(-s * -0.35 + c * 0.0, 0.0) ; vL = vec2(c, s);
+      uniforms: { uA: { value: ATL }, uR: { value: new THREE.Vector3() }, uU: { value: new THREE.Vector3() }, uNT: { value: new THREE.Vector3(...NT) }, uSq: { value: V.squash ?? 0.82 } },
+      vertexShader: `attribute vec4 iP; attribute vec4 iQ; uniform vec3 uR; uniform vec3 uU; uniform float uSq; varying vec2 vUv; varying vec4 vQ;
+        void main(){ vec2 q = vec2(position.x, position.y * uSq); vec3 wp = iP.xyz + (uR * q.x + uU * q.y) * iP.w; vec2 cell = vec2(mod(iQ.y, 4.0), floor(iQ.y / 4.0));
+          vUv = (cell + vec2(position.x + 0.5, 0.5 - position.y) * 0.98 + 0.01) / vec2(4.0, 2.0); vQ = iQ;
           gl_Position = projectionMatrix * viewMatrix * vec4(wp, 1.0); }`,
-      fragmentShader: `uniform sampler2D uA; uniform vec3 uNT; varying vec2 vUv; varying vec4 vQ; varying vec2 vL;
+      fragmentShader: `uniform sampler2D uA; uniform vec3 uNT; varying vec2 vUv; varying vec4 vQ;
         void main(){ vec4 tx = texture2D(uA, vUv); float d = tx.a * vQ.x; if (d < 0.002) discard;
-          vec3 n = normalize(tx.rgb * 2.0 - 1.0);
-          vec2 Ls = normalize(vec2(-0.35, 0.94));                        // light from the screen top (slightly left), in the sprite's own rotated frame
-          vec2 L = vec2(vL.x * Ls.x + vL.y * Ls.y, -vL.y * Ls.x + vL.x * Ls.y);
-          float lit = clamp(0.48 + 1.25 * dot(n.xy, L) + 0.35 * (vQ.w - 0.5), 0.0, 1.0);
-          vec3 top = vec3(0.922, 0.910, 0.871), mid = vec3(0.784, 0.784, 0.804), und = vec3(0.549, 0.569, 0.608);
-          vec3 col = lit < 0.5 ? mix(und, mid, lit * 2.0) : mix(mid, top, lit * 2.0 - 1.0);
-          col *= uNT; gl_FragColor = vec4(col * d, d); }` });
+          vec3 col = tx.rgb; float lum = dot(col, vec3(0.333));
+          if (vQ.w > 1.5) col *= vec3(0.86, 0.76, 0.60);                                                   // ground dust
+          else col *= mix(1.0, 0.84, vQ.w) * mix(1.0, 0.7, vQ.w * clamp(1.15 - lum, 0.0, 1.0));                                  // heavier, darker (cannon) smoke: undersides darken most
+          col = mix(col, vec3(0.965, 0.955, 0.93), vQ.z * 0.75) * uNT; gl_FragColor = vec4(col * d, d); }` });
     const mesh = new THREE.Mesh(geo, mat); mesh.frustumCulled = false; const sScene = new THREE.Scene(); sScene.add(mesh);
     const RT = new THREE.WebGLRenderTarget(1280, 720, { type: THREE.HalfFloatType, depthBuffer: false });
     const MAXR = 24, rects = Array.from({ length: MAXR }, () => new THREE.Vector4(-1, -1, -1, -1)), rmax = new Float32Array(MAXR);
     const comp = new THREE.ShaderMaterial({ transparent: true, depthTest: false, depthWrite: false, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
       blendSrcAlpha: THREE.OneFactor, blendDstAlpha: THREE.OneMinusSrcAlphaFactor,
-      uniforms: { uT: { value: RT.texture }, uRc: { value: rects }, uRm: { value: rmax }, uCap: { value: V.cap ?? 0.75 } },
+      uniforms: { uT: { value: RT.texture }, uRc: { value: rects }, uRm: { value: rmax }, uCap: { value: V.cap ?? 0.6 } },
       vertexShader: "varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }",
       fragmentShader: `uniform sampler2D uT; uniform vec4 uRc[${MAXR}]; uniform float uRm[${MAXR}]; uniform float uCap; varying vec2 vUv;
         void main(){ vec4 c = texture2D(uT, vUv); if (c.a < 0.002) discard; vec2 p = vec2(vUv.x * 1920.0, (1.0 - vUv.y) * 1080.0); float m = uCap;
           for (int i = 0; i < ${MAXR}; i++) { vec4 r = uRc[i]; if (r.z < 0.0) continue; vec2 dd = max(r.xy - p, p - r.zw); float e = max(dd.x, dd.y);
-            m = min(m, mix(uRm[i], uCap, smoothstep(0.0, 34.0, e))); }
+            m = min(m, mix(uRm[i], uCap, smoothstep(0.0, 1.5, e))); }
           float a = min(c.a, m); vec3 col = c.rgb / max(c.a, 1e-4); gl_FragColor = vec4(col * a, a); }` });   // colours are already display (sRGB) values
     const cq = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), comp); cq.frustumCulled = false; const cScene = new THREE.Scene(); cScene.add(cq); const oCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     // --- the flash canvases above the smoke (normal + screen-blended glow)
@@ -213,55 +229,90 @@ else {
       SCN.insertBefore(c, WO); return c; };
     const FC = mkC(false), GC = mkC(true), fg = FC.getContext("2d"), gg = GC.getContext("2d");
     const proj = (x, z) => { const v = new THREE.Vector3(x, 0, z).project(camera); return [(v.x + 1) / 2 * 1920, (1 - v.y) / 2 * 1080]; };
-    const unitRects = () => { const out = [], add = (el, m, pad = 3) => { if (!el || out.length >= MAXR) return; const cs = getComputedStyle(el); if (cs.visibility === "hidden") return;
-        const r = el.getBoundingClientRect(); if (r.width < 2 || r.right < 0 || r.left > 1920 || r.bottom < 0 || r.top > 1080) return; out.push([r.left - pad, r.top - pad, r.right + pad, r.bottom + pad, m]); };
+    const unitRects = () => { const out = [], add = (el, m, red, pad = 2) => { if (!el || out.length >= MAXR) return; const cs = getComputedStyle(el); if (cs.visibility === "hidden") return;
+        const r = el.getBoundingClientRect(); if (r.width < 2 || r.right < 0 || r.left > 1920 || r.bottom < 0 || r.top > 1080) return; out.push([r.left - pad, r.top - pad, r.right + pad, r.bottom + pad, m, red]); };
       document.querySelectorAll("#pins .unit").forEach((u) => { let op = 1; for (let e = u; e && e.id !== "pins"; e = e.parentElement) op *= +getComputedStyle(e).opacity; if (op < 0.05) return;
-        const red = /rome|british/.test(u.className); add(u.querySelector(".blk"), red ? 0.3 : 0.55); add(u.querySelector(".tag"), 0.1); });
-      document.querySelectorAll(".bn-cloth, .bn-name").forEach((e) => add(e, 0.45)); return out; };
+        const red = /rome|british/.test(u.className); const cut = (V.cap ?? 0.6) * (1 - op); add(u.querySelector(".blk"), cut, red, 0); add(u.querySelector(".tag"), cut, red, 0); });   // a fading box lets the smoke back in
+      // r9: the boxes, name tags and banners are cut out of the smoke (1.5 px edge): they read as drawn ABOVE the smoke, never pink or veiled
+      document.querySelectorAll(".bn-cloth, .bn-name").forEach((e) => add(e, 0, false, 0)); return out; };
+    // the jet of one shot stops >= 10 px (+ its own puff radius) short of any red box: ray-march along the screen direction
+    const jetLen = (mx, my, ux, uy, L, ur) => { for (let s = 4; s <= L; s += 2) { const px = mx + ux * s, py = my + uy * s, rr = 10 + 12;
+        for (const r of ur) if (r[5] && px > r[0] - rr && px < r[2] + rr && py > r[1] - rr && py < r[3] + rr) return Math.max(0, s - 2); } return L; };
     SMOKE = {
       draw(t) {
         const e = camera.matrixWorld.elements; mat.uniforms.uR.value.set(e[0], e[1], e[2]).normalize(); mat.uniforms.uU.value.set(e[4], e[5], e[6]).normalize();
+        const ur = unitRects(), JL = new Map(), gone = 1 - sstep(GONE - 0.8, GONE, t);
         let n = 0; const P = iP.array, Q = iQ.array, Wx = W0[0], Wz = W0[1];
         for (const p of PL) { const age = t - p.t; if (age < 0) break; if (age > p.life) continue;
-          const eo = 1 - Math.pow(1 - Math.min(1, age / 0.15), 3);                                             // jet: ease-out over 0.15 s
-          const fw = p.s * (eo + (p.kind ? 0.12 : 0.05) * Math.min(1, age / 1.5));
-          const wk = Math.max(0, age - 0.2), shear = 0.75 + 0.5 * p.h;                                           // the top moves faster
-          const rise = 10 * Math.min(age, 2) + 2 * Math.max(0, age - 2);                                           // north on screen (-z)
-          const sx = p.dx * fw - p.dz * p.lat * Math.min(1, age / 0.6) + Wx * shear * wk, sz = p.dz * fw + p.dx * p.lat * Math.min(1, age / 0.6) + Wz * shear * wk - rise - p.h * 14;
-          const grow = p.kind ? (0.35 + 0.65 * Math.min(1, age / 0.9)) * (1 + 0.16 * age) : lerp(1, p.sz1 / p.sz0, Math.min(1, age / 1.2));
-          const size = (p.kind ? p.sz1 : p.sz0) * grow;
-          const a = p.a0 * Math.min(1, age / 0.04) * Math.exp(-age / p.tau) * (1 - sstep(p.life * 0.7, p.life, age));
-          if (a < 0.003) continue;
-          P[n * 4] = p.x + sx * K; P[n * 4 + 1] = (2 + p.h * 6) * K; P[n * 4 + 2] = p.z + sz * K; P[n * 4 + 3] = size * K;
-          Q[n * 4] = a; Q[n * 4 + 1] = p.cell; Q[n * 4 + 2] = p.rot + p.spin * age; Q[n * 4 + 3] = p.h; n++; }
+          if (p.g) { const eo = 1 - Math.pow(1 - Math.min(1, age / p.eT), 3), wk = Math.max(0, age - 0.4), sh = 0.8 + 0.4 * p.h, rise = p.rise * (1 - Math.exp(-age / 3));
+            const sx = p.ex * eo + p.wind[0] * sh * wk, sz = p.ez * eo + p.wind[1] * sh * wk - rise;
+            const size = p.sz * (p.g0 + (1 - p.g0) * (1 - Math.pow(1 - Math.min(1, age / p.gT), 2))) * (1 + p.gr * age);
+            const A = p.a0 * Math.min(1, age / p.ain) * Math.exp(-age / p.tau) * (1 - sstep(p.life - p.fo, p.life, age)) * gone; if (A < 0.003) continue;
+            P[n * 4] = p.x + sx * K; P[n * 4 + 1] = (2 + p.h * 4) * K; P[n * 4 + 2] = p.z + sz * K; P[n * 4 + 3] = size * K;
+            Q[n * 4] = A; Q[n * 4 + 1] = p.cell; Q[n * 4 + 2] = p.white * (1 - sstep(0.1, 0.8, age)); Q[n * 4 + 3] = p.w; n++; continue; }
+          let Lr = 1; if (p.jet && age < 1.0) { if (!JL.has(p.i)) { const [ts, x, z, ax, az] = SH[p.i], [mx, my] = proj(x, z), [tx, ty] = proj(ax, az), ll = Math.hypot(tx - mx, ty - my) || 1;
+              JL.set(p.i, jetLen(mx, my, (tx - mx) / ll, (ty - my) / ll, 90, ur) / 80); } Lr = Math.min(1, JL.get(p.i) / Math.max(0.3, p.s / 80)); }
+          const eo = 1 - Math.pow(1 - Math.min(1, age / 0.15), 3), s = p.s * Lr * (p.jet ? eo : lerp(0.35, 1, eo));
+          const wk = Math.max(0, age - 0.3), sh = 0.8 + 0.4 * p.h, rise = RV * (1 - Math.exp(-age / 2.5));
+          const sx = p.dx * s - p.dz * p.lat + Wx * sh * wk, sz = p.dz * s + p.dx * p.lat + Wz * sh * wk - rise;
+          const size = p.jet ? p.sz * (1 + 0.35 * Math.min(1, age / 0.3)) : p.sz * (0.55 + 0.45 * (1 - Math.pow(1 - Math.min(1, age / 0.8), 2))) * (1 + 0.015 * age);
+          const a = p.jet ? p.a0 * (age < 0.3 ? 1 : 1 - sstep(0.3, 0.9, age)) * Math.min(1, age / 0.03)
+                          : p.a0 * Math.min(1, age / 0.25) * Math.exp(-age / (V.tau ?? 2.5)) * (1 - sstep(p.life - 3.2, p.life, age));
+          const A = a * gone; if (A < 0.003) continue;
+          P[n * 4] = p.x + sx * K; P[n * 4 + 1] = (2 + p.h * 4) * K; P[n * 4 + 2] = p.z + sz * K; P[n * 4 + 3] = size * K;
+          Q[n * 4] = A; Q[n * 4 + 1] = p.cell; Q[n * 4 + 2] = p.jet ? 1 : 0.5 * (1 - sstep(0.1, 0.6, age)); Q[n * 4 + 3] = 0; n++; }
         geo.instanceCount = n; iP.needsUpdate = true; iQ.needsUpdate = true;
         const prev = renderer.getRenderTarget(); renderer.setRenderTarget(RT); renderer.setClearColor(0, 0); renderer.clear(true, false, false);
         if (n) renderer.render(sScene, camera);
         renderer.setRenderTarget(prev);
-        const ur = unitRects(); for (let i = 0; i < MAXR; i++) { const r = ur[i]; if (r) { rects[i].set(r[0], r[1], r[2], r[3]); rmax[i] = r[4]; } else rects[i].set(-1, -1, -1, -1); }
+        for (let i = 0; i < MAXR; i++) { const r = ur[i]; if (r) { rects[i].set(r[0], r[1], r[2], r[3]); rmax[i] = r[4]; } else rects[i].set(-1, -1, -1, -1); }
         if (n) renderer.render(cScene, oCam);
-        // flashes
-        fg.clearRect(0, 0, 1920, 1080); gg.clearRect(0, 0, 1920, 1080); const F = 1 / 30;
+        // flashes (x FS = 0.7)
+        fg.clearRect(0, 0, 1920, 1080); gg.clearRect(0, 0, 1920, 1080); const F = 1 / 30, FS = V.flashScale ?? 0.7;
         for (let i = 0; i < SH.length; i++) { const [ts, x, z, ax, az] = SH[i], age = t - ts; if (age < -2.5 * F || age > 0.25) continue;
           const [mx, my] = proj(x, z), [tx, ty] = proj(ax, az), ang = Math.atan2(ty - my, tx - mx), R = mb(i * 31 + 7);
-          if (age >= -2 * F - 1e-4 && age < -F - 1e-4) {   // priming pan: 12 px, 1 frame, 2 frames early, just behind the muzzle
-            const px = mx - Math.cos(ang) * 8, py = my - Math.sin(ang) * 8, gr = fg.createRadialGradient(px, py, 0, px, py, 7);
-            gr.addColorStop(0, "rgba(255,252,225,1)"); gr.addColorStop(0.5, "rgba(255,205,90,.9)"); gr.addColorStop(1, "rgba(255,140,30,0)"); fg.fillStyle = gr; fg.beginPath(); fg.arc(px, py, 7, 0, 7); fg.fill(); }
-          if (age >= -1e-4 && age < 2 * F - 1e-4) {        // muzzle tongue: frame 1 100 %, frame 2 60 %
-            const A = age < F - 1e-4 ? 1 : 0.6, Lt = 55 + 15 * R(), Wt = 16 + 8 * R();
-            fg.save(); fg.translate(mx, my); fg.rotate(ang); fg.globalAlpha = A;
-            const lg = fg.createLinearGradient(0, 0, Lt, 0); lg.addColorStop(0, "#FFFBE0"); lg.addColorStop(0.28, "#FFE9A0"); lg.addColorStop(0.55, "#FFB030"); lg.addColorStop(0.85, "#E04A10"); lg.addColorStop(1, "rgba(224,74,16,0)");
-            fg.fillStyle = lg; fg.filter = "blur(1.2px)"; fg.beginPath(); fg.moveTo(-2, 0);
-            fg.bezierCurveTo(Lt * 0.15, -Wt * 0.62, Lt * 0.55, -Wt * 0.55, Lt, -Wt * 0.08); fg.lineTo(Lt * 0.92, 0); fg.lineTo(Lt, Wt * 0.1); fg.bezierCurveTo(Lt * 0.55, Wt * 0.58, Lt * 0.15, Wt * 0.6, -2, 0); fg.fill();
-            fg.filter = "blur(0.8px)"; const cg = fg.createRadialGradient(4, 0, 0, 4, 0, 9); cg.addColorStop(0, "rgba(255,255,255,1)"); cg.addColorStop(1, "rgba(255,251,224,0)"); fg.fillStyle = cg; fg.beginPath(); fg.ellipse(5, 0, 11, 6, 0, 0, 7); fg.fill();
+          if (age >= -2 * F - 1e-4 && age < -F - 1e-4) {   // priming pan: a small spark, 1 frame, 2 frames early, just behind the muzzle
+            const px = mx - Math.cos(ang) * 6, py = my - Math.sin(ang) * 6, gr = fg.createRadialGradient(px, py, 0, px, py, 3.5);
+            gr.addColorStop(0, "rgba(255,252,225,1)"); gr.addColorStop(0.5, "rgba(255,205,90,.85)"); gr.addColorStop(1, "rgba(255,140,30,0)"); fg.fillStyle = gr; fg.beginPath(); fg.arc(px, py, 3.5, 0, 7); fg.fill(); }
+          if (age >= -1e-4 && age < 2 * F - 1e-4) {        // tongue + core: frame 1 100 %, frame 2 50 %
+            const A = age < F - 1e-4 ? 1 : 0.5, Lt = 35 * (0.9 + 0.2 * R()), Wt = 10 * (0.9 + 0.2 * R());
+            fg.save(); fg.translate(mx, my); fg.rotate(ang); fg.scale(FS, FS); fg.globalAlpha = A;
+            const lg = fg.createLinearGradient(0, 0, Lt, 0); lg.addColorStop(0, "#FFFFF4"); lg.addColorStop(0.18, "#FFF0B0"); lg.addColorStop(0.45, "#FFC040"); lg.addColorStop(0.75, "#F07A18"); lg.addColorStop(1, "rgba(210,70,16,0)");
+            fg.fillStyle = lg; fg.filter = "blur(0.6px)";
+            // ragged outline: half-width w(u) widest near the muzzle, tapering with jitter (both sides independent)
+            const NP = 9, up = [], dn = []; for (let k = 0; k <= NP; k++) { const u = k / NP, base = Wt * 0.5 * Math.pow(1 - u, 0.7) * (0.75 + 0.5 * Math.sin(Math.PI * Math.min(1, u * 2.2)));
+              up.push([u * Lt, -base * (0.75 + 0.5 * R())]); dn.push([u * Lt, base * (0.75 + 0.5 * R())]); }
+            fg.beginPath(); fg.moveTo(0, 0); for (const q of up) fg.lineTo(q[0], q[1]); for (let k = dn.length - 1; k >= 0; k--) fg.lineTo(dn[k][0], dn[k][1]); fg.closePath(); fg.fill();
+            // 2-3 side lobes: short flame tongues splayed off the main one
+            const nl = 2 + (R() < 0.5 ? 1 : 0); for (let k = 0; k < nl; k++) { const u0 = 0.18 + 0.4 * R(), sg = k % 2 ? 1 : -1, la = sg * (0.5 + 0.4 * R()), ll = Lt * (0.25 + 0.15 * R()), lw = Wt * 0.28;
+              fg.save(); fg.translate(u0 * Lt * 0.6, sg * Wt * 0.15); fg.rotate(la); const g2 = fg.createLinearGradient(0, 0, ll, 0); g2.addColorStop(0, "#FFE590"); g2.addColorStop(0.6, "#FFA030"); g2.addColorStop(1, "rgba(230,90,20,0)");
+              fg.fillStyle = g2; fg.beginPath(); fg.moveTo(0, -lw * 0.5); fg.quadraticCurveTo(ll * 0.5, -lw * 0.6, ll, 0); fg.quadraticCurveTo(ll * 0.5, lw * 0.6, 0, lw * 0.5); fg.closePath(); fg.fill(); fg.restore(); }
+            fg.filter = "blur(0.5px)"; const cg = fg.createRadialGradient(0, 0, 0, 0, 0, 4); cg.addColorStop(0, "rgba(255,255,255,1)"); cg.addColorStop(0.7, "rgba(255,255,250,1)"); cg.addColorStop(1, "rgba(255,248,220,0)");
+            fg.fillStyle = cg; fg.beginPath(); fg.arc(0, 0, 4, 0, 7); fg.fill();     // 8 px white core AT the muzzle
             fg.restore(); fg.filter = "none"; fg.globalAlpha = 1; }
-          if (age >= -1e-4 && age < 3 * F - 1e-4) {        // additive glow: lights the map and the smoke (screen blend), 3 frames
-            const A = [0.32, 0.22, 0.12][Math.min(2, Math.floor(age / F + 1e-3))], gx = mx + Math.cos(ang) * 14, gy = my + Math.sin(ang) * 14, gr = gg.createRadialGradient(gx, gy, 0, gx, gy, 45);
-            gr.addColorStop(0, `rgba(255,190,90,${A})`); gr.addColorStop(0.5, `rgba(255,140,50,${A * 0.45})`); gr.addColorStop(1, "rgba(255,120,40,0)"); gg.fillStyle = gr; gg.fillRect(gx - 46, gy - 46, 92, 92); }
+          if (age >= -1e-4 && age < 3 * F - 1e-4) {        // additive glow centred at the muzzle: r 40 px, 30 %, lights the map and the smoke (screen blend)
+            const A = [0.3, 0.18, 0.08][Math.min(2, Math.floor(age / F + 1e-3))], gx = mx + Math.cos(ang) * 6, gy = my + Math.sin(ang) * 6, gr = gg.createRadialGradient(gx, gy, 0, gx, gy, 40);
+            gr.addColorStop(0, `rgba(255,200,110,${A})`); gr.addColorStop(0.45, `rgba(255,150,60,${A * 0.4})`); gr.addColorStop(1, "rgba(255,120,40,0)"); gg.fillStyle = gr; gg.fillRect(gx - 41, gy - 41, 82, 82); }
           if (age >= 0 && age < 0.2) {                       // 8 motion-blurred spark streaks over 0.2 s
-            for (let k = 0; k < 8; k++) { const a2 = ang + (R() - 0.5) * 0.9, sp = 160 + 200 * R(), d1 = sp * age + 10, d0 = Math.max(6, d1 - 10), al = 1 - age / 0.2;
+            for (let k = 0; k < 8; k++) { const a2 = ang + (R() - 0.5) * 0.9, sp = 140 + 160 * R(), d1 = sp * age + 8, d0 = Math.max(5, d1 - 9), al = 1 - age / 0.2;
               const x0 = mx + Math.cos(a2) * d0, y0 = my + Math.sin(a2) * d0, x1 = mx + Math.cos(a2) * d1, y1 = my + Math.sin(a2) * d1, lg = fg.createLinearGradient(x0, y0, x1, y1);
-              lg.addColorStop(0, "rgba(255,170,60,0)"); lg.addColorStop(1, `rgba(255,236,170,${al.toFixed(3)})`); fg.strokeStyle = lg; fg.lineWidth = 1.2; fg.beginPath(); fg.moveTo(x0, y0); fg.lineTo(x1, y1); fg.stroke(); } }
+              lg.addColorStop(0, "rgba(255,170,60,0)"); lg.addColorStop(1, `rgba(255,236,170,${al.toFixed(3)})`); fg.strokeStyle = lg; fg.lineWidth = 1.1; fg.beginPath(); fg.moveTo(x0, y0); fg.lineTo(x1, y1); fg.stroke(); } }
+        }
+        // cannon flash: 2-3x a musket's: a 16 px white core + an orange fireball (3 overlapping ragged blobs thrown forward), 2 frames (100 %, 50 %);
+        // a ground-lighting glow r 110 px for 3 frames (screen blend); 14 spark streaks over 0.25 s
+        for (let i = 0; i < CN.length; i++) { const [ts, x, z, ax, az] = CN[i], age = t - ts; if (age < -1e-4 || age > 0.3) continue;
+          const [mx, my] = proj(x, z), [tx, ty] = proj(ax, az), ang = Math.atan2(ty - my, tx - mx), R = mb(i * 53 + 11), ca = Math.cos(ang), sa = Math.sin(ang);
+          if (age < 2 * F - 1e-4) { const A = age < F - 1e-4 ? 1 : 0.5; fg.save(); fg.globalAlpha = A; fg.filter = "blur(1px)";
+            [[16, 26], [36, 30], [58, 21]].forEach(([d, r]) => { const jx = (R() - 0.5) * 8, jy = (R() - 0.5) * 8, cx = mx + ca * d - sa * jy + jx * 0.3, cy = my + sa * d + ca * jy + jy * 0.3, rr = r * (0.85 + 0.3 * R());
+              const gr = fg.createRadialGradient(cx, cy, 0, cx, cy, rr); gr.addColorStop(0, "rgba(255,246,200,1)"); gr.addColorStop(0.35, "rgba(255,196,90,.95)"); gr.addColorStop(0.7, "rgba(240,110,30,.7)"); gr.addColorStop(1, "rgba(200,70,20,0)");
+              fg.fillStyle = gr; fg.beginPath(); for (let k = 0; k <= 12; k++) { const a2 = k / 12 * 6.283, q = rr * (0.8 + 0.35 * R()); k ? fg.lineTo(cx + Math.cos(a2) * q, cy + Math.sin(a2) * q) : fg.moveTo(cx + Math.cos(a2) * q, cy + Math.sin(a2) * q); } fg.fill(); });
+            const cg = fg.createRadialGradient(mx + ca * 3, my + sa * 3, 0, mx + ca * 3, my + sa * 3, 10); cg.addColorStop(0, "rgba(255,255,255,1)"); cg.addColorStop(0.75, "rgba(255,255,248,1)"); cg.addColorStop(1, "rgba(255,250,220,0)");
+            fg.fillStyle = cg; fg.beginPath(); fg.arc(mx + ca * 3, my + sa * 3, 10, 0, 7); fg.fill(); fg.restore(); fg.filter = "none"; fg.globalAlpha = 1; }
+          if (age < 3 * F - 1e-4) { const A = [0.42, 0.26, 0.11][Math.min(2, Math.floor(age / F + 1e-3))], gx = mx + ca * 20, gy = my + sa * 20, gr = gg.createRadialGradient(gx, gy, 0, gx, gy, 110);
+            gr.addColorStop(0, `rgba(255,205,120,${A})`); gr.addColorStop(0.4, `rgba(255,150,60,${A * 0.45})`); gr.addColorStop(1, "rgba(255,120,40,0)"); gg.fillStyle = gr; gg.fillRect(gx - 111, gy - 111, 222, 222); }
+          if (age < 0.25) for (let k = 0; k < 14; k++) { const a2 = ang + (R() - 0.5) * 1.0, sp = 250 + 200 * R(), d1 = sp * age + 16, d0 = Math.max(10, d1 - 14), al = 1 - age / 0.25;
+            const x0 = mx + Math.cos(a2) * d0, y0 = my + Math.sin(a2) * d0, x1 = mx + Math.cos(a2) * d1, y1 = my + Math.sin(a2) * d1, lg = fg.createLinearGradient(x0, y0, x1, y1);
+            lg.addColorStop(0, "rgba(255,170,60,0)"); lg.addColorStop(1, `rgba(255,236,170,${al.toFixed(3)})`); fg.strokeStyle = lg; fg.lineWidth = 1.4; fg.beginPath(); fg.moveTo(x0, y0); fg.lineTo(x1, y1); fg.stroke(); }
         } } };
   }
   // ---------------- per frame

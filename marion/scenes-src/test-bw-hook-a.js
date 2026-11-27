@@ -141,7 +141,11 @@ mg(PP(1478, 702), PP(...REND[1]), T_GUNS + 1.1, 4, 1.3 / CH2[2]);
 // r7: the smoke is the engine volley smoke from each shot (pan puff + jet + billows -> bank), see NOTES "musket smoke + flash spec"
 // BW r3: the kit smoke is replaced by the per-shot puffs (<= 6 per volley)
 B.move("r1", T_GUARD - 0.25, 0.45, ...PP(1440, 698)); B.move("r2", T_GUARD - 0.15, 0.45, ...PP(1478, 740));
-hideU(["g1"], T_GUARD + 0.35);
+// r9 (owner: the effect of fire / the fight on the target): on "British guard" the riders hit the guard: it shudders, dims, loses a chunk,
+// its edges go ragged (shaken) and it staggers back; then it is overrun = captured (grey with its red edge, STYLE rule), and leaves with the pull back
+BW.hit("g1", T_GUARD + 0.15, { from: PP(1440, 698), at: PP(1478, 702), loss: 0.15, shaken: true, marks: 0 });
+BW.captured("g1", T_GUARD + 0.45);
+hideU(["g1"], T_4M + 0.15);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // "Within four months": the pull back to the wide map, daylight; "between two rivers": the ground between the Santee and the Pee Dee
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -178,7 +182,7 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
     diveOff: { push: -1.4, deckIn: -1.2, full: -0.25, deck: -0.2, wIn: -0.25, inside: -0.1, warm: 0.05, emerge: 0.2, clear: 0.35, haze: 0.6, land: 0.75 },   // r6: the deck closes in from the frame edges from 5.8 s (clear window over the crossing to ~6.45), full by 6.75
     fair: { F: 3.3, box: [150, 120, 2600, 1400], n: 18, med: 24, seed: 5, tiers: [49, 78, 108], diveClear: 110, keepLines: [[ROADP, 80]], keep: [[CHS[0], CHS[1], 110], [860, 1110, 130]],
       on: (t) => t < SW + 1.2, screenClear: { t: [2, 6.4], box: [550, 380, 1000, 560] } },
-    stratus: { F: 3.1, at: [CEND[0], CEND[1]], speed: 0.45 }, volley: { K: 1 / 15.2, night: 1, wind: [0, -5], jet: [55, 75], billows: 9 } }); }   // r8: the guard smoke blows north, away from every box
+    stratus: { F: 3.1, at: [CEND[0], CEND[1]], speed: 0.45 }, volley: { K: 1 / 15.2, night: 1, wind: [0, -5], jet: [55, 75], billows: 8, gone: 17.0 } }); }   // r9: gone 0.5 s before it reaches the riders   // r8: the guard smoke blows north, away from every box
 // hook-2: "before dawn" is the script's only time: the pocket watch comes in (hands ~4:30, no clock time is spoken)
 BW.time(T_DAWN, { label: "Before dawn", header: "1780" });   // r2: no clock time is spoken: text only, no watch
 BW.date("1780", T_4M + 0.1);

@@ -151,3 +151,29 @@ RunPod: one RTX A4000 SECURE ($0.25/h, ~10 min, ~$0.04); pods list verified empt
   Shot times snapped to the video frame, so the bang lands on the tongue frame (audio rebuilt with the snapped times).
 - Hook: the guard fires north-west over the riders' approach, wind north 5 px/s: the smoke stays off the boxes.
 - RunPod: one RTX A4000 (micro-clip 4 s + both scenes, ~10 min, ~$0.03) after ~25 min of "no instances" retries; pods list empty.
+
+## r9 (critics r8: B 8.5, A 6.5/6: flash = comet, smoke = TV grain, bank = flat big haze; owner: + artillery, + the effect of fire)
+`stylew_borrow_test_r9_share.mp4` (76.8 s, 21.6 MB, -14.0 LUFS, TP -1.3), `sheet_r9.jpg`, `smoke_closeup_r9.jpg` (r8 | r9 musket rows, then r9-only
+rows: CANNON, HIT, WIPE-OUT, ROUT). Five windows: hook 0-17.8, name slam, title, **Fort Motte six-pounder (film 750.21-764.81, new)**, Parker's Ferry.
+- Smoke (bwgl.mjs `SMOKE`, rewritten): 8 baked cauliflower textures = a union of 5-7 round lobes, outline wobble + tone from ONE low-frequency
+  noise octave (period >= 30 px on screen, no grain), edges softened over ~8 px; colour baked from the lobes' height field, light from the
+  screen top: rims (240,236,226), undersides (130,135,145). Per shot: 5 jet puffs 60-80 px in 0.15 s, alpha 0.85 and whiter for 0.3 s, ray-
+  marched to stop >= 10 px (+ puff radius) short of any red box; 6-8 puffs r 25-33 px (squashed 0.82), growth ~1.1x, rise <= 10 px, wind
+  north 4 px/s + east 3 px/s, alpha exp(-t/2.5), gone by ~11 s. Muzzles at the line front (y 790), aimed along the road side.
+- Visibility: unit boxes, name tags and banners are CUT OUT of the smoke (1.5 px edge): they read as drawn above it, never pink or veiled;
+  a fading unit lets the smoke back in. Cap 0.6 elsewhere. Hook guard smoke fades out by 17.0 s (`volley.gone`).
+- Flash: 8 px white core AT the muzzle + ragged tongue 35 x 10 px (jittered outline, 2-3 side lobes), x0.7; frame 1 100 % / frame 2 50 %;
+  pan spark 2 frames early; screen glow r 40 px 30/18/8 %; 8 spark streaks.
+- Cannon (`BW.cannon` -> `vcannon`): fireball (3 ragged blobs, ~70 px) + 20 px white core, 2 frames; glow r 110 px for 3 frames; 14 sparks;
+  ground dust ring (tan) at the muzzle; smoke ring + burst thrown 150-200 px; heavy low cloud (darker grey, undersides darkest, rise <= 6 px,
+  wind 6 px/s, lingers 13-19 s); round shot impact on the gable 0.5 s later: dirt burst + lingering smoke; the gun box recoils 2.2 map px.
+  Sound = the scene's own locked kit cues ("fire" on the flash frame, "impact" on landing), SOUND LOCK OK. History: the six-pounder fired
+  once at Fort Motte and no one was killed, so the roof figures flinch and are driven off (no casualty marks there).
+- Effect of fire (`BW.hit / wipe / rout / captured / dip`, borrow.js): hit = shudder, colour dims ~0.6 s, frontage/depth loss, stagger back,
+  ragged edges when shaken, small dark casualty marks (screen-px sized); wipe = the box breaks into 6 chunks that scatter, tumble and fade to grey
+  remnants + marks; rout = chunks flee along a direction, 2 wounded stragglers fall behind and stop grey; captured = grey + side-colour edge.
+  Parker's Ferry: both ripples hit the jammed boxes; "killed on the spot" -> fr2 wiped out; "wounded" -> fr routs toward the ferry. Hook: on
+  "British guard" the guard is hit (shaken) and overrun (captured grey, red edge).
+- Process: local stills for quick checks; RunPod micro-clips x3 (musket 6.4 s, wipe/rout 4 s, cannon 4 s, hook guard 2.4 s), then the full
+  windows, all on ONE RTX A4000 pod kept alive between iterations (`KEEP=1` / `POD=` in render_pod_bw.sh); pods terminated, list empty; r9 ~$0.12.
+- Known weak spots: rout/wipe chunks still read small at this zoom; cannon cloud could be darker/denser; bank is still a fairly even band.

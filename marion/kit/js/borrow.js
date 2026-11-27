@@ -164,6 +164,63 @@ const BW = (() => {
     for (let i = 0; i < n; i++) { const u = clamp((i + (R() - 0.5) * 1.6) / Math.max(1, n - 1)) ** lerp(0.85, 1.3, R()), f = i / Math.max(1, n - 1) * (L - 1), a = pts[Math.floor(f)], b = pts[Math.min(L - 1, Math.floor(f) + 1)], q = f - Math.floor(f);
       const x = lerp(a[0], b[0], q) + (R() - 0.5) * (o.jx || 6), y = lerp(a[1], b[1], q) + (R() - 0.5) * (o.jy || 5);
       shot([x, y], t0 + (i === 0 ? 0 : u * span), { k: o.k || 1, aim: o.aim ? o.aim(x, y) : null, ps: o.ps, puff: !o.noPuff && i % (o.puffEvery || 2) === 0 }); } };
+  // ================================================================== 7b. r9: the EFFECT of fire on the target (owner r9: "these little details"; no gore, no blood)
+  // All in map px on the unit itself (the box keeps its map size), every step on or after its spoken word (1c), timings given by the scene.
+  // hit(id, t, o):  t = the moment the shot arrives (~0.2-0.4 s after the flash). A shudder, the colour dims for ~0.6 s, the box loses
+  //   frontage/depth by o.loss (0..1, e.g. 0.15 = "a visible chunk"), staggers back o.back px away from o.from, ragged edges if o.shaken,
+  //   o.marks small dark casualty marks left on the ground behind it (at o.at, the unit's map position at t).
+  // wipe(id, t, o): the box breaks into fragments that scatter, tumble and fade to grey remnants + casualty marks ("wiped out").
+  // rout(id, t, o): the box breaks into small fragments fleeing along o.dir; o.strag wounded stragglers fall behind and stop, grey.
+  // captured(id, t): grey with its side-colour edge. dip(el, t): an officer's banner dips (rotates down) when his unit breaks.
+  const FX = { k: {} }, PIN = () => document.getElementById("pins");
+  const SCOL = (id) => /rome|british/.test(B.units[id].el.className) ? "#bc2528" : "#2c57b7";
+  const away = (from, at) => { if (!from || !at) return [1, 0]; const dx = at[0] - from[0], dy = at[1] - from[1], l = Math.hypot(dx, dy) || 1; return [dx / l, dy / l]; };
+  const cmarks = (at, n, t, spread, dir, seed, until) => { const R = R0(seed), out = [], f = 1 / (typeof CAM_AT === "function" ? CAM_AT(t)[2] : 1); spread *= f;   // sizes in screen px at the camera scale of t
+    for (let i = 0; i < n; i++) { const d = document.createElement("div"), w = (4.5 + R() * 3) * f, h = w * (0.5 + 0.25 * R());
+      const px = at[0] + dir[0] * (2 + R() * spread) + (R() - 0.5) * spread * 1.2 * Math.abs(dir[1]) + (R() - 0.5) * 6 * f, py = at[1] + dir[1] * (2 + R() * spread) + (R() - 0.5) * spread * 1.2 * Math.abs(dir[0]) + (R() - 0.5) * 6 * f;
+      d.style.cssText = `position:absolute;left:${(px - w / 2).toFixed(2)}px;top:${(py - h / 2).toFixed(2)}px;width:${w.toFixed(2)}px;height:${h.toFixed(2)}px;border-radius:50%;background:rgba(30,24,18,.88);box-shadow:0 0 1px rgba(20,16,12,.7);transform:rotate(${(R() * 180).toFixed(0)}deg);opacity:0;pointer-events:none`;
+      PIN().insertBefore(d, PIN().firstChild); tl.to(d, { opacity: 0.85, duration: 0.25 }, t + 0.05 + i * 0.07); if (until != null) tl.to(d, { opacity: 0, duration: 0.8 }, until); out.push(d); } return out; };
+  const hit = (id, t, o = {}) => { const u = B.units[id], blk = u.el.querySelector(".blk"), st = FX.k[id] = FX.k[id] || { sx: 1, sy: 1, bx: 0, by: 0 };
+    const dir = away(o.from, o.at), f = (blk.offsetWidth || u.w || 22) / 22, b = (o.back ?? 1.2) * f;   // map px, scaled with the box size
+    [[0.9, -0.5], [-0.8, 0.4], [0.5, -0.3], [0, 0]].forEach(([dx, dy], i) => tl.to(blk, { x: st.bx + dx * f, y: st.by + dy * f, duration: 0.05, ease: "none" }, t + i * 0.05));   // shudder
+    st.bx += dir[0] * b; st.by += dir[1] * b; tl.to(blk, { x: st.bx, y: st.by, duration: 0.35, ease: "power2.out" }, t + 0.2);                                          // stagger back
+    tl.fromTo(blk, { filter: "brightness(1) saturate(1)" }, { filter: "brightness(.62) saturate(.75)", duration: 0.06, immediateRender: false }, t); tl.to(blk, { filter: "brightness(.92) saturate(.9)", duration: 0.6, ease: "power1.out" }, t + 0.12);   // dims
+    if (o.loss) { st.sx *= 1 - 0.55 * o.loss; st.sy *= 1 - 0.3 * o.loss; tl.to(blk, { scaleX: st.sx, scaleY: st.sy, duration: 0.35, ease: "power2.out" }, t + 0.08); }      // loses frontage/depth
+    if (o.shaken) tl.set(blk, { clipPath: "polygon(0% 6%,9% 0%,22% 5%,36% 0%,52% 7%,66% 1%,81% 6%,100% 0%,96% 22%,100% 41%,95% 63%,100% 82%,93% 100%,74% 95%,58% 100%,41% 94%,24% 100%,8% 95%,0% 100%,4% 77%,0% 56%,5% 33%)" }, t + 0.1);
+    if (o.marks && o.at) cmarks(o.at, o.marks, t + 0.1, o.spread || 16, [-dir[0] * 0.6, -dir[1] * 0.6], o.seed || Math.round(t * 100) + 3, o.until);
+    return O; };
+  const frags = (id, n, seed) => { const u = B.units[id], blk = u.el.querySelector(".blk"), w = blk.offsetWidth || u.w || 22, h = blk.offsetHeight || u.h || 15, R = R0(seed), out = [];
+    const nx = Math.max(2, Math.round(Math.sqrt(n * w / h))), ny = Math.max(2, Math.round(n / nx));
+    for (let j = 0; j < ny; j++) for (let i = 0; i < nx; i++) { const d = document.createElement("div"), fw = w / nx * (1.0 + 0.3 * R()), fh = h / ny * (1.0 + 0.3 * R());   // chunky pieces (slightly overlapping)
+      d.style.cssText = `position:absolute;left:${(i * w / nx + (w / nx - fw) / 2).toFixed(2)}px;top:${(j * h / ny + (h / ny - fh) / 2).toFixed(2)}px;width:${fw.toFixed(2)}px;height:${fh.toFixed(2)}px;background:${SCOL(id)};border:${(Math.min(w, h) * 0.04).toFixed(2)}px solid rgba(20,16,12,.85);box-sizing:border-box;opacity:0;pointer-events:none`;
+      blk.parentElement.appendChild(d); out.push({ d, cx: (i + 0.5) / nx - 0.5, cy: (j + 0.5) / ny - 0.5, r: R() }); } return { out, w, h }; };
+  const hideBox = (id, t) => { const u = B.units[id]; tl.to([u.el.querySelector(".blk"), u.el.querySelector(".tag")].filter(Boolean), { autoAlpha: 0, duration: 0.12 }, t); };
+  const wipe = (id, t, o = {}) => { const { out, w, h } = frags(id, o.n || 6, o.seed || 7); const dir = away(o.from, o.at), st = FX.k[id] || { bx: 0, by: 0 };
+    hideBox(id, t); out.forEach((f, k) => { const sx = f.cx * w * 1.1 + dir[0] * (6 + 12 * f.r) + (f.r - 0.5) * 8, sy = f.cy * h * 1.1 + dir[1] * (6 + 12 * f.r);
+      tl.set(f.d, { opacity: 1, x: st.bx, y: st.by }, t); tl.to(f.d, { x: st.bx + sx, y: st.by + sy, rotation: (f.r - 0.5) * 140, scale: 0.75, duration: 0.7 + 0.3 * f.r, ease: "power3.out" }, t);
+      tl.to(f.d, { backgroundColor: "#8b8880", opacity: 0.8, duration: 1.0, ease: "power1.in" }, t + 0.35 + 0.2 * f.r);
+      if (o.until != null) tl.to(f.d, { opacity: 0, duration: 0.8 }, o.until); });
+    if (o.at) cmarks(o.at, o.marks ?? 6, t, o.spread || 22, [dir[0] * 0.3, dir[1] * 0.3], (o.seed || 7) + 11, o.until);
+    if (o.banner) dip(o.banner, t + 0.1);
+    return O; };
+  const rout = (id, t, o = {}) => { const { out, w, h } = frags(id, o.n || 6, o.seed || 9), dir = o.dir || [-1, 0], D = o.dist || 150, st = FX.k[id] || { bx: 0, by: 0 }, ns = o.strag ?? 2;
+    hideBox(id, t); out.forEach((f, k) => { const s = k < ns ? 0.25 + 0.15 * f.r : 0.8 + 0.4 * f.r, dur = o.dur || 1.8;   // the first ns fragments = wounded stragglers: fall behind, stop, grey
+      tl.set(f.d, { opacity: 1, x: st.bx, y: st.by, scale: 0.8 }, t);
+      tl.to(f.d, { x: st.bx + dir[0] * D * s + f.cx * w * 1.4 - dir[1] * (f.r - 0.5) * 6, y: st.by + dir[1] * D * s + f.cy * h * 1.4 + dir[0] * (f.r - 0.5) * 6, duration: dur * (k < ns ? 0.7 : 1), ease: "power2.out" }, t + 0.05 * k);
+      if (k < ns) { tl.to(f.d, { backgroundColor: "#8b8880", opacity: 0.8, rotation: 30 * (f.r - 0.5), duration: 0.6 }, t + dur * 0.6); if (o.until != null) tl.to(f.d, { opacity: 0, duration: 0.8 }, o.until); }
+      else tl.to(f.d, { opacity: 0, duration: 0.5 }, t + dur * 0.75 + 0.05 * k); });
+    if (o.banner) dip(o.banner, t);
+    return O; };
+  const captured = (id, t) => { const u = B.units[id], blk = u.el.querySelector(".blk");
+    tl.to(blk, { filter: "grayscale(1) brightness(1.08)", duration: 0.35 }, t); tl.to(blk, { boxShadow: `0 0 0 ${((blk.offsetWidth || u.w || 22) * 0.07).toFixed(2)}px ${SCOL(id)}`, duration: 0.35 }, t); return O; };
+  const dip = (el, t) => { if (!el) return O; tl.to(el, { rotation: -32, transformOrigin: "0% 100%", duration: 0.45, ease: "power2.in" }, t); tl.to(el, { opacity: 0.6, duration: 0.6 }, t + 0.3); return O; };
+  // ================================================================== 7c. r9: a cannon shot (3D layer: fireball flash, glow, dust ring, smoke burst + heavy cloud, impact)
+  // The sound stays the locked kit cue the scene already has (K.gun -> "fire" / K.impact -> "impact") on the flash frame; o.unit recoils.
+  const cannon = (p, t, aim, o = {}) => { t = Math.ceil(t * 30 - 1e-6) / 30; gl({});
+    (window.BWGL_CFG.vcannon = window.BWGL_CFG.vcannon || []).push([+t.toFixed(4), p[0], p[1], aim[0], aim[1], o.impact ?? -1, o.target ? o.target[0] : aim[0], o.target ? o.target[1] : aim[1]]);
+    if (o.unit && B.units[o.unit]) { const blk = B.units[o.unit].el.querySelector(".blk"), d = away(aim, p), r = o.recoil ?? 2.2;
+      tl.to(blk, { x: d[0] * r, y: d[1] * r, duration: 0.05, ease: "power3.out" }, t); tl.to(blk, { x: 0, y: 0, duration: 0.9, ease: "power2.inOut" }, t + 0.12); }
+    return O; };
   // ================================================================== 8. tilt camera (gentle; keys [t, deg, scale])
   const TS = { d: 0, s: 1 }; const tiltApply = () => { WR.style.transform = TS.d || TS.s !== 1 ? `perspective(1700px) rotateX(${TS.d.toFixed(3)}deg) scale(${TS.s.toFixed(4)})` : ""; };
   const tilt = (keys) => { TS.d = keys[0][1]; TS.s = keys[0][2]; tiltApply(); for (let i = 1; i < keys.length; i++) tl.to(TS, { d: keys[i][1], s: keys[i][2], duration: Math.max(0.01, keys[i][0] - keys[i - 1][0]), ease: keys[i][3] || "sine.inOut", onUpdate: tiltApply }, keys[i - 1][0]); tl.call(tiltApply, null, 0); };
@@ -179,6 +236,6 @@ const BW = (() => {
   const finish = () => { const px = SHOTS.map(([t, x, y]) => { tl.seek(t, false); const wx = gsap.getProperty(WORLD, "x"), ws = gsap.getProperty(WORLD, "scaleX"), wy = gsap.getProperty(WORLD, "y");
       return [t, +(wx + x * ws).toFixed(1), +(wy + y * ws).toFixed(1)]; });
     document.documentElement.setAttribute("data-shots", JSON.stringify(px)); tl.seek(0, false); drive(); };
-  return { O, TS, gl, smokeGL, date, note, dateNow, time, rowParts, legend, row, gold, clouds, shot, volley, tilt, finish, WR, sstep, lerp, clamp };
+  return { O, TS, gl, smokeGL, date, note, dateNow, time, rowParts, legend, row, gold, clouds, shot, volley, hit, wipe, rout, captured, dip, cannon, tilt, finish, WR, sstep, lerp, clamp };
 })();
 window.BW = BW;

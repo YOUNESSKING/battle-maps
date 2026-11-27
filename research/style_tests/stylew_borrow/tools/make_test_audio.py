@@ -2,7 +2,7 @@
 scene) + the NEW flintlock musket shots, one per visible muzzle flash (BW.shot -> data-shots), -14 LUFS.
 
 usage: python3 research/style_tests/stylew_borrow/tools/make_test_audio.py OUT.wav VC_DIR
-  VC_DIR holds out_a.wav (film 0-27 s), out_b.wav (56-76 s), out_c.wav (797.5-846.2 s): voice A (tts/convert_voice.py) of the
+  VC_DIR holds out_a.wav (film 0-27 s), out_b.wav (56-76 s), out_d.wav (738-765.5 s, r9), out_c.wav (797.5-846.2 s): voice A (tts/convert_voice.py) of the
   re-voiced Kokoro windows (voice_clip.py); marion/assets/media/music.wav = tools/make_music_bed.py; the locked kit wavs from goosegreen.
 Musket shots: troop_sfx.Lib with the Jackson flintlock shot set (lock snap + pan flash + real black-powder bang, ajackson/sound/SOURCES.md),
 grouped into ripples (shots < 0.9 s apart) and rendered with troop_sfx.render_volley (attack on the flash frame, pan from screen x).
@@ -16,8 +16,8 @@ sys.path.insert(0, f"{REPO}/vicksburg/tools"); sys.path.insert(0, f"{M}/tools")
 import troop_sfx as T
 import sfx_mix_lib as K
 SR = 48000; OUT, VC = sys.argv[1], sys.argv[2]
-SEGS = [(0.0, 17.8, "test-bw-hook-a"), (float(os.environ.get("B0", "56.35")), float(os.environ.get("B1", "59.95")), "test-bw-hook-b"), (71.45, 75.85, "test-bw-hook-b"), (801.5, 839.5, "test-bw-m3f")]
-VOICE = [(0.0, "out_a.wav"), (56.0, "out_b.wav"), (797.5, "out_c.wav")]
+SEGS = [(0.0, 17.8, "test-bw-hook-a"), (float(os.environ.get("B0", "56.35")), float(os.environ.get("B1", "59.95")), "test-bw-hook-b"), (71.45, 75.85, "test-bw-hook-b"), (750.21, 764.81, "test-bw-m3d"), (801.5, 839.5, "test-bw-m3f")]   # r9: + the Fort Motte six-pounder (m3d scene 40.0-54.6)
+VOICE = [(0.0, "out_a.wav"), (56.0, "out_b.wav"), (738.0, "out_d.wav"), (797.5, "out_c.wav")]
 CHROME = glob.glob("/root/.cache/hyperframes/chrome/chrome-headless-shell/*/chrome-headless-shell-linux64/chrome-headless-shell")[0]
 rd = lambda p, a=None, s=0, d=None: T.load_ff(p, af=a, start=s, dur=d)
 db = lambda x: 10 ** (x / 20)
