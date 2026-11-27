@@ -230,3 +230,31 @@ Only these changed (hook window = r11 render):
 - Wipe-out starts 0.15 s earlier: with "KILLED" (71.10 s in the share).
 - RunPod: the first pod came up as an RTX 4000 Ada and rendered black-ellipse frames (like the 3090 in r4): terminated, the Ada is now excluded
   in render_pod_bw.sh; a kept-alive RTX A4000 did the micro-clips + both windows. r12 ~$0.04; pods terminated, list empty.
+
+## r13 sheets (before the full render; owner workflow: critics check the sheets first)
+- `smoke_fade_r13.jpg`: one volley r12 | r13 at +0 / +0.3 / +1 / +2 / +4 / +6 s (r13 frames = a RunPod micro-clip, RTX A5000), + the buckshot
+  ripple at +2.1 / +4.1 / +6.1 s (local stills). Musket smoke r13: grey-blue haze (core ~(196,198,200), shadows ~(150,152,158), faint rim,
+  jets only a little brighter), composite cap 0.40, puff alpha 0.36, carried downwind ~42 px/s from +0.5 s with shear (x0.6-1.4) and stretch,
+  every puff gone 4.7-5.5 s after its shot (no build-up). Volleys: 1st ripple 27.89-28.49 s scene = 63.37-63.97 s share (28 shots);
+  buckshot 31.08-31.78 s scene = 66.56-67.26 s share (20 shots); hook guard 6 shots ~16.0-16.6 s share (gone by 17.0).
+- `focus_r13.jpg`: the soft focus light circle (coordinator commit bc575917: K.FOCUS_DIM 1.9, K.FOCUS_LIT 0.10) at "in a thick wood"
+  (m3f 10.0 s), full frame, a 1:1 crop and the 640x360 phone view.
+- `sheet_clouds_r13.jpg`: r13 clouds (dive, swap, emerge, in-scene) next to gm3d v6 at matching moments (v6 = r13 + 9.4 s in the dive) + 1:1 crops.
+  r13 clouds: bigger merging deck lumps on two heights (parallax), whiter lit tops / softer grey undersides (v6), resolution 0.75, near-fade 9F
+  and slab floor 28F (no flat-cut cloud edges), an even cream white-out (the map vignette fades out inside it), keep-clear boxes for the date
+  plate and THE ARMIES key in the hook and name-slam windows. Cloud moments in the share: scattered cumulus 0-5.5 s, deck builds 5.8-6.4 s,
+  inside 6.5-6.9 s, white-out ~7.0-7.2 s, emerge 7.25-7.9 s, landed 8 s; name-slam clouds 17.55-20.55 s and 20.3-24.7 s.
+- Cannon (m3d): fireball frame 2 at 60 %; over the house front the cannon smoke is capped at 0.6 from +1.5 s for 4 s (soft 30 px edge);
+  the cannon cloud drifts ~17 px/s and is gone in ~8 s (clife 7.5).
+- Audio (no re-render needed), 3D-film mix: see the A/B table below.
+
+### A/B audio: Jackson v4 (ajackson/tools/assemble.py) | r13 test (make_test_audio.py)
+| cue | Jackson v4 | r13 |
+|---|---|---|
+| cannon shot | KIT "gun" cand1_hit -15 dB, sfx stem +4 dB, ducked 25 % | cand1_hit -15 +4 dB, ducked 25 %, onset on the flash frame (760.44 film s) |
+| impact / ground strike | KIT "boom" cand2_hit -19 dB (+4, 25 %) | cand2_hit -19 +4 dB on the visible impact (760.94) |
+| burning house | KIT "fire" bomb4 lowpass 900, 5.6 s, 2 s fade, -17 dB (+4, 25 %) | same, when the roof catches fire (754.93) |
+| battle ambience | cand5 distant-warfare -24 dB, ducked 35 % (gm3d clip: -23) | cand5 -23 dB, ducked 35 %, battle windows only (Fort Motte from 759.44, Parker's Ferry from 825.34), 1 s fades |
+| muskets | troop stem (Jackson flintlock set) -12 dB, ducked 85 % | the same flintlock set (troop_sfx), one shot per flash, a volley 8 dB under the cannon (stem gain -14.1 dB), first shot -4 dB, tail ducked 50 % |
+| old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
+| loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
