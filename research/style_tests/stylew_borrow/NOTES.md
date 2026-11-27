@@ -107,3 +107,12 @@ Open: smoke curtains are single columns (v8 has many along long lines); the far 
 - Close battle map: no cumulus on screen at Parker's Ferry (vclouds opacity 0), only faint shadows (`shadowK` 0.3); no clouds under the title.
 - Joins: straight 0.25 s crossfades (`tools/finalize_xf.sh`; the audio crossfades with the same overlap: `XF=0.25 make_test_audio.py`).
 - RunPod: one RTX A4000 run (~10 min, ~$0.03), pods list verified empty.
+
+## r6 (critics r5: B 8, A 7 "the white-out reads as a flash") -> `stylew_borrow_test_r6_share.mp4` (62.45 s, 20 MB, -14.0 LUFS) + `sheet_r6.jpg`
+- Deck build-up: deckIn = SW - 1.2 (5.8 s): the engine's deck front closes in from the frame edges toward the column over Nelson's Ferry
+  (crossing still visible ~6.45 s), full by ~6.75-7.0; white-out ~6.75-7.2 with the swap under it; emerge 7.2, clear 7.35, haze gone 7.6.
+  sheet_r6: dive every 0.25 s 5.5-8.0 s next to v6 at the same dive phase.
+- Hook smoke: both curtains WEST of the guard (upwind), drifting east-north; the red guard box stays clear.
+- Joins: the name window starts at film 56.55 and ends at 59.55, and the test copy drops the hook's own black snap-cut frame at T_NAME
+  (it read as a dip at the join); no dark frames left in the clip (checked: no frame darker than 30/255).
+- RunPod: no community GPU for ~15 min (retried every ~2.5 min), then one RTX A5000 SECURE ($0.27/h, ~12 min, ~$0.06); pods list empty.

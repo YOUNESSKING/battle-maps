@@ -186,7 +186,7 @@ HATCH(CHS_GROUND, "british", T_SURR - 0.15, { hold: Math.max(1.0, T_NAME - T_SUR
 // ---------------------------------------------------------------------------------------------------------------------------------
 // hook-5: the name slam at the banner (day)
 // ---------------------------------------------------------------------------------------------------------------------------------
-cut(T_NAME, { whoosh: false, slow: 0.3 });
+/* BW r6: the test window starts on the banner shot: no black cut frame at T_NAME (it read as a dip at the join) */
 LIGHT("day", T_NAME - 0.01, 0.01);
 tl.set(["bM", "rc0", "rc1", "rc2", "pK"].map((id) => B.units[id].el), { autoAlpha: 0 }, T_NAME - 0.01);
 // the seventy riders by the banner

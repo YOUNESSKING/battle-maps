@@ -16,7 +16,7 @@ sys.path.insert(0, f"{REPO}/vicksburg/tools"); sys.path.insert(0, f"{M}/tools")
 import troop_sfx as T
 import sfx_mix_lib as K
 SR = 48000; OUT, VC = sys.argv[1], sys.argv[2]
-SEGS = [(0.0, 17.8, "test-bw-hook-a"), (56.35, 59.95, "test-bw-hook-b"), (71.45, 75.85, "test-bw-hook-b"), (801.5, 839.5, "test-bw-m3f")]
+SEGS = [(0.0, 17.8, "test-bw-hook-a"), (float(os.environ.get("B0", "56.35")), float(os.environ.get("B1", "59.95")), "test-bw-hook-b"), (71.45, 75.85, "test-bw-hook-b"), (801.5, 839.5, "test-bw-m3f")]
 VOICE = [(0.0, "out_a.wav"), (56.0, "out_b.wav"), (797.5, "out_c.wav")]
 CHROME = glob.glob("/root/.cache/hyperframes/chrome/chrome-headless-shell/*/chrome-headless-shell-linux64/chrome-headless-shell")[0]
 rd = lambda p, a=None, s=0, d=None: T.load_ff(p, af=a, start=s, dur=d)
