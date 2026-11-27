@@ -101,7 +101,7 @@ else {
     const D0 = DV || NODIVE, AD = (t) => (t > D0.SW + 1 ? NODIVE : D0);
     const slabTop = Math.max(104, ...TIERS.map((v) => v + 55)) * F;
     if (cl.length) sys.vc = sys.fx.vclouds({ noise: NOISE, clouds: cl, bounds: [B[0] - 40 * F, B[1] - 70 * F, B[0] + B[2] + 40 * F, B[1] + B[3] + 40 * F], texel: F, skip: 30 * F,
-      slab: [44 * F, slabTop], tile: 125 * F, groupScale: 3.0, amp: 5 * F, soft: 1.7 * F, flatPow: 0.3, sigma: 0.75 / F,
+      slab: [28 * F, slabTop]   /* r13: low enough that no cloud bottom is cut flat */, tile: 125 * F, groupScale: 3.0, amp: 5 * F, soft: 1.7 * F, flatPow: 0.3, sigma: 0.75 / F,
       stepIn: 0.25 * F, stepK: 0.0035, lightStep: 1.4 * F, lodDist: 260 * F, nearFade: 9 * F,   /* r13: no planar cut where the camera passes through a cloud */ maxSteps: C.fair.maxSteps ?? 200, resolution: C.fair.res ?? 0.75, warp: 0.06, fine: 0.12, wisp: 0.45, inner: 0.8,
       weights: [1.0, 0.5, 1, 0.5], group0: [0.55, 0.3, 1.4, 0.5], blur: 1.0, sharp: 1, shadow: 0.75, shadowDir: [0.3, 1, 0.65], drift: (C.fair.drift || [0.10, -0.035]).map((v) => v * F), evolve: 0.0025 / F, floor: 0.05,
       sunK: 1.4, ambK: 0.18, lightK: 3.2,
