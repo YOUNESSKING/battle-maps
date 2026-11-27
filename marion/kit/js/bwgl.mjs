@@ -150,7 +150,7 @@ else {
     const mb = (a) => () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let q = Math.imul(a ^ (a >>> 15), 1 | a); q = (q + Math.imul(q ^ (q >>> 7), 61 | q)) ^ q; return ((q ^ (q >>> 14)) >>> 0) / 4294967296; };
     // --- 8 cauliflower textures (128 px cells in a 512 x 256 atlas): RGB = lit colour, A = density
     const CS = 128, AW = CS * 4, AH = CS * 2, atl = new Uint8Array(AW * AH * 4);
-    const RIM = [240, 236, 226], MID = [204, 204, 205], UND = [130, 135, 145], Ld = (() => { const l = Math.hypot(-0.35, 0.8, 0.55); return [-0.35 / l, 0.8 / l, 0.55 / l]; })();
+    const RIM = [240, 236, 226], MID = [204, 204, 205], UND = [125, 130, 140], Ld = (() => { const l = Math.hypot(-0.35, 0.8, 0.55); return [-0.35 / l, 0.8 / l, 0.55 / l]; })();
     for (let c = 0; c < 8; c++) { const R = mb(977 + c * 131), G = 8, g = new Float32Array(G * G); for (let i = 0; i < g.length; i++) g[i] = R();
       const vn = (x, y) => { const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi, u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf), at = (a, b) => g[(((b % G) + G) % G) * G + (((a % G) + G) % G)];
         return lerp(lerp(at(xi, yi), at(xi + 1, yi), u), lerp(at(xi, yi + 1), at(xi + 1, yi + 1), u), v); };
@@ -169,7 +169,7 @@ else {
         const n2 = vn(u * 2.2 + oy + 3, v * 2.2 + ox + 5);                                       // low-frequency tone variation (period >= 30 px)
         const s = clamp(0.6 * clamp((lam + 0.1) / 0.95) + 0.4 * clamp(0.5 + 1.8 * v) + (n2 - 0.5) * 0.1);
         const col = s < 0.5 ? MID.map((m, k) => lerp(UND[k], m, s * 2)) : MID.map((m, k) => lerp(m, RIM[k], clamp((s - 0.5) / 0.32)));
-        const dens = sstep(0, 0.075, SD[i]) * (0.86 + 0.14 * n2);                               // edge softened over ~0.075 cell (~8 px)
+        const dens = sstep(0, 0.075, SD[i]) * (0.86 + 0.14 * n2) * (0.3 + 0.7 * sstep(-0.34, -0.04, v));   // edge softened ~8 px; r10: the lower part feathered (bank bottom ~20 px)
         const o = (((c >> 2) * CS + y) * AW + (c & 3) * CS + x) * 4; atl[o] = col[0]; atl[o + 1] = col[1]; atl[o + 2] = col[2]; atl[o + 3] = Math.round(dens * 255); } }
     const ATL = new THREE.DataTexture(atl, AW, AH, THREE.RGBAFormat); ATL.magFilter = THREE.LinearFilter; ATL.minFilter = THREE.LinearMipmapLinearFilter; ATL.generateMipmaps = true; ATL.flipY = false; ATL.needsUpdate = true;
     // --- particles (precomputed, pure functions of t); offsets in screen px
@@ -178,21 +178,35 @@ else {
       const J = V.jet || [60, 80], Lj = J[0] + R() * (J[1] - J[0]);
       for (let j = 0; j < 5; j++) { const u = j / 4; PL.push({ i, t: ts, x, z, dx, dz, jet: 1, s: Lj * (0.12 + 0.88 * u), lat: (R() - 0.5) * 4 * u, sz: (11 + 15 * u) * (0.9 + 0.2 * R()), a0: 0.85 * (1 - 0.25 * u), life: 1.0, h: R(), cell: Math.floor(R() * 8) }); }
       const nB = V.billows ?? (6 + Math.floor(R() * 3));
-      for (let b = 0; b < nB; b++) { const u = (b + R()) / nB; PL.push({ i, t: ts + 0.03 + 0.22 * R(), x, z, dx, dz, jet: 0, s: Lj * lerp(0.15, 0.85, u), lat: (R() - 0.5) * 10, sz: (25 + 8 * R()) / 0.42,
-        a0: 0.46 + 0.1 * R(), life: 9.5 + 1.5 * R(), h: R(), cell: Math.floor(R() * 8) }); } });
+      // r10: density varies +-40 % along the line (smooth in x), puffs spread over ~20 px across the line, and ~1 shot in 4 adds a big
+      // cauliflower lump (r 25-40 px) on the bank's top edge -> a 55-70 px bank with 3-5 lumps on top
+      const dm = 1 + 0.4 * Math.sin(x * 0.085 + 1.3) * (0.7 + 0.3 * Math.sin(x * 0.21));
+      for (let b = 0; b < nB; b++) { const u = (b + R()) / nB; PL.push({ i, t: ts + 0.03 + 0.22 * R(), x, z, dx, dz, jet: 0, s: Lj * lerp(0.15, 0.85, u), lat: (R() - 0.5) * 20, up: 4 + 10 * R(), sz: (26 + 9 * R()) / 0.42,
+        a0: (0.46 + 0.1 * R()) * dm, life: 9.5 + 1.5 * R(), h: R(), cell: Math.floor(R() * 8) }); }
+      if (R() < (V.lumps ?? 0.24)) PL.push({ i, t: ts + 0.12 + 0.2 * R(), x, z, dx, dz, jet: 0, s: Lj * (0.35 + 0.3 * R()), lat: 0, up: 22 + 8 * R(), sz: (25 + 15 * R()) / 0.42,
+        a0: 0.55 * Math.min(1.25, dm), life: 9.5 + 1.5 * R(), h: R(), cell: Math.floor(R() * 8) }); });
     // r9 cannon (owner r9): per shot a heavy muzzle cloud, a smoke burst thrown 150-250 px forward, a quick smoke ring, a ground dust ring at the
     // muzzle, and at the target (round shot) a dirt burst + lingering smoke. Darker grey than musket smoke (w = darkness, >= 2 = dust tint),
     // low (rise <= 8 px), slow (V.cwind), lingering 12-19 s. Generic particles: e = thrown offset (screen px) reached with an ease-out over eT.
     const CW_ = V.cwind || [5, -2];
     CN.forEach(([ts, x, z, ax, az, ti, tx, tz], i) => { const R = mb(i * 4421 + 77); let dx = ax - x, dz = az - z; const l = Math.hypot(dx, dz) || 1; dx /= l; dz /= l; const nx = -dz, nz = dx;
-      const G = (o) => PL.push(Object.assign({ i: -1, g: 1, t: ts, x, z, h: R(), cell: Math.floor(R() * 8), eT: 0.5, g0: 0.4, gT: 0.6, gr: 0.015, ain: 0.04, rise: 6, wind: CW_, white: 0, fo: 4 }, o));
-      for (let k = 0; k < 6; k++) { const f = 10 + 55 * R(), q = (R() - 0.5) * 34; G({ ex: dx * f + nx * q, ez: dz * f + nz * q, eT: 0.35, sz: (40 + 16 * R()) / 0.42, a0: 0.9, tau: 9, life: 16 + 3 * R(), w: 0.85, white: 0.25 }); }
-      for (let k = 0; k < 12; k++) { const u = (k + R()) / 12, f = (150 + 50 * R()) * Math.pow(u, 0.7), q = (R() - 0.5) * 90 * u; G({ t: ts + 0.02 * k, ex: dx * f + nx * q, ez: dz * f + nz * q, eT: 0.55 + 0.35 * u, sz: (30 + 20 * R()) / 0.42, g0: 0.3, gT: 1.0, a0: 0.8, tau: 7, life: 13 + 4 * R(), w: 0.75, white: 0.15 }); }
+      const G = (o) => PL.push(Object.assign({ i: -1, g: 1, t: ts + 2 / 30, x, z, h: R(), cell: Math.floor(R() * 8), eT: 0.5, g0: 0.4, gT: 0.6, gr: 0.015, ain: 0.04, rise: 6, wind: CW_, white: 0, fo: 4 }, o));
+      for (let k = 0; k < 6; k++) { const f = 10 + 55 * R(), q = (R() - 0.5) * 34; G({ ex: dx * f + nx * q, ez: dz * f + nz * q, eT: 0.35, sz: (55 + 20 * R()) / 0.42, a0: 0.92, tau: 10, life: 15 + 3 * R(), w: 1, white: 0.2 }); }
+      for (let k = 0; k < 12; k++) { const u = (k + R()) / 12, f = (150 + 50 * R()) * Math.pow(u, 0.6), q = (R() - 0.5) * 70 * u; G({ t: ts + 2 / 30 + 0.01 * k, ex: dx * f + nx * q, ez: dz * f + nz * q, eT: 0.3, sz: (34 + 22 * R()) / 0.42, g0: 0.35, gT: 0.9, a0: 0.85, tau: 9, life: 14 + 3 * R(), w: 0.9, white: 0.3 }); }
       for (let k = 0; k < 9; k++) { const a = (k / 9) * 6.283 + R() * 0.4; G({ ex: dx * 40 + Math.cos(a) * 32, ez: dz * 40 + Math.sin(a) * 26, eT: 0.35, sz: (16 + 6 * R()) / 0.42, g0: 0.5, gT: 0.4, a0: 0.6, tau: 1.4, life: 4, fo: 2, w: 0.15, white: 0.5 }); }
-      for (let k = 0; k < 10; k++) { const a = (k / 10) * 6.283 + R() * 0.5, f = 34 + 14 * R(); G({ ex: Math.cos(a) * f - dx * 6, ez: Math.sin(a) * f * 0.75 - dz * 6, eT: 0.4, sz: (13 + 8 * R()) / 0.42, g0: 0.5, gT: 0.5, a0: 0.75, tau: 1.0, life: 2.6, fo: 1.2, rise: 2, w: 2 }); }
+      for (let k = 0; k < 14; k++) { const a = (k / 14) * 6.283 + R() * 0.5, f = 55 + 15 * R(); G({ ex: Math.cos(a) * f - dx * 6, ez: Math.sin(a) * f * 0.75 - dz * 6, eT: 0.4, sz: (16 + 9 * R()) / 0.42, g0: 0.5, gT: 0.5, a0: 0.95, tau: 1.0, life: 2.6, fo: 1.2, rise: 2, w: 2 }); }
       if (ti >= 0) { const T1 = ts + ti;
         for (let k = 0; k < 7; k++) { const a = R() * 6.283, f = 10 + 18 * R(); G({ t: T1, x: tx, z: tz, ex: Math.cos(a) * f, ez: Math.sin(a) * f * 0.7 - 6 * R(), eT: 0.3, sz: (12 + 10 * R()) / 0.42, g0: 0.4, gT: 0.4, a0: 0.75, tau: 1.2, life: 3, fo: 1.5, rise: 4, w: 2 }); }
         for (let k = 0; k < 5; k++) { const a = R() * 6.283, f = 6 + 10 * R(); G({ t: T1 + 0.08, x: tx, z: tz, ex: Math.cos(a) * f, ez: Math.sin(a) * f * 0.7, eT: 0.6, sz: (20 + 12 * R()) / 0.42, g0: 0.35, gT: 1.0, a0: 0.55, tau: 6, life: 10 + 4 * R(), rise: 10, w: 0.5, white: 0.1 }); } } });
+    // r10 (owner: "like the film 3D"): the 3D films' own cannon plume (vicksburg/engine/fx.js fx.cannon, the field-gun preset as in ajackson/
+    // washington) at the Fort Motte gun, scaled to the 2D map (jet/size x V.c3), its flash off (the 2D fireball above owns frames 1-2)
+    if (CN.length) { const sys3 = mkFX({ seed: 1866, wind: V.c3wind || [5, -2] }), K3 = V.c3 ?? 3;
+      CN.forEach(([ts, x, z, ax, az]) => { const l = Math.hypot(ax - x, az - z) || 1;
+        sys3.fx.cannon([x, 0.06, z], ts + 2 / 30, { dir: [(ax - x) / l, (az - z) / l], size: K3, jet: K3, plume: 1.1, puffs: 16, dust: 6, life: 14, flash: 0, flashCore: 0, nightPool: 0, alpha: 0.42, tint: [0.24, 0.245, 0.26] }); }); }
+    // r10: a dark smoke column (burning roof): [x, z, t0, t1, {rise, wind, r}] -> a soot puff every 0.16 s, 16 -> ~50 px, rising up-screen
+    (C.vcolumn || []).forEach(([x, z, t0, t1, o = {}], j) => { const R = mb(9001 + j * 17); for (let t = t0; t < t1; t += 0.16) {
+      PL.push({ i: -1, g: 1, t, x, z, h: R(), cell: Math.floor(R() * 8), ex: (R() - 0.5) * 8, ez: -6, eT: 0.6, g0: 0.35, gT: 3.0, gr: 0.03, ain: 0.3, rise: o.rise ?? 70,
+        wind: o.wind || [10, -4], white: 0, fo: 2.5, sz: (o.r ?? 26) * (0.8 + 0.4 * R()) / 0.42, a0: 0.5 + 0.15 * R(), tau: 3.5, life: 6 + R(), w: 1.2 }); } });
     PL.sort((a, b) => a.t - b.t || (a.jet || 0) - (b.jet || 0));
     const N = PL.length, geo = new THREE.InstancedBufferGeometry(); geo.setAttribute("position", new THREE.Float32BufferAttribute([-0.5, -0.5, 0, 0.5, -0.5, 0, 0.5, 0.5, 0, -0.5, 0.5, 0], 3)); geo.setIndex([0, 1, 2, 0, 2, 3]);
     const iP = new THREE.InstancedBufferAttribute(new Float32Array(N * 4), 4), iQ = new THREE.InstancedBufferAttribute(new Float32Array(N * 4), 4);   // xyz size | alpha cell white -
@@ -200,16 +214,18 @@ else {
     const NT = V.night ? [0.42, 0.47, 0.58] : [1, 1, 1];
     const mat = new THREE.ShaderMaterial({ transparent: true, depthTest: false, depthWrite: false, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
       blendSrcAlpha: THREE.OneFactor, blendDstAlpha: THREE.OneMinusSrcAlphaFactor,
-      uniforms: { uA: { value: ATL }, uR: { value: new THREE.Vector3() }, uU: { value: new THREE.Vector3() }, uNT: { value: new THREE.Vector3(...NT) }, uSq: { value: V.squash ?? 0.82 } },
+      uniforms: { uA: { value: ATL }, uR: { value: new THREE.Vector3() }, uU: { value: new THREE.Vector3() }, uNT: { value: new THREE.Vector3(...NT) }, uFl: { value: 0 }, uSq: { value: V.squash ?? 0.82 } },
       vertexShader: `attribute vec4 iP; attribute vec4 iQ; uniform vec3 uR; uniform vec3 uU; uniform float uSq; varying vec2 vUv; varying vec4 vQ;
         void main(){ vec2 q = vec2(position.x, position.y * uSq); vec3 wp = iP.xyz + (uR * q.x + uU * q.y) * iP.w; vec2 cell = vec2(mod(iQ.y, 4.0), floor(iQ.y / 4.0));
           vUv = (cell + vec2(position.x + 0.5, 0.5 - position.y) * 0.98 + 0.01) / vec2(4.0, 2.0); vQ = iQ;
           gl_Position = projectionMatrix * viewMatrix * vec4(wp, 1.0); }`,
-      fragmentShader: `uniform sampler2D uA; uniform vec3 uNT; varying vec2 vUv; varying vec4 vQ;
+      fragmentShader: `uniform sampler2D uA; uniform vec3 uNT; uniform float uFl; varying vec2 vUv; varying vec4 vQ;
         void main(){ vec4 tx = texture2D(uA, vUv); float d = tx.a * vQ.x; if (d < 0.002) discard;
           vec3 col = tx.rgb; float lum = dot(col, vec3(0.333));
-          if (vQ.w > 1.5) col *= vec3(0.86, 0.76, 0.60);                                                   // ground dust
-          else col *= mix(1.0, 0.84, vQ.w) * mix(1.0, 0.7, vQ.w * clamp(1.15 - lum, 0.0, 1.0));                                  // heavier, darker (cannon) smoke: undersides darken most
+          if (vQ.w > 1.5) col *= vec3(0.9, 0.74, 0.52);                                                   // ground dust
+          else if (vQ.w > 1.05) col *= vec3(0.46, 0.45, 0.44) * (0.85 + 0.3 * lum);                    // soot (the burning roof's column)
+          else col *= mix(1.0, 0.97, vQ.w) * mix(1.0, 0.78, vQ.w * clamp(1.15 - lum, 0.0, 1.0));       // cannon smoke: undersides ~(110,112,118)
+          col *= 1.0 + uFl * clamp(1.15 - lum, 0.0, 1.0) * vec3(1.0, 0.9, 0.72);                         // r10: each flash lifts the bank's underside (+20 %, 2 frames)                                  // heavier, darker (cannon) smoke: undersides darken most
           col = mix(col, vec3(0.965, 0.955, 0.93), vQ.z * 0.75) * uNT; gl_FragColor = vec4(col * d, d); }` });
     const mesh = new THREE.Mesh(geo, mat); mesh.frustumCulled = false; const sScene = new THREE.Scene(); sScene.add(mesh);
     const RT = new THREE.WebGLRenderTarget(1280, 720, { type: THREE.HalfFloatType, depthBuffer: false });
@@ -254,7 +270,7 @@ else {
               JL.set(p.i, jetLen(mx, my, (tx - mx) / ll, (ty - my) / ll, 90, ur) / 80); } Lr = Math.min(1, JL.get(p.i) / Math.max(0.3, p.s / 80)); }
           const eo = 1 - Math.pow(1 - Math.min(1, age / 0.15), 3), s = p.s * Lr * (p.jet ? eo : lerp(0.35, 1, eo));
           const wk = Math.max(0, age - 0.3), sh = 0.8 + 0.4 * p.h, rise = RV * (1 - Math.exp(-age / 2.5));
-          const sx = p.dx * s - p.dz * p.lat + Wx * sh * wk, sz = p.dz * s + p.dx * p.lat + Wz * sh * wk - rise;
+          const sx = p.dx * s - p.dz * p.lat + Wx * sh * wk, sz = p.dz * s + p.dx * p.lat + Wz * sh * wk - rise - (p.up || 0) * Math.min(1, age / 0.6);
           const size = p.jet ? p.sz * (1 + 0.35 * Math.min(1, age / 0.3)) : p.sz * (0.55 + 0.45 * (1 - Math.pow(1 - Math.min(1, age / 0.8), 2))) * (1 + 0.015 * age);
           const a = p.jet ? p.a0 * (age < 0.3 ? 1 : 1 - sstep(0.3, 0.9, age)) * Math.min(1, age / 0.03)
                           : p.a0 * Math.min(1, age / 0.25) * Math.exp(-age / (V.tau ?? 2.5)) * (1 - sstep(p.life - 3.2, p.life, age));
@@ -262,20 +278,22 @@ else {
           P[n * 4] = p.x + sx * K; P[n * 4 + 1] = (2 + p.h * 4) * K; P[n * 4 + 2] = p.z + sz * K; P[n * 4 + 3] = size * K;
           Q[n * 4] = A; Q[n * 4 + 1] = p.cell; Q[n * 4 + 2] = p.jet ? 1 : 0.5 * (1 - sstep(0.1, 0.6, age)); Q[n * 4 + 3] = 0; n++; }
         geo.instanceCount = n; iP.needsUpdate = true; iQ.needsUpdate = true;
+        { let c = 0; for (const q of SH) { const ag = t - q[0]; if (ag >= -1e-4 && ag < 2 / 30 - 1e-4) c++; } for (const q of CN) { const ag = t - q[0]; if (ag >= -1e-4 && ag < 2 / 30 - 1e-4) c += 3; }
+          mat.uniforms.uFl.value = 0.2 * Math.min(1, c / 2); }
         const prev = renderer.getRenderTarget(); renderer.setRenderTarget(RT); renderer.setClearColor(0, 0); renderer.clear(true, false, false);
         if (n) renderer.render(sScene, camera);
         renderer.setRenderTarget(prev);
         for (let i = 0; i < MAXR; i++) { const r = ur[i]; if (r) { rects[i].set(r[0], r[1], r[2], r[3]); rmax[i] = r[4]; } else rects[i].set(-1, -1, -1, -1); }
         if (n) renderer.render(cScene, oCam);
         // flashes (x FS = 0.7)
-        fg.clearRect(0, 0, 1920, 1080); gg.clearRect(0, 0, 1920, 1080); const F = 1 / 30, FS = V.flashScale ?? 0.7;
+        fg.clearRect(0, 0, 1920, 1080); gg.clearRect(0, 0, 1920, 1080); const F = 1 / 30, FS = V.flashScale ?? 1;
         for (let i = 0; i < SH.length; i++) { const [ts, x, z, ax, az] = SH[i], age = t - ts; if (age < -2.5 * F || age > 0.25) continue;
           const [mx, my] = proj(x, z), [tx, ty] = proj(ax, az), ang = Math.atan2(ty - my, tx - mx), R = mb(i * 31 + 7);
           if (age >= -2 * F - 1e-4 && age < -F - 1e-4) {   // priming pan: a small spark, 1 frame, 2 frames early, just behind the muzzle
             const px = mx - Math.cos(ang) * 6, py = my - Math.sin(ang) * 6, gr = fg.createRadialGradient(px, py, 0, px, py, 3.5);
             gr.addColorStop(0, "rgba(255,252,225,1)"); gr.addColorStop(0.5, "rgba(255,205,90,.85)"); gr.addColorStop(1, "rgba(255,140,30,0)"); fg.fillStyle = gr; fg.beginPath(); fg.arc(px, py, 3.5, 0, 7); fg.fill(); }
           if (age >= -1e-4 && age < 2 * F - 1e-4) {        // tongue + core: frame 1 100 %, frame 2 50 %
-            const A = age < F - 1e-4 ? 1 : 0.5, Lt = 35 * (0.9 + 0.2 * R()), Wt = 10 * (0.9 + 0.2 * R());
+            const A = age < F - 1e-4 ? 1 : 0.5, Lt = 40 * (0.9 + 0.2 * R()), Wt = 12 * (0.9 + 0.2 * R());
             fg.save(); fg.translate(mx, my); fg.rotate(ang); fg.scale(FS, FS); fg.globalAlpha = A;
             const lg = fg.createLinearGradient(0, 0, Lt, 0); lg.addColorStop(0, "#FFFFF4"); lg.addColorStop(0.18, "#FFF0B0"); lg.addColorStop(0.45, "#FFC040"); lg.addColorStop(0.75, "#F07A18"); lg.addColorStop(1, "rgba(210,70,16,0)");
             fg.fillStyle = lg; fg.filter = "blur(0.6px)";
@@ -291,8 +309,8 @@ else {
             fg.fillStyle = cg; fg.beginPath(); fg.arc(0, 0, 4, 0, 7); fg.fill();     // 8 px white core AT the muzzle
             fg.restore(); fg.filter = "none"; fg.globalAlpha = 1; }
           if (age >= -1e-4 && age < 3 * F - 1e-4) {        // additive glow centred at the muzzle: r 40 px, 30 %, lights the map and the smoke (screen blend)
-            const A = [0.3, 0.18, 0.08][Math.min(2, Math.floor(age / F + 1e-3))], gx = mx + Math.cos(ang) * 6, gy = my + Math.sin(ang) * 6, gr = gg.createRadialGradient(gx, gy, 0, gx, gy, 40);
-            gr.addColorStop(0, `rgba(255,200,110,${A})`); gr.addColorStop(0.45, `rgba(255,150,60,${A * 0.4})`); gr.addColorStop(1, "rgba(255,120,40,0)"); gg.fillStyle = gr; gg.fillRect(gx - 41, gy - 41, 82, 82); }
+            const A = [0.35, 0.2, 0.08][Math.min(2, Math.floor(age / F + 1e-3))], gx = mx + Math.cos(ang) * 8, gy = my + Math.sin(ang) * 8, gr = gg.createRadialGradient(gx, gy, 0, gx, gy, 50);
+            gr.addColorStop(0, `rgba(255,200,110,${A})`); gr.addColorStop(0.45, `rgba(255,150,60,${A * 0.45})`); gr.addColorStop(1, "rgba(255,120,40,0)"); gg.fillStyle = gr; gg.fillRect(gx - 51, gy - 51, 102, 102); }   // r10: ground glow r 50 px, 35 %
           if (age >= 0 && age < 0.2) {                       // 8 motion-blurred spark streaks over 0.2 s
             for (let k = 0; k < 8; k++) { const a2 = ang + (R() - 0.5) * 0.9, sp = 140 + 160 * R(), d1 = sp * age + 8, d0 = Math.max(5, d1 - 9), al = 1 - age / 0.2;
               const x0 = mx + Math.cos(a2) * d0, y0 = my + Math.sin(a2) * d0, x1 = mx + Math.cos(a2) * d1, y1 = my + Math.sin(a2) * d1, lg = fg.createLinearGradient(x0, y0, x1, y1);
@@ -302,8 +320,8 @@ else {
         // a ground-lighting glow r 110 px for 3 frames (screen blend); 14 spark streaks over 0.25 s
         for (let i = 0; i < CN.length; i++) { const [ts, x, z, ax, az] = CN[i], age = t - ts; if (age < -1e-4 || age > 0.3) continue;
           const [mx, my] = proj(x, z), [tx, ty] = proj(ax, az), ang = Math.atan2(ty - my, tx - mx), R = mb(i * 53 + 11), ca = Math.cos(ang), sa = Math.sin(ang);
-          if (age < 2 * F - 1e-4) { const A = age < F - 1e-4 ? 1 : 0.5; fg.save(); fg.globalAlpha = A; fg.filter = "blur(1px)";
-            [[16, 26], [36, 30], [58, 21]].forEach(([d, r]) => { const jx = (R() - 0.5) * 8, jy = (R() - 0.5) * 8, cx = mx + ca * d - sa * jy + jx * 0.3, cy = my + sa * d + ca * jy + jy * 0.3, rr = r * (0.85 + 0.3 * R());
+          if (age < 2 * F - 1e-4) { const A = age < F - 1e-4 ? 1 : 0.6; fg.save(); fg.globalAlpha = A; fg.filter = "none";   // r10: no canvas filter (frame 2 was dropped on the GPU renderer)
+            [[20, 40], [52, 46], [88, 32]].forEach(([d, r]) => { const jx = (R() - 0.5) * 8, jy = (R() - 0.5) * 8, cx = mx + ca * d - sa * jy + jx * 0.3, cy = my + sa * d + ca * jy + jy * 0.3, rr = r * (0.85 + 0.3 * R());
               const gr = fg.createRadialGradient(cx, cy, 0, cx, cy, rr); gr.addColorStop(0, "rgba(255,246,200,1)"); gr.addColorStop(0.35, "rgba(255,196,90,.95)"); gr.addColorStop(0.7, "rgba(240,110,30,.7)"); gr.addColorStop(1, "rgba(200,70,20,0)");
               fg.fillStyle = gr; fg.beginPath(); for (let k = 0; k <= 12; k++) { const a2 = k / 12 * 6.283, q = rr * (0.8 + 0.35 * R()); k ? fg.lineTo(cx + Math.cos(a2) * q, cy + Math.sin(a2) * q) : fg.moveTo(cx + Math.cos(a2) * q, cy + Math.sin(a2) * q); } fg.fill(); });
             const cg = fg.createRadialGradient(mx + ca * 3, my + sa * 3, 0, mx + ca * 3, my + sa * 3, 10); cg.addColorStop(0, "rgba(255,255,255,1)"); cg.addColorStop(0.75, "rgba(255,255,248,1)"); cg.addColorStop(1, "rgba(255,250,220,0)");

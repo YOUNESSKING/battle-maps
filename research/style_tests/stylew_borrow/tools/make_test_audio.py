@@ -58,6 +58,10 @@ for (a, b, name) in SEGS:
     vo = voice(a, d); vo = np.pad(vo, ((0, max(0, n - len(vo))), (0, 0)))[:n]
     mu = rd(f"{M}/assets/media/music.wav", s=a, d=d); mu = np.pad(mu, ((0, max(0, n - len(mu))), (0, 0)))[:n]
     kit = [[t + t0 - a, k, name] for k, t in cues if a <= t + t0 < b and k not in ("mg", "musket")]
+    # r10 (owner: "the artillery should be like the film 3D, I like that sound"): the cannon shot is mixed as in the 3D films (Andrew Jackson v4,
+    # ajackson/tools/assemble.py + OWNER_DECISIONS row 14): the 3D films' gun sound (goosegreen candidates/cand1_hit.wav at -15 dB) +4 dB,
+    # ducked only 25 % under the voice, its onset (0.115 s into the file) on the flash frame. The locked kit files are untouched.
+    guns = [c for c in kit if c[1] == "fire" and name == "test-bw-m3d"]; kit = [c for c in kit if c not in guns]
     K.render(kit, d, "/tmp/_bw_kit.wav"); fx = rd("/tmp/_bw_kit.wav"); fx = np.pad(fx, ((0, max(0, n - len(fx))), (0, 0)))[:n]; os.remove("/tmp/_bw_kit.wav")
     # musket shots: [t, screen x, screen y] (scene time), grouped into ripples
     sh = sorted([[t + t0 - a, x, y] for t, x, y in shots if a <= t + t0 < b - 0.05])
@@ -78,6 +82,12 @@ for (a, b, name) in SEGS:
     k = int(0.25 * SR); env = np.clip(np.convolve(env, np.hanning(k) / np.hanning(k).sum(), "same") * 1.2, 0, 1)
     EX = float(os.environ.get("MUSKET_EXTRA_DB", "0"))   # r3: first shot -4 dB, tail -6 dB under the voice (+ EX on both) so the bangs peak <= -6 dBFS
     fx = fx + (st[:n] * db(-4 + EX) + tail[:n] * (1 - 0.5 * env)[:, None] * db(EX)) * db(GAIN)
+    if guns:
+        g3 = rd(f"{REPO}/goosegreen/assets/media/sfx/candidates/cand1_hit.wav"); cn = np.zeros((n + SR * 5, 2), np.float32)
+        for tg, _, _ in guns: i0 = int(round((tg - 0.115) * SR)); m = min(len(g3), len(cn) - i0); cn[i0:i0 + m] += g3[:m] * db(-15 + 4)
+        kv = int(0.25 * SR); venv = np.convolve(np.abs(vo).mean(1), np.ones(kv) / kv, mode="same"); venv = np.clip(venv / (np.percentile(venv, 95) + 1e-9), 0, 1)
+        vo = vo + cn[:n] * (1 - 0.25 * venv)[:, None]
+        print(f"  3D-film cannon: {len(guns)} shot(s) at {[round(c[0] + a, 3) for c in guns]} (film s)")
     print(f"{name:16s} {a:7.2f}-{b:7.2f}  kit cues {len(kit):3d}  musket shots {len(sh):3d} in {len(groups)} ripples")
     parts.append((vo, mu, fx))
 

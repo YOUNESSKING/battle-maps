@@ -95,12 +95,12 @@ B.move("fr2", T_NARROW, 0.5, 1522, RY + 1, "power2.out");
 const ROADHIT = (x) => [x, RY + 1];
 AIDS.forEach((id) => tl.to(B.units[id].el.querySelector(".blk"), { filter: "brightness(1) saturate(1) opacity(1)", duration: 0.25 }, T_EVERY - 0.05));
 // BW: one muzzle flash (+ flintlock shot) per musket along the whole hidden line, a ragged ripple from the west flank
-BW.volley([[1488, 790], [1598, 792]], T_EVERY, 0.62, 18, { k: 0.9, jy: 3, seed: 31, noPuff: true, aim: (x) => [x + 70, RY + 2] });   // r9: muzzles at the line front, jets along the road side
+BW.volley([[1488, 790], [1598, 792]], T_EVERY, 0.6, 28, { k: 0.9, jy: 4, seed: 31, noPuff: true, aim: (x) => [x + 70, RY + 2], shake: ["fr", "fr2"] });   // r10: 28 muskets -> 3-4 flashes per frame   // r9: muzzles at the line front, jets along the road side
 mg([1498, 794], ROADHIT(1528), T_EVERY + 0.02, 5, 1.1); mg([1560, 794], ROADHIT(1536), T_EVERY + 0.1, 5, 1.1);
 /* BW r3: kit smoke replaced by the per-shot puffs (<= 6 per volley) */
 MARK([1568, RY + 1], T_EVERY + 0.35, T_COUNT + 0.2);   // BW r2: east of the jammed boxes, off the FRASER tag
 // "firing buckshot": a second ripple down the line
-BW.volley([[1490, 790], [1596, 792]], T_BUCK + 0.05, 0.8, 13, { k: 0.9, jy: 3, seed: 57, noPuff: true, aim: (x) => [x + 70, RY + 2] });   // BW: the buckshot ripple, shot by shot
+BW.volley([[1490, 790], [1596, 792]], T_BUCK + 0.05, 0.7, 20, { k: 0.9, jy: 4, seed: 57, noPuff: true, aim: (x) => [x + 70, RY + 2], shake: ["fr", "fr2"] });   // BW: the buckshot ripple, shot by shot
 mg([1528, 794], ROADHIT(1520), T_BUCK + 0.08, 4, 1.1); mg([1588, 796], ROADHIT(1540), T_BUCK + 0.2, 4, 1.1);
 /* BW r3: kit smoke replaced by the per-shot puffs (<= 6 per volley) */
 // the red cavalry breaks: "killed on the spot" -> fast fade; a few flee back toward the ferry
@@ -109,13 +109,13 @@ mg([1528, 794], ROADHIT(1520), T_BUCK + 0.08, 4, 1.1); mg([1588, 796], ROADHIT(1
 // "killed on the spot": the front box (fr2) breaks apart into fragments -> grey remnants + marks (wiped out); fr loses another chunk;
 // "wounded": fr breaks and flees back toward the ferry (routed), two wounded stragglers fall behind and stop, grey.
 { const LINE = [1543, 790], P_FR = FRP[FRP.length - 1], P_FR2 = [1522, RY + 1], T_KIL9 = at(P2, "killed on the spot"), T_WND9 = at(P2, "wounded. He lost");
-  BW.hit("fr2", T_EVERY + 0.3, { from: LINE, at: P_FR2, loss: 0.1, marks: 3, until: T_SLIP + 0.8 });
+  BW.hit("fr2", T_EVERY + 0.3, { from: LINE, at: P_FR2, loss: 0.1, marks: 2, until: T_SLIP + 0.8 });
   BW.hit("fr", T_EVERY + 0.45, { from: LINE, at: P_FR, loss: 0.1, marks: 3, until: T_SLIP + 0.8 });
   BW.hit("fr2", T_BUCK + 0.4, { from: LINE, at: P_FR2, loss: 0.12, marks: 3, shaken: true, until: T_SLIP + 0.8 });
   BW.hit("fr", T_BUCK + 0.6, { from: LINE, at: P_FR, loss: 0.12, marks: 3, shaken: true, until: T_SLIP + 0.8 });
-  BW.wipe("fr2", T_KIL9, { from: LINE, at: P_FR2, marks: 6, n: 6, until: T_SLIP + 0.8 });
-  BW.hit("fr", T_KIL9 + 0.15, { from: LINE, at: P_FR, loss: 0.15, marks: 2, shaken: true, until: T_SLIP + 0.8 });
-  BW.rout("fr", T_WND9, { dir: [-0.99, 0.1], dist: 190, n: 6, strag: 2, until: T_SLIP + 0.8 }); }
+  BW.wipe("fr2", T_KIL9 + 0.133, { from: LINE, at: P_FR2, marks: 3, until: T_SLIP + 0.8 });   // r10: with the KILLED ledger row
+  BW.hit("fr", T_KIL9 + 0.3, { from: LINE, at: P_FR, loss: 0.15, marks: 2, shaken: true, until: T_SLIP + 0.8 });
+  BW.rout("fr", T_WND9, { dir: [-0.5, 0.87], n: 4 }); }   // r10: 4 pieces scatter away from Marion's line (south-west), one wounded straggler
 document.documentElement.setAttribute("data-bwt", JSON.stringify([T_EVERY, T_BUCK, T_20, at(P2, "killed on the spot"), T_80, at(P2, "wounded. He lost"), T_SLIP]));   // BW: word times for the test windows
 // casualty card (Marion's estimate, both sides spoken; each part on its words)
 { const row = (flag, side, html, col) => `<div class="cr" style="display:flex;align-items:center;gap:20px;margin-top:10px"><img src="assets/media/${flag}" alt="" style="height:40px;border:1px solid #f7f3ea">

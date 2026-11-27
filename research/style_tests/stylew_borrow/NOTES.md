@@ -177,3 +177,26 @@ rows: CANNON, HIT, WIPE-OUT, ROUT). Five windows: hook 0-17.8, name slam, title,
 - Process: local stills for quick checks; RunPod micro-clips x3 (musket 6.4 s, wipe/rout 4 s, cannon 4 s, hook guard 2.4 s), then the full
   windows, all on ONE RTX A4000 pod kept alive between iterations (`KEEP=1` / `POD=` in render_pod_bw.sh); pods terminated, list empty; r9 ~$0.12.
 - Known weak spots: rout/wipe chunks still read small at this zoom; cannon cloud could be darker/denser; bank is still a fairly even band.
+
+## r10 (critics r9: A 7 / 6.5, B 8.5; "cannon not found", "thin tidy tube", "pixel confetti"; owner: the 3D films' artillery look + sound)
+`stylew_borrow_test_r10_share.mp4` (76.7 s, 21.7 MB, -14.0 LUFS, TP -1.2), `sheet_r10.jpg`, `smoke_closeup_r10.jpg` (r9 | r10 musket rows, a 3D-FILM
+REFERENCE row from `ajackson/sequences/S07/sheet.jpg` next to the r10 cannon, then r10 CANNON, HIT, WIPE-OUT, ROUT frame by frame).
+- Joins: crossfades of 8 frames (XF = 0.2667 s), so every window starts on a whole frame and the cannon cue lands exactly on the flash frame
+  (34.633 s in the share; the r9 joins were half-frame offsets).
+- Musket bank: puffs spread ~20 px across the line, density varies +-40 % along the line, ~1 shot in 4 adds a cauliflower lump (r 25-40 px)
+  on the top edge, puff textures feathered in their lower third (soft ~20 px bottom), undersides (125,130,140): 55-70 px tall at 1-3 s.
+  28 muskets in the first ripple (0.6 s) and 20 in the buckshot ripple -> 3-4 flashes per frame. Each flash lifts the bank's underside +20 % for its 2 frames.
+- Flashes: tongue 40 x 12 px (x1.2), 8 px core at the muzzle, ground glow r 50 px at 35 %.
+- Cannon: 2D fireball 3 ragged blobs ~120 px + 20 px white core (frames 1-2: 100 / 60 %), glow r 110 px 3 frames, 14 sparks; then (from frame 3)
+  the 3D films' own plume (`fx.cannon` from vicksburg/engine/fx.js, field-gun settings, flash off, x3 for the 2D map, darker tint) + my jet
+  150-200 px in 0.3 s + a dark-bottomed cloud (undersides ~(110,112,118)) lingering ~15 s + a 140 px tan dust ring; recoil kept. The roof fire:
+  the big orange wash is replaced by a local flicker glow (r 70 px, alpha 0.4) + a dark soot column (`vcolumn`, 3D layer).
+- Cannon sound as in the 3D films (owner): Andrew Jackson's gun sound (goosegreen `candidates/cand1_hit.wav`, -15 dB) +4 dB, ducked only 25 %
+  under the voice (ajackson/tools/assemble.py, OWNER_DECISIONS row 14), onset on the flash frame; the locked kit files untouched (SOUND LOCK OK).
+- Hits: the target boxes shake ~2 px on the flashes (every 2nd shot); a hit = a 0.25 s red-white flash on the box + shake, dims, a chunk lost,
+  stagger back, 2-3 casualty marks 9-13 px. Wipe-out (with the KILLED ledger row, +0.133 s): shudder + flash, 40 % colour, ~40 px dust puff,
+  fades over 0.8 s to a grey remnant that holds 1.5 s. Rout: 4 box-coloured pieces 18-21 x 12-14 px scatter 60-120 px away from Marion's line
+  and fade over 1.5 s; one wounded straggler stops at ~40 px and turns grey. Captured = grey "color"-blend overlay + side-colour edge (no
+  filter fight): the hook guard is grey at 17.03 s, right after "guard".
+- RunPod: one RTX A4000 kept alive per round (micro-clips: 4 windows, then a 0.6 s cannon check, then the full windows); r10 ~$0.08; pods
+  terminated, list empty.

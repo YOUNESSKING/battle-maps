@@ -144,7 +144,7 @@ B.move("r1", T_GUARD - 0.25, 0.45, ...PP(1440, 698)); B.move("r2", T_GUARD - 0.1
 // r9 (owner: the effect of fire / the fight on the target): on "British guard" the riders hit the guard: it shudders, dims, loses a chunk,
 // its edges go ragged (shaken) and it staggers back; then it is overrun = captured (grey with its red edge, STYLE rule), and leaves with the pull back
 BW.hit("g1", T_GUARD + 0.15, { from: PP(1440, 698), at: PP(1478, 702), loss: 0.15, shaken: true, marks: 0 });
-BW.captured("g1", T_GUARD + 0.45);
+BW.captured("g1", at(H2, "guard") + 0.02, 0.05);   // r10: grey at ~17.03 s, right after "guard" (16.98 s)
 hideU(["g1"], T_4M + 0.15);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // "Within four months": the pull back to the wide map, daylight; "between two rivers": the ground between the Santee and the Pee Dee

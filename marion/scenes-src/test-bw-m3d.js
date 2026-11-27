@@ -217,9 +217,13 @@ const FL = [];
   tl.fromTo(el, { autoAlpha: 0, scale: 0.3 }, { autoAlpha: 1, scale: 1, duration: 0.4, ease: "back.out(2)", immediateRender: false }, T_IGN + d);
   tl.to(el.querySelector("svg"), { scaleY: 1.18, transformOrigin: "50% 100%", duration: 0.28, yoyo: true, repeat: 24, ease: "sine.inOut" }, T_IGN + d + 0.4); });
 tl.to(MSV.querySelector(".char"), { opacity: 0.7, duration: 2.5 }, T_IGN + 0.2);
-const RGLOW = fireGlowS(...SV(2, -20), 36, T_IGN + 0.1, null);
-{ const s0 = SV(0, -26); smoke([[s0[0], s0[1]], [s0[0] + 4, s0[1] - 12], [s0[0] + 9, s0[1] - 24], [s0[0] + 14, s0[1] - 36]], T_IGN + 0.5, 1.2);
-  smoke([[s0[0] + 6, s0[1] - 2], [s0[0] + 11, s0[1] - 16], [s0[0] + 17, s0[1] - 30], [s0[0] + 22, s0[1] - 44]], T_CLIMB + 0.2, 1.2); }
+// BW r10 (critics r9: "a flat orange wash"): a LOCAL flicker glow (r ~70 px on screen, alpha 0.4) over the burning roof + a dark smoke column
+// from the roof (3D layer soot puffs, rising and drifting downwind) instead of the big glow and the kit's grey ellipses
+const RGLOW = (() => { const r = 70 / C2[2], el = GG.pin(`<div style="width:${2 * r}px;height:${2 * r}px;border-radius:50%;background:radial-gradient(circle,rgba(255,190,90,.4) 0%,rgba(255,120,30,.26) 40%,rgba(220,60,10,0) 72%);mix-blend-mode:screen;opacity:0"></div>`, ...SV(2, -20), {});
+  const d = el.firstElementChild; tl.to(d, { opacity: 1, duration: 0.6 }, T_IGN + 0.1);
+  for (let k = 0, t = T_IGN + 0.7; t < T_150 + 0.5; k++, t += 0.11) tl.to(d, { opacity: 0.62 + 0.38 * Math.abs(Math.sin(k * 2.17 + 0.6)), scale: 0.94 + 0.1 * Math.abs(Math.sin(k * 1.31)), duration: 0.11, ease: "sine.inOut" }, t);
+  return el; })();
+{ const s0 = SV(2, -24); BW.gl({}); (window.BWGL_CFG.vcolumn = window.BWGL_CFG.vcolumn || []).push([s0[0], s0[1], T_IGN + 0.5, T_150 + 1.0, { rise: 80, wind: [12, -6], r: 24 }]); }
 SFX("hit", T_CAUGHT + 0.1);
 // "When British soldiers climbed up to tear the burning shingles away": red figures on the roof
 const RFIG = MSV.querySelector(".rfig");
