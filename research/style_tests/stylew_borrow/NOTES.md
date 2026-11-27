@@ -136,3 +136,18 @@ Sizes are screen px at the scene's camera scale (`volley.K` = 1 / camera scale).
 r7 deliverables: `stylew_borrow_test_r7_share.mp4` (62.45 s, 20 MB, -14.0 LUFS; hook + Parker's Ferry re-rendered, name/title windows = r6),
 `sheet_r7.jpg` (dive every 0.25 s vs v6, smoke vs v8, titles), `smoke_closeup_sheet.jpg` (one volley over 6 s against the spec above).
 RunPod: one RTX A4000 SECURE ($0.25/h, ~10 min, ~$0.04); pods list verified empty.
+
+## r8 (critics r7: A 5/5, B 6.5: "string of pearls", "cotton roll", cartoon flashes) -> new TECHNIQUE
+`stylew_borrow_test_r8_share.mp4` (62.45 s, 20 MB, -14.0 LUFS), `sheet_r8.jpg`, `smoke_closeup_r8.jpg` (one Parker's Ferry volley, r7 | r8, -0.07 .. +6 s).
+- Smoke = soft noise-textured billboards (bwgl.mjs `SMOKE`): 8 procedural smoke textures (4-octave value-noise fbm with domain warp =
+  wisps, feathered radial falloff, normals from the density), instanced particles in their own render target, lit from the screen top
+  (sunlit tops (235,232,222), mid (200,200,205), undersides (140,145,155)); per shot 9 jet particles (one cone thrown 70-110 px in 0.15 s
+  ease-out, 18 -> 45 px, alpha 0.9) + 9 billows (log-normal 40-140 px, heights +-40 %), rise 10 px/s for 2 s, wind 15 px/s with shear (top
+  faster), spread ~x2.5 by 6 s, alpha falls monotonically (~0.35 at 6 s, gone by 12-14 s).
+- Visibility: the smoke target is composited with an alpha cap read from the DOM every frame: <= 0.55 over any unit, <= 0.3 over red
+  boxes, ~0.1 over name tags (FRASER), 0.45 over the banner (34 px soft edges), 0.75 elsewhere.
+- Flashes on 2D canvases above the smoke: pan flash 12 px 1 frame 2 frames early; tongue 55-70 x 16-24 px #FFFBE0 -> #FFB030 -> #E04A10,
+  frame 1 100 % / frame 2 60 %; screen-blended glow r 45 px 32/22/12 % over 3 frames; 8 motion-blurred streak sparks over 0.2 s.
+  Shot times snapped to the video frame, so the bang lands on the tongue frame (audio rebuilt with the snapped times).
+- Hook: the guard fires north-west over the riders' approach, wind north 5 px/s: the smoke stays off the boxes.
+- RunPod: one RTX A4000 (micro-clip 4 s + both scenes, ~10 min, ~$0.03) after ~25 min of "no instances" retries; pods list empty.

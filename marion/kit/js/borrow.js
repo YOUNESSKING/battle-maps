@@ -154,23 +154,11 @@ const BW = (() => {
         c.sh.style.opacity = (a * 0.16 * (1 - sstep(0.4, 0.8, hs))).toFixed(3); } } });   // r2: no white veil (1a: no white flash)
   // ================================================================== 7. musket shots: one flash + one powder puff per shot, a "musket" cue per shot (flintlock stem)
   const SHOTS = [];
-  // r7: one flintlock shot: priming-pan flash at the lock (70 ms before), then the muzzle tongue (orange-yellow, white-hot core, 1-2 frames) aimed at
-  // the target + 3 sparks thrown forward; the smoke (pan puff, jet, billows, bank) is the 3D engine's (bwgl.mjs, C.vshots); "musket" cue on the flash frame
-  const shot = (p, t, o = {}) => { const k = o.k || 1, aim = o.aim || [p[0] + 10, p[1]], ang = Math.atan2(aim[1] - p[1], aim[0] - p[0]), deg = ang * 180 / Math.PI;
-    const R = R0(Math.round(t * 1000 + p[0] * 7));
-    const sparks = [0, 1, 2].map(() => { const a = (R() - 0.5) * 0.5, d = (26 + 22 * R()) * k; return `<i style="position:absolute;left:-1.5px;top:-1.5px;width:3px;height:3px;border-radius:50%;background:#fff3c0;box-shadow:0 0 4px 1px rgba(255,170,60,.9);--sx:${(Math.cos(a) * d).toFixed(1)}px;--sy:${(Math.sin(a) * d).toFixed(1)}px"></i>`; }).join("");
-    const el = pinS(GG.pin(`<div style="width:0;height:0"><div style="position:absolute;left:0;top:0;transform:rotate(${deg.toFixed(1)}deg)">
-      <div style="position:absolute;left:${-3 * k}px;top:${-6 * k}px;width:${34 * k}px;height:${12 * k}px;border-radius:30% 70% 70% 30% / 50%;background:radial-gradient(ellipse 62% 50% at 10% 50%,#ffffff 0%,#fffbe6 18%,#fff0a8 34%,#ffbe55 58%,rgba(255,120,30,0) 100%);filter:blur(.35px) drop-shadow(0 0 4px rgba(255,200,110,.8))"></div>
-      <div style="position:absolute;left:${-3 * k}px;top:${-3 * k}px;width:${6 * k}px;height:${6 * k}px;border-radius:50%;background:#fff;box-shadow:0 0 6px 2px rgba(255,236,170,.95)"></div>
-      <div class="sp" style="position:absolute;left:${6 * k}px;top:0">${sparks}</div></div></div>`, p[0], p[1], {}));
-    tl.set(el, { autoAlpha: 1 }, t); tl.set(el, { autoAlpha: 0 }, t + 2 / 30);
-    const sp = el.querySelectorAll(".sp i"); tl.set(sp, { x: 0, y: 0, autoAlpha: 1 }, t);
-    sp.forEach((s_) => tl.to(s_, { x: s_.style.getPropertyValue("--sx"), y: s_.style.getPropertyValue("--sy"), autoAlpha: 0, duration: 0.16, ease: "power1.out" }, t)); tl.set(sp, { autoAlpha: 0 }, t + 0.17);
-    // priming pan: a small yellow flash at the lock, behind the muzzle, 70 ms before the shot
-    const pan = pinS(GG.pin(`<div style="position:absolute;left:${-5 * k}px;top:${-5 * k}px;width:${10 * k}px;height:${10 * k}px;border-radius:50%;background:radial-gradient(circle,#fffbe0 0%,#ffd060 45%,rgba(255,150,40,0) 75%)"></div>`, p[0] - Math.cos(ang) * 3, p[1] - Math.sin(ang) * 3, {}));
-    tl.set(pan, { autoAlpha: 1 }, t - 0.07); tl.set(pan, { autoAlpha: 0 }, t - 0.07 + 2 / 30);
-    if (o.smoke !== false) { gl({}); (window.BWGL_CFG.vshots = window.BWGL_CFG.vshots || []).push([+t.toFixed(3), p[0], p[1], aim[0], aim[1]]); }
-    SFX("musket", t); SHOTS.push([+t.toFixed(3), p[0], p[1]]); return el; };
+  // r8: one flintlock shot = a "musket" sound cue + an entry for the 3D layer, which draws the pan flash, the muzzle tongue, the glow, the sparks
+  // and the smoke (bwgl.mjs). The shot time is snapped to the next video frame so the bang lands exactly on the tongue frame.
+  const shot = (p, t, o = {}) => { t = Math.ceil(t * 30 - 1e-6) / 30; const aim = o.aim || [p[0] + 10, p[1]];
+    gl({}); (window.BWGL_CFG.vshots = window.BWGL_CFG.vshots || []).push([+t.toFixed(4), p[0], p[1], aim[0], aim[1]]);
+    SFX("musket", t); SHOTS.push([+t.toFixed(4), p[0], p[1]]); return null; };
   // a ragged ripple along a firing line: n shots spread over `span` s between the points `pts` (one flank first, stragglers at the end)
   const volley = (pts, t0, span, n, o = {}) => { const R = R0(o.seed || Math.round(t0 * 1000)); const L = pts.length;
     for (let i = 0; i < n; i++) { const u = clamp((i + (R() - 0.5) * 1.6) / Math.max(1, n - 1)) ** lerp(0.85, 1.3, R()), f = i / Math.max(1, n - 1) * (L - 1), a = pts[Math.floor(f)], b = pts[Math.min(L - 1, Math.floor(f) + 1)], q = f - Math.floor(f);

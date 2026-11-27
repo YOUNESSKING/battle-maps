@@ -95,12 +95,12 @@ B.move("fr2", T_NARROW, 0.5, 1522, RY + 1, "power2.out");
 const ROADHIT = (x) => [x, RY + 1];
 AIDS.forEach((id) => tl.to(B.units[id].el.querySelector(".blk"), { filter: "brightness(1) saturate(1) opacity(1)", duration: 0.25 }, T_EVERY - 0.05));
 // BW: one muzzle flash (+ flintlock shot) per musket along the whole hidden line, a ragged ripple from the west flank
-BW.volley([[1484, 795], [1602, 797]], T_EVERY, 0.62, 18, { k: 0.9, jy: 7, seed: 31, noPuff: true, aim: (x) => [x + (1528 - x) * 0.35, RY + 2] });
+BW.volley([[1484, 795], [1602, 797]], T_EVERY, 0.62, 18, { k: 0.9, jy: 7, seed: 31, noPuff: true, aim: (x) => [x + 25, RY + 2] });
 mg([1498, 794], ROADHIT(1528), T_EVERY + 0.02, 5, 1.1); mg([1560, 794], ROADHIT(1536), T_EVERY + 0.1, 5, 1.1);
 /* BW r3: kit smoke replaced by the per-shot puffs (<= 6 per volley) */
 MARK([1568, RY + 1], T_EVERY + 0.35, T_COUNT + 0.2);   // BW r2: east of the jammed boxes, off the FRASER tag
 // "firing buckshot": a second ripple down the line
-BW.volley([[1488, 796], [1600, 798]], T_BUCK + 0.05, 0.8, 13, { k: 0.9, jy: 7, seed: 57, noPuff: true, aim: (x) => [x + (1524 - x) * 0.35, RY + 2] });   // BW: the buckshot ripple, shot by shot
+BW.volley([[1488, 796], [1600, 798]], T_BUCK + 0.05, 0.8, 13, { k: 0.9, jy: 7, seed: 57, noPuff: true, aim: (x) => [x + 25, RY + 2] });   // BW: the buckshot ripple, shot by shot
 mg([1528, 794], ROADHIT(1520), T_BUCK + 0.08, 4, 1.1); mg([1588, 796], ROADHIT(1540), T_BUCK + 0.2, 4, 1.1);
 /* BW r3: kit smoke replaced by the per-shot puffs (<= 6 per volley) */
 // the red cavalry breaks: "killed on the spot" -> fast fade; a few flee back toward the ferry
@@ -153,7 +153,7 @@ BW.tilt([[0, 6, 1.05], [END, 7, 1.06]]);
 // (never over the jammed red boxes, the FRASER tag or the banner); big soft cumulus drifting over the map away from the action and the result list
 // r7: the smoke is the engine volley smoke from each shot (pan puff + jet + billows -> one bank in front of the line), drifting east
 // r5: the close battle field: no cumulus on screen, only faint cloud shadows (<= 0.3)
-BW.gl({ mpu: 16, shadowK: 0.3, volley: { K: 1 / 3.1, wind: [7, -2], alpha: 1 },
+BW.gl({ mpu: 16, shadowK: 0.3, volley: { K: 1 / 3.1, wind: [15, -2], jet: [70, 95] },
   fair: { F: 1.5, box: [1150, 620, 720, 440], n: 9, med: 22, seed: 21, tiers: [49, 58], drift: [0.5, -0.15], diveClear: 0, opacity: () => 0,
     keep: [[1525, 790, 95], [1470, 815, 70], [1400, 850, 80], [1745, 705, 110], [1440, 815, 60]] } });   // r2: capped (sharpness)
 }

@@ -25,7 +25,7 @@ tw, th = 236, 133
 rows = len(DIVE) + len(SMOKE)
 H = 60 + rows * (h + lab + pad) + 2 * (th + lab) + 3 * pad + 60
 S = Image.new("RGB", (2 * w + 3 * pad, H), (18, 18, 16)); d = ImageDraw.Draw(S)
-d.text((pad, 16), ("STYLE W BORROW r6/r7" if R6 else "STYLE W BORROW r5" if R5 else "STYLE W BORROW r4") + " (real engine clouds / dive / smoke over the 2D map)", font=F, fill=(250, 214, 120)); d.text((w + 2 * pad, 16), "APPROVED 3D CLIP (v6 dive, v8 smoke and title)", font=F, fill=(230, 220, 190))
+d.text((pad, 16), ("STYLE W BORROW r6-r8" if R6 else "STYLE W BORROW r5" if R5 else "STYLE W BORROW r4") + " (real engine clouds / dive / smoke over the 2D map)", font=F, fill=(250, 214, 120)); d.text((w + 2 * pad, 16), "APPROVED 3D CLIP (v6 dive, v8 smoke and title)", font=F, fill=(230, 220, 190))
 y = 60
 for t, tv, l in DIVE:
     d.text((pad, y + 6), f"DIVE {'r6' if R6 else 'r5' if R5 else 'r4'} {t:.2f} s | v6 {tv:.1f} s  {l}", font=F, fill=(235, 228, 210))
