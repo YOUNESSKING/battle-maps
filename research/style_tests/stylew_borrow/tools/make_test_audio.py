@@ -16,6 +16,7 @@ sys.path.insert(0, f"{REPO}/vicksburg/tools"); sys.path.insert(0, f"{M}/tools")
 import troop_sfx as T
 import sfx_mix_lib as K
 SR = 48000; OUT, VC = sys.argv[1], sys.argv[2]
+GG = f"{REPO}/goosegreen/assets/media/sfx"; GM = f"{REPO}/grant/assets/media/sfx/candidates"   # r13: the 3D films' sound sources (ajackson/tools/assemble.py, gm3d/clip/assemble.py)
 SEGS = [(0.0, 17.8, "test-bw-hook-a"), (float(os.environ.get("B0", "56.35")), float(os.environ.get("B1", "59.95")), "test-bw-hook-b"), (71.45, 75.85, "test-bw-hook-b"), (750.21, 764.81, "test-bw-m3d"), (801.5, 839.5, "test-bw-m3f")]   # r9: + the Fort Motte six-pounder (m3d scene 40.0-54.6)
 VOICE = [(0.0, "out_a.wav"), (56.0, "out_b.wav"), (738.0, "out_d.wav"), (797.5, "out_c.wav")]
 CHROME = glob.glob("/root/.cache/hyperframes/chrome/chrome-headless-shell/*/chrome-headless-shell-linux64/chrome-headless-shell")[0]
@@ -30,7 +31,7 @@ def scene(name):
         dom = subprocess.run([CHROME, "--headless", "--no-sandbox", "--disable-gpu", "--allow-file-access-from-files", "--virtual-time-budget=4000",
                               "--dump-dom", "file://" + f"{M}/scenes/{name}/index.html"], capture_output=True, text=True, timeout=180).stdout
         g = lambda a: json.loads(html.unescape(m.group(1))) if (m := re.search(r'<html[^>]*' + a + r'="([^"]*)"', dom)) else []
-        scene_cache[name] = (st["abs_start"], g("data-sfx"), g("data-shots"))
+        scene_cache[name] = (st["abs_start"], g("data-sfx"), g("data-shots"), g("data-bwt"))
     return scene_cache[name]
 
 
@@ -45,7 +46,7 @@ def voice(a, d):
 # --- level: one 16-shot volley 8 dB under the locked cannon impact (cand3_hit at the kit level -7 dB), 400 ms RMS peaks
 def rms_peak(x, w=int(0.4 * SR)):
     e = np.convolve((x ** 2).mean(1), np.ones(w) / w, "same"); return 10 * np.log10(e.max() + 1e-12)
-imp = rd(f"{M}/assets/media/sfx/candidates/cand3_hit.wav") * db(-7)
+imp = rd(f"{GG}/candidates/cand1_hit.wav") * db(-15 + 4)   # r13: the reference is now the 3D films' cannon (Jackson: gun -15 dB, sfx +4 dB)
 probe = np.zeros((int(4 * SR), 2), np.float32); rng = np.random.default_rng(3); L = T.Lib(rng)
 T.render_volley(L, probe, dict(type="musket_volley", tShare=0.5, unit=dict(men=144), at=dict(camDist=20, px=[960, 540]),
                                shots=[dict(tShare=0.5 + 0.04 * k, at=dict(px=[700 + 30 * k, 540])) for k in range(16)]), rng, [])
@@ -54,14 +55,17 @@ print(f"cannon impact {rms_peak(imp):.1f} dB, raw volley {rms_peak(probe):.1f} d
 
 parts, log = [], []
 for (a, b, name) in SEGS:
-    d = b - a; n = int(round(d * SR)); t0, cues, shots = scene(name)
+    d = b - a; n = int(round(d * SR)); t0, cues, shots, bwt = scene(name)
     vo = voice(a, d); vo = np.pad(vo, ((0, max(0, n - len(vo))), (0, 0)))[:n]
     mu = rd(f"{M}/assets/media/music.wav", s=a, d=d); mu = np.pad(mu, ((0, max(0, n - len(mu))), (0, 0)))[:n]
     kit = [[t + t0 - a, k, name] for k, t in cues if a <= t + t0 < b and k not in ("mg", "musket")]
     # r10 (owner: "the artillery should be like the film 3D, I like that sound"): the cannon shot is mixed as in the 3D films (Andrew Jackson v4,
     # ajackson/tools/assemble.py + OWNER_DECISIONS row 14): the 3D films' gun sound (goosegreen candidates/cand1_hit.wav at -15 dB) +4 dB,
     # ducked only 25 % under the voice, its onset (0.115 s into the file) on the flash frame. The locked kit files are untouched.
-    guns = [c for c in kit if c[1] == "fire" and name == "test-bw-m3d"]; kit = [c for c in kit if c not in guns]
+    # r13 (owner: "guns and artillery exactly like the 3D films"): every kit gun / impact cue in the borrow windows is dropped (no doubled sound);
+    # the visible cannon shot gets the 3D "gun" on its flash frame, its visible impact the 3D "boom", the burning roof the 3D "fire".
+    GUNK = ("fire", "impact", "explosion", "mortar", "mg"); guns = [c for c in kit if c[1] == "fire" and name == "test-bw-m3d"]
+    booms = [c for c in kit if c[1] == "impact" and name == "test-bw-m3d"]; dropped = [c for c in kit if c[1] in GUNK]; kit = [c for c in kit if c[1] not in GUNK]
     K.render(kit, d, "/tmp/_bw_kit.wav"); fx = rd("/tmp/_bw_kit.wav"); fx = np.pad(fx, ((0, max(0, n - len(fx))), (0, 0)))[:n]; os.remove("/tmp/_bw_kit.wav")
     # musket shots: [t, screen x, screen y] (scene time), grouped into ripples
     sh = sorted([[t + t0 - a, x, y] for t, x, y in shots if a <= t + t0 < b - 0.05])
@@ -82,12 +86,28 @@ for (a, b, name) in SEGS:
     k = int(0.25 * SR); env = np.clip(np.convolve(env, np.hanning(k) / np.hanning(k).sum(), "same") * 1.2, 0, 1)
     EX = float(os.environ.get("MUSKET_EXTRA_DB", "0"))   # r3: first shot -4 dB, tail -6 dB under the voice (+ EX on both) so the bangs peak <= -6 dBFS
     fx = fx + (st[:n] * db(-4 + EX) + tail[:n] * (1 - 0.5 * env)[:, None] * db(EX)) * db(GAIN)
+    kv = int(0.25 * SR); venv = np.convolve(np.abs(vo).mean(1), np.ones(kv) / kv, mode="same"); venv = np.clip(venv / (np.percentile(venv, 95) + 1e-9), 0, 1)
+    cn = np.zeros((n + SR * 8, 2), np.float32)
+    def put(clip, t, onset, g):   # onset of the clip on the cue time
+        i0 = int(round((t - onset) * SR)); i0 = max(0, i0); m = min(len(clip), len(cn) - i0); cn[i0:i0 + m] += clip[:m] * db(g); return round(t + a, 3)
+    log3 = []
     if guns:
-        g3 = rd(f"{REPO}/goosegreen/assets/media/sfx/candidates/cand1_hit.wav"); cn = np.zeros((n + SR * 5, 2), np.float32)
-        for tg, _, _ in guns: i0 = int(round((tg - 0.115) * SR)); m = min(len(g3), len(cn) - i0); cn[i0:i0 + m] += g3[:m] * db(-15 + 4)
-        kv = int(0.25 * SR); venv = np.convolve(np.abs(vo).mean(1), np.ones(kv) / kv, mode="same"); venv = np.clip(venv / (np.percentile(venv, 95) + 1e-9), 0, 1)
-        vo = vo + cn[:n] * (1 - 0.25 * venv)[:, None]
-        print(f"  3D-film cannon: {len(guns)} shot(s) at {[round(c[0] + a, 3) for c in guns]} (film s)")
+        g3 = rd(f"{GG}/candidates/cand1_hit.wav"); log3 += [("gun cand1_hit", -15 + 4, put(g3, c[0], 0.115, -15 + 4)) for c in guns]
+    if booms:
+        b3 = rd(f"{GG}/candidates/cand2_hit.wav"); log3 += [("boom cand2_hit (impact)", -19 + 4, put(b3, c[0], 0.067, -19 + 4)) for c in booms]
+    if name == "test-bw-m3d" and bwt:   # the roof catches fire on screen at T_ROOF + 0.9 (scene time)
+        fire = rd(f"{GM}/bombs/bomb4_heavyexplosionreverbusc.mp3", "lowpass=f=900", 0, 5.6); fire *= np.clip((5.6 - np.arange(len(fire)) / SR) / 2.0, 0, 1)[:, None]
+        tf = bwt[2] + 0.9 + t0 - a
+        if 0 <= tf < d: log3.append(("fire bomb4 lowpass 900", -17 + 4, put(fire, tf, 0.121, -17 + 4)))
+    vo = vo + cn[:n] * (1 - 0.25 * venv)[:, None]   # Jackson: sfx +4 dB, ducked 25 % under the voice
+    # battle bed: the 3D films' distant-warfare ambience, battle windows only (from the first visible shot), 1 s fades, -23 dB, ducked 35 %
+    tb = (sh[0][0] - 0.8) if (name == "test-bw-m3f" and sh) else (guns[0][0] - 1.0) if guns else None
+    if tb is not None and tb < d - 1:
+        amb = rd(f"{GM}/cand5_distant-warfare.mp3", None, 70, d - tb + 0.5); amb = np.pad(amb, ((0, max(0, int((d - tb) * SR) + 1 - len(amb))), (0, 0)))
+        i0 = int(tb * SR); m = n - i0; e = np.clip(np.minimum(np.arange(m) / SR, (m - np.arange(m)) / SR) / 1.0, 0, 1)
+        vo[i0:] += amb[:m] * db(-23) * (e * (1 - 0.35 * venv[i0:]))[:, None]; log3.append(("ambience cand5 distant-warfare", -23, round(tb + a, 3)))
+    if dropped: print(f"  dropped kit gun cues: {[(c[1], round(c[0] + a, 2)) for c in dropped]}")
+    for l in log3: print(f"  3D-film sound: {l[0]:32s} {l[1]:+d} dB at {l[2]} (film s)")
     print(f"{name:16s} {a:7.2f}-{b:7.2f}  kit cues {len(kit):3d}  musket shots {len(sh):3d} in {len(groups)} ripples")
     parts.append((vo, mu, fx))
 
