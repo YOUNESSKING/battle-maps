@@ -180,9 +180,12 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
   // r5 timing (critic B: the spoken places must read): deck from 6.4 s, white ~6.6-7.1 s, emerge 7.1, clear 7.25, haze gone 7.55, land 7.6
   BW.gl({ mpu: 128, dive: { t: SW, over: NFL, grey: 0.92 }, hazeK: 0.6, shadowK: 0.25,   // r13b (critic A): ground shadows 25 %; inside the deck an even grey 6.6-7.1 s
     diveOff: { push: -1.4, deckIn: -1.3, full: -0.5, deck: -0.45, wIn: -0.4, inside: -0.2, warm: 0.05, emerge: 0.2, clear: 0.35, haze: 0.6, land: 0.75 },   // r6: the deck closes in from the frame edges from 5.8 s (clear window over the crossing to ~6.45), full by 6.75
-    fair: { F: 3.3, box: [150, 120, 2600, 1400], n: 24, med: 30, seed: 5, tiers: [52, 100], nearTier: 90, nearK: 1.6, ambBot: [0.44, 0.48],   // r13b: 10-14 bigger cumulus on 2 heights, the near layer drifts 1.6x
-      masses: [[-52, -24, 62], [52, -18, 60], [4, 48, 58], [0, 2, 44], [-46, 44, 42], [48, 42, 42]],   // r13b: the deck = 3 big merged masses + the centre diveClear: 70, keepLines: [[ROADP, 55]], keep: [[CHS[0], CHS[1], 110], [860, 1110, 130]],
-      on: (t) => t < SW + 1.2, screenClear: { t: [3.6, 5.6], boxes: [[700, 440, 900, 540]] } },   // r13b: only the stamp moment; the road corridor by keepLines   // r13b: the date plate is HUD (always drawn above the clouds): no cluster deletion for it   // r13: + the date plate
+    fair: { F: 3.3, box: [150, 120, 2600, 1400], n: 34, med: 18, rMin: 10, rMax: 32, skirtCut: 3, seed: 5, tiers: [52, 100], nearTier: 90, nearK: 1.6, ambBot: [0.44, 0.48],   // r13b: 10-14 bigger cumulus on 2 heights, the near layer drifts 1.6x
+      masses: [[-52, -24, 62], [52, -18, 60], [4, 48, 58], [0, 2, 44], [-46, 44, 42], [48, 42, 42]],   // r13b: the deck = 3 big merged masses + the centre
+      diveClear: 40,   // r13c: the field reaches the middle third too
+      // r13c: the road / ONE ROAD stamp / Charleston corridor is cleared only while the trace + stamp + focus are on screen (its clusters fade out, then back)
+      corridor: { keepLines: [[ROADP, 40]], keep: [[CHS[0], CHS[1], 110], [860, 1110, 130]], op: (t) => 1 - BW.sstep(T_ROAD - 0.7, T_ROAD - 0.1, t) + BW.sstep(TZ0 + 0.3, TZ0 + 0.9, t) },
+      on: (t) => t < SW + 1.2 },   // r13c: no screenClear cluster deletion (it emptied the middle of the field); the date plate is HUD (drawn above the clouds)
     stratus: { F: 3.1, at: [CEND[0], CEND[1]], speed: 0.45 }, volley: { K: 1 / 15.2, night: 1, wind: [-14, -36], jet: [55, 75], billows: 8, gone: 17.0, cap: 0.4, a0: 0.36, haze: 1, burstCap: 0.8, life: 5, fade: 2.4, tau: 3, windAt: 0.5, shear: 0.8, stretch: 0.12 } }); }   // r13: thinner, carried off north-west, gone in ~5 s   // r9: gone 0.5 s before it reaches the riders   // r8: the guard smoke blows north, away from every box
 // hook-2: "before dawn" is the script's only time: the pocket watch comes in (hands ~4:30, no clock time is spoken)
 BW.time(T_DAWN, { label: "Before dawn", header: "1780" });   // r2: no clock time is spoken: text only, no watch

@@ -56,7 +56,7 @@ else {
   const ground = (sys, box) => { const m = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, depthWrite: false });
     sys.fx.patchGround(m); const prev = m.onBeforeCompile;
     m.onBeforeCompile = (sh, r) => { prev(sh, r); const i = sh.fragmentShader.lastIndexOf("}");
-      sh.fragmentShader = sh.fragmentShader.slice(0, i) + `\n  gl_FragColor = vec4(0.0, 0.0, 0.0, clamp(1.0 - gl_FragColor.g, 0.0, 1.0) * ${(C.shadowK ?? 0.9).toFixed(2)});\n}`; };
+      sh.fragmentShader = sh.fragmentShader.slice(0, i) + `\n  gl_FragColor = vec4(0.0, 0.0, 0.0, clamp(1.0 - gl_FragColor.g, 0.0, 1.0) * ${(C.shadowK ?? 0.9).toFixed(2)} * opacity);   // r13c: * opacity (a fading cloud system fades its shadow)\n}`; };
     const g = new THREE.Mesh(new THREE.PlaneGeometry(box[2], box[3]), m); g.rotation.x = -Math.PI / 2; g.position.set(box[0] + box[2] / 2, 0, box[1] + box[3] / 2); g.renderOrder = -20; sys.scene.add(g); return g; };
   // ---------------- dives (v8 timings, VX.DIVE_OFF_V8; an optional land offset)
   const OFF = { push: -3.8, deckIn: -1.7, full: -0.55, deck: -0.45, wIn: -0.35, inside: -0.15, SW: 0, warm: 0.15, emerge: 0.85, clear: 1.15, haze: 1.8, land: 3.35, ...(C.diveOff || {}) };
@@ -69,14 +69,17 @@ else {
     const keep = (C.fair.keep || []).map((q) => [q[0], q[1], q[2], q[3] ?? 1, q[4] ?? 1]), DC = (C.fair.diveClear ?? 118) * F;
     const offWide = (x, z, r) => (DV && Math.hypot(x - DV.over[0], (z - (DV.over[1] + 6 * F)) * 1.15) < DC + 0.5 * r) || keep.some(([cx, cz, R, ky, rk]) => Math.hypot(x - cx, (z - cz) * ky) < R + rk * r)
       || (C.fair.keepLines || []).some(([pts, R]) => pts.some((p) => Math.hypot(x - p[0], z - p[1]) < R + r));
+    // r13c: corridor (road / stamp / spoken place): its clusters live in their own system that fades out only while that corridor is on screen
+    const CORR = C.fair.corridor, corrC = new Set(), inCorr = (x, z, r) => !!CORR && ((CORR.keep || []).some(([cx, cz, R]) => Math.hypot(x - cx, z - cz) < R + r)
+      || (CORR.keepLines || []).some(([pts, R]) => pts.some((p) => Math.hypot(x - p[0], z - p[1]) < R + r)));
     const sc = { med: 30, tries: 900, seed: 0, n: 12, ...C.fair };
     const wsp = [], sd = sc.seed;
     for (let c = 0, k = 0; c < sc.tries && k < sc.n; c++) {
-      const cx = B[0] + hsh(c + sd, 61) * B[2], cz = B[1] + hsh(c + sd, 62) * B[3], R0 = lnr(c + sd, 63, sc.med * F, 0.5, 14 * F, 70 * F);
+      const cx = B[0] + hsh(c + sd, 61) * B[2], cz = B[1] + hsh(c + sd, 62) * B[3], R0 = lnr(c + sd, 63, sc.med * F, 0.5, (sc.rMin ?? 14) * F, (sc.rMax ?? 70) * F);   // r13c: radius clamp per scene
       if (offWide(cx, cz, R0) || wsp.some(([a, b, q]) => Math.hypot(a - cx, b - cz) < q + R0 + 10 * F)) continue;
-      k++; wsp.push([cx, cz, R0, c]); const kids = 1 + Math.floor(hsh(c + sd, 65) * 3);
+      k++; wsp.push([cx, cz, R0, c]); if (inCorr(cx, cz, R0)) corrC.add(c); const kids = 1 + Math.floor(hsh(c + sd, 65) * 3);
       for (let j = 0; j < kids; j++) { const i2 = (c + sd) * 7 + j, a = hsh(i2, 66) * 6.283, r = lnr(i2, 67, R0 * 0.45, 0.6, 7 * F, R0 * 0.9), dd = R0 * (0.9 + 0.8 * hsh(i2, 69)) + r * 0.6;
-        const x = cx + Math.cos(a) * dd, z = cz + Math.sin(a) * dd * 0.8; if (!offWide(x, z, r)) wsp.push([x, z, r, c]); } }
+        const x = cx + Math.cos(a) * dd, z = cz + Math.sin(a) * dd * 0.8; if (!offWide(x, z, r)) { wsp.push([x, z, r, c]); if (inCorr(x, z, r)) corrC.add(c); } } }
     // r5: screen-space keep-clear (spoken places must read): drop whole clusters whose cloud projects into the box (+ its radius) at the sampled times
     const SCL = C.fair.screenClear; let dropC = new Set();
     if (SCL) { const TL = window.__timelines && window.__timelines.main, t0 = TL ? TL.time() : 0, v = new THREE.Vector3();
@@ -99,27 +102,32 @@ else {
         const x = gx + (hsh(i, 5) - 0.5) * 18 * F, z = gz + (hsh(i, 6) - 0.5) * 18 * F, r = Math.hypot(x - cx0, (z - cz0) * 1.15);
         if (hsh(i, 7) < lerp(0.97, 0.55, clamp((r - 30 * F) / (90 * F)))) deck.push([x, z, (20 + hsh(i, 8) * 16) * F]); }
       for (const [dx, dz, r] of [[0, 0, 30], [-6, 11, 26], [8, -7, 26], [3, 20, 26], [-11, -9, 24], [13, 7, 24]]) deck.push([DV.over[0] + dx * F, DV.over[1] + dz * F, r * F]); }
-    const cl = wsp.map(([x, z, r, c], i) => [x, z, r, 3 * F + r * (0.18 + 0.16 * hsh(i, 13)), (tierOf(c) + hsh(i, 11) * 9) * F, 0])
+    const cl = wsp.map(([x, z, r, c], i) => Object.assign([x, z, r, 3 * F + r * (0.18 + 0.16 * hsh(i, 13)), (tierOf(c) + hsh(i, 11) * 9) * F, 0], { corr: corrC.has(c) }))
       .concat(deck.map(([x, z, r], i) => [x, z, r, r * (0.26 + 0.1 * hsh(i, 14) + 0.12 * clamp(1 - Math.hypot(x - DV.over[0], z - (DV.over[1] + 4 * F)) / (60 * F))), (hsh(i, 15) < 0.35 ? 72 : 56) * F + hsh(i, 12) * 4 * F, 1]));   // r13: two deck heights -> parallax layers through the dive
     window.__bwglClouds = cl.length;
     const D0 = DV || NODIVE, AD = (t) => (t > D0.SW + 1 ? NODIVE : D0);
     const slabTop = Math.max(104, ...TIERS.map((v) => v + 55)) * F;
-    const mkVC = (sx, list, dk) => { if (list.length) sx.vc = sx.fx.vclouds({ noise: NOISE, clouds: list, bounds: [B[0] - 40 * F, B[1] - 70 * F, B[0] + B[2] + 40 * F, B[1] + B[3] + 40 * F], texel: F, skip: 30 * F,
-      slab: [28 * F, slabTop]   /* r13: low enough that no cloud bottom is cut flat */, tile: 125 * F, groupScale: 3.0, amp: 5 * F, soft: 1.7 * F, flatPow: 0.3, sigma: 0.75 / F,
+    const mkVC = (sx, list, dk, opF) => { if (list.length) sx.vc = sx.fx.vclouds({ noise: NOISE, clouds: list, bounds: [B[0] - 40 * F, B[1] - 70 * F, B[0] + B[2] + 40 * F, B[1] + B[3] + 40 * F], texel: F, skip: 30 * F,
+      slab: [28 * F, slabTop]   /* r13: low enough that no cloud bottom is cut flat */, tile: 125 * F, groupScale: 3.0, amp: 5 * F, soft: (C.fair.soft ?? 1.7) * F, skirtCut: C.fair.skirtCut || 0, flatPow: 0.3, sigma: 0.75 / F,
       stepIn: 0.25 * F, stepK: 0.0035, lightStep: 1.4 * F, lodDist: 260 * F, nearFade: 9 * F,   /* r13: no planar cut where the camera passes through a cloud */ maxSteps: C.fair.maxSteps ?? 200, resolution: C.fair.res ?? 0.75, warp: 0.06, fine: 0.12, wisp: 0.45, inner: 0.8,
-      weights: [1.0, 0.5, 1, 0.5], group0: [0.55, 0.3, 1.4, 0.5], blur: 1.0, sharp: 1, shadow: 0.75, shadowDir: [0.3, 1, 0.65], drift: (C.fair.drift || [0.10, -0.035]).map((v) => v * F * dk), evolve: 0.0025 / F, floor: 0.05,
+      weights: [1.0, 0.5, 1, 0.5], group0: C.fair.group0 || [0.55, 0.3, 1.4, 0.5], blur: 1.0, sharp: 1, shadow: 0.75, shadowDir: [0.3, 1, 0.65], drift: (C.fair.drift || [0.10, -0.035]).map((v) => v * F * dk), evolve: 0.0025 / F, floor: 0.05,
       sunK: 1.4, ambK: 0.18, lightK: 3.2,
-      erode: (t) => { const d = D0; return [C.fair.erode0 ? C.fair.erode0(t) : 0, t > d.SW + 0.5 ? 9 : lerp(9, lerp(1.6, 0, sstep(d.deckIn - 0.1, d.deckIn + 0.6, t)), sstep(d.deckIn - 0.15, d.deckIn + 0.15, t))]; },   // r5: the deck does not exist before deckIn (spoken places read)
-      deck: (t) => { const d = D0; return { x: d.over[0], z: d.over[1], r: 110 * F, front: 3.5 * (1 - sstep(d.deckIn + 0.1, d.full, t)), k: lerp(0, 1, sstep(d.deckIn, d.deckIn + 0.6, t)) }; },
+      erode: (t) => { const d = D0; return [C.fair.erode0 ? C.fair.erode0(t) : 0, C.fair.deckErode ? C.fair.deckErode(t) : t > d.SW + 0.5 ? 9 : lerp(9, lerp(1.6, 0, sstep(d.deckIn - 0.1, d.deckIn + 0.6, t)), sstep(d.deckIn - 0.15, d.deckIn + 0.15, t))]; },   // r5: the deck does not exist before deckIn (spoken places read)
+      deck: (t) => { const d = D0; return { x: d.over[0], z: d.over[1], r: 110 * F, front: C.fair.deckFront ? C.fair.deckFront(t) : 3.5 * (1 - sstep(d.deckIn + 0.1, d.full, t)), k: C.fair.deckK ? C.fair.deckK(t) : lerp(0, 1, sstep(d.deckIn, d.deckIn + 0.6, t)) }; },   // r13c: per-scene deck timing overrides
       ms: (t) => { const d = AD(t); return lerp(0.22, 0.42, sstep(d.full - 0.2, d.inside, t)); }, expo: (t) => { const d = AD(t); return lerp(1, 0.93, sstep(d.full - 0.2, d.inside, t)); },
       colors: (t) => { const d = AD(t), k = sstep(d.full - 0.2, d.inside, t), c = sstep(d.deckIn, d.deckIn + 0.5, t) * (1 - k), q = Math.max(k, c);
         return { sun: [lerp(1.0, 0.95, q), lerp(0.96, 0.97, q), lerp(0.88, 0.94, q)], ambTop: [lerp(0.58, 0.66, q), lerp(0.63, 0.71, q), lerp(0.72, 0.76, q)], ambBot: [lerp((C.fair.ambBot || [0.32])[0], 0.40, q), lerp((C.fair.ambBot || [0, 0.36])[1], 0.46, q), lerp(0.44, 0.54, q)],   // r13: whiter lit tops, softer grey undersides (v6)
           nSun: CW_DAY.nSun, nAmbTop: CW_DAY.nAmbTop, nAmbBot: CW_DAY.nAmbBot, ambK: lerp(0.24, 0.36, q), lightK: lerp(3.2, 1.4, k) * lerp(1, 0.8, c), sunK: lerp(1.65, 1.2, q) }; },
       sigmaK: (t) => { const d = AD(t); return lerp(1, 0.5, sstep(d.full, d.inside, t)); },
-      opacity: C.fair.opacity || (() => 1) }); };
+      opacity: opF || C.fair.opacity || (() => 1) }); };
     // r13b (critic A): two heights, the near (higher) layer drifts 1.6x faster (its own vclouds system)
-    const NT = C.fair.nearTier; if (NT != null) { const far = cl.filter((c) => c[5] === 1 || c[4] < NT * F), near = cl.filter((c) => !(c[5] === 1 || c[4] < NT * F));
-      mkVC(sys, far, 1); const s2 = mkFX({ seed: 1864, on: C.fair.on }); mkVC(s2, near, C.fair.nearK ?? 1.6); ground(s2, [B[0] - 400 * F, B[1] - 400 * F, B[2] + 800 * F, B[3] + 800 * F]); s2.on = C.fair.on || (() => true); }
+    const NT = C.fair.nearTier; if (NT != null) { const isNear = (c) => !(c[5] === 1 || c[4] < NT * F), CO = CORR ? CORR.op : null, NO = C.fair.nearOp, BO = C.fair.opacity || (() => 1);
+      // r13c: up to 4 systems: far (+ the deck), near (drifts nearK x, can fade before the camera reaches its height), and the corridor clusters of each
+      const parts = [[cl.filter((c) => !isNear(c) && !c.corr), 1, null], [cl.filter((c) => isNear(c) && !c.corr), C.fair.nearK ?? 1.6, NO],
+        [cl.filter((c) => !isNear(c) && c.corr), 1, CO], [cl.filter((c) => isNear(c) && c.corr), C.fair.nearK ?? 1.6, CO && NO ? (t) => CO(t) * NO(t) : CO || NO]];
+      window.__bwglParts = parts.map((q) => q[0].length);
+      parts.forEach(([list, dk, opF], i) => { if (!list.length) return; const sx = i === 0 ? sys : mkFX({ seed: 1863 + i, on: C.fair.on });
+        mkVC(sx, list, dk, opF ? (t) => opF(t) * BO(t) : null); if (i) { const g = ground(sx, [B[0] - 400 * F, B[1] - 400 * F, B[2] + 800 * F, B[3] + 800 * F]); sx.on = C.fair.on || (() => true); if (opF) sx.pre = (t) => { g.material.opacity = opF(t); }; } }); }
     else mkVC(sys, cl, 1);
     ground(sys, [B[0] - 400 * F, B[1] - 400 * F, B[2] + 800 * F, B[3] + 800 * F]);
     sys.on = C.fair.on || (() => true);
@@ -391,7 +399,7 @@ else {
     const [wa, ww] = whiteAt(t); WO.style.opacity = wa.toFixed(3); WW.style.opacity = ww.toFixed(3);
     if (VG) VG.style.filter = wa > 0.002 ? `opacity(${(1 - wa).toFixed(3)})` : "";   // r13: the map vignette fades out inside the white-out (an even cream, no dark oval)
     renderer.setRenderTarget(null); renderer.clear(true, true, true);
-    for (const s of systems) { if (!s.on(t)) continue; s.fx.update(t, camera); renderer.render(s.scene, camera); }
+    for (const s of systems) { if (!s.on(t)) continue; if (s.pre) s.pre(t); s.fx.update(t, camera); renderer.render(s.scene, camera); }
     if (SMOKE) SMOKE.draw(t);
   };
   window.__BWGL = { draw, camera, renderer, systems, dive: DV };
