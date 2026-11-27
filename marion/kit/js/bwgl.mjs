@@ -91,9 +91,9 @@ else {
     const TIERS = C.fair.tiers || [49, 49]; const tierOf = (c) => TIERS[Math.floor(hsh(c, 71) * TIERS.length)];
     const deck = [];
     if (DV && C.fair.masses) {   // r13b (critic A): the deck = 2-3 big merged masses (+ the centre) of tightly packed lumps, no separate puffs
-      let i = 0; for (const [mx, mz, MR] of C.fair.masses) for (let gx = -MR; gx <= MR; gx += 11) for (let gz = -MR; gz <= MR; gz += 11, i++) {
+      let i = 0; for (const [mx, mz, MR] of C.fair.masses) for (let gx = -MR; gx <= MR; gx += 14) for (let gz = -MR; gz <= MR; gz += 14, i++) {
         const x = gx + (hsh(i, 5) - 0.5) * 8, z = gz + (hsh(i, 6) - 0.5) * 8; if (Math.hypot(x, z * 1.1) > MR) continue;
-        deck.push([DV.over[0] + (mx + x) * F, DV.over[1] + (mz + z) * F, (15 + hsh(i, 8) * 8) * F]); } }
+        deck.push([DV.over[0] + (mx + x) * F, DV.over[1] + (mz + z) * F, (18 + hsh(i, 8) * 10) * F]); } }
     else if (DV && C.fair.deck !== false) { const cx0 = DV.over[0], cz0 = DV.over[1] + 6 * F;
       for (let i = 0, gx = cx0 - 118 * F; gx < cx0 + 122 * F; gx += 27 * F) for (let gz = cz0 - 112 * F; gz < cz0 + 108 * F; gz += 27 * F, i++) {   // r13: fewer, bigger, merging lumps
         const x = gx + (hsh(i, 5) - 0.5) * 18 * F, z = gz + (hsh(i, 6) - 0.5) * 18 * F, r = Math.hypot(x - cx0, (z - cz0) * 1.15);
@@ -239,8 +239,9 @@ else {
           else col *= mix(1.0, 0.96, vQ.w) * mix(1.0, 0.72, vQ.w * clamp(1.4 * (1.0 - lum), 0.0, 1.0));   // r12 cannon smoke: tops ~(230,227,220), undersides ~(95,98,105)
           col *= 1.0 + uFl * clamp(1.15 - lum, 0.0, 1.0) * vec3(1.0, 0.9, 0.72);                         // r10: each flash lifts the bank's underside (+20 %, 2 frames)                                  // heavier, darker (cannon) smoke: undersides darken most
           if (uHz > 0.5 && vQ.w < 0.01) {   // r13: the musket haze colour (see-through, capped 0.40; the burst in its own pass)
-            col = mix(vec3(0.745, 0.745, 0.737), vec3(0.910, 0.902, 0.878), clamp((lum - 0.42) / 0.45, 0.0, 1.0));   // r13b (owner: white is OK, 'white's milk'): milky white haze, tops ~(232,230,224) / undersides ~(190,190,188)
-            col = mix(col, vec3(0.882, 0.882, 0.863), vQ.z); }   // the muzzle burst ~(225,225,220)
+            float tL = clamp((lum - 0.42) / 0.45, 0.0, 1.0), gy = clamp(-vQ.w, 0.0, 1.0);   // r13b (owner): white while dense, a soft warm grey as it thins
+            col = mix(mix(vec3(0.745, 0.745, 0.737), vec3(0.910, 0.902, 0.878), tL), mix(vec3(0.627, 0.624, 0.608), vec3(0.784, 0.780, 0.765), tL), gy);   // tops 232 -> ~200, undersides 190 -> ~160 (core ~185)
+            col = mix(col, vec3(0.941, 0.933, 0.910), vQ.z); }   // the muzzle burst ~(240,238,232)
           else col = mix(col, vec3(0.965, 0.955, 0.93), vQ.z * 0.75);
           col *= uNT; gl_FragColor = vec4(col * d, d); }` });
     const mesh = new THREE.Mesh(geo, mat); mesh.frustumCulled = false; const sScene = new THREE.Scene(); sScene.add(mesh);
@@ -300,7 +301,7 @@ else {
           const A = a * gone; if (A < 0.003) continue;
           if (BC && p.jet) { const j = n2 * 4; P2[j] = p.x + sx * K; P2[j + 1] = (2 + p.h * 4) * K; P2[j + 2] = p.z + sz * K; P2[j + 3] = size * K; Q2[j] = A; Q2[j + 1] = p.cell; Q2[j + 2] = 1; Q2[j + 3] = 0; n2++; continue; }
           P[n * 4] = p.x + sx * K; P[n * 4 + 1] = (2 + p.h * 4) * K; P[n * 4 + 2] = p.z + sz * K; P[n * 4 + 3] = size * K;
-          Q[n * 4] = A; Q[n * 4 + 1] = p.cell; Q[n * 4 + 2] = p.jet ? 1 : (BC ? 0.15 : 0.5) * (1 - sstep(0.1, 0.6, age)); Q[n * 4 + 3] = 0; n++; }
+          Q[n * 4] = A; Q[n * 4 + 1] = p.cell; Q[n * 4 + 2] = p.jet ? 1 : (BC ? 0.35 : 0.5) * (1 - sstep(0.1, 0.9, age)); Q[n * 4 + 3] = V.haze ? -sstep(0.8, 3.0, age) : 0; n++; }
         geo.instanceCount = n; iP.needsUpdate = true; iQ.needsUpdate = true; geo2.instanceCount = n2; iP2.needsUpdate = true; iQ2.needsUpdate = true;
         { let c = 0; for (const q of SH) { const ag = t - q[0]; if (ag >= -1e-4 && ag < 2 / 30 - 1e-4) c++; } for (const q of CN) { const ag = t - q[0]; if (ag >= -1e-4 && ag < 2 / 30 - 1e-4) c += 3; }
           mat.uniforms.uFl.value = 0.2 * Math.min(1, c / 2); }

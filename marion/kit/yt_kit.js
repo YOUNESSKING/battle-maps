@@ -338,10 +338,11 @@ const focApply = () => { const sx = CAM_X0 + FS.x * CAM_S, sy = CAM_Y0 + FS.y * 
     `radial-gradient(ellipse ${(r * 1.3).toFixed(0)}px ${r.toFixed(0)}px at ${sx.toFixed(0)}px ${sy.toFixed(0)}px, rgba(8,8,4,0) 0%, rgba(8,8,4,0) 45%, rgba(8,8,4,${((CAM_S > 2.5 ? 0.22 : 0.16) * fk).toFixed(3)}) 100%)`;
   if (K.FOCUS_CORE) {   // r13b opt-in (borrow test, critic A): a findable edge: clear core K.FOCUS_CORE px + K.FOCUS_FEATHER px feather in screen space,
     // ~30 % darker outside, the warm light inside; drawn UNDER the pins (FOC moved into #world by borrow.js, mapped back to screen space here)
-    const C0 = K.FOCUS_CORE, C1 = C0 + (K.FOCUS_FEATHER || 200), D = K.FOCUS_OUT || 0.32;
-    FOC.style.background = `radial-gradient(circle at ${sx.toFixed(0)}px ${sy.toFixed(0)}px, rgba(255,236,190,${fl}) 0px, rgba(255,236,190,0) ${C0}px), ` +
-      `radial-gradient(circle at ${sx.toFixed(0)}px ${sy.toFixed(0)}px, rgba(8,8,4,0) ${C0}px, rgba(8,8,4,${D}) ${C1}px)`;
-    if (FOC.parentElement && FOC.parentElement.id === "world") FOC.style.transform = `translate(${(-CAM_X0 / CAM_S).toFixed(3)}px,${(-CAM_Y0 / CAM_S).toFixed(3)}px) scale(${(1 / CAM_S).toFixed(5)})`; }
+    // in MAP px inside #world (the world's own camera transform places it): radii = screen px / CAM_S
+    const inW = FOC.parentElement && FOC.parentElement.id === "world", px = inW ? FS.x + 2000 : sx, py = inW ? FS.y + 2000 : sy,   /* FOC spans the map + 2000 px margins (left/top -2000) */ q = inW ? 1 / CAM_S : 1;
+    const C0 = K.FOCUS_CORE * q, C1 = (K.FOCUS_CORE + (K.FOCUS_FEATHER || 200)) * q, D = K.FOCUS_OUT || 0.32;
+    FOC.style.background = `radial-gradient(circle at ${px.toFixed(1)}px ${py.toFixed(1)}px, rgba(255,236,190,${fl}) 0px, rgba(255,236,190,0) ${C0.toFixed(1)}px), ` +
+      `radial-gradient(circle at ${px.toFixed(1)}px ${py.toFixed(1)}px, rgba(8,8,4,0) ${C0.toFixed(1)}px, rgba(8,8,4,${D}) ${C1.toFixed(1)}px)`; }
   FOC.style.opacity = FS.k.toFixed(3); };
 const focus = (p, r, t, until) => { until = Math.min(until ?? 1e9, t + 3.5);
   tl.to(FS, { x: p[0], y: p[1], r, duration: 0.6, ease: "sine.inOut", onUpdate: focApply }, t);

@@ -15,7 +15,7 @@ const BW = (() => {
   document.getElementById("date").style.display = "none";            // the black date plate is replaced by the pocket-watch plaque
   K.FOCUS_DIM = 1.9; K.FOCUS_LIT = 0.15; K.FOCUS_CORE = 380; K.FOCUS_FEATHER = 200; K.FOCUS_OUT = 0.32;   // r13b (critic A): findable edge, ~30 % darker outside, warmer light
   { const PN = document.getElementById("pins"); if (typeof FOC !== "undefined" && PN && PN.parentElement) { PN.parentElement.insertBefore(FOC, PN);   // the dim under the pins: only the ground darkens
-      Object.assign(FOC.style, { inset: "auto", left: "0px", top: "0px", width: "1920px", height: "1080px", transformOrigin: "0 0" }); } }                               // the soft focus "light circle" turned up (owner 2026-11-27): darker outside, faint warm light on the place named
+      Object.assign(FOC.style, { inset: "auto", left: "-2000px", top: "-2000px", width: "6880px", height: "5620px" }); } }                               // the soft focus "light circle" turned up (owner 2026-11-27): darker outside, faint warm light on the place named
   // ---- tilt wrapper: #world (map + pins + svg) and #fx (screen-space smoke) tilt together, the HUD and the cards stay flat
   const WR = document.createElement("div"); WR.id = "bw-tilt"; WR.style.cssText = "position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:50% 62%;";
   WORLD.parentNode.insertBefore(WR, WORLD); WR.appendChild(WORLD);
