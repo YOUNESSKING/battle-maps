@@ -218,19 +218,23 @@ else {
     const NT = V.night ? [0.42, 0.47, 0.58] : [1, 1, 1];
     const mat = new THREE.ShaderMaterial({ transparent: true, depthTest: false, depthWrite: false, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
       blendSrcAlpha: THREE.OneFactor, blendDstAlpha: THREE.OneMinusSrcAlphaFactor,
-      uniforms: { uA: { value: ATL }, uR: { value: new THREE.Vector3() }, uU: { value: new THREE.Vector3() }, uNT: { value: new THREE.Vector3(...NT) }, uFl: { value: 0 }, uSq: { value: V.squash ?? 0.82 } },
+      uniforms: { uA: { value: ATL }, uR: { value: new THREE.Vector3() }, uU: { value: new THREE.Vector3() }, uNT: { value: new THREE.Vector3(...NT) }, uFl: { value: 0 }, uHz: { value: V.haze ? 1 : 0 }, uSq: { value: V.squash ?? 0.82 } },
       vertexShader: `attribute vec4 iP; attribute vec4 iQ; uniform vec3 uR; uniform vec3 uU; uniform float uSq; varying vec2 vUv; varying vec4 vQ;
         void main(){ vec2 q = vec2(position.x, position.y * uSq); vec3 wp = iP.xyz + (uR * q.x + uU * q.y) * iP.w; vec2 cell = vec2(mod(iQ.y, 4.0), floor(iQ.y / 4.0));
           vUv = (cell + vec2(position.x + 0.5, 0.5 - position.y) * 0.98 + 0.01) / vec2(4.0, 2.0); vQ = iQ;
           gl_Position = projectionMatrix * viewMatrix * vec4(wp, 1.0); }`,
-      fragmentShader: `uniform sampler2D uA; uniform vec3 uNT; uniform float uFl; varying vec2 vUv; varying vec4 vQ;
+      fragmentShader: `uniform sampler2D uA; uniform vec3 uNT; uniform float uFl; uniform float uHz; varying vec2 vUv; varying vec4 vQ;
         void main(){ vec4 tx = texture2D(uA, vUv); float d = tx.a * vQ.x; if (d < 0.002) discard;
           vec3 col = tx.rgb; float lum = dot(col, vec3(0.333));
           if (vQ.w > 1.5) col *= vec3(0.9, 0.74, 0.52);                                                   // ground dust
           else if (vQ.w > 1.05) col *= vec3(0.46, 0.45, 0.44) * (0.85 + 0.3 * lum);                    // soot (the burning roof's column)
           else col *= mix(1.0, 0.96, vQ.w) * mix(1.0, 0.72, vQ.w * clamp(1.4 * (1.0 - lum), 0.0, 1.0));   // r12 cannon smoke: tops ~(230,227,220), undersides ~(95,98,105)
           col *= 1.0 + uFl * clamp(1.15 - lum, 0.0, 1.0) * vec3(1.0, 0.9, 0.72);                         // r10: each flash lifts the bank's underside (+20 %, 2 frames)                                  // heavier, darker (cannon) smoke: undersides darken most
-          col = mix(col, vec3(0.965, 0.955, 0.93), vQ.z * 0.75) * uNT; gl_FragColor = vec4(col * d, d); }` });
+          if (uHz > 0.5 && vQ.w < 0.01) {   // r13 (owner: musket smoke too white): a soft grey-blue haze, core ~(196,198,200), shadows ~(150,152,158), a faint lit rim
+            col = mix(vec3(0.588, 0.596, 0.620), vec3(0.769, 0.776, 0.784), clamp((lum - 0.42) / 0.45, 0.0, 1.0)) + vec3(0.025) * smoothstep(0.86, 0.95, lum);
+            col = mix(col, vec3(0.85, 0.85, 0.84), vQ.z * 0.6); }
+          else col = mix(col, vec3(0.965, 0.955, 0.93), vQ.z * 0.75);
+          col *= uNT; gl_FragColor = vec4(col * d, d); }` });
     const mesh = new THREE.Mesh(geo, mat); mesh.frustumCulled = false; const sScene = new THREE.Scene(); sScene.add(mesh);
     const RT = new THREE.WebGLRenderTarget(1280, 720, { type: THREE.HalfFloatType, depthBuffer: false });
     const MAXR = 24, rects = Array.from({ length: MAXR }, () => new THREE.Vector4(-1, -1, -1, -1)), rmax = new Float32Array(MAXR), rfe = new Float32Array(MAXR).fill(1.5);
