@@ -45,11 +45,11 @@ const CW = [1440, 780, 0.74];                       // the wide frame after the 
 // BW r4: the v8 cloud dive with the real engine (kit/js/bwgl.mjs): a high oblique view over the whole Lowcountry (tilt ~38 deg) drifting down
 // while "one road ... Charleston ... Santee River" is spoken, then the fall into the deck over Nelson's Ferry, the white-out around the swap
 // (SW), the landing on the santee map under it, emerging through torn stratus; settled by ~8.9 s ("There, before dawn" 9.0 s)
-const SW = 7.0, NFL = PP(1581.8, 1085.8);
-const TZ0 = T_SANTEE - 0.35, TZ1 = SW + 1.9;
-const A0 = [1395, 905, 0.86], A1 = [1440, 950, 1.05], AD = [NFL[0], NFL[1] - 6, 8.0];
-seg(0, 5.3, A0, A1, "sine.inOut");
-seg(5.3, SW, A1, AD, "power2.in", [[A1[0], A1[1]], [AD[0], AD[1]]]);
+const SW = 7.0, NFL = PP(1581.8, 1085.8);   // r5: short white-out ~6.6-7.1 s, swap under it; landed clear by ~7.6 s
+const TZ0 = T_SANTEE - 0.35, TZ1 = SW + 0.75;
+const A0 = [1395, 985, 1.05], A1 = [1440, 1005, 1.15], AD = [NFL[0], NFL[1] - 6, 8.0];
+seg(0, 5.6, A0, A1, "sine.inOut");
+seg(5.6, SW, A1, AD, "power2.in", [[A1[0], A1[1]], [AD[0], AD[1]]]);
 seg(SW, TZ1, [AD[0], AD[1], 9.2], CEND, "power2.out");
 SFX("whoosh", TZ0 - 0.1);
 seg(TZ1 + 0.02, T_DAWN + 1.4, CEND, CH2, "sine.inOut");
@@ -137,8 +137,9 @@ mg(PP(1478, 702), PP(...REND[1]), T_GUNS + 1.1, 4, 1.3 / CH2[2]);
 // BW: every shot of the guard = one muzzle flash + one flintlock shot cue (6 shots, ragged)
 [0.05, 0.27, 0.42, 1.1, 1.31, 1.58].forEach((dt, i) => BW.shot(PP(1478 - 16 + 7 * i, 702 + (i % 2 ? 8 : -6)), T_GUNS + dt, { k: 0.9, aim: PP(...REND[i % 2]), puff: false }));
 // r4: two short tall smoke curtains beside the guard (engine fx.smokeLine, GM settings), clear of the prisoners (east)
-BW.smokeGL([PP(1520, 694), PP(1526, 690)], T_GUNS + 0.05, T_GUNS + 0.6, { h: 1.2, opts: { look: "bwTall", rate: 14, alpha: 0.11 } });   // night: thinner; east of the guard
-BW.smokeGL([PP(1536, 716), PP(1542, 712)], T_GUNS + 1.1, T_GUNS + 1.7, { h: 1.2, opts: { look: "bwTall", rate: 14, alpha: 0.11 } });   // (the guard box stays clear)
+// r5: real curtains: wider (gmTall), leaning downwind (west-north), from the guard's muzzles east of the box; boxes stay >= 50 % visible
+BW.smokeGL([PP(1500, 700), PP(1512, 696)], T_GUNS + 0.05, T_GUNS + 0.6, { h: 1.2, opts: { look: "gmTall", rate: 16, alpha: 0.13 } });
+BW.smokeGL([PP(1528, 712), PP(1540, 708)], T_GUNS + 1.1, T_GUNS + 1.7, { h: 1.2, opts: { look: "gmTall", rate: 16, alpha: 0.13 } });
 // BW r3: the kit smoke is replaced by the per-shot puffs (<= 6 per volley)
 B.move("r1", T_GUARD - 0.25, 0.45, ...PP(1440, 698)); B.move("r2", T_GUARD - 0.15, 0.45, ...PP(1478, 740));
 hideU(["g1"], T_GUARD + 0.35);
@@ -173,10 +174,12 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
 // ================================================================================================================================
 // r4: the real engine (fx.vclouds + the v8 dive + the close stratus + cloud shadows on the ground), camera solved from the DOM camera
 { const ROADP = [...R_CN, ...R_NC].filter((q, i) => i % 2 === 0), CHS = LYT(32.80, -79.95);
-  BW.gl({ mpu: 128, dive: { t: SW, over: NFL }, diveOff: { haze: 1.75, land: 1.9 },
-    fair: { F: 3.3, box: [150, 120, 2600, 1400], n: 18, med: 24, seed: 5, tiers: [49, 78, 108], diveClear: 60, keepLines: [[ROADP, 80]], keep: [[CHS[0], CHS[1], 110], [860, 1110, 130]],
-      on: (t) => t < SW + 1.2 },
-    stratus: { F: 3.1, at: [CEND[0], CEND[1]] }, smokeScale: 130, smokeWind: [3, -1] }); }
+  // r5 timing (critic B: the spoken places must read): deck from 6.4 s, white ~6.6-7.1 s, emerge 7.1, clear 7.25, haze gone 7.55, land 7.6
+  BW.gl({ mpu: 128, dive: { t: SW, over: NFL }, hazeK: 0.6,
+    diveOff: { push: -1.2, deckIn: -0.45, full: -0.25, deck: -0.2, wIn: -0.2, inside: -0.1, warm: 0.05, emerge: 0.25, clear: 0.4, haze: 0.7, land: 0.75 },
+    fair: { F: 3.3, box: [150, 120, 2600, 1400], n: 18, med: 24, seed: 5, tiers: [49, 78, 108], diveClear: 110, keepLines: [[ROADP, 80]], keep: [[CHS[0], CHS[1], 110], [860, 1110, 130]],
+      on: (t) => t < SW + 1.2, screenClear: { t: [2, 6.4], box: [550, 380, 1000, 560] } },
+    stratus: { F: 3.1, at: [CEND[0], CEND[1]], speed: 0.45 }, smokeScale: 150, smokeWind: [-260, -90] }); }
 // hook-2: "before dawn" is the script's only time: the pocket watch comes in (hands ~4:30, no clock time is spoken)
 BW.time(T_DAWN, { label: "Before dawn", header: "1780" });   // r2: no clock time is spoken: text only, no watch
 BW.date("1780", T_4M + 0.1);
@@ -186,4 +189,4 @@ BW.date("1780", T_4M + 0.1);
   BW.legend(8.5, T70 - 0.15, ENT); BW.legend(Math.min(T_GUARD, 16.9) + 0.5, END + 1, ENT); }
 // gentle tilt: flat while falling, then a slow push with ~8 deg of perspective once the lens is below the clouds
 // r4: high oblique (38 deg) for the overview, straightening during the fall (10 deg at the swap), 7 deg on the landed 2D map
-BW.tilt([[0, 38, 1.0], [5.3, 36, 1.0], [SW - 0.02, 10, 1.0, "power2.in"], [SW, 16, 1.0, "none"], [TZ1, 7, 1.05, "power2.out"], [END, 7, 1.06]]);
+BW.tilt([[0, 38, 1.0], [5.6, 36, 1.0], [SW - 0.02, 10, 1.0, "power2.in"], [SW, 14, 1.0, "none"], [TZ1, 7, 1.05, "power2.out"], [END, 7, 1.06]]);

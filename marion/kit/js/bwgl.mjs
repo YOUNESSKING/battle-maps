@@ -77,6 +77,16 @@ else {
       k++; wsp.push([cx, cz, R0, c]); const kids = 1 + Math.floor(hsh(c + sd, 65) * 3);
       for (let j = 0; j < kids; j++) { const i2 = (c + sd) * 7 + j, a = hsh(i2, 66) * 6.283, r = lnr(i2, 67, R0 * 0.45, 0.6, 7 * F, R0 * 0.9), dd = R0 * (0.9 + 0.8 * hsh(i2, 69)) + r * 0.6;
         const x = cx + Math.cos(a) * dd, z = cz + Math.sin(a) * dd * 0.8; if (!offWide(x, z, r)) wsp.push([x, z, r, c]); } }
+    // r5: screen-space keep-clear (spoken places must read): drop whole clusters whose cloud projects into the box (+ its radius) at the sampled times
+    const SCL = C.fair.screenClear; let dropC = new Set();
+    if (SCL) { const TL = window.__timelines && window.__timelines.main, t0 = TL ? TL.time() : 0, v = new THREE.Vector3();
+      const tiers0 = C.fair.tiers || [49, 49];
+      for (let tt = SCL.t[0]; tt <= SCL.t[1] + 1e-6; tt += 0.25) { if (TL) TL.seek(tt, false); camSolve();
+        for (const [x, z, r, c] of wsp) { for (const yy of tiers0) { v.set(x, (yy + 20) * F, z).project(camera); const sx = (v.x + 1) / 2 * 1920, sy = (1 - v.y) / 2 * 1080;
+          const rs = r * 1.3 * 1700 / Math.max(1, camera.position.distanceTo(new THREE.Vector3(x, yy * F, z)));
+          const [bx0, by0, bx1, by1] = SCL.box; if (v.z < 1 && sx + rs > bx0 && sx - rs < bx1 && sy + rs > by0 && sy - rs < by1) dropC.add(c); } } }
+      if (TL) TL.seek(t0, false); }
+    for (let i = wsp.length - 1; i >= 0; i--) if (dropC.has(wsp[i][3])) wsp.splice(i, 1);
     // 2-3 heights (parallax while the camera drops): each cluster picks a tier
     const TIERS = C.fair.tiers || [49, 49]; const tierOf = (c) => TIERS[Math.floor(hsh(c, 71) * TIERS.length)];
     const deck = [];
@@ -95,7 +105,7 @@ else {
       stepIn: 0.25 * F, stepK: 0.0035, lightStep: 1.4 * F, lodDist: 260 * F, nearFade: 3 * F, maxSteps: C.fair.maxSteps ?? 200, resolution: C.fair.res ?? 0.6, warp: 0.06, fine: 0.12, wisp: 0.45, inner: 0.8,
       weights: [1.0, 0.5, 1, 0.5], group0: [0.55, 0.3, 1.4, 0.5], blur: 1.0, sharp: 1, shadow: 0.75, shadowDir: [0.3, 1, 0.65], drift: (C.fair.drift || [0.10, -0.035]).map((v) => v * F), evolve: 0.0025 / F, floor: 0.05,
       sunK: 1.4, ambK: 0.18, lightK: 3.2,
-      erode: (t) => { const d = D0; return [C.fair.erode0 ? C.fair.erode0(t) : 0, t > d.SW + 0.5 ? 9 : lerp(1.6, 0, sstep(d.deckIn - 0.1, d.deckIn + 0.6, t))]; },
+      erode: (t) => { const d = D0; return [C.fair.erode0 ? C.fair.erode0(t) : 0, t > d.SW + 0.5 ? 9 : lerp(9, lerp(1.6, 0, sstep(d.deckIn - 0.1, d.deckIn + 0.6, t)), sstep(d.deckIn - 0.15, d.deckIn + 0.15, t))]; },   // r5: the deck does not exist before deckIn (spoken places read)
       deck: (t) => { const d = D0; return { x: d.over[0], z: d.over[1], r: 110 * F, front: 3.5 * (1 - sstep(d.deckIn + 0.1, d.full, t)), k: lerp(0, 1, sstep(d.deckIn, d.deckIn + 0.6, t)) }; },
       ms: (t) => { const d = AD(t); return lerp(0.22, 0.42, sstep(d.full - 0.2, d.inside, t)); }, expo: (t) => { const d = AD(t); return lerp(1, 0.93, sstep(d.full - 0.2, d.inside, t)); },
       colors: (t) => { const d = AD(t), k = sstep(d.full - 0.2, d.inside, t), c = sstep(d.deckIn, d.deckIn + 0.5, t) * (1 - k), q = Math.max(k, c);
@@ -108,16 +118,16 @@ else {
   }
   // ---------------- the landing's torn stratus sheets (engine close-region code, lengths x Fc)
   if (C.stratus && DV) {
-    const Fc = C.stratus.F || 1, c = C.stratus.at, sys = mkFX({ seed: 1517, on: (t) => t > DV.SW - 1 && t < DV.emerge + 4 });
+    const Fc = C.stratus.F || 1, c = C.stratus.at, K = C.stratus.speed ?? 1, sys = mkFX({ seed: 1517, on: (t) => t > DV.SW - 0.15 && t < DV.emerge + 4 * K });   // r5: one world: the landing stratus only from under the white
     const ccl = [[-11, -9, 9], [11, -11, 8], [-15, 7, 10], [14, 11, 9], [-1, 19, 8], [0, -17, 7], [-23, -2, 7], [21, 0, 7], [-8, 0, 6], [7, 1, 6]]
       .map(([dx, dz, r], i) => [c[0] + dx * Fc, c[1] + dz * Fc, r * 1.25 * Fc, (2.6 + hsh(i, 24) * 1.2) * Fc, (16.5 + hsh(i, 25) * 3) * Fc, 1]);
     sys.vc = sys.fx.vclouds({ noise: NOISE, clouds: ccl, bounds: [c[0] - 50 * Fc, c[1] - 45 * Fc, c[0] + 50 * Fc, c[1] + 45 * Fc], texel: 0.2 * Fc, skip: 8 * Fc, slab: [14 * Fc, 26 * Fc], tile: 9 * Fc, amp: 1.5 * Fc, soft: 0.8 * Fc, sigma: 1.1 / Fc,
       wisp: 0.8, inner: 0.7, flatPow: 0.35, blobs: 6, stepIn: 0.12 * Fc, stepK: 0.004, lightStep: 0.35 * Fc, lodDist: 90 * Fc, nearFade: 1.2 * Fc, maxSteps: 180, resolution: 0.6, warp: 0.18, fine: 0.1,
       weights: [1.0, 0.5, 1, 0.6], blur: 1.0, sharp: 1, shadow: 0.45, shadowDir: [0.3, 1, 0.65], drift: [0.5 * Fc, -0.18 * Fc], evolve: 0.006 / Fc, sunK: 0.95, ambK: 0.5, lightK: 1.6,
       colors: { sun: [1.0, 0.97, 0.9], ambTop: [0.62, 0.67, 0.74], ambBot: [0.30, 0.35, 0.44] },
-      erode: (t) => [0, lerp(0.35, 0.7, sstep(DV.emerge, DV.emerge + 1.2, t)) + lerp(0, 2.2, sstep(DV.emerge + 1.0, DV.emerge + 3.3, t))],
-      deck: (t) => ({ x: c[0] + 4 * Fc, z: c[1], r: 9 * Fc, front: 3 * sstep(DV.emerge + 0.9, DV.emerge + 1.6, t), k: 1 }),
-      opacity: (t) => (t < DV.SW - 1 ? 0 : 1 - sstep(DV.emerge + 3.2, DV.emerge + 3.8, t)) });
+      erode: (t) => [0, lerp(0.35, 0.7, sstep(DV.emerge, DV.emerge + 1.2 * K, t)) + lerp(0, 2.2, sstep(DV.emerge + 1.0 * K, DV.emerge + 3.3 * K, t))],
+      deck: (t) => ({ x: c[0] + 4 * Fc, z: c[1], r: 9 * Fc, front: 3 * sstep(DV.emerge + 0.9 * K, DV.emerge + 1.6 * K, t), k: 1 }),
+      opacity: (t) => (t < DV.SW - 0.15 ? 0 : 1 - sstep(DV.emerge + 3.2 * K, DV.emerge + 3.8 * K, t)) });
   }
   // ---------------- musket smoke: fx.smokeLine with the GM settings (SMOKE_GM) per firing line
   if ((C.smoke || []).length) {

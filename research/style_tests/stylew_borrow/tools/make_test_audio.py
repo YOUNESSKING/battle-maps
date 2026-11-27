@@ -82,14 +82,20 @@ for (a, b, name) in SEGS:
     parts.append((vo, mu, fx))
 
 # --- concat (10 ms joins under the picture's fade through black) and the assemble_full.py chain: music 0.08 ducked (ratio 6), sfx ducked (ratio 3)
+XF = float(os.environ.get("XF", "0"))   # r5: straight crossfades of XF s at the joins (the picture uses xfade with the same overlap)
 def cat(i):
-    out = []
-    for p in parts:
-        x = p[i].copy(); f = int(0.08 * SR); x[:f] *= np.linspace(0, 1, f)[:, None]; x[-f:] *= np.linspace(1, 0, f)[:, None]; out.append(x)
-    return np.concatenate(out)
+    if XF <= 0:
+        out = []
+        for p in parts:
+            x = p[i].copy(); f = int(0.08 * SR); x[:f] *= np.linspace(0, 1, f)[:, None]; x[-f:] *= np.linspace(1, 0, f)[:, None]; out.append(x)
+        return np.concatenate(out)
+    f = int(round(XF * SR)); y = parts[0][i].copy()
+    for p in parts[1:]:
+        x = p[i]; r = np.linspace(0, 1, f)[:, None]; y[-f:] = y[-f:] * (1 - r) + x[:f] * r; y = np.concatenate([y, x[f:]])
+    return y
 tmp = "/tmp/_bw_"
 for i, nm in enumerate(("vo", "mu", "fx")): sf.write(f"{tmp}{nm}.wav", cat(i), SR, subtype="FLOAT")
-D = sum(b - a for a, b, _ in SEGS)
+D = sum(b - a for a, b, _ in SEGS) - XF * (len(SEGS) - 1)
 f = ["[0:a]asplit=3[vo][key][key2]", "[2:a][key2]sidechaincompress=threshold=0.03:ratio=3:attack=10:release=300[sfx]",
      f"[1:a]volume=0.08[mus]", "[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]",
      "[vo][musd][sfx]amix=inputs=3:normalize=0,alimiter=limit=0.5:level=false[aout]"]

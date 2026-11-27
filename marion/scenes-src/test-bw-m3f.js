@@ -151,9 +151,12 @@ BW.legend(0, T_COUNT - 0.2, [{ name: "Marion's men", sub: "South Carolina", colo
 BW.tilt([[0, 6, 1.05], [END, 7, 1.06]]);
 // r4: the real engine: one tall smoke curtain per ripple (fx.smokeLine, GM settings) behind the hidden line, west and east of Marion's banner
 // (never over the jammed red boxes, the FRASER tag or the banner); big soft cumulus drifting over the map away from the action and the result list
-BW.smokeGL([[1490, 738], [1500, 738]], T_EVERY, T_EVERY + 0.62, { h: 14, opts: { look: "bwTall", rate: 26, alpha: 0.2 } });   // h: lifted off the ground (the engine fades sprites that touch it)
-BW.smokeGL([[1590, 740], [1600, 741]], T_BUCK + 0.05, T_BUCK + 0.85, { h: 14, opts: { look: "bwTall", rate: 22, alpha: 0.2 } });
-BW.gl({ mpu: 16, smokeScale: 70, smokeWind: [2.5, -0.6],
-  fair: { F: 1.5, box: [1150, 620, 720, 440], n: 9, med: 22, seed: 21, tiers: [49, 58], drift: [0.5, -0.15], diveClear: 0,
+// r5: real curtains: cluster [26, 24] = 3 curtains along the line (the gap at x 1516-1540 keeps Marion's banner clear), from the muzzles
+//   just north of the boxes, leaning downwind (west-north); the bottom stays above the causeway (red boxes + FRASER clear)
+BW.smokeGL([[1490, 772], [1616, 772]], T_EVERY, T_EVERY + 0.62, { h: 14, opts: { look: "bwTall", rate: 7, alpha: 0.16, cluster: [26, 24], seed: 41 } });
+BW.smokeGL([[1490, 774], [1616, 774]], T_BUCK + 0.05, T_BUCK + 0.85, { h: 14, opts: { look: "bwTall", rate: 5, alpha: 0.13, cluster: [26, 24], seed: 43 } });
+// r5: the close battle field: no cumulus on screen, only faint cloud shadows (<= 0.3)
+BW.gl({ mpu: 16, smokeScale: 36, smokeWind: [-40, -16], shadowK: 0.3,
+  fair: { F: 1.5, box: [1150, 620, 720, 440], n: 9, med: 22, seed: 21, tiers: [49, 58], drift: [0.5, -0.15], diveClear: 0, opacity: () => 0,
     keep: [[1525, 790, 95], [1470, 815, 70], [1400, 850, 80], [1745, 705, 110], [1440, 815, 60]] } });   // r2: capped (sharpness)
 }

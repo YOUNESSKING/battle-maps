@@ -95,3 +95,15 @@ World units = base-map px (lowcountry z10 ~ the engine's own map px; every engin
 - Rendered on RunPod (`tools/render_pod_bw.sh`: no A4500, no RTX 3090 (a 3090 render came out corrupted: black ellipse / blocky clouds,
   discarded), 10-min no-answer kill): RTX A4000 + RTX 4000 Ada + one bad 3090 run, ~25 pod-minutes, ~$0.08; pods list verified empty.
 Open: smoke curtains are single columns (v8 has many along long lines); the far side of the map at 38 deg is a haze band (the 2D map ends).
+
+## r5 (critics r4: A 7.5, B 6 "the dive hides the spoken places") -> `stylew_borrow_test_r5_share.mp4` (63.05 s, 20 MB, -14.0 LUFS) + `sheet_r5.jpg`
+- Dive timing: SW 7.0 with short offsets (deck from 6.55 s, white ~6.75-7.25 s, emerge 7.25, clear 7.4, haze gone 7.7, landed 7.75);
+  the deck does not exist before deckIn (erosion 9) and the landing stratus only from under the white (one world: r4 showed them early);
+  stratus tear away 2.2x faster (`stratus.speed` 0.45). Fair clouds: whole clusters dropped when they project into the screen box
+  x 550-1000 / y 380-560 at any time 2-6.4 s (`fair.screenClear`); dive column clear radius 110 F. Overview a bit closer (s 1.05 -> 1.15)
+  so the map fills the top; haze band thinner (`hazeK` 0.6).
+- Smoke: Parker's Ferry: `cluster [26, 24]` = 3 curtains along each ripple (gap over Marion's banner), from just north of the boxes, bottom above
+  the causeway, leaning downwind (wind west-north), ~90 x 300 px; guard: 2 wider gmTall curtains east of the guard (boxes visible).
+- Close battle map: no cumulus on screen at Parker's Ferry (vclouds opacity 0), only faint shadows (`shadowK` 0.3); no clouds under the title.
+- Joins: straight 0.25 s crossfades (`tools/finalize_xf.sh`; the audio crossfades with the same overlap: `XF=0.25 make_test_audio.py`).
+- RunPod: one RTX A4000 run (~10 min, ~$0.03), pods list verified empty.
