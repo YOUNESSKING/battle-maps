@@ -5,7 +5,7 @@ Owner decision (2026-11-27): back to the 2D Style W main style (STYLE_LOCK 2d/2e
 Where a borrowed element overlaps one of ours, the borrowed one REPLACES ours. Everything else stays locked Style W.
 **This is a test: nothing here is in STYLE_LOCK yet; apply only after the owner approves.**
 
-- `stylew_borrow_test_share.mp4`: 62.7 s, 1920x1080, -14 LUFS. Four windows of the published Marion #18, same voice (voice A) and words:
+- `stylew_borrow_test_share.mp4`: 62.7 s, 1920x1080, 19 MB, -14.0 LUFS (TP -1.4). Four windows of the published Marion #18, same voice (voice A) and words:
   film 0:00.0-0:17.8 (hook-1/2: dive, watch, guard's muskets) | 0:56.35-0:58.85 (name slam) | 1:11.45-1:15.85 (title) |
   13:21.5-13:59.5 (move 3, Parker's Ferry: date + seal, ambush volleys, result list). Joins = 0.08 s fades.
 - `sheet.jpg`: 9 matched moments, published Marion (left, side key burned in as in the film) | this test (right).
@@ -30,7 +30,7 @@ Where a borrowed element overlaps one of ours, the borrowed one REPLACES ours. E
   `python3 kit/build_scene.py test-bw-hook-a lowcountry hook-1 hook-2 --inset santee --borrow` (hook-b: `lowcountry hook-3 hook-5 --inset santee --inset blackriver`; m3f: `edisto m3-11 m3-12`).
 - Voice: `tools/voice_clip.py` re-voices only the needed paragraphs with Kokoro (identical lengths to timing.json, checked), then voice A
   (`tts/convert_voice.py`, ref `tts/voices/test_A_chatterbox.mp3`) on the three windows. Music = `marion/tools/make_music_bed.py`. Kit cues = the scenes' own `SFX()` through `sfx_mix_lib` (SOUND LOCK OK; locked wavs hard-linked from goosegreen, not committed). Mix chain = `assemble_full.py` (music 0.08 ducked, SFX ducked, limiter, two-pass loudnorm) -> -14.0 LUFS.
-- `tools/make_sheet.py` (sheet), rendered locally (hyperframes `--start/--end`, 4 windows), no RunPod spend.
+- `tools/make_test_audio.py` (sound), `tools/finalize.sh` (join + mux + share encode), `tools/make_sheet.py` (sheet), rendered locally (hyperframes `--start/--end`, 4 windows), no RunPod spend.
 
 ## Open issues for the critics / owner
 1. HUD scale: the GM plaques are their 1920-px size (smaller than our black plate / side key); at phone size the ledger and the timeline labels are small. Option: scale the HUD 1.2x.
