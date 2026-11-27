@@ -282,7 +282,8 @@ BW.tilt([[0, 6, 1.05], [END, 7, 1.06]]);
   const box = (c, w, h) => [c[0] - w, c[1] - h, 2 * w, 2 * h];   // two views: the banner (name slam) and the Fort Watson layer (title)
   BW.gl({ mpu: 128, fair: { F: 1.6, box: box([(B0[0] + 945) / 2, (B0[1] + 345) / 2], Math.abs(B0[0] - 945) / 2 + 650, Math.abs(B0[1] - 345) / 2 + 400), n: 22, med: 24, seed: 11, tiers: [49, 60], diveClear: 0, on: (t) => t < T_THESE - 0.3,   // r5: no clouds under the title
     keep: [[B0[0], B0[1] - 20, 110], [B0[0] - 170, B0[1] + 138, 120], [B0[0], B0[1] + 138, 120], [B0[0] + 170, B0[1] + 138, 120],
-           [945 - 260, 310, 150], [945, 310, 160], [945 + 260, 310, 150], [945, 380, 150]], drift: [0.6, -0.2] } }); }
+           [945 - 260, 310, 150], [945, 310, 160], [945 + 260, 310, 150], [945, 380, 150]], drift: [0.6, -0.2],
+    screenClear: { t: [27.5, 49], boxes: [[0, 0, 480, 210], [0, 850, 480, 1080]] } } }); }   // r13: never over the date plate or THE ARMIES key
 // r4: the banner's name plate hidden while the gold name is up (CSS switch on the scene; the reveal re-creates the plate)
 { const st = document.createElement("style"); st.textContent = '[data-bwslam="1"] .bn-name,[data-bwslam="1"] .bn-name ~ div{opacity:0 !important}'; document.head.appendChild(st);
   tl.set(SCN, { attr: { "data-bwslam": "1" } }, T_FM - 0.05); tl.set(SCN, { attr: { "data-bwslam": "0" } }, T_FM + 1.65); }   // r2: capped (sharpness)

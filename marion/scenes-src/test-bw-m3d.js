@@ -301,6 +301,7 @@ ICON(`<svg width="64" height="64" viewBox="-20 -20 40 40" style="display:block;o
 if (GD.var.audit) LABEL_AUDIT([2, 10, 20, 30, 40, 50, 60, 70], { show: true });
 // ================================================================================================================================
 // BW r9: the 3D layer for the cannon (K = world px per screen px at the camera scale 3.6), slow wind, heavier smoke cap 0.75
-BW.gl({ mpu: 16, shadowK: 0.3, volley: { K: 1 / 3.6, cwind: [6, -2], cap: 0.9 } });
+BW.gl({ mpu: 16, shadowK: 0.3, volley: { K: 1 / 3.6, cwind: [6, -2], cap: 0.9,
+  capBoxes: [[[1356, 698, 1422, 746], TGF + 1.5, TGF + 5.5, 0.6, 30]] } });   // r13: over the house front the cannon smoke stays <= 0.6 from +1.5 s for 4 s (defenders, white flag)
 BW.legend(0, END + 1, [{ name: "Americans", sub: "Marion and Lee", color: "#2c57b7" }, { name: "British", sub: "the garrison", color: "#bc2528" }]);
 }
