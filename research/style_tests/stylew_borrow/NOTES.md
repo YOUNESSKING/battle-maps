@@ -259,6 +259,77 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r16 share (r16c + polish) -> `stylew_borrow_test_r16_share.mp4` (76.733 s, 2302 frames at 30 fps, 21 MB; r15 audio stream copied bit-exact)
+- Polish (coordinator): the field is warmed toward the map grade (`fieldTint` [0.983, 0.975, 0.956]: lit tops ~(238,232,218), ~4 % darker).
+  The bank masses are jittered (`jitter`: per mass a random mirror, +-20 deg, +-15 % scale, a small hue/brightness shift; same 5 sprites).
+  The bank's hole is centred on the wagons (dx 60 / dy 110 px from the ferry), so the boxes stay visible until it closes (~6.75 s).
+  Cover: 1.0 s 13 %, 6.4 s 58 %, 6.6 s 72 %, 6.8 s 99 %, 6.95-7.05 s 100 %, 7.2 s 62 %, 7.5 s 0.
+- Render: hook window 0-17.8 s (`test-bw-hook-a:0-17.8`, build `--borrow --paint`, LOOK LOCK OK). RunPod: no community A5000/A4000 for
+  the first try; then one RTX A5000 SECURE ($0.27/h, render 241 s, ~6 min up, ~$0.03). The pod was terminated and the pods list verified empty.
+- Splice: share frames 0-526 = the new render (r15's first crossfade, hook -> name slam, starts at 17.55 s = frame 527); frames 527-2301 =
+  r15. Re-encoded as r15 (x264 slow crf 22, maxrate 3.2 Mb/s); audio `-c:a copy` (stream MD5 identical to r15). Alignment checked: render vs
+  r15 at frames 300/450/520/526 differ by a mean 0.7-1.1 grey levels (encode only). Seam 524-531 is continuous.
+
+## r16c (owner: the direction is right; halfway between r16 clip-art and r16b fog, "an old illustrated map") -> `sheet_dive2d_r16c.jpg` (r15 | r16b | r16c at 1.0 / 4.0 / 6.6 / 7.7 s, + the bank at 6.85, the wipe parting at 7.2, a 1:1 crop)
+- Merged origin/main (look lock v1, PR #154). The `--paint` additions in build_scene.py now sit inside `LOOK-LOCK pending-begin/-end clouds`
+  sections; the gate prints LOOK LOCK OK, with only the expected cloud warnings. No locked preset was touched.
+- Sprites (`make_paint_clouds.py`, `lobed()`): each cloud is 3-7 soft rounded lobes (bank masses 11-16) of different sizes, seen from above at the
+  map's tilt (lobes flattened 0.8). Each lobe gets its own painted shading: lit top-left (242,238,228), mid (222,220,214), cool shade lower right
+  (188,192,202), wide soft steps, and a faint warm sepia rim on the shade side. Lobes are laid far to near like brush dabs, on an irregular rim.
+  The dry-brush feather is ~10-20 px. Cores ~0.9, the thin outer band ~0.6. Paper grain; no glare. The colour is un-premultiplied (first try
+  had dark fringes). Kinds: `g` = cumulus groups (10), `w` = r16b wisps (3), `b` = bank masses (5).
+- Field: 13 groups + 3 long low wisps, sprite radius 72-361 px (5x), off the road / stamp / Charleston / British boxes. Cover measured on the
+  cloud canvas (alpha > 0.5, the warm top haze excluded): 13 % at 1.0 s, 12 % at 4.0 s. Ground shadows ~18 %, offset down-right.
+- Bank + wipe (screen space round the ferry): 9 lobed masses grow in from all edges from 6.0 s (radius 1450 -> 900 px by 6.6 s, then close to
+  ~450 px by SW - 0.08). The painted backing shows for <= ~0.13 s; then they part outward into soft wisps (0.6 s).
+  Measured cover: 6.2 s 24 %, 6.4 s 66 %, 6.6 s 80 % (a hole over the wagons), 6.8 s 97 %, 6.95-7.05 s 100 %, 7.1 s 93 %, 7.2 s 61 %, 7.3 s 31 %, 7.5 s 0.
+
+## r16b (coordinator on r16: "cartoon clip-art, not painted Style W") -> `sheet_dive2d_r16b.jpg` (r15 | r16b at 1.0 / 4.0 / 6.6 / 7.7 s, + the bank at 6.85, the wipe parting at 7.2, a 1:1 crop)
+- Sprites rebuilt (`make_paint_clouds.py`): soft painted masses seen from above. The density is a sum of gaussian blobs; edges dissolve
+  in a dry brush over ~20-40 px (a wide feather, stroke noise, a broken outer band); never a straight bottom. Translucent: thin parts ~0.6,
+  the core ~0.85, wisps <= 0.62. Low contrast: lit (240,236,226) / mid (222,221,216) / shade (196,198,204), wide soft steps, paper grain.
+  Kinds: `p` = puffs seen from above (6), `w` = long low wisps (4), `b` = big bank masses (4). The old side-on `c/m/t` stickers are gone.
+- Field: 15 clouds, log-normal sizes (sprite radius 64-450 px, 7x), 3 wisps, near layer only at the frame edges.
+- Ground shadows now visible. In r16 they never drew: the tinted shadow is a canvas and the sprite drawer only accepted loaded images.
+  Now a feathered cool wash (~18 % darkening) under each cloud as seen, offset down-right.
+- The 6.6 s clump (8 puffs + the world-space deck) is replaced by a BANK. 6 big translucent masses slide in from beyond the frame edges
+  (6.0-6.6 s) toward the ferry and grow as the camera falls. The wagons stay visible until they close (6.85 s still).
+- Wipe: the same masses. A warm painted backing (cream + cool washes) closes the last gaps only around SW (full cover ~6.95-7.07 s, about
+  0.12 s); then they part outward, grow and thin into soft wisps (7.2 s), clear by ~7.5 s.
+- Local renderer: hyperframes' Chrome crashes at exactly 7.6 s on this machine, for the r15 build too (environment, not the clouds), so
+  the sheet uses 7.7 s. The 1.0 / 4.0 / 6.6 / 6.85 s stills come from a small puppeteer harness (same page, same seek). At high zoom that
+  harness leaves the inset map blurry, so the 7.2 / 7.7 s stills are hyperframes'.
+
+## r16 (painted 2D clouds; owner 2026-11-28) -> `sheet_dive2d_r16.jpg` (stills first; the hook render + splice into r15 wait for the owner / critics)
+- **Redirect.** The first brief was "r16 (3D dive)": the real engine clouds (vicksburg/engine vclouds as in gm3d v6) over our basemap. Before
+  anything was built the owner clarified: "the clouds should be suited for a 2D film". The current clouds read as realistic 3D volumes pasted
+  on a painted 2D map and do not belong to Style W, and the dive is "not up to the level". So r16 drops the 3D-engine route (and the r13c-h
+  emulation): the clouds are now PAINTED, made to match the Style W ink map.
+- **Look** (`marion/tools/make_paint_clouds.py` -> `marion/kit/paint_clouds/*.webp`, 660 KB, no photos, no AI images): gouache sprites
+  built from lobes (a union of circles) and value noise. Each has a soft dry-brush edge (stroke noise, 3 px feather) and 4 flat tones with narrow
+  soft steps: a cream lit top (249,245,233), a mid tone (231,228,217), a cool shade (197,201,204) and a deep base (163,171,182). The light comes
+  from the upper left, and the tone boundaries are jittered by horizontal brush strokes. There is slight pigment pooling inside the shaded edge,
+  a faint broken sepia ink edge (alpha 0.3) and paper grain. Kinds: `c` = side-lit cumulus (6, the field), `m` = big side-lit masses (4, the
+  near layer), `t` = masses seen from above (4, the deck and the wipe). Each kind has a `_s` soft half-size copy (blur 9 px; near the lens, at
+  most 50-55 %) and a `_sh` silhouette for the ground shadow.
+- **Engine** (`marion/kit/js/paint_clouds.js`, `PC.dive`): one 2D canvas between the map and the HUD. Each cloud has a map point and an altitude,
+  and goes through the SAME transform as the map (#world translate/scale inside #bw-tilt perspective(1700) rotateX scale, origin 960 / 669.6),
+  so the layers slide at their own speeds as the camera pushes in. Clouds grow, soften and fade near the lens. Their soft painted shadows
+  (a cool wash, multiply, 22 %) sit down-right on the map. Layouts are authored in SCREEN px at a given time and placed by inverse projection.
+  No canvas `filter` is used (it is unreliable on the GPU pods), and the sprites are a `buildReady` promise.
+- **Dive** (camera path, tilt, narration, stamps, units, plaque all unchanged from r15):
+  - 0-5.3 s: 12 painted cumulus in 3 layers (far 330 / mid 640 / near 1150 map px). The near layer is big and only at the frame edges.
+    They are placed off the road, the ONE ROAD stamp, Charleston and the British boxes.
+  - From "across the Santee" (5.25 s): 8 more clouds round the ferry (altitudes 300 / 460). They rush out past the lens during the fall, giving
+    the parallax of falling through.
+  - 5.75 s on: a painted deck of 7 top-view masses (altitude 150) grows in over Nelson's Ferry, and the lens falls into it.
+  - SW 7.0 s +- 0.05: the wipe, 7 screen-space masses round the ferry plus a painted backing. They cover the swap, then part outward (ease-out,
+    0.8 s) onto the ferry. This replaces the grey white-out.
+  - Also new: a warm painted haze over the far edge while the view is steep (it replaces the engine's grey haze band).
+- **Opt-in:** `build_scene.py --borrow --paint` (adds paint_clouds.js + the sprites, sets `GD.var.paint`). In `test-bw-hook-a.js` the old
+  BW.gl clouds / dive / stratus block runs only without the flag. With the flag, BW.gl keeps only the guard's musket smoke (`hazeK` 0,
+  `shadowK` 0). Other scenes and builds without `--paint` are unchanged.
+
 ## r15 musket smoke (critic A 8.5 on r14k) -> `stylew_borrow_test_r15_share.mp4` (m3f re-rendered on one RunPod RTX A5000; the rest = r14k frames 0-1169, the cut at 39.0 s after the D->C crossfade; audio = r14j stream-copied; 76.733 s, -14.0 LUFS, -1.9 dBTP)
 - Sheet `sheet_smoke_r15.jpg` (r14k left, r15 right, crops at the critic's times); zoom `patch_6780_r14k_vs_r15.jpg` (67.8 s, x 1050-1500, y 250-400).
 - Jets / one bar: volley 1 in 4 clumps (was 5; 5 merged) with groupW 0.18 (both volleys), the haze puffs' sideways offset x0.35 (`latK`),

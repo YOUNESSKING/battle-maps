@@ -176,7 +176,7 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
 // BW (borrowed from the 3D films): cloud dive, pocket-watch plaque, THE ARMIES, tilt
 // ================================================================================================================================
 // r4: the real engine (fx.vclouds + the v8 dive + the close stratus + cloud shadows on the ground), camera solved from the DOM camera
-{ const ROADP = [...R_CN, ...R_NC].filter((q, i) => i % 2 === 0), CHS = LYT(32.80, -79.95);
+if (!GD.var.paint) { const ROADP = [...R_CN, ...R_NC].filter((q, i) => i % 2 === 0), CHS = LYT(32.80, -79.95);
   // r5 timing (critic B: the spoken places must read): deck from 6.4 s, white ~6.6-7.1 s, emerge 7.1, clear 7.25, haze gone 7.55, land 7.6
   BW.gl({ mpu: 128, dive: { t: SW, over: NFL, grey: 0.8, greyCol: "rgb(205,205,200)" }, hazeK: 0.6, shadowK: 0.25,   // r13b (critic A): ground shadows 25 %; inside the deck an even grey 6.6-7.1 s
     diveOff: { push: -1.4, deckIn: -1.3, full: -0.5, deck: -0.45, wIn: -0.4, inside: -0.2, warm: 0.05, emerge: 0.2, clear: 0.35, haze: 0.6, land: 0.75 },   // r6: the deck closes in from the frame edges from 5.8 s (clear window over the crossing to ~6.45), full by 6.75
@@ -201,6 +201,27 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
         [1680, 390, 130, 4, 0], [1590, 320, 35, 1, 0], [1690, 600, 30, 1, 0], [1780, 650, 65, 2, 0], [1250, 230, 55, 2, 0], [1350, 760, 70, 2, 1]],   // r13d: >= 40 px off the British boxes
       on: (t) => t < SW + 1.2 },   // r13c: no screenClear cluster deletion (it emptied the middle of the field); the date plate is HUD (drawn above the clouds)
     stratus: { F: 3.1, at: [CEND[0], CEND[1]], speed: 0.45 }, volley: BW.smoke("musket.night", { K: 1 / 15.2, wind: [-14, -36], gone: 17.0 }) }); }   // LOOK LOCK v1: BW.LOCK.smoke["musket.night"]   // r13: thinner, carried off north-west, gone in ~5 s   // r9: gone 0.5 s before it reaches the riders   // r8: the guard smoke blows north, away from every box
+// r16 (owner 2026-11-28: "the clouds should be suited for a 2D film"): PAINTED clouds (kit/js/paint_clouds.js, build --paint): gouache sprites in
+// 3 parallax layers over the map + their soft painted shadows, a painted deck round Nelson's Ferry that the lens falls into, and a painted
+// cloud wipe (the near layer fills the frame around the swap SW and parts outward onto the ferry) in place of the grey white-out.
+// The engine layer stays for the guard's musket smoke only (no fair clouds, no deck, no stratus, no white-out, no grey haze band).
+else { BW.gl({ mpu: 128, hazeK: 0, shadowK: 0, volley: BW.smoke("musket.night", { K: 1 / 15.2, wind: [-14, -36], gone: 17.0 }) });
+  const L0 = 0, L1 = 1, L2 = 2;   // far / mid / near layers (altitudes in map px: the push-in passes them at different times)
+  PC.dive({ layers: [330, 640, 1150], fieldAt: 2.6, wind: [1.1, -0.35], shadowK: 0.2, shadowOff: [70, 55],
+    fieldTint: [0.983, 0.975, 0.956],   // r16c polish: the field warmed toward the map grade (lit tops ~(238,232,218), ~4 % darker)
+    // r16c (old illustrated map): lobed painted cumulus groups seen from above + 3 long low wisps; log-normal sizes (sprite radius 72-361 px,
+    // 5x), ~12-15 % cover over the frame, off the road / ONE ROAD / Charleston / the British boxes; [screen x, y, radius px at 2.6 s, layer, sprite]
+    field: [[560, 150, 137, L0, "pc_g3"], [1490, 110, 102, L0, "pc_g5"], [1770, 470, 216, L0, "pc_g1"], [1540, 940, 159, L0, "pc_g4"], [300, 330, 87, L0, "pc_g2"], [1300, 260, 72, L0, "pc_g6"],
+      [1350, 330, 331, L0, "pc_w0"], [420, 480, 361, L0, "pc_w1"], [1700, 1010, 346, L0, "pc_w2"],
+      [190, 200, 233, L1, "pc_g0"], [1680, 260, 209, L1, "pc_g2"], [1620, 720, 270, L1, "pc_g7"], [330, 960, 172, L1, "pc_g8"],
+      [-30, 560, 263, L2, "pc_b0"], [1980, 880, 283, L2, "pc_b2"], [1890, 40, 231, L2, "pc_g9"]],
+    fieldOp: (t, c) => (c.layer === 2 ? 0.9 : 1),
+    // the BANK + the wipe (screen space round the ferry): 9 big lobed masses [from angle, scale, sprite, flip, enter time, radius px when closed]
+    // grow in from all edges from 6.0 s (>= 70 % cover by 6.6 s with a hole over the wagons), close by ~6.92 s, the painted backing <= ~0.13 s
+    // round SW, then part outward into soft wisps (the ferry clear by ~7.6 s)
+    wipe: { t: SW, track: NFL, dx: 60, dy: 110, jitter: true,   /* r16c polish: the hole centred on the wagons */   /* r16c polish: per-mass mirror / +-20 deg / +-15 % / small hue + brightness jitter */ outDur: 0.6, part: 1500, rIn: 1450, rMid: 980, tMid: 6.6, closeLead: 0.08, masses: [[0.20, 1.6, "pc_b0", 0, 6.000, 450], [0.90, 1.7, "pc_b1", 1, 6.025, 480], [1.60, 1.55, "pc_b2", 0, 6.050, 430], [2.29, 1.65, "pc_b3", 1, 6.075, 470], [2.99, 1.6, "pc_b4", 0, 6.100, 460], [3.69, 1.6, "pc_b0", 1, 6.125, 450], [4.39, 1.7, "pc_b1", 0, 6.150, 480], [5.09, 1.55, "pc_b2", 1, 6.175, 430], [5.79, 1.65, "pc_b3", 0, 6.200, 470]]},
+    haze: (t, c) => 0.85 * BW.sstep(0.35, 0.62, c.th),   // a warm painted haze over the far edge while the view is steeply tilted
+    until: TZ1 + 0.4 }); }
 // hook-2: "before dawn" is the script's only time: the pocket watch comes in (hands ~4:30, no clock time is spoken)
 BW.time(T_DAWN, { label: "Before dawn", header: "1780" });   // r2: no clock time is spoken: text only, no watch
 BW.date("1780", T_4M + 0.1);
