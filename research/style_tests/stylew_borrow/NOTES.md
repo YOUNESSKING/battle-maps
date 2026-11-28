@@ -279,6 +279,20 @@ Only these changed (hook window = r11 render):
   (8.0-9.6 s, A4000, ~$0.019, pods empty).
 - Local snapshots miss the fireball's 60 % second frame (r15's own canvas code, unchanged; the GPU render shows it: r15 / r20 frame 1040).
 
+## r21 share -> `stylew_borrow_test_r21_share.mp4` (r18 share + new windows; r18 audio stream-copied, byte-identical)
+- Windows: m3d 40.0-54.6 (`--smoke3d --var smoke3dimpoff=-46,10`), m3f 3.26-41.26 (`--smoke3d`), hook-a 8.0-17.8 (`--smoke3d`, wagon clear of
+  the label), hook-a0 17.5-17.8 (plain, for the crossfade). Splice `tools/splice_r21.py`: 210-257 seam frames (`opening_seam_r21.py`, rebuilt from
+  the final hook render), 258-525 new hook, 526-533 hook -> hook-b crossfade recomposed, 534-739 r18, 740-2301 m3d xfade m3f. 2302 frames, 76.733 s.
+- RENDER FAULT on the first full render (one A4000, 3 workers): a dark (26,20,16) blocky ellipse + bands (Chrome compositor checkerboarding:
+  page background where map tiles were not painted, only around repainted overlays) on 1332 of 2302 share frames, periodic (~20-40 frames on,
+  ~10 off) in all three smoke3d windows; hook-a0 (no smoke3d), the 48-frame hook preview, r18 and r20 clean. Not data-driven: m3d (0 musket
+  shots, 1 cannon) went dark from 40.37 s, long before its shot. A 90-frame GPU bisect (m3d 40.0-43.0: as-is / smoke3dhide / no smoke3d) was
+  clean in all three, the as-is control included, so it is render-state dependent, not the scene code. Re-rendered with WORKERS=2 (A5000 secure):
+  0 dark frames. Gate for every later smoke3d render: the dark-patch detector (share of centre pixels within 4 of (26,20,16) > 15 %) must find 0.
+- Checks on the share: guard flash onsets 450 / 457 / 461 / 482 / 488 / 496 (new bright warm pixels vs the previous frame); cannon fireball
+  on 1039 (excess luma at the gun 601k) and 1040 (446k = 0.74 of 1039, the 60 % hold plus the white burst), gone on 1041; volley onsets 1901 and 1997.
+- RunPod: ~$0.019 preview + ~$0.031 first render + ~$0.0075 bisect + ~$0.058 re-render = ~$0.115; every pod terminated, pods list empty.
+
 ## r20 share -> `stylew_borrow_test_r20_share.mp4` (76.733 s, 2302 frames; r18 audio stream-copied, identical; -14.0 LUFS, -1.9 dBTP)
 - RunPod, 3 pods (A4000 / A4000 / A5000, all terminated, pods list empty): ~$0.035 + $0.032 + $0.038 = ~$0.105. Builds: m3d `--smoke3d --var
   smoke3dimpoff=-46,10`, m3f + hook-a `--smoke3d`, hook-a0 = the locked hook (crossfade only).
