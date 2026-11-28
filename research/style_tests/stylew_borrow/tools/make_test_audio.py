@@ -50,7 +50,8 @@ imp = rd(f"{GG}/candidates/cand1_hit.wav") * db(-15 + 4)   # r13: the reference 
 probe = np.zeros((int(4 * SR), 2), np.float32); rng = np.random.default_rng(3); L = T.Lib(rng)
 T.render_volley(L, probe, dict(type="musket_volley", tShare=0.5, unit=dict(men=144), at=dict(camDist=20, px=[960, 540]),
                                shots=[dict(tShare=0.5 + 0.04 * k, at=dict(px=[700 + 30 * k, 540])) for k in range(16)]), rng, [])
-GAIN = (rms_peak(imp) - 8) - rms_peak(probe)
+CN_DB = float(os.environ.get("CANNON_DB", "5")); MU_DB = float(os.environ.get("MUSKET_DB", "-2"))   # r14 (critic A: the cannon measured like a volley): cannon stem +5 dB, muskets -2 dB
+GAIN = (rms_peak(imp) - 8) - rms_peak(probe) + MU_DB
 print(f"cannon impact {rms_peak(imp):.1f} dB, raw volley {rms_peak(probe):.1f} dB -> musket stem gain {GAIN:+.1f} dB")
 
 parts, log = [], []
@@ -92,9 +93,9 @@ for (a, b, name) in SEGS:
         i0 = int(round((t - onset) * SR)); i0 = max(0, i0); m = min(len(clip), len(cn) - i0); cn[i0:i0 + m] += clip[:m] * db(g); return round(t + a, 3)
     log3 = []
     if guns:
-        g3 = rd(f"{GG}/candidates/cand1_hit.wav"); log3 += [("gun cand1_hit", -15 + 4, put(g3, c[0], 0.115, -15 + 4)) for c in guns]
+        g3 = rd(f"{GG}/candidates/cand1_hit.wav"); log3 += [("gun cand1_hit", -15 + 4 + CN_DB, put(g3, c[0], 0.115, -15 + 4 + CN_DB)) for c in guns]
     if booms:
-        b3 = rd(f"{GG}/candidates/cand2_hit.wav"); log3 += [("boom cand2_hit (impact)", -19 + 4, put(b3, c[0], 0.067, -19 + 4)) for c in booms]
+        b3 = rd(f"{GG}/candidates/cand2_hit.wav"); log3 += [("boom cand2_hit (impact)", -19 + 4 + CN_DB, put(b3, c[0], 0.067, -19 + 4 + CN_DB)) for c in booms]
     if name == "test-bw-m3d" and bwt:   # the roof catches fire on screen at T_ROOF + 0.9 (scene time)
         fire = rd(f"{GM}/bombs/bomb4_heavyexplosionreverbusc.mp3", "lowpass=f=900", 0, 5.6); fire *= np.clip((5.6 - np.arange(len(fire)) / SR) / 2.0, 0, 1)[:, None]
         tf = bwt[2] + 0.9 + t0 - a
@@ -107,7 +108,7 @@ for (a, b, name) in SEGS:
         i0 = int(tb * SR); m = n - i0; e = np.clip(np.minimum(np.arange(m) / SR, (m - np.arange(m)) / SR) / 1.0, 0, 1)
         vo[i0:] += amb[:m] * db(-23) * (e * (1 - 0.35 * venv[i0:]))[:, None]; log3.append(("ambience cand5 distant-warfare", -23, round(tb + a, 3)))
     if dropped: print(f"  dropped kit gun cues: {[(c[1], round(c[0] + a, 2)) for c in dropped]}")
-    for l in log3: print(f"  3D-film sound: {l[0]:32s} {l[1]:+d} dB at {l[2]} (film s)")
+    for l in log3: print(f"  3D-film sound: {l[0]:32s} {l[1]:+.0f} dB at {l[2]} (film s)")
     print(f"{name:16s} {a:7.2f}-{b:7.2f}  kit cues {len(kit):3d}  musket shots {len(sh):3d} in {len(groups)} ripples")
     parts.append((vo, mu, fx))
 
