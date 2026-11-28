@@ -183,6 +183,16 @@ def compare(a_png, golden_png, box, full=None):
     return dict(ssim=round(float(s), 4), dmean=round(dm, 2), dpct=round(dp, 2), d40=round(d10, 2))
 
 
+def drift(a_png, ref_png, box):
+    """tier 2: the local still vs the LOCAL reference still (same renderer, deterministic): blurred per-pixel difference"""
+    import numpy as np
+    from PIL import Image, ImageFilter
+    A = Image.open(a_png).convert("RGB").crop(box); R = Image.open(ref_png).convert("RGB")
+    if A.size != R.size: A = A.resize(R.size, Image.LANCZOS)
+    d = np.abs(np.asarray(A.filter(ImageFilter.GaussianBlur(2)), np.float32) - np.asarray(R.filter(ImageFilter.GaussianBlur(2)), np.float32)).max(2)
+    return dict(px6=round(float((d > 6).mean() * 100), 3), p995=round(float(np.percentile(d, 99.5)), 1))
+
+
 def judge(r, T):
     bad = []
     if r["ssim"] < T["ssim"]: bad.append(f"ssim {r['ssim']} < {T['ssim']}")
@@ -200,9 +210,12 @@ def frames_local(L, only, work):
         b = next(g["build"] for g in G if g["scene"] == sc)
         r = subprocess.run(["python3", "kit/build_scene.py", sc] + b.split() + ["--borrow"], cwd=M, capture_output=True, text=True)
         if r.returncode or "SYNTAX ERROR" in r.stdout: raise SystemExit(f"build {sc} failed:\n{r.stdout[-800:]}{r.stderr[-800:]}")
-        if any(g.get("lores_clouds") for g in G if g["scene"] == sc):   # the PENDING clouds (not tested) at low resolution: SwiftShader inside the timeout
-            bp = os.path.join(M, "scenes", sc, "gl", "bwgl.mjs"); t = open(bp).read(); os.remove(bp)   # (bwgl.mjs is a copy, never a hard link to the kit)
-            open(bp, "w").write(t.replace("resolution: C.fair.res ?? 0.75", "resolution: 0.4").replace("maxSteps: C.fair.maxSteps ?? 200", "maxSteps: 90"))
+        lo, nc = (any(g.get(k) for g in G if g["scene"] == sc) for k in ("lores_clouds", "no_clouds"))
+        if lo or nc:   # the PENDING clouds (not tested): low resolution, or off where none is on screen, so SwiftShader stays inside the snapshot timeout
+            bp = os.path.join(M, "scenes", sc, "gl", "bwgl.mjs"); t = open(bp).read(); os.remove(bp)   # (a copy in the scene, never the kit file)
+            t = t.replace("resolution: C.fair.res ?? 0.75", "resolution: 0.4").replace("maxSteps: C.fair.maxSteps ?? 200", "maxSteps: 90")
+            if nc: t = t.replace("if (C.fair) {", "if (false) {").replace("if (C.stratus && DV) {", "if (false) {")
+            open(bp, "w").write(t)
         ts = sorted({g["scene_t"] for g in G if g["scene"] == sc}); out = os.path.join(work, sc)
         for k in range(3):   # the snapshot command occasionally drops a frame: retry
             r = subprocess.run(["bash", os.path.join(REPO, "vicksburg/tools/snap.sh"), f"scenes/{sc}", ",".join(f"{t:.4f}" for t in ts), out], cwd=M, capture_output=True, text=True)
@@ -222,15 +235,26 @@ def frames_mp4(L, mp4, only, work):
     return out
 
 
-def check_frames(L, pairs, kind):
-    T = L["frame_thresholds"][kind]; fails = []
-    print(f"| golden frame | block | crop ssim | colour | tones | >40 lv % | full ssim | |"); print("|---|---|---|---|---|---|---|---|")
+def check_frames(L, pairs, kind, save_refs=False):
+    T = L["frame_thresholds"][kind]; TD = L["frame_thresholds"]["local_ref"]; fails = []
+    print(f"| golden frame | block | crop ssim | colour | tones | >40 lv % | full ssim | local ref: px > 6 lv % | p99.5 | |"); print("|---|---|---|---|---|---|---|---|---|---|")
     for g, f in pairs:
         if not f: fails.append(f"{g['id']}: no frame rendered"); print(f"| {g['id']} | {g['block']} | - | - | - | - | - | NO FRAME |"); continue
         r = compare(f, os.path.join(GOLD, g["crop_png"]), g["crop"]); rf = compare(f, os.path.join(GOLD, g["full_png"]), None, (960, 540))
         bad = judge(r, T) + [f"full {x}" for x in judge(rf, T["full"])]
+        rp = os.path.join(GOLD, "local", g["id"] + ".png"); dr = None
+        if save_refs:
+            from PIL import Image
+            os.makedirs(os.path.dirname(rp), exist_ok=True); im = Image.open(f).convert("RGB").crop(g["crop"])
+            if im.size[0] > 1000: im = im.resize((im.size[0] // 2, im.size[1] // 2), Image.LANCZOS)
+            im.save(rp, optimize=True)
+        if kind == "local":
+            if os.path.exists(rp):
+                dr = drift(f, rp, g["crop"])
+                if dr["px6"] > TD["px6"] or dr["p995"] > TD["p995"]: bad.append(f"drift vs the local reference: {dr['px6']} % px > 6 levels (max {TD['px6']}), p99.5 {dr['p995']} (max {TD['p995']})")
+            else: bad.append("no local reference still (golden/local/)")
         if bad: fails.append(f"{g['id']} ({g['block']}): " + "; ".join(bad))
-        print(f"| {g['id']} | {g['block']} | {r['ssim']} | {r['dmean']} | {r['dpct']} | {r['d40']} | {rf['ssim']} | {'FAIL' if bad else 'ok'} |")
+        print(f"| {g['id']} | {g['block']} | {r['ssim']} | {r['dmean']} | {r['dpct']} | {r['d40']} | {rf['ssim']} | {dr['px6'] if dr else '-'} | {dr['p995'] if dr else '-'} | {'FAIL' if bad else 'ok'} |")
     return fails
 
 
@@ -279,6 +303,7 @@ def main():
     ap.add_argument("--only", default=""); ap.add_argument("--work", default=None)
     ap.add_argument("--audio"); ap.add_argument("--cues", default="cannon=34.63,impact=35.13,volley=63.37,later=66.56"); ap.add_argument("--voice", default="40-44")
     ap.add_argument("--voice-dir"); ap.add_argument("--relock")
+    ap.add_argument("--save-local-refs", action="store_true", help="OWNER RELOCK ONLY: store the local stills as golden/local/ references")
     a = ap.parse_args(); L = json.load(open(LOCK))
     if a.relock: relock(L, a.relock); return 0
     errs, miss, warns = check_hashes(L); bad = False
@@ -299,7 +324,7 @@ def main():
     work = a.work or tempfile.mkdtemp(prefix="looklock_", dir=os.environ.get("TMPDIR", "/tmp"))
     if a.frames or a.mp4:
         pairs = frames_local(L, only, work) if a.frames else frames_mp4(L, a.mp4, only, work)
-        fails = check_frames(L, pairs, "local" if a.frames else "mp4")
+        fails = check_frames(L, pairs, "local" if a.frames else "mp4", a.save_local_refs and a.frames)
         for x in fails: print("FRAMES FAIL:", x)
         print(f"frames vs golden ({len(pairs)}): {'FAIL' if fails else 'PASS'}  (stills in {work})"); bad |= bool(fails)
     if a.audio:

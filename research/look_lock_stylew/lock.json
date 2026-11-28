@@ -447,6 +447,354 @@
    "mode": "file",
    "what": "battle ambience -27 dB",
    "sha256": "47bc6e0a09115e65ff2e83b4d4e5434616e9147e3158ad30e7ab1da1189dd38f"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/cannon_cloud_1s5_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "daec6a5dede3d1b5a3229ca1442d163b4f930b151266ef6dfd3fe458cac2a598"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/cannon_cloud_1s5_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "00d0812b0fa9544916603a996896d45703cf10a68980f96a6bc2b9ce230b9394"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/cannon_cloud_4s_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "3d527465c056fd66bae545c8e7d7c689bebafb757e3bfcbea6cd15031c8c68f5"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/cannon_cloud_4s_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "26471e274ea5f962235e95a4e4c743c79e729d5fa1e088ce61ca4bddbd6975f4"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/cannon_flash2_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "54b5ec5ad6dfcfa3eaac71bba539be9b07032ee563163100ff9da272cb00008f"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/cannon_flash2_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "38d603340cc725d5cb168dde70a1d7a7141dc32e9965cd099600621c47e58476"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/cannon_flash_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "bcb4e7976c1bd5028fe90ebf90c6539cf3fbe2b196e699611b96d66be3f7038a"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/cannon_flash_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "8699ca8144ffcae6d102bef68cbbcb48574b5747b6a80fcee8d5c3c2a48c0e11"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/cannon_strike_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "ff623e4047f994b53fc4e158055099bbcae9fbec8658a4797c5038342ab64ff6"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/cannon_strike_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "795cf46bd3e3dc514a54cc857c327bf2517e08f62e93c14b53dc36e9144eb116"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/focus_circle_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "0c1f6d8ea2677b932d793d05814e3a6ad6bdfbcef0066def58b7734a173c1067"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/focus_circle_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "8131c4eebf699d681cce35d78ab4f7e60c0ba5fff8916817d2bbd72a819111bd"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/gold_name_slam_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "e7d9b64a85e82ed5777adde80912a3151b19fbad7bbf18c22b096c5bbf30a2c7"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/gold_name_slam_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "e5f426c331961809b2585cb67f9d9908ecd76c1df710fdc8d7c1362ce6c3aaaa"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/gold_title_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "8082ee27caa9605e1019c397ab2e4f293822d55f33fe315dd9ea70f4e900dee3"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/gold_title_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "69ce1d8009577b73a6540b7a56ee87a18253c01a300de58f74b88d86e1e65ec8"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/golden.json",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "b012d7ce13155176841b39cf1c3b595aeb3d1606e9f4da3abe80a484ea9f5022"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/ledger_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "2a49dc534b7681cbf008f99662d309112bc480811ef2b9307531b4bfc583d4d9"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/ledger_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "1cd63e83db76044ef74ce92067c4f925acd7dcab138a6d3195f518e32935d324"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/cannon_cloud_1s5.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "5ffeaca04e729e918c4cb16afdbaf91b6460e1457489d5d6f37c736f3121a204"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/cannon_cloud_4s.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "8fe0444a62d1da67ad9fa79ba0667a8c12536ceb1acaee206a4990341e298527"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/cannon_flash.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "2b7b6d1eb2afa239b1aeb01e0f81b5ed7ee11d12f873bea58dc22b00ed4ec4d0"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/cannon_flash2.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "cf21496ccced30077815464e66a21aacd787a24451782ef59685fa9b5f6baf91"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/cannon_strike.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "0c08697319c4423fc3629d259517c0707804c6caffe0df9c8860397f75776169"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/focus_circle.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "bf00be2eee6e2832e7a540923e7f91aa5340aa131bbf8bf105466c631e4b5ab4"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/gold_name_slam.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "84ba08dab6d94004ea52303661d6684312ac403aea47b2e9b5ab388f9405d9f8"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/gold_title.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "de5ad6b93c03bd13004528a79007ad1dc892cf37392362d12cb7427822ffde58"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/ledger.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "ec4ba51b3c95e693ac9b0cbcec5a0b9049e60a8c8759cb0a46fe0e7ec7bd96da"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/musket_flash.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "a286eb093bf4d4cdf93155c4cb3325d012dfe3c69745941e4258956968ed3970"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/musket_haze_2s.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "8cb39145e6b2f215cc6a3462717e36c9c8f97089cc978ab0a8a4a37abc949afd"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/musket_haze_5s.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "eacc6308178912a3a0a8dc9a09b20b10710c7acc335401af7eadaa66708c9d1a"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/musket_jets_0s3.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "8a703474ab62d9ba3cc76a3d937637ac4f12687c7b13fd8e36a42d9747f95bf9"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/musket_jets_0s8.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "f496b376a9371e0e68ecef2d3780577383e4e8e19633adc438b15130b2aa10ad"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/musket_night_jets.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "91850ac5db3c5e27ce741f004c4deefa4b5972e8d839e7174b1f4966c9bad48d"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/plaque_key_day.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "3d61e43e32ba02bc58db45a5c486d5d69fb5838ec4957a780e9388e19e9cf9ff"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/rout.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "100f4cafc5fa6bbd21baec77c42b7d3809ea95854b98e9ff7ab8077ffd3349ea"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/timeline_seals.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "7b1ba14030b12d4d0baf1de56bb21032f6823790dbcef838883fb8c582d4f1e2"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/local/wipe_out.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "d38555363df025bfa052ceac551e7e886d17b0657383b481f025ca94e210390b"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/musket_flash_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "14808279e214ee0b606142cb508853f4afd29c99982a40dc45aa7f884a0bd7b0"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/musket_flash_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "8f1785c2f9e4071bea50d986f1773c0257399014695ba4ea77f7f6d4920e19e5"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/musket_haze_2s_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "f46211269ca8f7ea0e0d67d54fe6b16e8a475f42acb2987cebc7dc896a735584"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/musket_haze_2s_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "895a0c1bad90d43039e46c82b5bcefc28d79bb223973f22c2cdc368d09112471"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/musket_haze_5s_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "efa999cae3e39f4b941e38c26696d432188558a1f867660699c0194397d33277"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/musket_haze_5s_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "5b1f8668d08eb5ba236ca69e1904f76735098648439c13888ad5b06a460f74a1"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/musket_jets_0s3_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "018408a82fefe43cb41b69b05094f61bfe80cd3c9befaab18bb857c01bbd606d"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/musket_jets_0s3_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "c84707c1201ca1d44d1c25dbea68a3d138d58e9159aa28a714db1b6039b015ae"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/musket_jets_0s8_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "a8c97d5431aec6f92e051c94989c84fc9d6b9531f6620084da26e5f7abf0f093"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/musket_jets_0s8_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "a2552114b20019ffe8d8c2f3632088a3b86e1269362e4cf77d399ccb2caa6db5"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/musket_night_jets_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "33a9ba89213f249ea54a3d2e575b9e941429c42a2cd833bba4c5692e6fe93921"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/musket_night_jets_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "261a05dddc33b76e5c2ff03541a508c9858fe9a1c5d2acb18ffdd856ea9b7950"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/plaque_key_day_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "7a66bab8cf26e67f67aa868ea1bf537103957f6de40cfc75a1a1096ce1499cca"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/plaque_key_day_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "cade080fe8adf315025f8c5fd60417b6039bd08c38bb46b9576ce2bbf772e27c"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/rout_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "b2e44460fa2db7966153fbf820f2d3bbf5a1166a57c5d41d3bf54b9bfbdc2cbf"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/rout_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "05a74e3b6f48ee6fe6f7b2f7e146b6b56525938af4d253beb60f10fb374476ac"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/timeline_seals_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "4aa8e0ae146c2f2418467ce55bb32668c4b6b230024d69081033be65a19c3d79"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/timeline_seals_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "4b2eb23e84685ca3e87f4fffd0ffbc4cfa0f3f9f52afd08a7a36adeeaadb975e"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/wipe_out_crop.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "992d4b18bafe4223bef3b16d0dc2c3a9c9012b4acd38e77c598cd7601ab078f9"
+  },
+  {
+   "path": "research/look_lock_stylew/golden/wipe_out_full.png",
+   "mode": "file",
+   "what": "golden reference (r15 / local)",
+   "sha256": "bc9ee08132cf0ed921f0341a3bc6662f41c51339dd0d41aa8f0ed290dc6b0784"
   }
  ],
  "params": {
@@ -677,29 +1025,33 @@
  },
  "frame_thresholds": {
   "local": {
-   "ssim": 0.85,
-   "dmean": 4.0,
-   "dpct": 8.0,
-   "d40": 2.0,
+   "ssim": 0.94,
+   "dmean": 3.0,
+   "dpct": 12.0,
+   "d40": 1.0,
    "full": {
-    "ssim": 0.9,
-    "dmean": 4.0,
-    "dpct": 8.0,
-    "d40": 2.0
+    "ssim": 0.96,
+    "dmean": 3.0,
+    "dpct": 12.0,
+    "d40": 1.0
    }
   },
   "mp4": {
-   "ssim": 0.85,
-   "dmean": 4.0,
-   "dpct": 8.0,
-   "d40": 2.0,
+   "ssim": 0.94,
+   "dmean": 3.0,
+   "dpct": 12.0,
+   "d40": 1.0,
    "full": {
-    "ssim": 0.9,
-    "dmean": 4.0,
-    "dpct": 8.0,
-    "d40": 2.0
+    "ssim": 0.96,
+    "dmean": 3.0,
+    "dpct": 12.0,
+    "d40": 1.0
    }
   },
-  "note": "provisional"
+  "note": "tier 1 (vs r15 golden, GPU h264 vs local SwiftShader): calibrated on lock v1, worst observed crop ssim 0.964, colour 1.6, tones 8, >40 lv 0.26 %, full ssim 0.973; coarse: it proves the kit still LOOKS like r15. tier 2 (local_ref, --frames only): the local still vs golden/local/ (the same renderer, deterministic: 0 px differ run to run): a blurred difference > 6 levels on > 0.5 % of the crop, or p99.5 > 6, fails; this is the drift detector (it fails on musket.day cap 0.4 -> 0.6 + haze grey -30, which tier 1 alone passes).",
+  "local_ref": {
+   "px6": 0.5,
+   "p995": 6.0
+  }
  }
 }

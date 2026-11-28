@@ -1,7 +1,7 @@
 {
  "source": "research/style_tests/stylew_borrow/stylew_borrow_test_r15_share.mp4",
  "lock": "v1 = r15",
- "note": "share time = frame/30 of the r15 share; scene_t = the test scene's own time (the render starts each window on the frame grid: round(start x 30) / 30 + k / 30; checked on the flash frames) (windows: A hook-a 0-17.8, B hook-b 29.34-32.34, B2 hook-b 44.24-48.64, D m3d 40.0-54.6, C m3f 3.26-41.26, joined with 8-frame crossfades). NO cloud / dive / white-out frames: the clouds and the opening dive are NOT approved (owner 2026-11-28). lores_clouds: the local still of that scene is rendered with the PENDING cloud raymarch at low resolution (0.4, 90 steps) so SwiftShader stays inside the snapshot timeout; the golden crops do not test the clouds.",
+ "note": "share time = frame/30 of the r15 share; scene_t = the test scene's own time (the render starts each window on the frame grid: round(start x 30) / 30 + k / 30; checked on the flash frames) (windows: A hook-a 0-17.8, B hook-b 29.34-32.34, B2 hook-b 44.24-48.64, D m3d 40.0-54.6, C m3f 3.26-41.26, joined with 8-frame crossfades). NO cloud / dive / white-out frames: the clouds and the opening dive are NOT approved (owner 2026-11-28). lores_clouds: the local still of that scene is rendered with the PENDING cloud raymarch at low resolution (0.4, 90 steps) so SwiftShader stays inside the snapshot timeout; the golden crops do not test the clouds. no_clouds: the PENDING cloud systems (fair cumulus + stratus) are switched off in that scene's local copy (they are not on screen at the golden time and their build overruns the snapshot timeout under SwiftShader).",
  "frames": [
   {
    "id": "musket_night_jets",
@@ -21,7 +21,7 @@
    ],
    "crop_png": "musket_night_jets_crop.png",
    "full_png": "musket_night_jets_full.png",
-   "lores_clouds": true
+   "no_clouds": true
   },
   {
    "id": "gold_name_slam",

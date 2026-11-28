@@ -135,9 +135,17 @@ python3 research/look_lock_stylew/tools/check_look_lock.py --audio <film or pilo
   a wind speed off the locked speed by > 25 %, `BW.volley` / `BW.shot` / `BW.gold` / `BW.smokeGL`, `K.FOCUS_* =`, `BWGL_CFG.v*`,
   `.gmo` CSS, `recoil` / `dust` / `hold` / `back` / `flashScale`). Warns (does not fail) on the pending clouds: **"cloud dive not approved"**.
 - **(c) frames**: `--frames` rebuilds the 4 test scenes from the current kit, renders local SwiftShader stills at the golden times
-  (`vicksburg/tools/snap.sh`) and compares each crop + the whole frame with `golden/` (SSIM, mean colour, tone percentiles, share of
-  pixels off by more than 40 levels; thresholds in `lock.json` `frame_thresholds`, calibrated on r15 and checked to FAIL on a changed
-  smoke cap / haze grey). `--mp4 FILE` compares a render in the r15 layout (a re-render of the test windows) instead.
+  (`vicksburg/tools/snap.sh`, ~25 min for all 19) and checks two tiers:
+  1. **vs r15 (`golden/<id>_crop.png` + `_full.png`)**: SSIM, mean colour, tone percentiles, share of pixels off by > 40 levels, on the
+     effect crop and the whole frame. GPU h264 and local SwiftShader never match exactly, so this tier is coarse (calibrated on v1: worst
+     crop SSIM 0.964, full 0.973): it proves the kit still LOOKS like r15.
+  2. **vs the local reference (`golden/local/<id>.png`)**: the same renderer is deterministic (0 pixels differ run to run, checked), so
+     any blurred difference > 6 levels on > 0.5 % of the crop fails. This is the drift detector: a musket.day cap 0.4 -> 0.6 + haze 30
+     levels darker passes tier 1 but FAILS here (checked when the lock was built).
+  The pending clouds are not tested: in the hook scenes the local copy renders them at low resolution (hook-b) or switches them off
+  (hook-a, none on screen at the golden time) so SwiftShader stays inside the snapshot timeout. `--mp4 FILE` runs tier 1 on a render in
+  the r15 layout (a re-render of the test windows). If every still fails tier 2 by a small even amount after a Chrome / hyperframes
+  update, the renderer changed, not the look: tier 1 must still pass; then only the owner may refresh `golden/local/` (section 7).
 - **audio**: `--audio FILE` measures the mean power over 0.35 s from each cue and compares it with the voice-only stretch: cannon +9.7 dB,
   impact +5.6, the first ripple +4.7, a later ripple under the narrator -0.2 (+-1.5 dB), -14.0 LUFS (+-0.3), true peak <= -1.5.
   Self-test on r15: cannon -7.0, impact -11.1, volleys -12.0 / -16.9, voice -16.7, -14.0 LUFS, -1.9 dBTP (the r14j row).
@@ -161,7 +169,7 @@ python3 research/look_lock_stylew/tools/check_look_lock.py --audio <film or pilo
 - No session may change a locked value, preset or file "to improve it", even if a critic asks. Critics' ideas go to the backlog below.
 - A change needs an owner-approved test (a short clip against r15), then a NEW lock version: update the code, run
   `check_look_lock.py --relock "owner YYYY-MM-DD: '<his exact words>'"` (writes lock v2, keeps v1 in `history`), bump `BW.LOCK.v`,
-  re-extract golden frames from the newly approved clip, and note it in STYLE_LOCK 2g. Never re-lock without the owner's words.
+  re-extract golden frames from the newly approved clip, refresh `golden/local/` with `--frames --save-local-refs`, and note it in STYLE_LOCK 2g. Never re-lock without the owner's words.
 
 ## 8. Known polish backlog (NOT applied: each changes the approved look, so each needs an owner-approved test first)
 
@@ -178,7 +186,7 @@ python3 research/look_lock_stylew/tools/check_look_lock.py --audio <film or pilo
 ## 10. Files
 
 - `lock.json`: version, approvals, locked files + sha256, locked values (`params.blocks` = `BW.LOCK`, `params.audio`), pending items, frame thresholds.
-- `golden/`: the 19 golden stills + `golden.json`.
+- `golden/`: the 19 golden stills from r15 + `golden.json`; `golden/local/`: the same moments rendered locally from the locked code (tier 2).
 - `tools/check_look_lock.py`: the gate.
 - Code: `marion/kit/js/borrow.js` (`BW.LOCK`, the named blocks), `marion/kit/js/bwgl.mjs`, `marion/kit/build_scene.py --borrow`.
 - History of every test round r1-r15: `research/style_tests/stylew_borrow/NOTES.md`.
