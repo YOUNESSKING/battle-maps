@@ -259,6 +259,19 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r18 share -> `stylew_borrow_test_r18_share.mp4` (76.733 s, 2302 frames at 30 fps, 21 MB; r15 audio stream-copied, MD5 identical)
+- Hand-off grade match: over 7.8-8.4 s the 3D image eases onto the 2D landed frame's levels (per-channel slope/intercept from the two landed
+  frames, centre 900 x 600: 3D mean (79.4, 82.6, 54.4) sd (21.7, 23.4, 16.7) -> 2D (71.8, 74.5, 43.1) sd (23.3, 24.5, 20.1)); measured after:
+  3D (71.7, 74.6, 42.3) sd (23.3, 24.6, 20.0).
+- RunPod: no supply for ~10 min (A5000 / A4000 community + secure, RTX 2000 Ada); the loop was stopped while asleep (no pod deploying)
+  and the pods list verified empty: $0 spent. Rendered locally instead: `dive_v6copy/tools/frames18.mjs` (headless Chrome, SwiftShader,
+  the same page and seek as the stills): 276 frames 0-9.2 s at 1280 x 720, ~1 s/frame.
+- Splice: the 3D frames (lanczos to 1920 x 1080) for 0-8.4 s, a 0.2 s crossfade 8.4-8.6 s into r15 (r15 from frame 252), then r15 unchanged.
+  x264 slow crf 22 (as r15), audio `-c:a copy`.
+- Seam 248-263: the framing lines up (ferry, rivers, woods, the wagon). Visible in the blend for ~6 frames: the 3D's smaller 1780 plaque
+  and label vs r15's; then THE ARMIES enters (r15, 8.5 s).
+- Frames after the splice match r15 (frame 270 / 400: mean diff 0.76 / 0.42 grey levels, encode only).
+
 ## r18 (owner: "3D didn't work like that": COPY how the 3D film did it) -> `dive_v6copy/` + `sheet_v6copy_r18.jpg` (stills only)
 - `dive_v6copy/` is a literal copy of the gm3d clip project: world.js, fx.js, vendor/, cloudtex/, and index.html cut from the clip's own
   index.html. Kept verbatim (v6 clip time): its camera beats and easing (DV + the keys), fx + the wide clouds, the deck and the close stratus
