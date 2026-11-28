@@ -176,7 +176,44 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
 // BW (borrowed from the 3D films): cloud dive, pocket-watch plaque, THE ARMIES, tilt
 // ================================================================================================================================
 // r4: the real engine (fx.vclouds + the v8 dive + the close stratus + cloud shadows on the ground), camera solved from the DOM camera
-if (!GD.var.paint) { const ROADP = [...R_CN, ...R_NC].filter((q, i) => i % 2 === 0), CHS = LYT(32.80, -79.95);
+// r17 (owner 2026-11-28: "I like something like 3D more" / "maybe tone it to 2D or make it work"): the REAL engine clouds as in the approved gm3d
+// v6 clip (build --cloud3d): v6's light, colours, density, deck (deckV6 = its grid deck round the target) and dive sequence, lengths x F; the
+// field = v6's own clouds traced from its frame (as they appear on screen, r13h), only the ring fix (skirtCut) kept from r13; r15's dive timings.
+// Grade: A = v6 + a light warm grade; B (--var tone=2d) = toned to 2D: soft posterised light bands in the map palette, faint grain, a crisper edge.
+if (GD.var.cloud3d) { const ROADP = [...R_CN, ...R_NC].filter((q, i) => i % 2 === 0), CHS = LYT(32.80, -79.95), TONE2D = GD.var.tone === "2d";
+  BW.gl({ mpu: 128, dive: { t: SW, over: NFL, grey: 0.8, greyCol: "rgb(205,205,200)" }, hazeK: 0.6, shadowK: 0.25,
+    diveOff: { push: -1.4, deckIn: -1.3, full: -0.5, deck: -0.45, wIn: -0.4, inside: -0.2, warm: 0.05, emerge: 0.2, clear: 0.35, haze: 0.6, land: 0.75 },   // r15 timings
+    fair: { F: 3.3, box: [0, 0, 2900, 1800], seed: 5, tiers: [49, 58], skirtCut: 3,   // v6 heights 49-58 (+0-9); ring fix kept
+      sun0: [1.0, 0.95, 0.85], ambTop0: [0.50, 0.55, 0.65], ambBot: [0.24, 0.28, 0.36], sunK0: 1.4, ambK0: 0.18,   // v6 CW_DAY light (sunK 1.4, ambK 0.18, lightK 3.2)
+      deckV6: true, deckY: 58, deckJit: 0, slabTop: 170,   // one deck base height (lumps on several heights drew stepped notches, r13d)
+      screenPlace: { t: 2.6, px: [-60, -30, 1980, 1110] },
+      corridor: { perDome: true, t: [T_ROAD - 0.6, TZ0 + 0.4], keepLines: [[ROADP, 25]], keep: [[CHS[0], CHS[1] + 40, 120], [860, 1110, 120]], op: (t) => 1 - 0.6 * (BW.sstep(T_ROAD - 0.7, T_ROAD - 0.1, t) - BW.sstep(TZ0 + 0.3, TZ0 + 0.9, t)) },
+      // v6's own wide field as it appears on screen at its 10.4 s (our ~1 s): [screen x, y, radius px, lobes, layer]; nudged off the British boxes (r13h)
+      authoredK: 1.6, authored: [[960, 40, 70, 2, 0], [520, 150, 95, 3, 0], [230, 225, 95, 3, 1], [70, 440, 105, 3, 1], [110, 620, 125, 4, 1], [670, 640, 105, 3, 0],
+        [1680, 390, 130, 4, 0], [1590, 320, 35, 1, 0], [1690, 600, 30, 1, 0], [1780, 650, 65, 2, 0], [1250, 230, 55, 2, 0], [1350, 760, 70, 2, 1]],
+      on: (t) => t < SW + 1.2 },
+    stratus: { F: 3.1, at: [CEND[0], CEND[1]], speed: 0.45 }, volley: BW.smoke("musket.night", { K: 1 / 15.2, wind: [-14, -36], gone: 17.0 }) });
+  // the grade on the engine layer (an SVG filter on its canvas, only while the clouds are up: the musket smoke later is untouched)
+  { const NSV = "http://www.w3.org/2000/svg", sv = document.createElementNS(NSV, "svg"); sv.setAttribute("width", "0"); sv.setAttribute("height", "0"); sv.style.position = "absolute";
+    const sm = (a, b, x) => { const k = Math.max(0, Math.min(1, (x - a) / (b - a))); return k * k * (3 - 2 * k); };
+    // B: luminance -> soft bands (shade / mid / lit) -> the map palette; below 0.45 (ground shadows) it falls linearly to black
+    const PAL = [[0, [0, 0, 0]], [0.45, [150, 158, 172]], [0.62, [180, 186, 198]], [0.78, [214, 212, 206]], [0.9, [240, 234, 220]], [1, [246, 241, 229]]];
+    const band = (L) => L < 0.4 ? L * 1.125 : 0.62 + (0.78 - 0.62) * sm(0.52, 0.62, L) + (0.9 - 0.78) * sm(0.68, 0.78, L) - (0.62 - 0.45) * (1 - sm(0.4, 0.5, L));   // soft bands: shade < ~0.57 < mid < ~0.73 < lit
+    const pal = (L, ch) => { for (let i = 1; i < PAL.length; i++) if (L <= PAL[i][0]) { const [a, ca] = PAL[i - 1], [b, cb] = PAL[i]; return (ca[ch] + (cb[ch] - ca[ch]) * (L - a) / (b - a)) / 255; } return PAL[PAL.length - 1][1][ch] / 255; };
+    const tab = (ch) => [...Array(65).keys()].map((i) => pal(band(i / 64), ch).toFixed(4)).join(" ");
+    sv.innerHTML = `<filter id="c3dA" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1.03 0 0 0 0.01  0 1.0 0 0 0.005  0 0 0.93 0 0  0 0 0 1 0"/></filter>
+      <filter id="c3dB" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
+        <feColorMatrix in="SourceGraphic" type="matrix" values="0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0 0 0 1 0" result="lum"/>
+        <feComponentTransfer in="lum" result="pal"><feFuncR type="table" tableValues="${tab(0)}"/><feFuncG type="table" tableValues="${tab(1)}"/><feFuncB type="table" tableValues="${tab(2)}"/><feFuncA type="table" tableValues="0 0.15 0.42 0.74 0.94 1"/></feComponentTransfer>
+        <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" seed="7" result="tu"/>
+        <feColorMatrix in="tu" type="matrix" values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0.33 0.33 0.33 0 0" result="gr"/>
+        <feComposite in="pal" in2="gr" operator="arithmetic" k1="0" k2="1" k3="0.07" k4="-0.035" result="pg"/>
+        <feComposite in="pg" in2="pal" operator="in"/></filter>`;
+    document.body.appendChild(sv);
+    const FIL = TONE2D ? "url(#c3dB)" : "url(#c3dA)";
+    const apply = () => { const cv = document.getElementById("bwgl"); if (cv) cv.style.filter = tl.time() < SW + 1.5 ? FIL : ""; };
+    const prev = tl.eventCallback("onUpdate"); tl.eventCallback("onUpdate", function () { if (prev) prev.apply(this, arguments); apply(); }); tl.call(apply, null, 0); } }
+else if (!GD.var.paint) { const ROADP = [...R_CN, ...R_NC].filter((q, i) => i % 2 === 0), CHS = LYT(32.80, -79.95);
   // r5 timing (critic B: the spoken places must read): deck from 6.4 s, white ~6.6-7.1 s, emerge 7.1, clear 7.25, haze gone 7.55, land 7.6
   BW.gl({ mpu: 128, dive: { t: SW, over: NFL, grey: 0.8, greyCol: "rgb(205,205,200)" }, hazeK: 0.6, shadowK: 0.25,   // r13b (critic A): ground shadows 25 %; inside the deck an even grey 6.6-7.1 s
     diveOff: { push: -1.4, deckIn: -1.3, full: -0.5, deck: -0.45, wIn: -0.4, inside: -0.2, warm: 0.05, emerge: 0.2, clear: 0.35, haze: 0.6, land: 0.75 },   // r6: the deck closes in from the frame edges from 5.8 s (clear window over the crossing to ~6.45), full by 6.75

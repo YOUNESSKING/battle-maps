@@ -259,6 +259,114 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r19 share -> `stylew_borrow_test_r19_share.mp4` (76.733 s, 2302 frames, r18 audio stream-copied: identical; -14.0 LUFS, -1.9 dBTP)
+- Coordinator: muskets at PPU 150 (the film's smoke-to-box ratio); the cannon alone at PPU 110 (`--var smoke3dcanppu=110`: a second film-unit
+  engine world for the gun, seed 1518) so the fort and the white flag stay readable; the impact in the fort yard (`smoke3dimpoff=-46,10`) at
+  `smoke3dimpk=4` (the engine's impact, scaled only) so the dirt burst reads.
+- Builds: m3d `--smoke3d --var smoke3dppu=150 --var smoke3dcanppu=110 --var smoke3dimpoff=-46,10 --var smoke3dimpk=4`; m3f and hook-a
+  `--smoke3d --var smoke3dppu=150`; hook-a0 = the locked hook build (for the crossfade only).
+- RunPod: one RTX A4000 (community, 2nd deploy try), m3d 40.0-54.6, m3f 3.26-41.26, hook-a 13.5-17.8, hook-a0 17.5-17.8; ~$0.046; pod terminated,
+  pods list empty.
+- Splice (`tools/splice_r19.py`, frame-exact): share 405-525 = new hook; 526-533 = the hook->hook-b crossfade recomposed (r18 + (1 - k/8) x (new
+  hook - old hook), xfade fade weights); 740-2301 = new m3d xfaded into new m3f exactly as finalize_xf5.sh (732-739, before the cannon, kept).
+  Alignment: new hook frame 0 vs r18 405 = 2.1 grey levels, old hook vs r18 525 = 2.25 (render/encode only). Seams (frame-to-frame mean
+  difference at 480 x 270): 405 1.40 (baseline 0.54), 740 3.49 (2.7-3.0 in the incoming crossfade), crossfades ramp normally.
+- The hook guard at night: small orange flashes, the engine smoke dimmed by the night (fx setNight 1), faint.
+
+## r19b stills (coordinator: r19 too small and weak next to our bigger boxes) -> `sheet_smoke3d_r19b.jpg` (film | r19 PPU 60 | r19b PPU 150)
+- Build: `--smoke3d --var smoke3dppu=150` (+ for m3d `--var smoke3dimpoff=-46,10`): the same engine code and numbers, scaled to the film's
+  smoke-to-box ratio (his boxes ~25 px on screen, ours ~65 px).
+- Musket: the curtains become big film-like banks over the line, the blue boxes veiled by +2-4 s as in the film.
+- Cannon: the flash ~2.5x bigger; the plume jets from the gun to the fort and spreads over the whole fort (house + garrison box veiled from ~+0.5 s).
+- Impact (engine fx.impact { size 0.9 } at the 150 scale; `--var smoke3dimpk=N` scales only the impact, unused): at the gable it was under the
+  house icon and inside the cannon plume; moved to open ground in the fort yard west of the house (`smoke3dimpoff=-46,10` map px): an orange
+  pin-flash on the impact frame and a small dark dirt puff at +0.5-0.9 s, then the plume covers it. Still faint: the engine's impact is small.
+- The r19 column has no 51.17 still (its +0.9 row repeats its +0.5 frame).
+
+## r19 stills (owner: "the gun smoke exactly like the 3D film: COPY it") -> `sheet_smoke3d_r19.jpg` (build `--smoke3d`; stills only, no render yet)
+- Sources (copied, not re-created): `vicksburg/engine/fx.js` (= `gm3d/clip/fx.js` + the v8 per-shot muzzle flashes; the smoke's random
+  sequence is identical with or without them), already shipped as `gl/fx.js` by build_scene.py. Musket = `fx.smokeLine` + `SMOKE_GM`
+  (`vicksburg/engine/scene.js`: cluster [1, 1], fadeAfter 6, fadeTo 0.12, look gmTall) + the gm3d clip v8 volley options
+  (`gm3d/clip/index.html` 209-212: rate 2.9, volley 1.6, size 1.45, height 3, muzzle 6, windK 0.45) + `muzzleFlash: {}` (scene.js MZF.musket,
+  troops test v14). Cannon = `fx.cannon` + GUN_PRESET.field (size 1) + MZF.cannon (flashHold 0.4, flashCore 0.7, nightPool 7); impact =
+  `fx.impact { size: 0.9 }` (scene.js / clip index.html 214). The engine setup = the clip's close region (unitsPerMeter 1 / 129.36, fxScale 9,
+  wind [20, -7], sun [-0.7, 0.48, -0.4], seed 1517).
+- Only scale + placement changed: the engine runs in film units; our map px / Z -> film units and a copy of our camera with its position / Z
+  (same projection). Z = PPU x K: PPU 60 = the film's px per unit at 1080p at the clip's battle camera (fov 30, dist 30-36), so a puff has the
+  film's size on screen; K = the scene's map px per screen px (m3f 1 / 3.1, m3d 1 / 3.6, hook 1 / 15.2). `--var smoke3dppu=N` tries another
+  scale (e.g. ~150 = the film's smoke-to-box ratio: his boxes ~25 px, ours ~65 px).
+- Fired from our logged shots: each ripple of `vshots` (< 0.9 s apart) = one smokeLine from its first muzzle to the farthest one, t0 = the first
+  shot (the engine fires the shot at pts[0] exactly on t0, the rest ripple over our ripple's span); each `vcannon` = fx.cannon at the muzzle
+  on its flash frame (the same frame as r15) + fx.impact at the target at its impact time (`--var smoke3dimpup=N` moves it N map px north).
+- Opt-in, all in `LOOK-LOCK pending smoke3d` regions (bwgl.mjs, build_scene.py): without `--smoke3d` nothing changes; the gate says LOOK LOCK OK.
+  With it the r15 puffs / flashes / cannon plume are off; the burning roof's soot column stays.
+- Seen: musket = the film's grey curtains in battalion clusters (ours read rounder: our line runs across the screen, his up it) with tiny v8
+  flashes, thinning after 6 s; smoke draws over the boxes (as in the film; r15 cut the boxes out). Cannon = the film's white-orange flash +
+  a soft grey cloud drifting downwind. The impact (10 dark-brown puffs, alpha 0.42) is under the house icon / over dark woods: barely visible.
+- The hook guard (6 shots, night) is built with `--smoke3d` too, but the hook scene times out in the local snapshot (with and without the flag):
+  its stills come from the render.
+
+## r18 share -> `stylew_borrow_test_r18_share.mp4` (76.733 s, 2302 frames at 30 fps, 21 MB; r15 audio stream-copied, MD5 identical)
+- Hand-off grade match: over 7.8-8.4 s the 3D image eases onto the 2D landed frame's levels (per-channel slope/intercept from the two landed
+  frames, centre 900 x 600: 3D mean (79.4, 82.6, 54.4) sd (21.7, 23.4, 16.7) -> 2D (71.8, 74.5, 43.1) sd (23.3, 24.5, 20.1)); measured after:
+  3D (71.7, 74.6, 42.3) sd (23.3, 24.6, 20.0).
+- RunPod: no supply for ~10 min (A5000 / A4000 community + secure, RTX 2000 Ada); the loop was stopped while asleep (no pod deploying)
+  and the pods list verified empty: $0 spent. Rendered locally instead: `dive_v6copy/tools/frames18.mjs` (headless Chrome, SwiftShader,
+  the same page and seek as the stills): 276 frames 0-9.2 s at 1280 x 720, ~1 s/frame.
+- Splice: the 3D frames (lanczos to 1920 x 1080) for 0-8.4 s, a 0.2 s crossfade 8.4-8.6 s into r15 (r15 from frame 252), then r15 unchanged.
+  x264 slow crf 22 (as r15), audio `-c:a copy`.
+- Seam 248-263: the framing lines up (ferry, rivers, woods, the wagon). Visible in the blend for ~6 frames: the 3D's smaller 1780 plaque
+  and label vs r15's; then THE ARMIES enters (r15, 8.5 s).
+- Frames after the splice match r15 (frame 270 / 400: mean diff 0.76 / 0.42 grey levels, encode only).
+
+## r18 (owner: "3D didn't work like that": COPY how the 3D film did it) -> `dive_v6copy/` + `sheet_v6copy_r18.jpg` (stills only)
+- `dive_v6copy/` is a literal copy of the gm3d clip project: world.js, fx.js, vendor/, cloudtex/, and index.html cut from the clip's own
+  index.html. Kept verbatim (v6 clip time): its camera beats and easing (DV + the keys), fx + the wide clouds, the deck and the close stratus
+  (vclouds), the grade, the white-out (+ the v8 cut fix), the emerge fog and the film settings.
+- Removed: the 3D title, the battle, the boats, the fires, the flashback.
+- Only the content is swapped (`tools/make_assets.py`):
+  - The ground: our Lowcountry Style W basemap as v6's wide ground texture, scaled 1/2.9 into v6's map units (it fills v6's 1000 x 640 box),
+    with Nelson's Ferry on v6's dive target (1518, 706).
+  - The landing: the Santee basemap as v6's close ground, at its true place.
+  - Flat heights; no rivers / trees / houses / bridge meshes (the painted maps carry them).
+- world.js change: a hidden bridge anchor is not drawn.
+- Retime (linear, v6's proportions kept): ours = TA * v6 + TB, TA = 1.4/3.35, TB = 7.0 - TA * 16.4. So v6 SW 16.4 -> 7.0, land 19.75 -> 8.4,
+  push 12.6 -> 5.41, deck in 14.7 -> 6.29.
+- Our overlays, on r15's words, drawn the way v6 pins its DOM boxes / names (`world.projectMap`, dimmed by the cloud alpha there):
+  - the four British boxes (II pair drops in on "Britain"), the two wagons rolling up the Charleston road, the two flags;
+  - the road trace + ONE ROAD on "one road", "Nelson's Ferry" (v6's `.pl` label) on its word;
+  - the pocket-watch plaque (vicksburg/engine/overlay.js, as r15) "1780".
+- Hand-off: v6's land key (dist 40, tilt 38) is replaced by our 2D camera's framing at 8.5 s: map (1310.9, 893.4), scale 13.34, tilt 7 ->
+  at [1517.41, 698.66], dist 48.7, tilt 7, fov 32. The 3D landed frame lines up with r15's 2D frame (ferry, rivers, woods in place);
+  the plan is a crossfade 8.4 -> 8.6 s into r15.
+- Stills: puppeteer harness at 1280 x 720 (v6's composition size).
+- `--paint` and `--cloud3d` are kept, unused; the gate still says LOOK LOCK OK (r18 touches no locked file).
+
+## r17 (owner rejected the painted r16: "I like something like 3D more" / "maybe tone it to 2D or make it work") -> `sheet_dive3d_r17.jpg` (stills only)
+- Back to the REAL engine clouds of the approved gm3d v6 clip. The new path sits behind `build_scene.py --cloud3d` (GD.var.cloud3d), with
+  `--var tone=2d` for variant B. `--paint` is kept as it was (opt-in, unused). All code is inside the LOOK-LOCK pending cloud sections; the gate
+  says LOOK LOCK OK.
+- Config = v6's own values: CW_DAY light (sun [1,0.95,0.85], ambTop [0.50,0.55,0.65], ambBot [0.24,0.28,0.36], sunK 1.4, ambK 0.18,
+  lightK 3.2), the vclouds options (blur 1, sharp 1, sigma 0.75, soft 1.7, warp 0.06, ...), heights 49-58 (+0-9), drift [0.10,-0.035], and
+  v6's dive deck (`deckV6`: the 22-unit grid of sheet cumulus r 13-25 round the target, ragged to the rim, + the 6 column lumps; one base
+  height). Its colours/erosion/ms/expo/sigmaK follow v6's dive functions on r15's dive timings. Lengths x F 3.3.
+- The field is v6's own wide field as it appears on screen at its 10.4 s (the r13h trace, re-placed by screen position).
+- Removed from r13-r15: deckLook, sunK0 2.05 / ambK0 0.24, lumpK, baseRound, erode0, the masses deck, nearTier, edgeKeep.
+- Kept: skirtCut (ring fix), the road / stamp corridor dip, the close stratus and the white-out.
+- Fix: `slabTop` (opt-in, 170 x F). The default slab top (113 x F) cut big near clouds flat: straight translucent sheets and notches at 6.6 s.
+- Grades (SVG filter on the engine canvas, only until SW + 1.5 s; the later musket smoke is untouched):
+  - A = v6 + a light warm grade (R x1.03, B x0.93).
+  - B = toned to 2D: luminance -> 3 soft bands (shade < ~0.57 < mid < ~0.73 < lit) -> the map palette, i.e. shade (180,186,198),
+    mid (214,212,206), lit (240,234,220); a faint grain (feTurbulence, +-3.5 %); a slightly crisper edge (alpha S-curve).
+- Sheet: v6 | A | B at our 1.0 / 4.0 / 5.9 / 6.3 / 6.6 / 7.7 s (v6 + 9.4 s), + 1:1 crops at 1.0 s.
+  - 7.7 s stands for 7.6 s: local Chrome crashes at 7.6 s, the r15 build too.
+  - The 1.0-6.6 s stills come from the puppeteer harness; the 7.7 s ones from hyperframes.
+- Known gaps vs v6:
+  1. At 6.3-6.6 s v6 is already INSIDE a soft close deck. With r15's timings our camera is still high (ws 1.5-2.3), so the deck reads as
+     separate cumulus over the map, not v6's close soft bank.
+  2. A few wedge / hook fragments at the deck rim while its erosion front sweeps in (6.3 s).
+  3. The early field is smaller and sparser on screen than v6's big soft corner masses.
+
 ## r16 share (r16c + polish) -> `stylew_borrow_test_r16_share.mp4` (76.733 s, 2302 frames at 30 fps, 21 MB; r15 audio stream copied bit-exact)
 - Polish (coordinator): the field is warmed toward the map grade (`fieldTint` [0.983, 0.975, 0.956]: lit tops ~(238,232,218), ~4 % darker).
   The bank masses are jittered (`jitter`: per mass a random mirror, +-20 deg, +-15 % scale, a small hue/brightness shift; same 5 sprites).

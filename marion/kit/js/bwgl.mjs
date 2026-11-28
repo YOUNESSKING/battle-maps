@@ -141,13 +141,20 @@ else {
       let i = 0; for (const [mi, [mx, mz, MR]] of C.fair.masses.entries()) for (let gx = -MR; gx <= MR; gx += MS) for (let gz = -MR; gz <= MR; gz += MS, i++) {
         const x = gx + (hsh(i, 5) - 0.5) * MS * 0.57, z = gz + (hsh(i, 6) - 0.5) * MS * 0.57; if (Math.hypot(x, z * 1.1) > MR) continue;
         deck.push([DV.over[0] + (mx + x) * F, DV.over[1] + (mz + z) * F, (ML[0] + hsh(i, 8) * ML[1]) * F, mi]); } }   // r13d: one base height for the whole deck (base steps between lumps showed as a stepped notch, a gap between two heights)
+    else if (DV && C.fair.deckV6) {   // r17 (opt-in): the gm3d v6 dive deck exactly (clip index.html), lengths x F round the target: a 22-unit grid of sheet
+      // cumulus r 13-25, dense in the camera's column, ragged towards the rim, + the 6 column lumps; heights 58 + 0-3 (mi "v6")
+      const cx0 = DV.over[0], cz0 = DV.over[1];
+      for (let i = 0, gx = -118; gx < 122; gx += 22) for (let gz = -112; gz < 108; gz += 22, i++) {
+        const x = gx + (hsh(i, 5) - 0.5) * 18, z = gz + (hsh(i, 6) - 0.5) * 18, r = Math.hypot(x, (z + 6) * 1.15);
+        if (hsh(i, 7) < lerp(0.95, 0.5, clamp((r - 30) / 90))) deck.push([cx0 + x * F, cz0 + z * F, (13 + hsh(i, 8) * 12) * F, "v6"]); }
+      for (const [dx, dz, r] of [[0, -6, 30], [-6, 5, 26], [8, -13, 26], [3, 14, 26], [-11, -15, 24], [13, 1, 24]]) deck.push([cx0 + dx * F, cz0 + dz * F, r * F, "v6"]); }
     else if (DV && C.fair.deck !== false) { const cx0 = DV.over[0], cz0 = DV.over[1] + 6 * F;
       for (let i = 0, gx = cx0 - 118 * F; gx < cx0 + 122 * F; gx += 27 * F) for (let gz = cz0 - 112 * F; gz < cz0 + 108 * F; gz += 27 * F, i++) {   // r13: fewer, bigger, merging lumps
         const x = gx + (hsh(i, 5) - 0.5) * 18 * F, z = gz + (hsh(i, 6) - 0.5) * 18 * F, r = Math.hypot(x - cx0, (z - cz0) * 1.15);
         if (hsh(i, 7) < lerp(0.97, 0.55, clamp((r - 30 * F) / (90 * F)))) deck.push([x, z, (20 + hsh(i, 8) * 16) * F]); }
       for (const [dx, dz, r] of [[0, 0, 30], [-6, 11, 26], [8, -7, 26], [3, 20, 26], [-11, -9, 24], [13, 7, 24]]) deck.push([DV.over[0] + dx * F, DV.over[1] + dz * F, r * F]); }
     const HK = C.fair.hK ?? 1, HM = (C.fair.hMin ?? 0) * F, cl = wsp.map(([x, z, r, c], i) => Object.assign([x, z, r, Math.max(HM, 3 * F + HK * r * (0.18 + 0.16 * hsh(i, 13))),   /* r13e: hMin: thin domes vanished in the noise */ (tierOf(c) + hsh(i, 11) * 9) * F, 0], { corr: CORR && CORR.perDome ? inCorr(x, z, r) : corrC.has(c), cid: c }))   // r13c: perDome = only the lumps over the corridor fade
-      .concat(deck.map(([x, z, r, mi], i) => [x, z, r, r * (0.26 + 0.1 * hsh(i, 14) + 0.12 * clamp(1 - Math.hypot(x - DV.over[0], z - (DV.over[1] + 4 * F)) / (60 * F))), (mi != null ? (C.fair.deckY ?? 62) * F : (hsh(i, 15) < 0.35 ? 72 : 56) * F + hsh(i, 12) * 4 * F), 1]));   // r13: two deck heights -> parallax layers through the dive
+      .concat(deck.map(([x, z, r, mi], i) => [x, z, r, r * (0.26 + 0.1 * hsh(i, 14) + 0.12 * clamp(1 - Math.hypot(x - DV.over[0], z - (DV.over[1] + 4 * F)) / (60 * F))), (mi === "v6" ? (C.fair.deckY ?? 58) * F + hsh(i, 12) * (C.fair.deckJit ?? 3) * F : mi != null ? (C.fair.deckY ?? 62) * F : (hsh(i, 15) < 0.35 ? 72 : 56) * F + hsh(i, 12) * 4 * F), 1]));   // r13: two deck heights -> parallax layers through the dive
     // r13c: corridor test where the lump APPEARS (the camera ray through the lump hits the ground there; tilted, a raised cloud shows north of its
     // ground point), sampled over the corridor's window CORR.t
     if (CORR && CORR.t) { const TL = window.__timelines && window.__timelines.main, t0 = TL ? TL.time() : 0; for (const c of cl) c.corr = false;
@@ -175,7 +182,7 @@ else {
       units: () => { camSolve(); const v = new THREE.Vector3(); return (C.fair.unitWatch || []).map(([x, z]) => { v.set(x, 0, z).project(camera); return [Math.round((v.x + 1) * 960), Math.round((1 - v.y) * 540)]; }); } };
     window.__bwglClouds = cl.length;
     const D0 = DV || NODIVE, AD = (t) => (t > D0.SW + 1 ? NODIVE : D0);
-    const slabTop = Math.max(104, ...TIERS.map((v) => v + 55)) * F;
+    const slabTop = (C.fair.slabTop ?? Math.max(104, ...TIERS.map((v) => v + 55))) * F;   // r17: slabTop opt-in (big near clouds were cut flat at the slab top)
     const mkVC = (sx, list, dk, opF) => { if (list.length) sx.vc = sx.fx.vclouds({ noise: NOISE, clouds: list, bounds: (C.fair.fitBounds ? (() => { const pd = (c) => c[2] * 1.7 + 32 * F;   // r13d: the map always holds every lump (the deck reached past the box edge: a straight cut at 6.3 s)
         return [Math.min(B[0] - 40 * F, ...list.map((c) => c[0] - pd(c))), Math.min(B[1] - 70 * F, ...list.map((c) => c[1] - pd(c))), Math.max(B[0] + B[2] + 40 * F, ...list.map((c) => c[0] + pd(c))), Math.max(B[1] + B[3] + 40 * F, ...list.map((c) => c[1] + pd(c)))]; })() : [B[0] - 40 * F, B[1] - 70 * F, B[0] + B[2] + 40 * F, B[1] + B[3] + 40 * F]),   // r13e: fitBounds opt-in (it broke the near layer) texel: F, skip: 30 * F,
       slab: [28 * F, slabTop]   /* r13: low enough that no cloud bottom is cut flat */, tile: 125 * F, groupScale: C.fair.groupScale ?? 3.0, amp: 5 * F, soft: (C.fair.soft ?? 1.7) * F, skirtCut: C.fair.skirtCut || 0, lumpK: C.fair.lumpK, baseRound: C.fair.baseRound,   /* r13g: per-lobe rounded bottoms */ baseSharp: C.fair.baseSharp,   /* r13f: softer cloud bases */ flatPow: 0.3, sigma: 0.75 / F,
@@ -235,9 +242,50 @@ else {
   // Flashes on a 2D canvas above the smoke: an 8 px white core AT the muzzle + a ragged yellow-orange tongue (35 x 10 px with 2-3 side lobes),
   // both x0.7, frame 1 100 % / frame 2 50 %; a pan spark 2 frames early; an additive glow (r 40 px, 30 %); 8 spark streaks over 0.2 s.
   // All sizes are 1080p screen px; K = world px per screen px at the scene's camera scale.
+  // LOOK-LOCK pending-begin smoke3d
+  // r19 (owner 2026-11-28: "the gun smoke exactly like the 3D film: COPY it, don't re-create it"): the 3D films' own engine smoke, verbatim.
+  // Source: vicksburg/engine/fx.js (= gm3d/clip/fx.js + the v8 per-shot muzzle flashes), copied into gl/fx.js by build_scene.py:
+  //   musket = fx.smokeLine + SMOKE_GM (gmTall curtains, vicksburg/engine/scene.js) + the gm3d clip v8 volley options (gm3d/clip/index.html 209-212)
+  //            + the v8 muzzle flashes (scene.js MZF.musket = {}); cannon = fx.cannon + GUN_PRESET.field + MZF.cannon (flashHold 0.4, flashCore 0.7,
+  //            nightPool 7); impact = fx.impact { size: 0.9 } (scene.js / clip index.html 214).
+  // The engine runs in the film's own units (the clip's close region: unitsPerMeter 1 / 129.36, fxScale 9, wind [20, -7], the clip's sun, seed 1517).
+  // The only change is scale + placement: our map px / Z -> film units, and a copy of our camera with its position / Z (same projection), so one
+  // film unit covers Z map px. Z = PPU x K: PPU = film px per unit on screen (~60 at the clip's battle camera: fov 30, dist 30-36) unless
+  // --var smoke3dppu=N; K = our map px per screen px (BW.smoke content). Fired from our logged shots: every ripple of BWGL_CFG.vshots (shots
+  // < 0.9 s apart) = one smokeLine from its first muzzle to the farthest one (the engine fires the shot at pts[0] exactly on t0, the rest
+  // ripple over `roll` = our ripple's span); every BWGL_CFG.vcannon = fx.cannon at the muzzle + fx.impact at its target / impact time.
+  // Opt-in: build_scene.py --smoke3d (GD.var.smoke3d); without it nothing here runs and the locked r15 smoke is untouched.
+  const GV3 = (typeof GD !== "undefined" && GD.var) || {}, S3V = GV3.smoke3d || C.smoke3d;
+  let S3D = null;
+  if (S3V && ((C.vshots || []).length || (C.vcannon || []).length)) {
+    const V3 = C.volley || {}, Z = (+GV3.smoke3dppu || C.smoke3dPPU || 60) * (V3.K || 1), Zc = (+GV3.smoke3dcanppu || +GV3.smoke3dppu || C.smoke3dPPU || 60) * (V3.K || 1);   // r19c: the cannon may have its own scale (--var smoke3dcanppu=N)
+    const mk3 = (Zs, seed) => { const cam = new THREE.PerspectiveCamera(), sc = new THREE.Scene(), fx = createFX({ scene: sc, camera: cam, renderer, unitsPerMeter: 1 / 129.36, fxScale: 9, wind: [20, -7], sunDir: [-0.7, 0.48, -0.4], duration: D, seed });
+      return { Zs, fx, W: (x, z, h) => [x / Zs, h, z / Zs], draw(t) { cam.copy(camera); cam.position.divideScalar(Zs); cam.near = camera.near / Zs; cam.far = camera.far / Zs; cam.updateProjectionMatrix(); cam.updateMatrixWorld(true);
+        fx.update(t, cam); renderer.render(sc, cam); } }; };   // one film-unit engine world per scale (the clip's close region; seed 1517 as the clip)
+    const M3 = mk3(Z, 1517), C3 = Zc === Z ? M3 : mk3(Zc, 1518), fx3 = M3.fx, fx3c = C3.fx;
+    const W3 = M3.W, W3c = C3.W; const IU = +GV3.smoke3dimpup || 0, IO = String(GV3.smoke3dimpoff || "0,0").split(",").map(Number);   // impact placement: N map px north / "dx,dz" map px
+    const SMOKE_GM = { cluster: [1.0, 1.0], fadeAfter: 6, fadeTo: 0.12, look: "gmTall" };
+    const SH3 = (C.vshots || []).slice().sort((a, b) => a[0] - b[0]), RP = [];
+    for (const q of SH3) { const g = RP[RP.length - 1]; if (g && q[0] - g[g.length - 1][0] < 0.9) g.push(q); else RP.push([q]); }
+    for (const g of RP) { const a = g[0]; let b = a, dm = -1; for (const q of g) { const d = Math.hypot(q[1] - a[1], q[2] - a[2]); if (d > dm) { dm = d; b = q; } }
+      if (dm < 1) b = [a[0], a[1] + 1, a[2]];   // a single muzzle: a 1 px line
+      let dx = 0, dz = 0; for (const q of g) { const l = Math.hypot(q[3] - q[1], q[4] - q[2]) || 1; dx += (q[3] - q[1]) / l; dz += (q[4] - q[2]) / l; }
+      fx3.smokeLine([W3(a[1], a[2], 0.06), W3(b[1], b[2], 0.06)], a[0], a[0] + 1.6, { ...SMOKE_GM, dir: [dx, dz], rate: 2.9, volley: 1.6, roll: Math.max(0.05, g[g.length - 1][0] - a[0]),
+        size: 1.45, height: 3, muzzle: 6, windK: 0.45, muzzleFlash: {} }); }
+    for (const [ts, x, z, ax, az, ti, tx, tz] of (C.vcannon || [])) { const l = Math.hypot(ax - x, az - z) || 1;
+      fx3c.cannon(W3c(x, z, 0.05), ts, { size: 1.0, flashHold: 0.4, flashCore: 0.7, nightPool: 7, dir: [(ax - x) / l, (az - z) / l] });
+      if (ti >= 0) fx3c.impact(W3c(tx + IO[0], tz - IU + IO[1], 0), ts + ti, { size: 0.9 * (+GV3.smoke3dimpk || 1) }); }   // IU (--var smoke3dimpup=N map px north): the strike point moved out from under a DOM icon (placement only)
+    fx3.setNight(V3.night ? 1 : 0); if (fx3c !== fx3) fx3c.setNight(V3.night ? 1 : 0);
+    S3D = { Z, Zc, draw(t) { M3.draw(t); if (C3 !== M3) C3.draw(t); } };
+    window.__S3D = { Z, Zc, ripples: RP.length, cannon: (C.vcannon || []).length };
+  }
+  // LOOK-LOCK pending-end smoke3d
   let SMOKE = null;
   if ((C.vshots || []).length || (C.vcannon || []).length) {
     const V = C.volley || {}, K = V.K || 1, SH = (C.vshots || []).slice().sort((a, b) => a[0] - b[0]), CN = (C.vcannon || []).slice().sort((a, b) => a[0] - b[0]);
+    // LOOK-LOCK pending-begin smoke3d
+    if (S3D) { SH.length = 0; CN.length = 0; }   // r19 --smoke3d: the engine draws the shots (above); the r15 puffs / flashes / cannon plume stay off, the soot column stays
+    // LOOK-LOCK pending-end smoke3d
     const mb = (a) => () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let q = Math.imul(a ^ (a >>> 15), 1 | a); q = (q + Math.imul(q ^ (q >>> 7), 61 | q)) ^ q; return ((q ^ (q >>> 14)) >>> 0) / 4294967296; };
     // --- 8 cauliflower textures (128 px cells in a 512 x 256 atlas): RGB = lit colour, A = density
     const CS = 128, AW = CS * 4, AH = CS * 2, atl = new Uint8Array(AW * AH * 4);
@@ -495,6 +543,9 @@ else {
     renderer.setRenderTarget(null); renderer.clear(true, true, true);
     for (const s of systems) { if (!s.on(t)) continue; if (s.pre) s.pre(t); s.fx.update(t, camera); renderer.render(s.scene, camera); }
     if (SMOKE) SMOKE.draw(t);
+    // LOOK-LOCK pending-begin smoke3d
+    if (S3D) S3D.draw(t);
+    // LOOK-LOCK pending-end smoke3d
   };
   window.__BWGL = { draw, camera, renderer, systems, dive: DV };
   draw(window.tl ? window.tl.time() : 0);
