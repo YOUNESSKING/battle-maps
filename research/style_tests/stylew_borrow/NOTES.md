@@ -363,3 +363,12 @@ Coverage from a mask render (map hidden, clouds over black; `clouds_r13c_coverag
 - Upper layer fades 5.8-6.1 s, when the deck lies under it (no see-through ghosts over the map).
 - Mask cover: 0.5-2 s 15 %, 3 s 14 %, 3.5-5.3 s 12.5-13 % (corridor fade), middle third 8-11 %; deck as r13d (5.5 24 %, 5.9 41 %, 6.3 63 %, 6.6 99.6 %).
 - Debug: `window.BWGL_DEBUG` draws every fair lump (kept / corridor / upper / dropped / rejected) over the frame; `ct/dbgsnap.sh`-style local stills.
+
+## r13f clouds: early field in loose groups + deck underside -> `sheet_clouds_r13f.jpg` + `clouds_r13f_hook_0-17.8.mp4` (30 fps) + `clouds_r13f_dive_0-9s_25fps.mp4` + `clouds_r13f_coverage.json`
+- Field: 14 cumulus in 6 loose Poisson groups (`screenPlace.groups`: centres >= 460 px apart, keep off the British boxes, clouds within 160 px
+  of their centre, lobes may overlap 0.55), log-normal radii 40-160 px (med 116, sigma 0.45), big clouds built from 4-5 lobes, mid 2-3, small 1-2
+  (`lobes`). Drift raised to [0.8, -0.27] x F/s (far ~3 px/s, near layer 1.6x). Unit drop, corridor fade and the world size floor kept.
+- Deck underside: deckLook ambBot [0.34,0.37,0.43] (the 6.3 s base patch lighter). A softer base (baseSharp 1.6) made the cumulus look like
+  jellyfish (grey skirts): not used.
+- Mask cover: 0.5-3 s 15.5 %, 3.5-5.3 s 13.7 % (corridor fade); deck 5.9 40 %, 6.3 60 %, 6.6 99.6 %.
+- Weak spots: a few upper-layer clouds show a flat grey base (mushroom look) and some wedge / hook fragments; the bottom third has no group.

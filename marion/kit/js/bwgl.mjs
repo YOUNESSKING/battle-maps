@@ -80,13 +80,20 @@ else {
     const SPL = C.fair.screenPlace; let spAt = null;
     if (SPL) { const TL = window.__timelines && window.__timelines.main, t0 = TL ? TL.time() : 0; if (TL) TL.seek(SPL.t, false); camSolve();
       const P = camera.position.clone(), M = camera.matrixWorld.clone(), PI = camera.projectionMatrixInverse.clone(), T = C.fair.tiers || [49, 49]; if (TL) TL.seek(t0, false);
-      spAt = (c) => { const h = (T[Math.floor(hsh(c, 71) * T.length)] + 4.5) * F + 10 * F, sx = SPL.px[0] + hsh(c + sd, 61) * (SPL.px[2] - SPL.px[0]), sy = SPL.px[1] + hsh(c + sd, 62) * (SPL.px[3] - SPL.px[1]);
-        const d = new THREE.Vector3(sx / 960 - 1, 1 - sy / 540, 0.5).applyMatrix4(PI).applyMatrix4(M).sub(P), k = (h - P.y) / d.y;
-        return [P.x + d.x * k, P.z + d.z * k, Math.max((sc.rMin ?? 14) * F, lnr(c + sd, 63, SPL.med, 0.4, SPL.rMin, SPL.rMax) * d.length() * k / 1700)]; }; }   // world floor: domes under ~2x the noise amplitude are eaten by the noise
+      // r13f: groups {n, gap, spread}: loose Poisson clusters (group centres >= gap px apart, 2-4 clouds within `spread` px of each), clear sky between
+      const GR = SPL.groups, GC = [], UKS = (C.fair.unitKeep ? C.fair.unitKeep.keep : []).map(([x, z]) => { const v = new THREE.Vector3(x, 0, z).project(camera); return [(v.x + 1) * 960, (1 - v.y) * 540]; });   // group centres keep off the British boxes
+      if (GR) for (let i = 0; i < 400 && GC.length < GR.n; i++) { const x = SPL.px[0] + hsh(i + sd, 81) * (SPL.px[2] - SPL.px[0]), y = SPL.px[1] + hsh(i + sd, 82) * (SPL.px[3] - SPL.px[1]);
+        if (GC.every(([a, b]) => Math.hypot(a - x, (b - y) * 1.3) > GR.gap) && !UKS.some(([a, b]) => Math.hypot(a - x, b - y) < GR.spread + (GR.unitGap ?? 90))) GC.push([x, y]); }
+      window.__bwglGroups = GC;
+      spAt = (c) => { const h = (T[Math.floor(hsh(c, 71) * T.length)] + 4.5) * F + 10 * F; let sx, sy;
+        if (GC.length) { const g = GC[Math.floor(hsh(c + sd, 83) * GC.length)], an = hsh(c + sd, 84) * 6.283, rr = GR.spread * Math.sqrt(hsh(c + sd, 85)); sx = g[0] + Math.cos(an) * rr; sy = g[1] + Math.sin(an) * rr * 0.75; }
+        else { sx = SPL.px[0] + hsh(c + sd, 61) * (SPL.px[2] - SPL.px[0]); sy = SPL.px[1] + hsh(c + sd, 62) * (SPL.px[3] - SPL.px[1]); }
+        const d = new THREE.Vector3(sx / 960 - 1, 1 - sy / 540, 0.5).applyMatrix4(PI).applyMatrix4(M).sub(P), k = (h - P.y) / d.y, rpx = lnr(c + sd, 63, SPL.med, SPL.sig ?? 0.4, SPL.rMin, SPL.rMax);
+        return [P.x + d.x * k, P.z + d.z * k, Math.max((sc.rMin ?? 14) * F, rpx * d.length() * k / 1700), rpx]; }; }   // world floor: domes under ~2x the noise amplitude are eaten by the noise
     for (let c = 0, k = 0; c < sc.tries && k < sc.n; c++) {
-      const [cx, cz, R0] = spAt ? spAt(c) : [B[0] + hsh(c + sd, 61) * B[2], B[1] + hsh(c + sd, 62) * B[3], lnr(c + sd, 63, sc.med * F, 0.5, (sc.rMin ?? 14) * F, (sc.rMax ?? 70) * F)];   // r13c: radius clamp per scene
-      if (offWide(cx, cz, R0) || wsp.some(([a, b, q]) => Math.hypot(a - cx, b - cz) < q + R0 + 10 * F)) { (window.__bwglRej = window.__bwglRej || []).push([cx, cz, R0, offWide(cx, cz, R0) ? 1 : 2]); continue; }
-      k++; wsp.push([cx, cz, R0, c]); if (inCorr(cx, cz, R0)) corrC.add(c); const kids = 1 + Math.floor(hsh(c + sd, 65) * 3);
+      const [cx, cz, R0, RPX] = spAt ? spAt(c) : [B[0] + hsh(c + sd, 61) * B[2], B[1] + hsh(c + sd, 62) * B[3], lnr(c + sd, 63, sc.med * F, 0.5, (sc.rMin ?? 14) * F, (sc.rMax ?? 70) * F)];   // r13c: radius clamp per scene
+      if (offWide(cx, cz, R0) || wsp.some(([a, b, q]) => Math.hypot(a - cx, b - cz) < (q + R0) * (SPL && SPL.groups ? SPL.groups.overlap ?? 1 : 1) + 10 * F)) { (window.__bwglRej = window.__bwglRej || []).push([cx, cz, R0, offWide(cx, cz, R0) ? 1 : 2]); continue; }
+      k++; wsp.push([cx, cz, R0, c]); if (inCorr(cx, cz, R0)) corrC.add(c); const hk = hsh(c + sd, 65), kids = SPL && SPL.lobes && RPX ? (RPX > 110 ? 4 + Math.floor(hk * 2) : RPX > 70 ? 2 + Math.floor(hk * 2) : 1 + Math.floor(hk * 1.5)) : 1 + Math.floor(hk * 3);   // r13f lobes: big clouds = more lobes
       for (let j = 0; j < kids; j++) { const i2 = (c + sd) * 7 + j, a = hsh(i2, 66) * 6.283, r = lnr(i2, 67, R0 * 0.45, 0.6, 7 * F, R0 * 0.9), dd = R0 * ((C.fair.kidD || [0.9, 0.8])[0] + (C.fair.kidD || [0.9, 0.8])[1] * hsh(i2, 69)) + r * 0.6;   // r13d: kidD = tighter (rounder) clusters
         const x = cx + Math.cos(a) * dd, z = cz + Math.sin(a) * dd * (C.fair.kidZ ?? 0.8);   /* r13e: kidZ > 1 offsets the tilted view's foreshortening (no wide pillows) */ if (!offWide(x, z, r)) { wsp.push([x, z, r, c]); if (inCorr(x, z, r)) corrC.add(c); } } }
     // r5: screen-space keep-clear (spoken places must read): drop whole clusters whose cloud projects into the box (+ its radius) at the sampled times
@@ -141,7 +148,7 @@ else {
     const slabTop = Math.max(104, ...TIERS.map((v) => v + 55)) * F;
     const mkVC = (sx, list, dk, opF) => { if (list.length) sx.vc = sx.fx.vclouds({ noise: NOISE, clouds: list, bounds: (C.fair.fitBounds ? (() => { const pd = (c) => c[2] * 1.7 + 32 * F;   // r13d: the map always holds every lump (the deck reached past the box edge: a straight cut at 6.3 s)
         return [Math.min(B[0] - 40 * F, ...list.map((c) => c[0] - pd(c))), Math.min(B[1] - 70 * F, ...list.map((c) => c[1] - pd(c))), Math.max(B[0] + B[2] + 40 * F, ...list.map((c) => c[0] + pd(c))), Math.max(B[1] + B[3] + 40 * F, ...list.map((c) => c[1] + pd(c)))]; })() : [B[0] - 40 * F, B[1] - 70 * F, B[0] + B[2] + 40 * F, B[1] + B[3] + 40 * F]),   // r13e: fitBounds opt-in (it broke the near layer) texel: F, skip: 30 * F,
-      slab: [28 * F, slabTop]   /* r13: low enough that no cloud bottom is cut flat */, tile: 125 * F, groupScale: C.fair.groupScale ?? 3.0, amp: 5 * F, soft: (C.fair.soft ?? 1.7) * F, skirtCut: C.fair.skirtCut || 0, lumpK: C.fair.lumpK, flatPow: 0.3, sigma: 0.75 / F,
+      slab: [28 * F, slabTop]   /* r13: low enough that no cloud bottom is cut flat */, tile: 125 * F, groupScale: C.fair.groupScale ?? 3.0, amp: 5 * F, soft: (C.fair.soft ?? 1.7) * F, skirtCut: C.fair.skirtCut || 0, lumpK: C.fair.lumpK, baseSharp: C.fair.baseSharp,   /* r13f: softer cloud bases */ flatPow: 0.3, sigma: 0.75 / F,
       stepIn: 0.25 * F, stepK: 0.0035, lightStep: 1.4 * F, lodDist: 260 * F, nearFade: 9 * F,   /* r13: no planar cut where the camera passes through a cloud */ maxSteps: C.fair.maxSteps ?? 200, resolution: C.fair.res ?? 0.75, warp: 0.06, fine: 0.12, wisp: 0.45, inner: 0.8,
       weights: [1.0, 0.5, 1, 0.5], group0: C.fair.group0 || [0.55, 0.3, 1.4, 0.5], blur: 1.0, sharp: 1, shadow: 0.75, shadowDir: [0.3, 1, 0.65], drift: (C.fair.drift || [0.10, -0.035]).map((v) => v * F * dk), evolve: 0.0025 / F, floor: 0.05,
       sunK: 1.4, ambK: 0.18, lightK: 3.2,
