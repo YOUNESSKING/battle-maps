@@ -140,6 +140,14 @@ else {
         cl.forEach((c, i) => { if (c[5] === 1 || drop.has(i)) return; const h = c[4] + 0.5 * c[3], k = P.y / Math.max(1, P.y - h), gx = P.x + (c[0] - P.x) * k, gz = P.z + (c[1] - P.z) * k;
           if (UK.keep.some(([x, z, R]) => Math.hypot(gx - x, gz - z) < R + c[2] * k)) drop.add(i); }); }
       if (TL) TL.seek(t0, false); window.__bwglDropped = cl.filter((c, i) => drop.has(i)); for (let i = cl.length - 1; i >= 0; i--) if (drop.has(i)) cl.splice(i, 1); window.__bwglUnitDrop = drop.size; }
+    // r13g edgeKeep {near, t:[..], maxPx}: upper-layer lumps keep `near` px inside the right edge (at the frame edge the oblique view smeared them
+    // into torn paper wings); any fair lump bigger than maxPx on screen (too close to the lens) is dropped too
+    const EK = C.fair.edgeKeep; if (EK) { const TL = window.__timelines && window.__timelines.main, t0 = TL ? TL.time() : 0, drop = new Set(), v = new THREE.Vector3();
+      for (const tt of EK.t || [0.5, 2.5, 5.0]) { if (TL) TL.seek(tt, false); camSolve();
+        cl.forEach((c, i) => { if (c[5] === 1 || drop.has(i)) return; v.set(c[0], c[4] + 0.5 * c[3], c[1]); const d = camera.position.distanceTo(v); v.project(camera);
+          const sx = (v.x + 1) * 960, rs = c[2] * 1.2 * 1700 / d, near = c[4] >= (C.fair.nearTier ?? 1e9) * F;
+          if (sx + rs > 1920 - (near ? EK.near : EK.far ?? -1e9) || rs > (EK.maxPx ?? 1e9)) drop.add(i); }); }
+      if (TL) TL.seek(t0, false); for (let i = cl.length - 1; i >= 0; i--) if (drop.has(i)) cl.splice(i, 1); window.__bwglEdgeDrop = drop.size; }
     window.__bwglDbg = { list: cl, wsp: wsp.length, clusters: new Set(wsp.map((q) => q[3])).size, proj: () => { camSolve(); const v = new THREE.Vector3();   // r13e: debug (probe): fair lumps on screen
       return cl.filter((c) => c[5] === 0).map((c) => { v.set(c[0], c[4] + 0.5 * c[3], c[1]).project(camera); const d = camera.position.distanceTo(new THREE.Vector3(c[0], c[4], c[1]));
         return [Math.round((v.x + 1) * 960), Math.round((1 - v.y) * 540), Math.round(c[2] * 1700 / d), c.corr ? 1 : 0, c[4] >= (C.fair.nearTier || 1e9) * F ? 1 : 0, Math.round(c[3] / c[2] * 100) / 100]; }); } };
@@ -148,9 +156,9 @@ else {
     const slabTop = Math.max(104, ...TIERS.map((v) => v + 55)) * F;
     const mkVC = (sx, list, dk, opF) => { if (list.length) sx.vc = sx.fx.vclouds({ noise: NOISE, clouds: list, bounds: (C.fair.fitBounds ? (() => { const pd = (c) => c[2] * 1.7 + 32 * F;   // r13d: the map always holds every lump (the deck reached past the box edge: a straight cut at 6.3 s)
         return [Math.min(B[0] - 40 * F, ...list.map((c) => c[0] - pd(c))), Math.min(B[1] - 70 * F, ...list.map((c) => c[1] - pd(c))), Math.max(B[0] + B[2] + 40 * F, ...list.map((c) => c[0] + pd(c))), Math.max(B[1] + B[3] + 40 * F, ...list.map((c) => c[1] + pd(c)))]; })() : [B[0] - 40 * F, B[1] - 70 * F, B[0] + B[2] + 40 * F, B[1] + B[3] + 40 * F]),   // r13e: fitBounds opt-in (it broke the near layer) texel: F, skip: 30 * F,
-      slab: [28 * F, slabTop]   /* r13: low enough that no cloud bottom is cut flat */, tile: 125 * F, groupScale: C.fair.groupScale ?? 3.0, amp: 5 * F, soft: (C.fair.soft ?? 1.7) * F, skirtCut: C.fair.skirtCut || 0, lumpK: C.fair.lumpK, baseSharp: C.fair.baseSharp,   /* r13f: softer cloud bases */ flatPow: 0.3, sigma: 0.75 / F,
+      slab: [28 * F, slabTop]   /* r13: low enough that no cloud bottom is cut flat */, tile: 125 * F, groupScale: C.fair.groupScale ?? 3.0, amp: 5 * F, soft: (C.fair.soft ?? 1.7) * F, skirtCut: C.fair.skirtCut || 0, lumpK: C.fair.lumpK, baseRound: C.fair.baseRound,   /* r13g: per-lobe rounded bottoms */ baseSharp: C.fair.baseSharp,   /* r13f: softer cloud bases */ flatPow: 0.3, sigma: 0.75 / F,
       stepIn: 0.25 * F, stepK: 0.0035, lightStep: 1.4 * F, lodDist: 260 * F, nearFade: 9 * F,   /* r13: no planar cut where the camera passes through a cloud */ maxSteps: C.fair.maxSteps ?? 200, resolution: C.fair.res ?? 0.75, warp: 0.06, fine: 0.12, wisp: 0.45, inner: 0.8,
-      weights: [1.0, 0.5, 1, 0.5], group0: C.fair.group0 || [0.55, 0.3, 1.4, 0.5], blur: 1.0, sharp: 1, shadow: 0.75, shadowDir: [0.3, 1, 0.65], drift: (C.fair.drift || [0.10, -0.035]).map((v) => v * F * dk), evolve: 0.0025 / F, floor: 0.05,
+      weights: [1.0, 0.5, 1, 0.5], group0: C.fair.group0 || [0.55, 0.3, 1.4, 0.5], blur: 1.0, sharp: 1, shadow: 0.75, shadowDir: C.fair.shadowDir || [0.3, 1, 0.65], drift: (C.fair.drift || [0.10, -0.035]).map((v) => v * F * dk), evolve: 0.0025 / F, floor: 0.05,
       sunK: 1.4, ambK: 0.18, lightK: 3.2,
       erode: (t) => { const d = D0; return [C.fair.erode0 ? C.fair.erode0(t) : 0, C.fair.deckErode ? C.fair.deckErode(t) : t > d.SW + 0.5 ? 9 : lerp(9, lerp(1.6, 0, sstep(d.deckIn - 0.1, d.deckIn + 0.6, t)), sstep(d.deckIn - 0.15, d.deckIn + 0.15, t))]; },   // r5: the deck does not exist before deckIn (spoken places read)
       deck: (t) => { const d = D0; return { x: d.over[0], z: d.over[1], r: 110 * F, front: C.fair.deckFront ? C.fair.deckFront(t) : 3.5 * (1 - sstep(d.deckIn + 0.1, d.full, t)), k: C.fair.deckK ? C.fair.deckK(t) : lerp(0, 1, sstep(d.deckIn, d.deckIn + 0.6, t)) }; },   // r13c: per-scene deck timing overrides
@@ -161,7 +169,8 @@ else {
       sigmaK: (t) => { const d = AD(t); return lerp(1, 0.5, sstep(d.full, d.inside, t)); },
       opacity: opF || C.fair.opacity || (() => 1) }); };
     const deckCol = (k, c, q) => {
-        return { sun: [lerp(1.0, 0.95, q), lerp(0.96, 0.97, q), lerp(0.88, 0.94, q)], ambTop: [lerp(0.58, 0.66, q), lerp(0.63, 0.71, q), lerp(0.72, 0.76, q)], ambBot: [lerp((C.fair.ambBot || [0.32])[0], 0.40, q), lerp((C.fair.ambBot || [0, 0.36])[1], 0.46, q), lerp((C.fair.ambBot || [0, 0, 0.44])[2] ?? 0.44, 0.54, q)],   // r13: whiter lit tops, softer grey undersides (v6)
+        const S0 = C.fair.sun0 || [1.0, 0.96, 0.88], A0 = C.fair.ambTop0 || [0.58, 0.63, 0.72];   // r13g: warm sunlit tops / cooler shade (per scene)
+        return { sun: [lerp(S0[0], 0.95, q), lerp(S0[1], 0.97, q), lerp(S0[2], 0.94, q)], ambTop: [lerp(A0[0], 0.66, q), lerp(A0[1], 0.71, q), lerp(A0[2], 0.76, q)], ambBot: [lerp((C.fair.ambBot || [0.32])[0], 0.40, q), lerp((C.fair.ambBot || [0, 0.36])[1], 0.46, q), lerp((C.fair.ambBot || [0, 0, 0.44])[2] ?? 0.44, 0.54, q)],   // r13: whiter lit tops, softer grey undersides (v6)
           nSun: CW_DAY.nSun, nAmbTop: CW_DAY.nAmbTop, nAmbBot: CW_DAY.nAmbBot, ambK: lerp(C.fair.ambK0 ?? 0.24, 0.36, q), lightK: lerp(3.2, 1.4, k) * lerp(1, 0.8, c), sunK: lerp(C.fair.sunK0 ?? 1.65, 1.2, q) }; };   // r13c: per-scene early-field light
     // r13b (critic A): two heights, the near (higher) layer drifts 1.6x faster (its own vclouds system)
     const NT = C.fair.nearTier; if (NT != null) { const isNear = (c) => !(c[5] === 1 || c[4] < NT * F), CO = CORR ? CORR.op : null, NO = C.fair.nearOp, BO = C.fair.opacity || (() => 1);

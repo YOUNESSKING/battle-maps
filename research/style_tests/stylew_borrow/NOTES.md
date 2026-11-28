@@ -372,3 +372,13 @@ Coverage from a mask render (map hidden, clouds over black; `clouds_r13c_coverag
   jellyfish (grey skirts): not used.
 - Mask cover: 0.5-3 s 15.5 %, 3.5-5.3 s 13.7 % (corridor fade); deck 5.9 40 %, 6.3 60 %, 6.6 99.6 %.
 - Weak spots: a few upper-layer clouds show a flat grey base (mushroom look) and some wedge / hook fragments; the bottom third has no group.
+
+## r13g clouds: right-edge wings, bases, light -> `sheet_clouds_r13g.jpg` + `clouds_r13g_hook_0-17.8.mp4` (30 fps) + `clouds_r13g_dive_0-9s_25fps.mp4` + `clouds_r13g_coverage.json`
+- `edgeKeep` {near 120, far 40, maxPx 260}: lumps checked at 0.5 / 2.5 / 5.0 s; upper-layer lumps must stay 120 px inside the right edge, lower
+  ones 40 px, and any lump over 260 px on screen (too near the lens) is dropped: the torn paper wings at x 1600-1920 are gone.
+- Bases: opt-in `baseRound` 0.3 (build patch: each lobe's base curves up toward its rim instead of the flat 0.06), undersides lifted
+  (ambBot [0.46,0.50,0.58]); a few flat grey bases remain (the mushroom-like cloud north of the river crossing).
+- Light: warm sun (sun0 [1.0,0.95,0.85], sunK0 2.05), cooler shade (ambTop0 [0.50,0.55,0.64], ambK0 0.24): lit tops ~(235,230,224) measured;
+  ground shadows 25 % cast down-right (shadowDir [-0.22,1,0.56]; before they fell left).
+- Mask cover: 0.5-3 s 10.3-10.7 %, 3.5-5.3 s 8.8 % (corridor fade): BELOW the 13-15 % target (edge + lens culling removed clouds; n 21 placed
+  fewer than asked). Next: more groups (7-8) or larger med.
