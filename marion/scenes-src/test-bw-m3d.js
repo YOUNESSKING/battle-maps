@@ -302,6 +302,6 @@ if (GD.var.audit) LABEL_AUDIT([2, 10, 20, 30, 40, 50, 60, 70], { show: true });
 // ================================================================================================================================
 // BW r9: the 3D layer for the cannon (K = world px per screen px at the camera scale 3.6), slow wind, heavier smoke cap 0.75
 BW.gl({ mpu: 16, shadowK: 0.3, volley: { K: 1 / 3.6, cwind: [16, -5], cap: 0.9, clife: 7.5,   // r13: the cannon cloud drifts and is gone in ~8 s
-  capBoxes: [[[1356, 698, 1422, 746], TGF + 1.5, TGF + 5.5, 0.6, 30]] } });   // r13: over the house front the cannon smoke stays <= 0.6 from +1.5 s for 4 s (defenders, white flag)
+  capBoxes: [[[1356, 698, 1422, 746], TGF + 1.5, TGF + 5.5, 0.6, 30], [[1384, 696, 1428, 738], TGF + 0.38, TGF + 0.8, 0.3, 24, 0.08]] } });   // r14 (critic B): the jet thinned over the roof for ~0.3 s so the strike (TGF + 0.5) reads   // r13: over the house front the cannon smoke stays <= 0.6 from +1.5 s for 4 s (defenders, white flag)
 BW.legend(0, END + 1, [{ name: "Americans", sub: "Marion and Lee", color: "#2c57b7" }, { name: "British", sub: "the garrison", color: "#bc2528" }]);
 }

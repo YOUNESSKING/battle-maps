@@ -76,14 +76,15 @@ for (a, b, name) in SEGS:
         if groups and s[0] - groups[-1][-1][0] < 0.9: groups[-1].append(s)
         else: groups.append([s])
     rng = np.random.default_rng(int(a * 10) + 7); L = T.Lib(rng)
-    front = np.zeros(len(st), np.float32)   # r2: mask: the first shot of each ripple (up to the second shot) stays at full level; the tail is ducked 6 dB under the voice
+    front = np.zeros(len(st), np.float32); boost = np.ones(len(st), np.float32)   # r2: mask: the first shot of each ripple (up to the second shot) stays at full level; the tail is ducked 6 dB under the voice
     for g in groups:
         e = dict(type="musket_volley", tShare=g[0][0], unit=dict(men=len(g) * 9), at=dict(camDist=20, px=[g[0][1], g[0][2]]),
                  shots=[dict(tShare=t, at=dict(px=[x, y])) for t, x, y in g])
         T.render_volley(L, st, e, rng, log)
         i0 = max(0, int((g[0][0] - 0.12) * SR)); i1 = int(((g[1][0] if len(g) > 1 else g[0][0] + 1.5) - 0.01) * SR); front[i0:i1] = 1
+        if name == "test-bw-m3f" and g is groups[0]: boost[i0:i1] = db(2)   # r14 (critic B): the first ambush shot +2 dB over the voice
     f = int(0.01 * SR); front = np.convolve(front, np.ones(f) / f, "same")
-    tail = st * (1 - front)[:, None]; st = st * front[:, None]
+    tail = st * (1 - front)[:, None]; st = st * (front * boost)[:, None]
     w = int(0.05 * SR); env = np.sqrt(np.convolve((vo ** 2).mean(1), np.ones(w) / w, "same")); env = (env > 0.01).astype(np.float32)
     k = int(0.25 * SR); env = np.clip(np.convolve(env, np.hanning(k) / np.hanning(k).sum(), "same") * 1.2, 0, 1)
     EX = float(os.environ.get("MUSKET_EXTRA_DB", "0"))   # r3: first shot -4 dB, tail -6 dB under the voice (+ EX on both) so the bangs peak <= -6 dBFS

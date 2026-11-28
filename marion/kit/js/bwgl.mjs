@@ -318,7 +318,7 @@ else {
         const prev = renderer.getRenderTarget(); renderer.setRenderTarget(RT); renderer.setClearColor(0, 0); renderer.clear(true, false, false);
         if (n) renderer.render(sScene, camera);
         renderer.setRenderTarget(prev);
-        for (const [bx, t0, t1, cap, fe] of (V.capBoxes || [])) { if (t < t0 || t > t1 || ur.length >= MAXR) continue; const k = sstep(t0, t0 + 0.4, t) * (1 - sstep(t1 - 0.4, t1, t)), cv = lerp(V.cap ?? 0.6, cap, k);   // r13: time-windowed soft caps (house front)
+        for (const [bx, t0, t1, cap, fe, rp = 0.4] of (V.capBoxes || [])) { if (t < t0 || t > t1 || ur.length >= MAXR) continue; const k = sstep(t0, t0 + rp, t) * (1 - sstep(t1 - rp, t1, t)), cv = lerp(V.cap ?? 0.6, cap, k);   // r13: time-windowed soft caps (house front)
           const a = proj(bx[0], bx[1]), b = proj(bx[2], bx[3]); ur.push([Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.max(a[0], b[0]), Math.max(a[1], b[1]), cv, false, fe ?? 30]); }
         for (let i = 0; i < MAXR; i++) { const r = ur[i]; if (r) { rects[i].set(r[0], r[1], r[2], r[3]); rmax[i] = r[4]; rfe[i] = r[6] ?? 1.5; } else rects[i].set(-1, -1, -1, -1); }
         if (n) renderer.render(cScene, oCam);

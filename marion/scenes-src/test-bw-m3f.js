@@ -37,7 +37,7 @@ const FER = PLACE("parkers_ferry"), RY = 808;
 const C0 = [1468, 842, 2.25], C1 = [1470, 830, 2.4], C2 = [1512, 832, 3.0], C3 = [1515, 848, 3.0], C4 = [1482, 846, 2.9];   // critic r3: frame 0 already in the close look (no wide->close art pop at the cut); close enough that the ambush reads (~100 px between boxes)
 camera([[0, ...C0], [T_PF - 0.2, 1464, 838, 2.3], [T_ED + 1.2, ...C1, "power2.inOut"], [T_HID + 2.2, ...C2, "power2.inOut"], [T_CHARGE, 1515, 834, 3.0],
   [T_EVERY - 0.4, 1525, 838, 3.15], [T_COUNT, ...C3, "power2.inOut"], [T_BIG + 0.2, 1512, 848, 3.0], [T_BIG + 2.6, ...C4, "power2.inOut"], [END, 1484, 846, 2.9]]);
-BW.dateNow("JUNE 1781");   // BW: the pocket-watch plaque (no clock time in this paragraph: date only)
+{ const PQ = BW.dateNow("JUNE 1781"); gsap.set(PQ, { autoAlpha: 0 }); tl.to(PQ, { autoAlpha: 1, duration: 0.2 }, 3.26 + 0.27); }   // r14 (critic B): the test window starts at 3.26 s with an 8-frame crossfade: the plaque comes in after it (one plaque at a time)   // BW: the pocket-watch plaque (no clock time in this paragraph: date only)
 B.date("30 AUGUST 1781", T_30 + 0.05, null, 32); SFX("tick", T_30 + 0.15);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // helpers (as m1b / m1d): screen card, battle mark, muzzle flash
