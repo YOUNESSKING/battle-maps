@@ -31,6 +31,9 @@ while "--var" in a: i = a.index("--var"); k_, v_ = a[i + 1].split("=", 1); VARS[
 if PAINT: VARS["paint"] = "1"
 if CLOUD3D: VARS["cloud3d"] = "1"
 # LOOK-LOCK pending-end clouds
+# LOOK-LOCK pending-begin smoke3d
+if "--smoke3d" in a: a.remove("--smoke3d"); VARS["smoke3d"] = "1"   # r19 opt-in TEST: the 3D films' engine gun smoke copied verbatim (bwgl.mjs smoke3d)
+# LOOK-LOCK pending-end smoke3d
 if "--src" in a: i = a.index("--src"); src = a[i + 1]; del a[i:i + 2]   # build scenes/<SCENE> from scenes-src/<src>.js (one source, several scenes)
 name, base = a[0], a[1]
 if a[2] == "--dur":

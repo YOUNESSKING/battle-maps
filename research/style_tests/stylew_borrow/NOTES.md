@@ -259,6 +259,29 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r19 stills (owner: "the gun smoke exactly like the 3D film: COPY it") -> `sheet_smoke3d_r19.jpg` (build `--smoke3d`; stills only, no render yet)
+- Sources (copied, not re-created): `vicksburg/engine/fx.js` (= `gm3d/clip/fx.js` + the v8 per-shot muzzle flashes; the smoke's random
+  sequence is identical with or without them), already shipped as `gl/fx.js` by build_scene.py. Musket = `fx.smokeLine` + `SMOKE_GM`
+  (`vicksburg/engine/scene.js`: cluster [1, 1], fadeAfter 6, fadeTo 0.12, look gmTall) + the gm3d clip v8 volley options
+  (`gm3d/clip/index.html` 209-212: rate 2.9, volley 1.6, size 1.45, height 3, muzzle 6, windK 0.45) + `muzzleFlash: {}` (scene.js MZF.musket,
+  troops test v14). Cannon = `fx.cannon` + GUN_PRESET.field (size 1) + MZF.cannon (flashHold 0.4, flashCore 0.7, nightPool 7); impact =
+  `fx.impact { size: 0.9 }` (scene.js / clip index.html 214). The engine setup = the clip's close region (unitsPerMeter 1 / 129.36, fxScale 9,
+  wind [20, -7], sun [-0.7, 0.48, -0.4], seed 1517).
+- Only scale + placement changed: the engine runs in film units; our map px / Z -> film units and a copy of our camera with its position / Z
+  (same projection). Z = PPU x K: PPU 60 = the film's px per unit at 1080p at the clip's battle camera (fov 30, dist 30-36), so a puff has the
+  film's size on screen; K = the scene's map px per screen px (m3f 1 / 3.1, m3d 1 / 3.6, hook 1 / 15.2). `--var smoke3dppu=N` tries another
+  scale (e.g. ~150 = the film's smoke-to-box ratio: his boxes ~25 px, ours ~65 px).
+- Fired from our logged shots: each ripple of `vshots` (< 0.9 s apart) = one smokeLine from its first muzzle to the farthest one, t0 = the first
+  shot (the engine fires the shot at pts[0] exactly on t0, the rest ripple over our ripple's span); each `vcannon` = fx.cannon at the muzzle
+  on its flash frame (the same frame as r15) + fx.impact at the target at its impact time (`--var smoke3dimpup=N` moves it N map px north).
+- Opt-in, all in `LOOK-LOCK pending smoke3d` regions (bwgl.mjs, build_scene.py): without `--smoke3d` nothing changes; the gate says LOOK LOCK OK.
+  With it the r15 puffs / flashes / cannon plume are off; the burning roof's soot column stays.
+- Seen: musket = the film's grey curtains in battalion clusters (ours read rounder: our line runs across the screen, his up it) with tiny v8
+  flashes, thinning after 6 s; smoke draws over the boxes (as in the film; r15 cut the boxes out). Cannon = the film's white-orange flash +
+  a soft grey cloud drifting downwind. The impact (10 dark-brown puffs, alpha 0.42) is under the house icon / over dark woods: barely visible.
+- The hook guard (6 shots, night) is built with `--smoke3d` too, but the hook scene times out in the local snapshot (with and without the flag):
+  its stills come from the render.
+
 ## r18 share -> `stylew_borrow_test_r18_share.mp4` (76.733 s, 2302 frames at 30 fps, 21 MB; r15 audio stream-copied, MD5 identical)
 - Hand-off grade match: over 7.8-8.4 s the 3D image eases onto the 2D landed frame's levels (per-channel slope/intercept from the two landed
   frames, centre 900 x 600: 3D mean (79.4, 82.6, 54.4) sd (21.7, 23.4, 16.7) -> 2D (71.8, 74.5, 43.1) sd (23.3, 24.5, 20.1)); measured after:

@@ -242,9 +242,48 @@ else {
   // Flashes on a 2D canvas above the smoke: an 8 px white core AT the muzzle + a ragged yellow-orange tongue (35 x 10 px with 2-3 side lobes),
   // both x0.7, frame 1 100 % / frame 2 50 %; a pan spark 2 frames early; an additive glow (r 40 px, 30 %); 8 spark streaks over 0.2 s.
   // All sizes are 1080p screen px; K = world px per screen px at the scene's camera scale.
+  // LOOK-LOCK pending-begin smoke3d
+  // r19 (owner 2026-11-28: "the gun smoke exactly like the 3D film: COPY it, don't re-create it"): the 3D films' own engine smoke, verbatim.
+  // Source: vicksburg/engine/fx.js (= gm3d/clip/fx.js + the v8 per-shot muzzle flashes), copied into gl/fx.js by build_scene.py:
+  //   musket = fx.smokeLine + SMOKE_GM (gmTall curtains, vicksburg/engine/scene.js) + the gm3d clip v8 volley options (gm3d/clip/index.html 209-212)
+  //            + the v8 muzzle flashes (scene.js MZF.musket = {}); cannon = fx.cannon + GUN_PRESET.field + MZF.cannon (flashHold 0.4, flashCore 0.7,
+  //            nightPool 7); impact = fx.impact { size: 0.9 } (scene.js / clip index.html 214).
+  // The engine runs in the film's own units (the clip's close region: unitsPerMeter 1 / 129.36, fxScale 9, wind [20, -7], the clip's sun, seed 1517).
+  // The only change is scale + placement: our map px / Z -> film units, and a copy of our camera with its position / Z (same projection), so one
+  // film unit covers Z map px. Z = PPU x K: PPU = film px per unit on screen (~60 at the clip's battle camera: fov 30, dist 30-36) unless
+  // --var smoke3dppu=N; K = our map px per screen px (BW.smoke content). Fired from our logged shots: every ripple of BWGL_CFG.vshots (shots
+  // < 0.9 s apart) = one smokeLine from its first muzzle to the farthest one (the engine fires the shot at pts[0] exactly on t0, the rest
+  // ripple over `roll` = our ripple's span); every BWGL_CFG.vcannon = fx.cannon at the muzzle + fx.impact at its target / impact time.
+  // Opt-in: build_scene.py --smoke3d (GD.var.smoke3d); without it nothing here runs and the locked r15 smoke is untouched.
+  const GV3 = (typeof GD !== "undefined" && GD.var) || {}, S3V = GV3.smoke3d || C.smoke3d;
+  let S3D = null;
+  if (S3V && ((C.vshots || []).length || (C.vcannon || []).length)) {
+    const V3 = C.volley || {}, Z = (+GV3.smoke3dppu || C.smoke3dPPU || 60) * (V3.K || 1), camF = new THREE.PerspectiveCamera(), sc3 = new THREE.Scene();
+    const fx3 = createFX({ scene: sc3, camera: camF, renderer, unitsPerMeter: 1 / 129.36, fxScale: 9, wind: [20, -7], sunDir: [-0.7, 0.48, -0.4], duration: D, seed: 1517 });
+    const W3 = (x, z, h) => [x / Z, h, z / Z]; const IU = +GV3.smoke3dimpup || 0;
+    const SMOKE_GM = { cluster: [1.0, 1.0], fadeAfter: 6, fadeTo: 0.12, look: "gmTall" };
+    const SH3 = (C.vshots || []).slice().sort((a, b) => a[0] - b[0]), RP = [];
+    for (const q of SH3) { const g = RP[RP.length - 1]; if (g && q[0] - g[g.length - 1][0] < 0.9) g.push(q); else RP.push([q]); }
+    for (const g of RP) { const a = g[0]; let b = a, dm = -1; for (const q of g) { const d = Math.hypot(q[1] - a[1], q[2] - a[2]); if (d > dm) { dm = d; b = q; } }
+      if (dm < 1) b = [a[0], a[1] + 1, a[2]];   // a single muzzle: a 1 px line
+      let dx = 0, dz = 0; for (const q of g) { const l = Math.hypot(q[3] - q[1], q[4] - q[2]) || 1; dx += (q[3] - q[1]) / l; dz += (q[4] - q[2]) / l; }
+      fx3.smokeLine([W3(a[1], a[2], 0.06), W3(b[1], b[2], 0.06)], a[0], a[0] + 1.6, { ...SMOKE_GM, dir: [dx, dz], rate: 2.9, volley: 1.6, roll: Math.max(0.05, g[g.length - 1][0] - a[0]),
+        size: 1.45, height: 3, muzzle: 6, windK: 0.45, muzzleFlash: {} }); }
+    for (const [ts, x, z, ax, az, ti, tx, tz] of (C.vcannon || [])) { const l = Math.hypot(ax - x, az - z) || 1;
+      fx3.cannon(W3(x, z, 0.05), ts, { size: 1.0, flashHold: 0.4, flashCore: 0.7, nightPool: 7, dir: [(ax - x) / l, (az - z) / l] });
+      if (ti >= 0) fx3.impact(W3(tx, tz - IU, 0), ts + ti, { size: 0.9 }); }   // IU (--var smoke3dimpup=N map px north): the strike point moved out from under a DOM icon (placement only)
+    fx3.setNight(V3.night ? 1 : 0);
+    S3D = { Z, draw(t) { camF.copy(camera); camF.position.divideScalar(Z); camF.near = camera.near / Z; camF.far = camera.far / Z; camF.updateProjectionMatrix(); camF.updateMatrixWorld(true);
+      fx3.update(t, camF); renderer.render(sc3, camF); } };
+    window.__S3D = { Z, ripples: RP.length, cannon: (C.vcannon || []).length };
+  }
+  // LOOK-LOCK pending-end smoke3d
   let SMOKE = null;
   if ((C.vshots || []).length || (C.vcannon || []).length) {
     const V = C.volley || {}, K = V.K || 1, SH = (C.vshots || []).slice().sort((a, b) => a[0] - b[0]), CN = (C.vcannon || []).slice().sort((a, b) => a[0] - b[0]);
+    // LOOK-LOCK pending-begin smoke3d
+    if (S3D) { SH.length = 0; CN.length = 0; }   // r19 --smoke3d: the engine draws the shots (above); the r15 puffs / flashes / cannon plume stay off, the soot column stays
+    // LOOK-LOCK pending-end smoke3d
     const mb = (a) => () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let q = Math.imul(a ^ (a >>> 15), 1 | a); q = (q + Math.imul(q ^ (q >>> 7), 61 | q)) ^ q; return ((q ^ (q >>> 14)) >>> 0) / 4294967296; };
     // --- 8 cauliflower textures (128 px cells in a 512 x 256 atlas): RGB = lit colour, A = density
     const CS = 128, AW = CS * 4, AH = CS * 2, atl = new Uint8Array(AW * AH * 4);
@@ -502,6 +541,9 @@ else {
     renderer.setRenderTarget(null); renderer.clear(true, true, true);
     for (const s of systems) { if (!s.on(t)) continue; if (s.pre) s.pre(t); s.fx.update(t, camera); renderer.render(s.scene, camera); }
     if (SMOKE) SMOKE.draw(t);
+    // LOOK-LOCK pending-begin smoke3d
+    if (S3D) S3D.draw(t);
+    // LOOK-LOCK pending-end smoke3d
   };
   window.__BWGL = { draw, camera, renderer, systems, dive: DV };
   draw(window.tl ? window.tl.time() : 0);
