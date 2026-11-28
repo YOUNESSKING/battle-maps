@@ -7,7 +7,7 @@ from PIL import Image, ImageDraw, ImageFont
 r15, snap, out = sys.argv[1:4]
 ct, cx, cy = sys.argv[4], int(sys.argv[5]), int(sys.argv[6])
 cw, ch = (int(sys.argv[7]), int(sys.argv[8])) if len(sys.argv) > 8 else (720, 405)
-TS = ["1.0", "4.0", "6.6", "7.6"]
+TS = os.environ.get("TS", "1.0,4.0,6.6,7.6").split(",")   # r16b: 7.7 (the local renderer crashes at 7.6, the r15 build too)
 W, H = 960, 540
 try:
     F = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 26)
@@ -30,8 +30,8 @@ def r16f(t):
 rows = len(TS)
 sheet = Image.new("RGB", (2 * W + 30, 60 + rows * (H + 10) + 70 + ch), (24, 22, 20))
 d = ImageDraw.Draw(sheet)
-d.text((10, 16), "r15 (3D engine clouds)", fill=(230, 225, 210), font=F)
-d.text((W + 30, 16), "r16 painted 2D clouds", fill=(230, 225, 210), font=F)
+d.text((10, 16), os.environ.get("LEFT", "r15 (3D engine clouds)"), fill=(230, 225, 210), font=F)
+d.text((W + 30, 16), os.environ.get("RIGHT", "r16 painted 2D clouds"), fill=(230, 225, 210), font=F)
 for i, t in enumerate(TS):
     y = 60 + i * (H + 10)
     sheet.paste(r15f(t).resize((W, H), Image.LANCZOS), (0, y))
@@ -44,8 +44,10 @@ crop = r16f(ct).crop((cx, cy, cx + cw, cy + ch))
 sheet.paste(crop, (W + 30, y + 50))
 X = os.environ.get("WIPE")   # optional: the painted wipe at the swap (r16 only), left of the crop
 if X:
-    sheet.paste(Image.open(X).convert("RGB").resize((cw, ch), Image.LANCZOS), (10, y + 50))
-    d.text((10, y + 10), f"r16 painted wipe ({os.path.basename(X)})", fill=(230, 225, 210), font=F)
+    xs = X.split(","); k = len(xs); ww = (W - 20 - 10 * (k - 1)) // k; hh = ww * 9 // 16
+    for j, f in enumerate(xs):   # r16b: the bank closing + the wipe parting, side by side
+        sheet.paste(Image.open(f).convert("RGB").resize((ww, hh), Image.LANCZOS), (10 + j * (ww + 10), y + 50))
+    d.text((10, y + 10), "r16b: " + " | ".join(os.path.basename(f).replace(".png", "").replace("_at-", " ") for f in xs), fill=(230, 225, 210), font=F)
     d.text((W + 30, y + 10), f"1:1 crop at {ct} s", fill=(230, 225, 210), font=F)
 sheet = sheet.crop((0, 0, sheet.width, y + 60 + ch))
 sheet.save(out, quality=88)

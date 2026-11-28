@@ -207,22 +207,19 @@ if (!GD.var.paint) { const ROADP = [...R_CN, ...R_NC].filter((q, i) => i % 2 ===
 // The engine layer stays for the guard's musket smoke only (no fair clouds, no deck, no stratus, no white-out, no grey haze band).
 else { BW.gl({ mpu: 128, hazeK: 0, shadowK: 0, volley: { K: 1 / 15.2, night: 1, wind: [-14, -36], jet: [55, 75], billows: 8, gone: 17.0, cap: 0.4, a0: 0.36, haze: 1, burstCap: 0.8, life: 5, fade: 2.4, tau: 3, windAt: 0.5, shear: 0.8, stretch: 0.12 } });
   const L0 = 0, L1 = 1, L2 = 2;   // far / mid / near layers (altitudes in map px: the push-in passes them at different times)
-  PC.dive({ layers: [330, 640, 1150, 460, 300], fieldAt: 2.6, wind: [1.1, -0.35], shadowK: 0.22,
-    // [screen x, y, radius px at the authoring time, layer, sprite, authoring time]: 0-5.3 s off the road / ONE ROAD / Charleston / the British
-    // boxes, the near layer only at the frame edges; layers 3-4 = the clouds round the dive (laid out at 5.7 s round the ferry at ~830 / 495,
-    // they come in with "across the Santee" and rush out past the lens during the fall: the parallax of the dive)
-    field: [[560, 150, 96, L0], [1480, 115, 84, L0], [1770, 430, 104, L0], [300, 330, 78, L0], [1530, 920, 88, L0],
-      [190, 175, 140, L1], [1660, 265, 140, L1], [1600, 690, 128, L1], [380, 960, 124, L1],
-      [-40, 560, 250, L2, "pc_m0"], [1985, 880, 270, L2, "pc_m1"], [1880, 40, 210, L2, "pc_m2"],
-      [520, 330, 120, 3, "pc_c2", 5.7], [1150, 300, 130, 3, "pc_c4", 5.7], [1240, 640, 120, 3, "pc_c1", 5.7], [460, 700, 125, 3, "pc_c5", 5.7],
-      [830, 240, 95, 4, "pc_c3", 5.7], [1060, 470, 90, 4, "pc_c0", 5.7], [620, 520, 95, 4, "pc_c4", 5.7], [900, 720, 90, 4, "pc_c2", 5.7]],
-    fieldOp: (t, c) => (c.layer === 2 ? 0.92 : c.layer >= 3 ? BW.sstep(5.25, 5.85, t) : 1),
-    // the deck round the ferry: comes in as the push starts, the lens falls into it at the swap
-    deck: { at: NFL, placeAt: 6.6, dy: -20, alt: 150, op: (t) => BW.sstep(5.75, 6.0, t) * (1 - BW.sstep(SW - 0.03, SW + 0.01, t)), grow: (t) => 0.55 + 0.45 * BW.sstep(5.75, 6.5, t),   // grows in (no see-through ghost)
-      masses: [[-52, -34, 40], [50, -30, 42], [-4, 50, 40], [58, 38, 36], [-60, 34, 36], [6, -64, 38], [0, 2, 30]] },
-    // the wipe: screen-space masses round the ferry [angle, radius px at SW, scale at SW, sprite, flip]; cover SW +- 0.05 s, parted by ~SW + 0.8
-    wipe: { t: SW, track: NFL, inDur: 0.32, outDur: 0.8, part: 1500, masses: [[0, 0, 2.0, "pc_t0", 0], [0.3, 470, 1.55, "pc_t1", 0], [1.35, 440, 1.6, "pc_t2", 1],
-      [2.4, 470, 1.55, "pc_t3", 0], [3.45, 450, 1.6, "pc_t1", 1], [4.5, 470, 1.55, "pc_t2", 0], [5.45, 440, 1.6, "pc_t3", 1]] },
+  PC.dive({ layers: [330, 640, 1150], fieldAt: 2.6, wind: [1.1, -0.35], shadowK: 0.2, shadowOff: [80, 60],
+    // r16b: soft translucent painted masses seen from above + long low wisps, log-normal sizes (64-450 px, 7x; sprite radius, the painted body is ~60 % of it), off the road / ONE ROAD /
+    // Charleston / the British boxes; [screen x, y, radius px at 2.6 s, layer, sprite]; the near layer only at the frame edges
+    field: [[560, 130, 96, L0, "pc_p3"], [1500, 110, 77, L0, "pc_p5"], [1760, 450, 152, L0, "pc_p1"], [1520, 930, 112, L0, "pc_p4"], [300, 320, 64, L0, "pc_p2"],
+      [1350, 300, 272, L0, "pc_w0"], [380, 470, 304, L0, "pc_w1"],
+      [200, 190, 240, L1, "pc_p0"], [1680, 250, 208, L1, "pc_p2"], [1640, 720, 272, L1, "pc_b1"], [360, 960, 176, L1, "pc_p1"], [1450, 420, 288, L1, "pc_w2"],
+      [-40, 560, 416, L2, "pc_b0"], [1985, 880, 448, L2, "pc_b2"], [1880, 40, 352, L2, "pc_p4"]],
+    fieldOp: (t, c) => (c.layer === 2 ? 0.9 : 1),
+    // the BANK + the wipe (screen space round the ferry): 6 big soft masses [from angle, scale at SW, sprite, flip, enter time, radius px at SW]
+    // slide in from beyond the frame edges from 6.0 s and grow (the wagons stay visible until they close), cover the swap SW for ~0.15 s,
+    // then part outward and thin into soft wisps by ~SW + 0.8
+    wipe: { t: SW, track: NFL, outDur: 0.8, part: 1400, masses: [[Math.PI, 1.8, "pc_b0", 0, 6.0, 420], [0, 1.85, "pc_b1", 1, 6.1, 430],
+      [Math.PI / 2, 1.75, "pc_b2", 0, 6.25, 380], [-2.3, 1.7, "pc_b3", 1, 6.4, 400], [-0.8, 1.7, "pc_b1", 0, 6.5, 410], [0.75, 1.65, "pc_b0", 1, 6.6, 400]] },
     haze: (t, c) => 0.85 * BW.sstep(0.35, 0.62, c.th),   // a warm painted haze over the far edge while the view is steeply tilted
     until: TZ1 + 0.4 }); }
 // hook-2: "before dawn" is the script's only time: the pocket watch comes in (hands ~4:30, no clock time is spoken)

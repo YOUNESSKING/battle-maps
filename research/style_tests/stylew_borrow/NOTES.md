@@ -259,6 +259,22 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r16b (coordinator on r16: "cartoon clip-art, not painted Style W") -> `sheet_dive2d_r16b.jpg` (r15 | r16b at 1.0 / 4.0 / 6.6 / 7.7 s, + the bank at 6.85, the wipe parting at 7.2, a 1:1 crop)
+- Sprites rebuilt (`make_paint_clouds.py`): soft painted masses seen from above. The density is a sum of gaussian blobs; edges dissolve
+  in a dry brush over ~20-40 px (a wide feather, stroke noise, a broken outer band); never a straight bottom. Translucent: thin parts ~0.6,
+  the core ~0.85, wisps <= 0.62. Low contrast: lit (240,236,226) / mid (222,221,216) / shade (196,198,204), wide soft steps, paper grain.
+  Kinds: `p` = puffs seen from above (6), `w` = long low wisps (4), `b` = big bank masses (4). The old side-on `c/m/t` stickers are gone.
+- Field: 15 clouds, log-normal sizes (sprite radius 64-450 px, 7x), 3 wisps, near layer only at the frame edges.
+- Ground shadows now visible. In r16 they never drew: the tinted shadow is a canvas and the sprite drawer only accepted loaded images.
+  Now a feathered cool wash (~18 % darkening) under each cloud as seen, offset down-right.
+- The 6.6 s clump (8 puffs + the world-space deck) is replaced by a BANK. 6 big translucent masses slide in from beyond the frame edges
+  (6.0-6.6 s) toward the ferry and grow as the camera falls. The wagons stay visible until they close (6.85 s still).
+- Wipe: the same masses. A warm painted backing (cream + cool washes) closes the last gaps only around SW (full cover ~6.95-7.07 s, about
+  0.12 s); then they part outward, grow and thin into soft wisps (7.2 s), clear by ~7.5 s.
+- Local renderer: hyperframes' Chrome crashes at exactly 7.6 s on this machine, for the r15 build too (environment, not the clouds), so
+  the sheet uses 7.7 s. The 1.0 / 4.0 / 6.6 / 6.85 s stills come from a small puppeteer harness (same page, same seek). At high zoom that
+  harness leaves the inset map blurry, so the 7.2 / 7.7 s stills are hyperframes'.
+
 ## r16 (painted 2D clouds; owner 2026-11-28) -> `sheet_dive2d_r16.jpg` (stills first; the hook render + splice into r15 wait for the owner / critics)
 - **Redirect.** The first brief was "r16 (3D dive)": the real engine clouds (vicksburg/engine vclouds as in gm3d v6) over our basemap. Before
   anything was built the owner clarified: "the clouds should be suited for a 2D film". The current clouds read as realistic 3D volumes pasted
