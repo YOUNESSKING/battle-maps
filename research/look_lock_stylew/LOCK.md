@@ -42,6 +42,8 @@ together with the sha256 of every locked source and sound file.
   approved (pending, not locked)" for `fair` / `BW.clouds` / `shadowK`. Until the owner approves a new cloud test, open films the
   Style W way (STYLE_LOCK 1a: one continuous geographic zoom), without the borrow cloud dive.
 - There are no golden frames of clouds, the dive or the white-out. The gold-name golden frame is cropped to the title only.
+- The replacement being worked on (coordinator note, 2026-11-28): PAINTED clouds in the 2D Style W look (gouache / watercolour,
+  stepped tones, paper grain) plus a cleaner 2D camera dive, not 3D-engine clouds. It stays pending until a new owner-approved test exists.
 - When the owner approves a new cloud/opening test, it becomes lock v2 (see section 7).
 
 ## 3. The reference clip and the golden frames

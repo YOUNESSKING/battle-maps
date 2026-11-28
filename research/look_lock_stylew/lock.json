@@ -675,5 +675,31 @@
    "status": "open owner decision for the 3D films (v14 soldiers vs the professional boxes); Style W uses unit boxes, not affected"
   }
  },
- "frame_thresholds": {}
+ "frame_thresholds": {
+  "local": {
+   "ssim": 0.85,
+   "dmean": 4.0,
+   "dpct": 8.0,
+   "d40": 2.0,
+   "full": {
+    "ssim": 0.9,
+    "dmean": 4.0,
+    "dpct": 8.0,
+    "d40": 2.0
+   }
+  },
+  "mp4": {
+   "ssim": 0.85,
+   "dmean": 4.0,
+   "dpct": 8.0,
+   "d40": 2.0,
+   "full": {
+    "ssim": 0.9,
+    "dmean": 4.0,
+    "dpct": 8.0,
+    "d40": 2.0
+   }
+  },
+  "note": "provisional"
+ }
 }

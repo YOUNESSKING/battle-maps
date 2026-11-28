@@ -200,6 +200,9 @@ def frames_local(L, only, work):
         b = next(g["build"] for g in G if g["scene"] == sc)
         r = subprocess.run(["python3", "kit/build_scene.py", sc] + b.split() + ["--borrow"], cwd=M, capture_output=True, text=True)
         if r.returncode or "SYNTAX ERROR" in r.stdout: raise SystemExit(f"build {sc} failed:\n{r.stdout[-800:]}{r.stderr[-800:]}")
+        if any(g.get("lores_clouds") for g in G if g["scene"] == sc):   # the PENDING clouds (not tested) at low resolution: SwiftShader inside the timeout
+            bp = os.path.join(M, "scenes", sc, "gl", "bwgl.mjs"); t = open(bp).read(); os.remove(bp)   # (bwgl.mjs is a copy, never a hard link to the kit)
+            open(bp, "w").write(t.replace("resolution: C.fair.res ?? 0.75", "resolution: 0.4").replace("maxSteps: C.fair.maxSteps ?? 200", "maxSteps: 90"))
         ts = sorted({g["scene_t"] for g in G if g["scene"] == sc}); out = os.path.join(work, sc)
         for k in range(3):   # the snapshot command occasionally drops a frame: retry
             subprocess.run(["bash", os.path.join(REPO, "vicksburg/tools/snap.sh"), f"scenes/{sc}", ",".join(f"{t:.4f}" for t in ts), out], cwd=M, capture_output=True)
