@@ -298,3 +298,13 @@ Coverage from a mask render (map hidden, clouds over black; `clouds_r13c_coverag
 - New knobs (all opt-in; hook-b / m3 scenes have no nearTier/corridor and build unchanged): corridor, skirtCut, rMin/rMax, sunK0/ambK0, ambBot[2],
   deckK/deckErode/deckFront, deckLook, massStep/massLump, groupScale, soft/group0, nearOp, dive.greyCol.
 - Weak spot: at ~6.2-6.35 s a darker flat underside with a stepped lower edge shows at the bottom of the big mass for ~0.2 s.
+
+## r13d clouds (critic A r13c 7.5 / 8) -> `sheet_clouds_r13d.jpg` + `clouds_r13d_hook_0-17.8.mp4` + `clouds_r13d_dive_0-9s_25fps.mp4` + `clouds_r13d_coverage.json`
+- Ring / C-shape at 5.6-6.0 s: in r13c `deckFront`, `soft`, `group0` had landed inside a // comment, so the default centre front erosion (3.5 until
+  6.5 s) ate the deck round the target. Now a small front (0.7 -> 0 by 5.8 s); soft/group0 stay at the defaults.
+- Stepped notch / flat cut at 6.2-6.35 s: the deck lumps sat on two base heights (56 / 72 x F); now one deck base (`deckY` 62). The vclouds map
+  bounds now always hold every lump.
+- Ramp measured (mask): 5.3 10 %, 5.5 22 %, 5.7 32 %, 5.9 33 %, 6.1 41 %, 6.3 59 %, 6.45 88 %, 6.6 99.7 %; deck p15 undersides ~(141,143,147) at 6.3.
+- Early field: units kept clear (`unitKeep`: lumps that APPEAR within 45 px + radius of the four British boxes, 0.3-5.3 s, are dropped), tighter
+  clusters (`kidD`), n 84. NOT reached: 10 % (target 15-18 %), middle third ~0-2 % (units + road + diveClear sit there); near-layer clouds fade
+  5.6-5.8 s as see-through ghosts; some right-side fair cumulus show radial shading streaks; one flat pillow top-left.
