@@ -259,6 +259,31 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r17 (owner rejected the painted r16: "I like something like 3D more" / "maybe tone it to 2D or make it work") -> `sheet_dive3d_r17.jpg` (stills only)
+- Back to the REAL engine clouds of the approved gm3d v6 clip. The new path sits behind `build_scene.py --cloud3d` (GD.var.cloud3d), with
+  `--var tone=2d` for variant B. `--paint` is kept as it was (opt-in, unused). All code is inside the LOOK-LOCK pending cloud sections; the gate
+  says LOOK LOCK OK.
+- Config = v6's own values: CW_DAY light (sun [1,0.95,0.85], ambTop [0.50,0.55,0.65], ambBot [0.24,0.28,0.36], sunK 1.4, ambK 0.18,
+  lightK 3.2), the vclouds options (blur 1, sharp 1, sigma 0.75, soft 1.7, warp 0.06, ...), heights 49-58 (+0-9), drift [0.10,-0.035], and
+  v6's dive deck (`deckV6`: the 22-unit grid of sheet cumulus r 13-25 round the target, ragged to the rim, + the 6 column lumps; one base
+  height). Its colours/erosion/ms/expo/sigmaK follow v6's dive functions on r15's dive timings. Lengths x F 3.3.
+- The field is v6's own wide field as it appears on screen at its 10.4 s (the r13h trace, re-placed by screen position).
+- Removed from r13-r15: deckLook, sunK0 2.05 / ambK0 0.24, lumpK, baseRound, erode0, the masses deck, nearTier, edgeKeep.
+- Kept: skirtCut (ring fix), the road / stamp corridor dip, the close stratus and the white-out.
+- Fix: `slabTop` (opt-in, 170 x F). The default slab top (113 x F) cut big near clouds flat: straight translucent sheets and notches at 6.6 s.
+- Grades (SVG filter on the engine canvas, only until SW + 1.5 s; the later musket smoke is untouched):
+  - A = v6 + a light warm grade (R x1.03, B x0.93).
+  - B = toned to 2D: luminance -> 3 soft bands (shade < ~0.57 < mid < ~0.73 < lit) -> the map palette, i.e. shade (180,186,198),
+    mid (214,212,206), lit (240,234,220); a faint grain (feTurbulence, +-3.5 %); a slightly crisper edge (alpha S-curve).
+- Sheet: v6 | A | B at our 1.0 / 4.0 / 5.9 / 6.3 / 6.6 / 7.7 s (v6 + 9.4 s), + 1:1 crops at 1.0 s.
+  - 7.7 s stands for 7.6 s: local Chrome crashes at 7.6 s, the r15 build too.
+  - The 1.0-6.6 s stills come from the puppeteer harness; the 7.7 s ones from hyperframes.
+- Known gaps vs v6:
+  1. At 6.3-6.6 s v6 is already INSIDE a soft close deck. With r15's timings our camera is still high (ws 1.5-2.3), so the deck reads as
+     separate cumulus over the map, not v6's close soft bank.
+  2. A few wedge / hook fragments at the deck rim while its erosion front sweeps in (6.3 s).
+  3. The early field is smaller and sparser on screen than v6's big soft corner masses.
+
 ## r16 share (r16c + polish) -> `stylew_borrow_test_r16_share.mp4` (76.733 s, 2302 frames at 30 fps, 21 MB; r15 audio stream copied bit-exact)
 - Polish (coordinator): the field is warmed toward the map grade (`fieldTint` [0.983, 0.975, 0.956]: lit tops ~(238,232,218), ~4 % darker).
   The bank masses are jittered (`jitter`: per mass a random mirror, +-20 deg, +-15 % scale, a small hue/brightness shift; same 5 sprites).

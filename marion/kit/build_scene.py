@@ -19,6 +19,8 @@ if BORROW: a.remove("--borrow")
 # LOOK-LOCK pending-begin clouds (r16 painted clouds, opt-in --paint)
 PAINT = "--paint" in a   # r16 opt-in (research/style_tests/stylew_borrow NOTES r16): + kit/js/paint_clouds.js + kit/paint_clouds/*.webp, GD.var.paint = "1"
 if PAINT: a.remove("--paint")
+CLOUD3D = "--cloud3d" in a   # r17 opt-in: the gm3d v6 engine clouds + dive (GD.var.cloud3d = "1"; --var tone=2d for the toned-to-2D variant)
+if CLOUD3D: a.remove("--cloud3d")
 # LOOK-LOCK pending-end clouds
 LOOKTEST = "--look-test" in a   # a TEST build of a changed look (an owner test, never a film): the look-lock gate only warns
 if LOOKTEST: a.remove("--look-test")
@@ -27,6 +29,7 @@ VARS = {}
 while "--var" in a: i = a.index("--var"); k_, v_ = a[i + 1].split("=", 1); VARS[k_] = v_; del a[i:i + 2]   # GD.var.<k> in the scene (one source, variants)
 # LOOK-LOCK pending-begin clouds (r16 painted clouds, opt-in --paint)
 if PAINT: VARS["paint"] = "1"
+if CLOUD3D: VARS["cloud3d"] = "1"
 # LOOK-LOCK pending-end clouds
 if "--src" in a: i = a.index("--src"); src = a[i + 1]; del a[i:i + 2]   # build scenes/<SCENE> from scenes-src/<src>.js (one source, several scenes)
 name, base = a[0], a[1]
