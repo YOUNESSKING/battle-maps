@@ -259,6 +259,16 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r15 musket smoke (critic A 8.5 on r14k) -> `stylew_borrow_test_r15_share.mp4` (m3f re-rendered on one RunPod RTX A5000; the rest = r14k frames 0-1169, the cut at 39.0 s after the D->C crossfade; audio = r14j stream-copied; 76.733 s, -14.0 LUFS, -1.9 dBTP)
+- Sheet `sheet_smoke_r15.jpg` (r14k left, r15 right, crops at the critic's times); zoom `patch_6780_r14k_vs_r15.jpg` (67.8 s, x 1050-1500, y 250-400).
+- Jets / one bar: volley 1 in 4 clumps (was 5; 5 merged) with groupW 0.18 (both volleys), the haze puffs' sideways offset x0.35 (`latK`),
+  puffR 16-24, the wind from 0.8 s (`windAt`, `jetWindAt`): the clumps keep visible gaps through +0.8 s; jet cards grow <= 1.3x (`jetGrow`).
+- Colour: jets and haze go white (235,233,228) -> grey (175,178,182) from 0.4 to 0.9 s of each shot (`greyAt`, `burstWhite`, `burstGrey`, `hazeGrey`).
+- The rectangular patch: the haze pass hard-clamped its summed alpha at the 0.40 cap, so a wide overlap drew a flat slab with straight edges
+  wherever the density crossed 0.40. Now a soft knee from 0.6 x cap (`capKnee`), and every haze card has a round mask feathered 30 px
+  (`cardFeather`), a random rotation +-35 deg (`cardRot`; the textures are lit from the top, so not a full turn) and +-12 px vertical jitter (`jitterY`).
+  All knobs opt-in (m3f only); m3d / hook scenes build unchanged.
+
 ## r14j audio (critic B 8.5 on r14i) -> `stylew_borrow_test_r14j_share.mp4` (r14 video stream-copied, 76.733 s, -14.0 LUFS, -1.9 dBTP)
 - Why the buckshot ripple (66.56) escaped the tail rule: the rule did apply, but the ripple's quiet front (-27.5 dB vs -25.0) was pushed to the
   +2 dB later-ripple target (MUSKET_REL2), i.e. +17.9 dB into 5.5 dB of limiting: the 0.35 s front became a wall and its tail rode +12.4 dB,
