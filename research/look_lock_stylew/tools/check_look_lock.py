@@ -205,9 +205,10 @@ def frames_local(L, only, work):
             open(bp, "w").write(t.replace("resolution: C.fair.res ?? 0.75", "resolution: 0.4").replace("maxSteps: C.fair.maxSteps ?? 200", "maxSteps: 90"))
         ts = sorted({g["scene_t"] for g in G if g["scene"] == sc}); out = os.path.join(work, sc)
         for k in range(3):   # the snapshot command occasionally drops a frame: retry
-            subprocess.run(["bash", os.path.join(REPO, "vicksburg/tools/snap.sh"), f"scenes/{sc}", ",".join(f"{t:.4f}" for t in ts), out], cwd=M, capture_output=True)
+            r = subprocess.run(["bash", os.path.join(REPO, "vicksburg/tools/snap.sh"), f"scenes/{sc}", ",".join(f"{t:.4f}" for t in ts), out], cwd=M, capture_output=True, text=True)
             fs = sorted(glob.glob(f"{out}/frame-*.png"))
             if len(fs) >= len(ts): break
+            print(f"  {sc}: snapshot try {k + 1} got {len(fs)}/{len(ts)} stills: {(r.stdout + r.stderr).strip().splitlines()[-1:]}")
         for f in fs:
             t = float(re.search(r"at-([\d.]+)s", f).group(1)); shots[(sc, round(t, 3))] = f
     return [(g, shots.get((g["scene"], round(g["scene_t"], 3)))) for g in G]
