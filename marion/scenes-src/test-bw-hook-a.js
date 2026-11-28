@@ -180,7 +180,7 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
   // r5 timing (critic B: the spoken places must read): deck from 6.4 s, white ~6.6-7.1 s, emerge 7.1, clear 7.25, haze gone 7.55, land 7.6
   BW.gl({ mpu: 128, dive: { t: SW, over: NFL, grey: 0.8, greyCol: "rgb(205,205,200)" }, hazeK: 0.6, shadowK: 0.25,   // r13b (critic A): ground shadows 25 %; inside the deck an even grey 6.6-7.1 s
     diveOff: { push: -1.4, deckIn: -1.3, full: -0.5, deck: -0.45, wIn: -0.4, inside: -0.2, warm: 0.05, emerge: 0.2, clear: 0.35, haze: 0.6, land: 0.75 },   // r6: the deck closes in from the frame edges from 5.8 s (clear window over the crossing to ~6.45), full by 6.75
-    fair: { F: 3.3, box: [0, 0, 2900, 1800], n: 30, med: 28, rMin: 15, rMax: 44, hMin: 10, kidD: [0.75, 0.6], kidZ: 1.3, lumpK: 0.12,   // r13d: rounder (<= 1.6:1) cumulus; r13e: smoother outlines (no radial ridges)
+    fair: { F: 3.3, box: [0, 0, 2900, 1800], n: 34, med: 28, rMin: 15, rMax: 44, hMin: 10, kidD: [0.75, 0.6], kidZ: 1.3, erode0: () => -0.85,   /* r13e: fair lumps rendered far smaller than placed (the noise ate them): grow them */ lumpK: 0.12,   // r13d: rounder (<= 1.6:1) cumulus; r13e: smoother outlines (no radial ridges)
       screenPlace: { t: 2.6, px: [-80, -40, 2000, 1120], med: 66, rMin: 45, rMax: 110 },   // r13e: clusters spread evenly over the frame (incl. the middle third)
       sunK0: 2.2, ambK0: 0.3, skirtCut: 3, seed: 5, tiers: [52, 74], nearTier: 66,   /* r13e: the 100 x F upper layer rendered almost nothing (its thin lumps vanished); 74 renders */
       nearK: 1.6, ambBot: [0.42, 0.46, 0.54],   // r13b: 10-14 bigger cumulus on 2 heights, the near layer drifts 1.6x
