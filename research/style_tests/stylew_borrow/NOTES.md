@@ -382,3 +382,12 @@ Coverage from a mask render (map hidden, clouds over black; `clouds_r13c_coverag
   ground shadows 25 % cast down-right (shadowDir [-0.22,1,0.56]; before they fell left).
 - Mask cover: 0.5-3 s 10.3-10.7 %, 3.5-5.3 s 8.8 % (corridor fade): BELOW the 13-15 % target (edge + lens culling removed clouds; n 21 placed
   fewer than asked). Next: more groups (7-8) or larger med.
+
+## r13h clouds (final cloud round): AUTHORED early field -> `sheet_clouds_r13h.jpg` + `clouds_r13h_hook_0-17.8.mp4` (30 fps) + `clouds_r13h_dive_0-9s_25fps.mp4` + `clouds_r13h_coverage.json`
+- gm3d v6's field is procedural (gm3d/clip/index.html: 14 Poisson parents of 2-5 kids, lnr med 30 sigma 0.6, seed via hsh, 3 near-lens corner
+  masses) in its own world; ported exactly (`v6Field`, kept, off) it lands mostly off our frame (different camera / map scale): not used.
+- Used: `authored` = the v6 frame at 10.4 s traced into 12 clouds [screen x, y, radius px, lobes, layer] placed at screenPlace.t (x1.6 radius,
+  `authoredK`); no unit / maxPx culling (only the right-edge cull); the corridor fade is a soft dip to 40 %; r13g light, round bases, shadows kept.
+  Deck / inside / white-out / emerge unchanged from r13g.
+- Mask cover: 0.5-3 s 8.0-8.7 %, 3.5-5.3 s 7.7 %; middle third ~1-2 % (v6's own layout is edge-heavy). The cloud moved off the Camden box still
+  touches it in the render (its nudge used the probe camera, not the 2.6 s camera). Deck 5.9 39 %, 6.3 61 %, 6.6 99.7 %.

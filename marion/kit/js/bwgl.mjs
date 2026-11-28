@@ -77,7 +77,7 @@ else {
     const wsp = [], sd = sc.seed;
     // r13e: screenPlace {t, px:[x0,y0,x1,y1], med, rMin, rMax (screen px)}: clusters spread evenly over the FRAME at time t (uniform world placement
     // crowded the far top of the tilted view with small clouds and left the near half empty); each is put where its pixel's ray meets its height
-    const SPL = C.fair.screenPlace; let spAt = null;
+    const SPL = C.fair.screenPlace, FT = new Map(); let spAt = null;
     if (SPL) { const TL = window.__timelines && window.__timelines.main, t0 = TL ? TL.time() : 0; if (TL) TL.seek(SPL.t, false); camSolve();
       const P = camera.position.clone(), M = camera.matrixWorld.clone(), PI = camera.projectionMatrixInverse.clone(), T = C.fair.tiers || [49, 49]; if (TL) TL.seek(t0, false);
       // r13f: groups {n, gap, spread}: loose Poisson clusters (group centres >= gap px apart, 2-4 clouds within `spread` px of each), clear sky between
@@ -89,8 +89,28 @@ else {
         if (GC.length) { const g = GC[Math.floor(hsh(c + sd, 83) * GC.length)], an = hsh(c + sd, 84) * 6.283, rr = GR.spread * Math.sqrt(hsh(c + sd, 85)); sx = g[0] + Math.cos(an) * rr; sy = g[1] + Math.sin(an) * rr * 0.75; }
         else { sx = SPL.px[0] + hsh(c + sd, 61) * (SPL.px[2] - SPL.px[0]); sy = SPL.px[1] + hsh(c + sd, 62) * (SPL.px[3] - SPL.px[1]); }
         const d = new THREE.Vector3(sx / 960 - 1, 1 - sy / 540, 0.5).applyMatrix4(PI).applyMatrix4(M).sub(P), k = (h - P.y) / d.y, rpx = lnr(c + sd, 63, SPL.med, SPL.sig ?? 0.4, SPL.rMin, SPL.rMax);
-        return [P.x + d.x * k, P.z + d.z * k, Math.max((sc.rMin ?? 14) * F, rpx * d.length() * k / 1700), rpx]; }; }   // world floor: domes under ~2x the noise amplitude are eaten by the noise
-    for (let c = 0, k = 0; c < sc.tries && k < sc.n; c++) {
+        return [P.x + d.x * k, P.z + d.z * k, Math.max((sc.rMin ?? 14) * F, rpx * d.length() * k / 1700), rpx]; };
+      // r13h authored [[sx, sy, rpx, lobes, layer 0 far / 1 near], ...]: the gm3d v6 field traced at 10.4 s, placed at screenPlace.t exactly
+      if (C.fair.authored) C.fair.authored.forEach(([sx, sy, rpx0, lobes, layer], i) => { const rpx = rpx0 * (C.fair.authoredK ?? 1); const c = 2000 + i, tv = layer ? T[T.length - 1] : T[0]; FT.set(c, tv);
+        const h = (tv + 4.5) * F + 10 * F, d = new THREE.Vector3(sx / 960 - 1, 1 - sy / 540, 0.5).applyMatrix4(PI).applyMatrix4(M).sub(P), k = (h - P.y) / d.y;
+        const cx = P.x + d.x * k, cz = P.z + d.z * k, Rw = rpx * d.length() * k / 1700, R0 = Math.max((sc.rMin ?? 14) * F, Rw * (lobes > 1 ? 0.62 : 0.9));
+        wsp.push([cx, cz, R0, c]);
+        for (let j = 1; j < lobes; j++) { const a = (j / (lobes - 1)) * 6.283 + hsh(c, 90 + j) * 1.2, r = R0 * (0.5 + 0.25 * hsh(c, 95 + j)), dd = Math.max(0, Rw - r) * (0.75 + 0.2 * hsh(c, 99 + j));
+          wsp.push([cx + Math.cos(a) * dd, cz + Math.sin(a) * dd * (C.fair.kidZ ?? 0.8), Math.max((sc.rMin ?? 14) * F * 0.8, r), c]); } }); }   // world floor: domes under ~2x the noise amplitude are eaten by the noise
+    // r13h: v6Field {at:[x,z], k, nudge:{cluster:[dx,dz]}}: the gm3d v6 clip's own field, ported exactly (its seed, 14 Poisson clusters of 2-5,
+    // log-normal radii med 30 sigma 0.6, its 3 near-lens corner masses), v6 world units -> ours around the dive target (v6 deck centre 1518,712)
+    const V6 = C.fair.v6Field;
+    if (V6) { const K = V6.k ?? F, [ox, oz] = V6.at, v = [], off6 = (x, z, r) => Math.hypot(x - 1518, (z - 712) * 1.15) < 118 + 0.5 * r, NG = V6.nudge || {};
+      for (let c = 0, n = 0; c < 600 && n < 14; c++) {
+        const cx = 1150 + hsh(c, 61) * 860, cz = 340 + hsh(c, 62) * 640, R0 = lnr(c, 63, 30, 0.6, 12, 90);
+        if (off6(cx, cz, R0) || v.some(([a, b, q]) => Math.hypot(a - cx, b - cz) < q + R0 + 10)) continue;
+        n++; v.push([cx, cz, R0, c]); const kids = 1 + Math.floor(hsh(c, 65) * 4);
+        for (let k = 0; k < kids; k++) { const a = hsh(c * 7 + k, 66) * 6.283, r = lnr(c * 7 + k, 67, R0 * 0.45, 0.6, 7, R0 * 0.9), d = R0 * (0.9 + 0.8 * hsh(c * 7 + k, 69)) + r * 0.6;
+          const x = cx + Math.cos(a) * d, z = cz + Math.sin(a) * d * 0.8; if (!off6(x, z, r)) v.push([x, z, r, c]); } }
+      [[1290, 915, 95], [1815, 930, 85], [1175, 470, 70]].forEach(([x, z, r], i) => v.push([x, z, r, 1000 + i]));
+      for (const [x, z, r, c] of v) { const g = NG[c] || [0, 0]; wsp.push([ox + (x + g[0] - 1518) * K, oz + (z + g[1] - 712) * K, Math.max((sc.rMin ?? 0) * F, r * K), c]); }
+      window.__bwglV6 = v.length; }
+    if (!V6 && !C.fair.authored) for (let c = 0, k = 0; c < sc.tries && k < sc.n; c++) {
       const [cx, cz, R0, RPX] = spAt ? spAt(c) : [B[0] + hsh(c + sd, 61) * B[2], B[1] + hsh(c + sd, 62) * B[3], lnr(c + sd, 63, sc.med * F, 0.5, (sc.rMin ?? 14) * F, (sc.rMax ?? 70) * F)];   // r13c: radius clamp per scene
       if (offWide(cx, cz, R0) || wsp.some(([a, b, q]) => Math.hypot(a - cx, b - cz) < (q + R0) * (SPL && SPL.groups ? SPL.groups.overlap ?? 1 : 1) + 10 * F)) { (window.__bwglRej = window.__bwglRej || []).push([cx, cz, R0, offWide(cx, cz, R0) ? 1 : 2]); continue; }
       k++; wsp.push([cx, cz, R0, c]); if (inCorr(cx, cz, R0)) corrC.add(c); const hk = hsh(c + sd, 65), kids = SPL && SPL.lobes && RPX ? (RPX > 110 ? 4 + Math.floor(hk * 2) : RPX > 70 ? 2 + Math.floor(hk * 2) : 1 + Math.floor(hk * 1.5)) : 1 + Math.floor(hk * 3);   // r13f lobes: big clouds = more lobes
@@ -113,7 +133,7 @@ else {
     const MSS = DV && C.fair.masses ? C.fair.masses.map(([mx, mz, MR]) => [DV.over[0] + mx * F, DV.over[1] + mz * F, MR * F]) : [], overDeck = new Set();
     for (const [x, z, r, c] of wsp) if (MSS.some(([a, b, R]) => Math.hypot(x - a, z - b) < R + 1.8 * r)) overDeck.add(c);
     window.__bwglDeckOverlap = overDeck.size;
-    const tierOf = (c) => (C.fair.nearTier != null && overDeck.has(c) ? Math.max(...TIERS) : TIERS[Math.floor(hsh(c, 71) * TIERS.length)]);
+    const tierOf = (c) => (C.fair.nearTier != null && overDeck.has(c) ? Math.max(...TIERS) : FT.has(c) ? FT.get(c) : TIERS[Math.floor(hsh(c, 71) * TIERS.length)]);   // over a deck mass -> upper layer (no hole in the deck)
     const deck = [];
     if (DV && C.fair.masses) {   // r13b (critic A): the deck = 2-3 big merged masses (+ the centre) of tightly packed lumps, no separate puffs
       const MS = C.fair.massStep || 14, ML = C.fair.massLump || [18, 10];   // r13c: lump spacing + radius (bigger lobes, fewer puffs)
@@ -125,7 +145,7 @@ else {
         const x = gx + (hsh(i, 5) - 0.5) * 18 * F, z = gz + (hsh(i, 6) - 0.5) * 18 * F, r = Math.hypot(x - cx0, (z - cz0) * 1.15);
         if (hsh(i, 7) < lerp(0.97, 0.55, clamp((r - 30 * F) / (90 * F)))) deck.push([x, z, (20 + hsh(i, 8) * 16) * F]); }
       for (const [dx, dz, r] of [[0, 0, 30], [-6, 11, 26], [8, -7, 26], [3, 20, 26], [-11, -9, 24], [13, 7, 24]]) deck.push([DV.over[0] + dx * F, DV.over[1] + dz * F, r * F]); }
-    const HK = C.fair.hK ?? 1, HM = (C.fair.hMin ?? 0) * F, cl = wsp.map(([x, z, r, c], i) => Object.assign([x, z, r, Math.max(HM, 3 * F + HK * r * (0.18 + 0.16 * hsh(i, 13))),   /* r13e: hMin: thin domes vanished in the noise */ (tierOf(c) + hsh(i, 11) * 9) * F, 0], { corr: CORR && CORR.perDome ? inCorr(x, z, r) : corrC.has(c) }))   // r13c: perDome = only the lumps over the corridor fade
+    const HK = C.fair.hK ?? 1, HM = (C.fair.hMin ?? 0) * F, cl = wsp.map(([x, z, r, c], i) => Object.assign([x, z, r, Math.max(HM, 3 * F + HK * r * (0.18 + 0.16 * hsh(i, 13))),   /* r13e: hMin: thin domes vanished in the noise */ (tierOf(c) + hsh(i, 11) * 9) * F, 0], { corr: CORR && CORR.perDome ? inCorr(x, z, r) : corrC.has(c), cid: c }))   // r13c: perDome = only the lumps over the corridor fade
       .concat(deck.map(([x, z, r, mi], i) => [x, z, r, r * (0.26 + 0.1 * hsh(i, 14) + 0.12 * clamp(1 - Math.hypot(x - DV.over[0], z - (DV.over[1] + 4 * F)) / (60 * F))), (mi != null ? (C.fair.deckY ?? 62) * F : (hsh(i, 15) < 0.35 ? 72 : 56) * F + hsh(i, 12) * 4 * F), 1]));   // r13: two deck heights -> parallax layers through the dive
     // r13c: corridor test where the lump APPEARS (the camera ray through the lump hits the ground there; tilted, a raised cloud shows north of its
     // ground point), sampled over the corridor's window CORR.t
@@ -150,7 +170,8 @@ else {
       if (TL) TL.seek(t0, false); for (let i = cl.length - 1; i >= 0; i--) if (drop.has(i)) cl.splice(i, 1); window.__bwglEdgeDrop = drop.size; }
     window.__bwglDbg = { list: cl, wsp: wsp.length, clusters: new Set(wsp.map((q) => q[3])).size, proj: () => { camSolve(); const v = new THREE.Vector3();   // r13e: debug (probe): fair lumps on screen
       return cl.filter((c) => c[5] === 0).map((c) => { v.set(c[0], c[4] + 0.5 * c[3], c[1]).project(camera); const d = camera.position.distanceTo(new THREE.Vector3(c[0], c[4], c[1]));
-        return [Math.round((v.x + 1) * 960), Math.round((1 - v.y) * 540), Math.round(c[2] * 1700 / d), c.corr ? 1 : 0, c[4] >= (C.fair.nearTier || 1e9) * F ? 1 : 0, Math.round(c[3] / c[2] * 100) / 100]; }); } };
+        return [Math.round((v.x + 1) * 960), Math.round((1 - v.y) * 540), Math.round(c[2] * 1700 / d), c.corr ? 1 : 0, c[4] >= (C.fair.nearTier || 1e9) * F ? 1 : 0, Math.round(c[3] / c[2] * 100) / 100, c.cid]; }); },
+      units: () => { camSolve(); const v = new THREE.Vector3(); return (C.fair.unitWatch || []).map(([x, z]) => { v.set(x, 0, z).project(camera); return [Math.round((v.x + 1) * 960), Math.round((1 - v.y) * 540)]; }); } };
     window.__bwglClouds = cl.length;
     const D0 = DV || NODIVE, AD = (t) => (t > D0.SW + 1 ? NODIVE : D0);
     const slabTop = Math.max(104, ...TIERS.map((v) => v + 55)) * F;
@@ -288,13 +309,17 @@ else {
     const NT = V.night ? [0.42, 0.47, 0.58] : [1, 1, 1];
     const mat = new THREE.ShaderMaterial({ transparent: true, depthTest: false, depthWrite: false, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
       blendSrcAlpha: THREE.OneFactor, blendDstAlpha: THREE.OneMinusSrcAlphaFactor,
-      uniforms: { uA: { value: ATL }, uR: { value: new THREE.Vector3() }, uU: { value: new THREE.Vector3() }, uNT: { value: new THREE.Vector3(...NT) }, uFl: { value: 0 }, uHz: { value: V.haze ? 1 : 0 }, uSq: { value: V.squash ?? 0.82 } },
-      vertexShader: `attribute vec4 iP; attribute vec4 iQ; uniform vec3 uR; uniform vec3 uU; uniform float uSq; varying vec2 vUv; varying vec4 vQ;
-        void main(){ vec2 q = vec2(position.x, position.y * uSq); vec3 wp = iP.xyz + (uR * q.x + uU * q.y) * iP.w; vec2 cell = vec2(mod(iQ.y, 4.0), floor(iQ.y / 4.0));
-          vUv = (cell + vec2(position.x + 0.5, 0.5 - position.y) * 0.98 + 0.01) / vec2(4.0, 2.0); vQ = iQ;
+      uniforms: { uA: { value: ATL }, uR: { value: new THREE.Vector3() }, uU: { value: new THREE.Vector3() }, uNT: { value: new THREE.Vector3(...NT) }, uFl: { value: 0 }, uHz: { value: V.haze ? 1 : 0 }, uSq: { value: V.squash ?? 0.82 },
+        uRot: { value: (V.cardRot || 0) / 57.2958 }, uK: { value: K }, uFeP: { value: V.cardFeather || 0 }, uBW: { value: new THREE.Vector3(...(V.burstWhite || [240, 238, 232]).map((c) => c / 255)) },   // r15 knobs (opt-in)
+        uBG: { value: new THREE.Vector3(...(V.burstGrey || V.burstWhite || [240, 238, 232]).map((c) => c / 255)) }, uHG0: { value: new THREE.Vector3(...(V.hazeGrey || [[150, 149, 146]])[0].map((c) => c / 255)) },
+        uHG1: { value: new THREE.Vector3(...(V.hazeGrey || [0, [205, 204, 200]])[1].map((c) => c / 255)) } },
+      vertexShader: `attribute vec4 iP; attribute vec4 iQ; uniform vec3 uR; uniform vec3 uU; uniform float uSq; uniform float uRot; uniform float uK; uniform float uFeP; varying vec2 vUv; varying vec4 vQ; varying vec2 vL; varying float vFe;
+        void main(){ float ci = floor(iQ.y + 1e-3), ang = uRot > 0.0 && fract(iQ.y + 1e-3) > 0.02 ? (fract(iQ.y + 1e-3) - 0.05) / 0.9 * 2.0 * uRot - uRot : 0.0; vec2 pr = mat2(cos(ang), sin(ang), -sin(ang), cos(ang)) * position.xy;   // r15: rotated card
+          vec2 q = vec2(pr.x, pr.y * uSq); vec3 wp = iP.xyz + (uR * q.x + uU * q.y) * iP.w; vec2 cell = vec2(mod(ci, 4.0), floor(ci / 4.0));
+          vUv = (cell + vec2(position.x + 0.5, 0.5 - position.y) * 0.98 + 0.01) / vec2(4.0, 2.0); vQ = iQ; vL = position.xy; vFe = uFeP > 0.0 ? clamp(uFeP * uK / max(iP.w, 1e-3), 0.0, 0.5) : 0.0;
           gl_Position = projectionMatrix * viewMatrix * vec4(wp, 1.0); }`,
-      fragmentShader: `uniform sampler2D uA; uniform vec3 uNT; uniform float uFl; uniform float uHz; varying vec2 vUv; varying vec4 vQ;
-        void main(){ vec4 tx = texture2D(uA, vUv); float d = tx.a * vQ.x; if (d < 0.002) discard;
+      fragmentShader: `uniform sampler2D uA; uniform vec3 uNT; uniform float uFl; uniform float uHz; uniform vec3 uBW; uniform vec3 uBG; uniform vec3 uHG0; uniform vec3 uHG1; varying vec2 vUv; varying vec4 vQ; varying vec2 vL; varying float vFe;
+        void main(){ vec4 tx = texture2D(uA, vUv); float d = tx.a * vQ.x; if (vFe > 0.0) d *= 1.0 - smoothstep(0.5 - vFe, 0.5, length(vL)); if (d < 0.002) discard;   // r15: round card mask, feather uFeP px
           vec3 col = tx.rgb; float lum = dot(col, vec3(0.333));
           if (vQ.w > 1.5) col *= vec3(0.9, 0.74, 0.52);                                                   // ground dust
           else if (vQ.w > 1.05) col *= vec3(0.46, 0.45, 0.44) * (0.85 + 0.3 * lum);                    // soot (the burning roof's column)
@@ -302,8 +327,8 @@ else {
           col *= 1.0 + uFl * clamp(1.15 - lum, 0.0, 1.0) * vec3(1.0, 0.9, 0.72);                         // r10: each flash lifts the bank's underside (+20 %, 2 frames)                                  // heavier, darker (cannon) smoke: undersides darken most
           if (uHz > 0.5 && vQ.w < 0.01) {   // r13: the musket haze colour (see-through, capped 0.40; the burst in its own pass)
             float tL = clamp((lum - 0.42) / 0.45, 0.0, 1.0), gy = clamp(-vQ.w, 0.0, 1.0);   // r13b (owner): white while dense, a soft warm grey as it thins
-            col = mix(mix(vec3(0.667, 0.667, 0.659), vec3(0.941, 0.933, 0.910), tL), mix(vec3(0.588, 0.584, 0.573), vec3(0.804, 0.800, 0.784), tL), gy);   // r13c: ~25 levels of lump contrast after the 0.40 cap   // tops 232 -> ~200, undersides 190 -> ~160 (core ~185)
-            col = mix(col, vec3(0.941, 0.933, 0.910), vQ.z); }   // the muzzle burst ~(240,238,232)
+            col = mix(mix(vec3(0.667, 0.667, 0.659), uBW, tL), mix(uHG0, uHG1, tL), gy);   // r15: uniforms (defaults = r13c colours)   // r13c: ~25 levels of lump contrast after the 0.40 cap   // tops 232 -> ~200, undersides 190 -> ~160 (core ~185)
+            col = mix(col, mix(uBW, uBG, clamp(vQ.z - 1.0, 0.0, 1.0)), min(vQ.z, 1.0)); }   // the muzzle burst ~(240,238,232); r15: z 1..2 -> uBG (grey)
           else col = mix(col, vec3(0.965, 0.955, 0.93), vQ.z * 0.75);
           col *= uNT; gl_FragColor = vec4(col * d, d); }` });
     const mesh = new THREE.Mesh(geo, mat); mesh.frustumCulled = false; const sScene = new THREE.Scene(); sScene.add(mesh);
@@ -316,13 +341,14 @@ else {
     const MAXR = 24, rects = Array.from({ length: MAXR }, () => new THREE.Vector4(-1, -1, -1, -1)), rmax = new Float32Array(MAXR), rfe = new Float32Array(MAXR).fill(1.5);
     const comp = new THREE.ShaderMaterial({ transparent: true, depthTest: false, depthWrite: false, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
       blendSrcAlpha: THREE.OneFactor, blendDstAlpha: THREE.OneMinusSrcAlphaFactor,
-      uniforms: { uT: { value: RT.texture }, uRc: { value: rects }, uRm: { value: rmax }, uRf: { value: rfe }, uCap: { value: V.cap ?? 0.6 } },
+      uniforms: { uT: { value: RT.texture }, uRc: { value: rects }, uRm: { value: rmax }, uRf: { value: rfe }, uCap: { value: V.cap ?? 0.6 }, uKn: { value: V.capKnee || 0 } },
       vertexShader: "varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }",
-      fragmentShader: `uniform sampler2D uT; uniform vec4 uRc[${MAXR}]; uniform float uRm[${MAXR}]; uniform float uRf[${MAXR}]; uniform float uCap; varying vec2 vUv;
+      fragmentShader: `uniform sampler2D uT; uniform vec4 uRc[${MAXR}]; uniform float uRm[${MAXR}]; uniform float uRf[${MAXR}]; uniform float uCap; uniform float uKn; varying vec2 vUv;
         void main(){ vec4 c = texture2D(uT, vUv); if (c.a < 0.002) discard; vec2 p = vec2(vUv.x * 1920.0, (1.0 - vUv.y) * 1080.0); float m = uCap;
           for (int i = 0; i < ${MAXR}; i++) { vec4 r = uRc[i]; if (r.z < 0.0) continue; vec2 dd = max(r.xy - p, p - r.zw); float e = max(dd.x, dd.y);
             m = min(m, mix(uRm[i], uCap, smoothstep(0.0, uRf[i], e))); }
-          float a = min(c.a, m); vec3 col = c.rgb / max(c.a, 1e-4); gl_FragColor = vec4(col * a, a); }` });   // colours are already display (sRGB) values
+          float a = min(c.a, m); if (uKn > 0.0) { float k = uKn * m; a = c.a < k ? c.a : m - (m - k) * exp(-(c.a - k) / max(m - k, 1e-4)); }   // r15: soft knee (no flat-topped, straight-edged slab)
+          vec3 col = c.rgb / max(c.a, 1e-4); gl_FragColor = vec4(col * a, a); }` });   // colours are already display (sRGB) values
     const cq = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), comp); cq.frustumCulled = false; const cScene = new THREE.Scene(); cScene.add(cq); const oCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     // --- the flash canvases above the smoke (normal + screen-blended glow)
     const mkC = (blend) => { const c = document.createElement("canvas"); c.width = 1920; c.height = 1080; c.style.cssText = `position:absolute;left:0;top:0;width:1920px;height:1080px;pointer-events:none;${blend ? "mix-blend-mode:screen;" : ""}`;
@@ -355,15 +381,20 @@ else {
           let Lr = 1; if (p.jet && age < 1.0) { if (!JL.has(p.i)) { const [ts, x, z, ax, az] = SH[p.i], [mx, my] = proj(x, z), [tx, ty] = proj(ax, az), ll = Math.hypot(tx - mx, ty - my) || 1;
               JL.set(p.i, jetLen(mx, my, (tx - mx) / ll, (ty - my) / ll, V.burstLen ? 220 : 90, ur) / 80); } Lr = Math.min(1, JL.get(p.i) / Math.max(0.3, p.s / 80)); }
           const eo = 1 - Math.pow(1 - Math.min(1, age / 0.15), 3), s = p.s * Lr * (p.jet ? eo : lerp(0.35, 1, eo));
-          const wk = Math.max(0, age - (V.windAt ?? 0.3)), sh = (V.shear ? 1 - V.shear / 2 + V.shear * p.h : 0.8 + 0.4 * p.h), rise = RV * (1 - Math.exp(-age / 2.5));
-          const sx = p.dx * s - p.dz * p.lat + Wx * sh * wk, sz = p.dz * s + p.dx * p.lat + Wz * sh * wk - rise - (p.up || 0) * Math.min(1, age / 0.6);
-          const size = (p.jet ? 1 : 1 + (V.stretch ?? 0) * Math.max(0, age - 0.5)) * (p.jet ? p.sz * (1 + 0.35 * Math.min(1, age / 0.3)) : p.sz * (0.55 + 0.45 * (1 - Math.pow(1 - Math.min(1, age / 0.8), 2))) * (1 + 0.015 * age));
+          const wk = Math.max(0, age - (p.jet && V.jetWindAt != null ? V.jetWindAt : (V.windAt ?? 0.3))), sh = (V.shear ? 1 - V.shear / 2 + V.shear * p.h : 0.8 + 0.4 * p.h), rise = RV * (1 - Math.exp(-age / 2.5));
+          const hj = (k) => { const q = Math.sin(p.i * 12.9898 + p.cell * 78.233 + p.h * 437.585 + k) * 43758.5453; return q - Math.floor(q); };   // r15: per-card hash (no change to the R() stream)
+          const jy = !p.jet && V.jitterY ? (hj(1) - 0.5) * 2 * V.jitterY : 0;   // r15 (critic A: a straight-edged haze slab): +-jitterY px vertical jitter per haze card
+          const la = p.lat * (p.jet ? 1 : (V.latK ?? 1));   // r15: V.latK narrows each clump's haze (the group gaps hold)
+          const sx = p.dx * s - p.dz * la + Wx * sh * wk, sz = p.dz * s + p.dx * la + Wz * sh * wk - rise - (p.up || 0) * Math.min(1, age / 0.6) + jy;
+          const size = (p.jet ? 1 : 1 + (V.stretch ?? 0) * Math.max(0, age - 0.5)) * (p.jet ? p.sz * (1 + (V.jetGrow != null ? V.jetGrow - 1 : 0.35) * Math.min(1, age / 0.3)) : p.sz * (0.55 + 0.45 * (1 - Math.pow(1 - Math.min(1, age / 0.8), 2))) * (1 + 0.015 * age));   // r15: V.jetGrow caps a jet's sideways spread (1.3 = 1.3x its starting width)
+          const rot = V.cardRot ? (hj(2) - 0.5) * 2 * V.cardRot / 57.2958 : 0, cellR = V.cardRot ? p.cell + 0.05 + 0.9 * (rot / (2 * V.cardRot / 57.2958) + 0.5) : p.cell;   // r15: the rotation rides in the cell's fraction
+          const GA = V.greyAt, gq = GA ? sstep(GA[0], GA[1], age) : 0;   // r15: white -> grey from greyAt[0] to greyAt[1] s (jets and haze)
           const a = p.jet ? (BC ? 0.85 : p.a0) * (BC ? 1 - sstep(0.4, 1.0, age) : age < 0.3 ? 1 : 1 - sstep(0.3, 0.9, age)) * Math.min(1, age / 0.03)
                           : p.a0 * Math.min(1, age / 0.25) * Math.exp(-age / (V.tau ?? 2.5)) * (1 - sstep(p.life - (V.fade ?? 3.2), p.life, age));
           const A = a * gone; if (A < 0.003) continue;
-          if (BC && p.jet) { const j = n2 * 4; P2[j] = p.x + sx * K; P2[j + 1] = (2 + p.h * 4) * K; P2[j + 2] = p.z + sz * K; P2[j + 3] = size * K; Q2[j] = A; Q2[j + 1] = p.cell; Q2[j + 2] = 1; Q2[j + 3] = 0; n2++; continue; }
+          if (BC && p.jet) { const j = n2 * 4; P2[j] = p.x + sx * K; P2[j + 1] = (2 + p.h * 4) * K; P2[j + 2] = p.z + sz * K; P2[j + 3] = size * K; Q2[j] = A; Q2[j + 1] = cellR; Q2[j + 2] = 1 + gq; Q2[j + 3] = 0; n2++; continue; }   // r15: z in 1..2 = the burst white -> grey
           P[n * 4] = p.x + sx * K; P[n * 4 + 1] = (2 + p.h * 4) * K; P[n * 4 + 2] = p.z + sz * K; P[n * 4 + 3] = size * K;
-          Q[n * 4] = A; Q[n * 4 + 1] = p.cell; Q[n * 4 + 2] = p.jet ? 1 : (BC ? 0.35 : 0.5) * (1 - sstep(0.1, 0.9, age)); Q[n * 4 + 3] = V.haze ? -sstep(0.8, 3.0, age) : 0; n++; }
+          Q[n * 4] = A; Q[n * 4 + 1] = cellR; Q[n * 4 + 2] = p.jet ? 1 + gq : (BC ? 0.35 : 0.5) * (1 - sstep(0.1, 0.9, age)); Q[n * 4 + 3] = V.haze ? -(GA ? gq : sstep(0.8, 3.0, age)) : 0; n++; }
         geo.instanceCount = n; iP.needsUpdate = true; iQ.needsUpdate = true; geo2.instanceCount = n2; iP2.needsUpdate = true; iQ2.needsUpdate = true;
         { let c = 0; for (const q of SH) { const ag = t - q[0]; if (ag >= -1e-4 && ag < 2 / 30 - 1e-4) c++; } for (const q of CN) { const ag = t - q[0]; if (ag >= -1e-4 && ag < 2 / 30 - 1e-4) c += 3; }
           mat.uniforms.uFl.value = 0.2 * Math.min(1, c / 2); }

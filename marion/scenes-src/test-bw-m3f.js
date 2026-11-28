@@ -95,12 +95,12 @@ B.move("fr2", T_NARROW, 0.5, 1522, RY + 1, "power2.out");
 const ROADHIT = (x) => [x, RY + 1];
 AIDS.forEach((id) => tl.to(B.units[id].el.querySelector(".blk"), { filter: "brightness(1) saturate(1) opacity(1)", duration: 0.25 }, T_EVERY - 0.05));
 // BW: one muzzle flash (+ flintlock shot) per musket along the whole hidden line, a ragged ripple from the west flank
-BW.volley([[1488, 790], [1598, 792]], T_EVERY, 0.6, 28, { k: 0.9, jy: 4, seed: 31, noPuff: true, aim: (x) => [x + 30, RY + 2], shake: ["fr", "fr2"], groups: 5, groupW: 0.3 });   // r14: 6 clumps with gaps; r10: 28 muskets -> 3-4 flashes per frame   // r9: muzzles at the line front, jets along the road side
+BW.volley([[1488, 790], [1598, 792]], T_EVERY, 0.6, 28, { k: 0.9, jy: 4, seed: 31, noPuff: true, aim: (x) => [x + 30, RY + 2], shake: ["fr", "fr2"], groups: 4, groupW: 0.18 });   // r15: 4 narrower clumps (25-40 px gaps; 5 clumps merged into one bar)   // r14: 6 clumps with gaps; r10: 28 muskets -> 3-4 flashes per frame   // r9: muzzles at the line front, jets along the road side
 mg([1498, 794], ROADHIT(1528), T_EVERY + 0.02, 5, 1.1); mg([1560, 794], ROADHIT(1536), T_EVERY + 0.1, 5, 1.1);
 /* BW r3: kit smoke replaced by the per-shot puffs (<= 6 per volley) */
 MARK([1568, RY + 1], T_EVERY + 0.35, T_COUNT + 0.2);   // BW r2: east of the jammed boxes, off the FRASER tag
 // "firing buckshot": a second ripple down the line
-BW.volley([[1490, 790], [1596, 792]], T_BUCK + 0.05, 0.7, 20, { k: 0.9, jy: 4, seed: 57, noPuff: true, aim: (x) => [x + 30, RY + 2], shake: ["fr", "fr2"], groups: 4, groupW: 0.3 });   // BW: the buckshot ripple, shot by shot
+BW.volley([[1490, 790], [1596, 792]], T_BUCK + 0.05, 0.7, 20, { k: 0.9, jy: 4, seed: 57, noPuff: true, aim: (x) => [x + 30, RY + 2], shake: ["fr", "fr2"], groups: 4, groupW: 0.18 });   // r15: narrower clumps   // BW: the buckshot ripple, shot by shot
 mg([1528, 794], ROADHIT(1520), T_BUCK + 0.08, 4, 1.1); mg([1588, 796], ROADHIT(1540), T_BUCK + 0.2, 4, 1.1);
 /* BW r3: kit smoke replaced by the per-shot puffs (<= 6 per volley) */
 // the red cavalry breaks: "killed on the spot" -> fast fade; a few flee back toward the ferry
@@ -164,7 +164,8 @@ BW.tilt([[0, 6, 1.05], [END, 7, 1.06]]);
 // (never over the jammed red boxes, the FRASER tag or the banner); big soft cumulus drifting over the map away from the action and the result list
 // r7: the smoke is the engine volley smoke from each shot (pan puff + jet + billows -> one bank in front of the line), drifting east
 // r5: the close battle field: no cumulus on screen, only faint cloud shadows (<= 0.3)
-BW.gl({ mpu: 16, shadowK: 0.3, volley: { K: 1 / 3.1, wind: [42, -6], jet: [60, 80], front: 20, cap: 0.4, a0: 0.36, haze: 1, burstCap: 0.8, burstLen: [60, 90], puffSpread: [0.05, 0.5], puffR: [18, 27], lumps: 0.45, life: 5.5, fade: 2.6, tau: 3, windAt: 0.5, shear: 0.8, stretch: 0.05 },   // r13 (owner: too thick, never goes away): <= 0.48, carried downwind ~42 px/s with shear + stretch, gone 4-6 s after each volley   // r11: the bank 15-25 px in front of the line (toward the road), lumpier, denser   // r9: north ~4 px/s, away from the road
+BW.gl({ mpu: 16, shadowK: 0.3, volley: { K: 1 / 3.1, wind: [42, -6], jet: [60, 80], front: 20, cap: 0.4, a0: 0.36, haze: 1, burstCap: 0.8, burstLen: [60, 90], puffSpread: [0.05, 0.5], puffR: [16, 24], lumps: 0.45, life: 5.5, fade: 2.6, tau: 3, windAt: 0.8, shear: 0.8, stretch: 0.05,
+  jetGrow: 1.3, jetWindAt: 0.8, greyAt: [0.4, 0.9], burstWhite: [235, 233, 228], burstGrey: [175, 178, 182], hazeGrey: [[140, 143, 147], [175, 178, 182]], cardRot: 35, cardFeather: 30, jitterY: 12, capKnee: 0.6, latK: 0.35 },   // r15 (critic A): jets keep their group gaps for 0.8 s and spread <= 1.3x; white -> grey 0.4-0.9 s; round feathered, rotated, jittered haze cards + a soft cap knee (no straight-edged slab)   // r13 (owner: too thick, never goes away): <= 0.48, carried downwind ~42 px/s with shear + stretch, gone 4-6 s after each volley   // r11: the bank 15-25 px in front of the line (toward the road), lumpier, denser   // r9: north ~4 px/s, away from the road
   fair: { F: 1.5, box: [1150, 620, 720, 440], n: 9, med: 22, seed: 21, tiers: [49, 58], drift: [0.5, -0.15], diveClear: 0, opacity: () => 0,
     keep: [[1525, 790, 95], [1470, 815, 70], [1400, 850, 80], [1745, 705, 110], [1440, 815, 60]] } });   // r2: capped (sharpness)
 }
