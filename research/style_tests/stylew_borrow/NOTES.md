@@ -259,6 +259,20 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r19 share -> `stylew_borrow_test_r19_share.mp4` (76.733 s, 2302 frames, r18 audio stream-copied: identical; -14.0 LUFS, -1.9 dBTP)
+- Coordinator: muskets at PPU 150 (the film's smoke-to-box ratio); the cannon alone at PPU 110 (`--var smoke3dcanppu=110`: a second film-unit
+  engine world for the gun, seed 1518) so the fort and the white flag stay readable; the impact in the fort yard (`smoke3dimpoff=-46,10`) at
+  `smoke3dimpk=4` (the engine's impact, scaled only) so the dirt burst reads.
+- Builds: m3d `--smoke3d --var smoke3dppu=150 --var smoke3dcanppu=110 --var smoke3dimpoff=-46,10 --var smoke3dimpk=4`; m3f and hook-a
+  `--smoke3d --var smoke3dppu=150`; hook-a0 = the locked hook build (for the crossfade only).
+- RunPod: one RTX A4000 (community, 2nd deploy try), m3d 40.0-54.6, m3f 3.26-41.26, hook-a 13.5-17.8, hook-a0 17.5-17.8; ~$0.046; pod terminated,
+  pods list empty.
+- Splice (`tools/splice_r19.py`, frame-exact): share 405-525 = new hook; 526-533 = the hook->hook-b crossfade recomposed (r18 + (1 - k/8) x (new
+  hook - old hook), xfade fade weights); 740-2301 = new m3d xfaded into new m3f exactly as finalize_xf5.sh (732-739, before the cannon, kept).
+  Alignment: new hook frame 0 vs r18 405 = 2.1 grey levels, old hook vs r18 525 = 2.25 (render/encode only). Seams (frame-to-frame mean
+  difference at 480 x 270): 405 1.40 (baseline 0.54), 740 3.49 (2.7-3.0 in the incoming crossfade), crossfades ramp normally.
+- The hook guard at night: small orange flashes, the engine smoke dimmed by the night (fx setNight 1), faint.
+
 ## r19b stills (coordinator: r19 too small and weak next to our bigger boxes) -> `sheet_smoke3d_r19b.jpg` (film | r19 PPU 60 | r19b PPU 150)
 - Build: `--smoke3d --var smoke3dppu=150` (+ for m3d `--var smoke3dimpoff=-46,10`): the same engine code and numbers, scaled to the film's
   smoke-to-box ratio (his boxes ~25 px on screen, ours ~65 px).

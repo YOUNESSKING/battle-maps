@@ -258,9 +258,12 @@ else {
   const GV3 = (typeof GD !== "undefined" && GD.var) || {}, S3V = GV3.smoke3d || C.smoke3d;
   let S3D = null;
   if (S3V && ((C.vshots || []).length || (C.vcannon || []).length)) {
-    const V3 = C.volley || {}, Z = (+GV3.smoke3dppu || C.smoke3dPPU || 60) * (V3.K || 1), camF = new THREE.PerspectiveCamera(), sc3 = new THREE.Scene();
-    const fx3 = createFX({ scene: sc3, camera: camF, renderer, unitsPerMeter: 1 / 129.36, fxScale: 9, wind: [20, -7], sunDir: [-0.7, 0.48, -0.4], duration: D, seed: 1517 });
-    const W3 = (x, z, h) => [x / Z, h, z / Z]; const IU = +GV3.smoke3dimpup || 0, IO = String(GV3.smoke3dimpoff || "0,0").split(",").map(Number);   // impact placement: N map px north / "dx,dz" map px
+    const V3 = C.volley || {}, Z = (+GV3.smoke3dppu || C.smoke3dPPU || 60) * (V3.K || 1), Zc = (+GV3.smoke3dcanppu || +GV3.smoke3dppu || C.smoke3dPPU || 60) * (V3.K || 1);   // r19c: the cannon may have its own scale (--var smoke3dcanppu=N)
+    const mk3 = (Zs, seed) => { const cam = new THREE.PerspectiveCamera(), sc = new THREE.Scene(), fx = createFX({ scene: sc, camera: cam, renderer, unitsPerMeter: 1 / 129.36, fxScale: 9, wind: [20, -7], sunDir: [-0.7, 0.48, -0.4], duration: D, seed });
+      return { Zs, fx, W: (x, z, h) => [x / Zs, h, z / Zs], draw(t) { cam.copy(camera); cam.position.divideScalar(Zs); cam.near = camera.near / Zs; cam.far = camera.far / Zs; cam.updateProjectionMatrix(); cam.updateMatrixWorld(true);
+        fx.update(t, cam); renderer.render(sc, cam); } }; };   // one film-unit engine world per scale (the clip's close region; seed 1517 as the clip)
+    const M3 = mk3(Z, 1517), C3 = Zc === Z ? M3 : mk3(Zc, 1518), fx3 = M3.fx, fx3c = C3.fx;
+    const W3 = M3.W, W3c = C3.W; const IU = +GV3.smoke3dimpup || 0, IO = String(GV3.smoke3dimpoff || "0,0").split(",").map(Number);   // impact placement: N map px north / "dx,dz" map px
     const SMOKE_GM = { cluster: [1.0, 1.0], fadeAfter: 6, fadeTo: 0.12, look: "gmTall" };
     const SH3 = (C.vshots || []).slice().sort((a, b) => a[0] - b[0]), RP = [];
     for (const q of SH3) { const g = RP[RP.length - 1]; if (g && q[0] - g[g.length - 1][0] < 0.9) g.push(q); else RP.push([q]); }
@@ -270,12 +273,11 @@ else {
       fx3.smokeLine([W3(a[1], a[2], 0.06), W3(b[1], b[2], 0.06)], a[0], a[0] + 1.6, { ...SMOKE_GM, dir: [dx, dz], rate: 2.9, volley: 1.6, roll: Math.max(0.05, g[g.length - 1][0] - a[0]),
         size: 1.45, height: 3, muzzle: 6, windK: 0.45, muzzleFlash: {} }); }
     for (const [ts, x, z, ax, az, ti, tx, tz] of (C.vcannon || [])) { const l = Math.hypot(ax - x, az - z) || 1;
-      fx3.cannon(W3(x, z, 0.05), ts, { size: 1.0, flashHold: 0.4, flashCore: 0.7, nightPool: 7, dir: [(ax - x) / l, (az - z) / l] });
-      if (ti >= 0) fx3.impact(W3(tx + IO[0], tz - IU + IO[1], 0), ts + ti, { size: 0.9 * (+GV3.smoke3dimpk || 1) }); }   // IU (--var smoke3dimpup=N map px north): the strike point moved out from under a DOM icon (placement only)
-    fx3.setNight(V3.night ? 1 : 0);
-    S3D = { Z, draw(t) { camF.copy(camera); camF.position.divideScalar(Z); camF.near = camera.near / Z; camF.far = camera.far / Z; camF.updateProjectionMatrix(); camF.updateMatrixWorld(true);
-      fx3.update(t, camF); renderer.render(sc3, camF); } };
-    window.__S3D = { Z, ripples: RP.length, cannon: (C.vcannon || []).length };
+      fx3c.cannon(W3c(x, z, 0.05), ts, { size: 1.0, flashHold: 0.4, flashCore: 0.7, nightPool: 7, dir: [(ax - x) / l, (az - z) / l] });
+      if (ti >= 0) fx3c.impact(W3c(tx + IO[0], tz - IU + IO[1], 0), ts + ti, { size: 0.9 * (+GV3.smoke3dimpk || 1) }); }   // IU (--var smoke3dimpup=N map px north): the strike point moved out from under a DOM icon (placement only)
+    fx3.setNight(V3.night ? 1 : 0); if (fx3c !== fx3) fx3c.setNight(V3.night ? 1 : 0);
+    S3D = { Z, Zc, draw(t) { M3.draw(t); if (C3 !== M3) C3.draw(t); } };
+    window.__S3D = { Z, Zc, ripples: RP.length, cannon: (C.vcannon || []).length };
   }
   // LOOK-LOCK pending-end smoke3d
   let SMOKE = null;
