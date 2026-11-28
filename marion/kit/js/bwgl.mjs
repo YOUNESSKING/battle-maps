@@ -75,8 +75,16 @@ else {
       || (CORR.keepLines || []).some(([pts, R]) => pts.some((p) => Math.hypot(x - p[0], z - p[1]) < R + r)));
     const sc = { med: 30, tries: 900, seed: 0, n: 12, ...C.fair };
     const wsp = [], sd = sc.seed;
+    // r13e: screenPlace {t, px:[x0,y0,x1,y1], med, rMin, rMax (screen px)}: clusters spread evenly over the FRAME at time t (uniform world placement
+    // crowded the far top of the tilted view with small clouds and left the near half empty); each is put where its pixel's ray meets its height
+    const SPL = C.fair.screenPlace; let spAt = null;
+    if (SPL) { const TL = window.__timelines && window.__timelines.main, t0 = TL ? TL.time() : 0; if (TL) TL.seek(SPL.t, false); camSolve();
+      const P = camera.position.clone(), M = camera.matrixWorld.clone(), PI = camera.projectionMatrixInverse.clone(), T = C.fair.tiers || [49, 49]; if (TL) TL.seek(t0, false);
+      spAt = (c) => { const h = (T[Math.floor(hsh(c, 71) * T.length)] + 4.5) * F + 10 * F, sx = SPL.px[0] + hsh(c + sd, 61) * (SPL.px[2] - SPL.px[0]), sy = SPL.px[1] + hsh(c + sd, 62) * (SPL.px[3] - SPL.px[1]);
+        const d = new THREE.Vector3(sx / 960 - 1, 1 - sy / 540, 0.5).applyMatrix4(PI).applyMatrix4(M).sub(P), k = (h - P.y) / d.y;
+        return [P.x + d.x * k, P.z + d.z * k, lnr(c + sd, 63, SPL.med, 0.4, SPL.rMin, SPL.rMax) * d.length() * k / 1700]; }; }
     for (let c = 0, k = 0; c < sc.tries && k < sc.n; c++) {
-      const cx = B[0] + hsh(c + sd, 61) * B[2], cz = B[1] + hsh(c + sd, 62) * B[3], R0 = lnr(c + sd, 63, sc.med * F, 0.5, (sc.rMin ?? 14) * F, (sc.rMax ?? 70) * F);   // r13c: radius clamp per scene
+      const [cx, cz, R0] = spAt ? spAt(c) : [B[0] + hsh(c + sd, 61) * B[2], B[1] + hsh(c + sd, 62) * B[3], lnr(c + sd, 63, sc.med * F, 0.5, (sc.rMin ?? 14) * F, (sc.rMax ?? 70) * F)];   // r13c: radius clamp per scene
       if (offWide(cx, cz, R0) || wsp.some(([a, b, q]) => Math.hypot(a - cx, b - cz) < q + R0 + 10 * F)) continue;
       k++; wsp.push([cx, cz, R0, c]); if (inCorr(cx, cz, R0)) corrC.add(c); const kids = 1 + Math.floor(hsh(c + sd, 65) * 3);
       for (let j = 0; j < kids; j++) { const i2 = (c + sd) * 7 + j, a = hsh(i2, 66) * 6.283, r = lnr(i2, 67, R0 * 0.45, 0.6, 7 * F, R0 * 0.9), dd = R0 * ((C.fair.kidD || [0.9, 0.8])[0] + (C.fair.kidD || [0.9, 0.8])[1] * hsh(i2, 69)) + r * 0.6;   // r13d: kidD = tighter (rounder) clusters
@@ -125,12 +133,15 @@ else {
         cl.forEach((c, i) => { if (c[5] === 1 || drop.has(i)) return; const h = c[4] + 0.5 * c[3], k = P.y / Math.max(1, P.y - h), gx = P.x + (c[0] - P.x) * k, gz = P.z + (c[1] - P.z) * k;
           if (UK.keep.some(([x, z, R]) => Math.hypot(gx - x, gz - z) < R + c[2] * k)) drop.add(i); }); }
       if (TL) TL.seek(t0, false); for (let i = cl.length - 1; i >= 0; i--) if (drop.has(i)) cl.splice(i, 1); window.__bwglUnitDrop = drop.size; }
+    window.__bwglDbg = { wsp: wsp.length, clusters: new Set(wsp.map((q) => q[3])).size, proj: () => { camSolve(); const v = new THREE.Vector3();   // r13e: debug (probe): fair lumps on screen
+      return cl.filter((c) => c[5] === 0).map((c) => { v.set(c[0], c[4] + 0.5 * c[3], c[1]).project(camera); const d = camera.position.distanceTo(new THREE.Vector3(c[0], c[4], c[1]));
+        return [Math.round((v.x + 1) * 960), Math.round((1 - v.y) * 540), Math.round(c[2] * 1700 / d), c.corr ? 1 : 0, c[4] >= (C.fair.nearTier || 1e9) * F ? 1 : 0, Math.round(c[3] / c[2] * 100) / 100]; }); } };
     window.__bwglClouds = cl.length;
     const D0 = DV || NODIVE, AD = (t) => (t > D0.SW + 1 ? NODIVE : D0);
     const slabTop = Math.max(104, ...TIERS.map((v) => v + 55)) * F;
     const mkVC = (sx, list, dk, opF) => { if (list.length) sx.vc = sx.fx.vclouds({ noise: NOISE, clouds: list, bounds: (() => { const pd = (c) => c[2] * 1.7 + 32 * F;   // r13d: the map always holds every lump (the deck reached past the box edge: a straight cut at 6.3 s)
         return [Math.min(B[0] - 40 * F, ...list.map((c) => c[0] - pd(c))), Math.min(B[1] - 70 * F, ...list.map((c) => c[1] - pd(c))), Math.max(B[0] + B[2] + 40 * F, ...list.map((c) => c[0] + pd(c))), Math.max(B[1] + B[3] + 40 * F, ...list.map((c) => c[1] + pd(c)))]; })(), texel: F, skip: 30 * F,
-      slab: [28 * F, slabTop]   /* r13: low enough that no cloud bottom is cut flat */, tile: 125 * F, groupScale: C.fair.groupScale ?? 3.0, amp: 5 * F, soft: (C.fair.soft ?? 1.7) * F, skirtCut: C.fair.skirtCut || 0, flatPow: 0.3, sigma: 0.75 / F,
+      slab: [28 * F, slabTop]   /* r13: low enough that no cloud bottom is cut flat */, tile: 125 * F, groupScale: C.fair.groupScale ?? 3.0, amp: 5 * F, soft: (C.fair.soft ?? 1.7) * F, skirtCut: C.fair.skirtCut || 0, lumpK: C.fair.lumpK, flatPow: 0.3, sigma: 0.75 / F,
       stepIn: 0.25 * F, stepK: 0.0035, lightStep: 1.4 * F, lodDist: 260 * F, nearFade: 9 * F,   /* r13: no planar cut where the camera passes through a cloud */ maxSteps: C.fair.maxSteps ?? 200, resolution: C.fair.res ?? 0.75, warp: 0.06, fine: 0.12, wisp: 0.45, inner: 0.8,
       weights: [1.0, 0.5, 1, 0.5], group0: C.fair.group0 || [0.55, 0.3, 1.4, 0.5], blur: 1.0, sharp: 1, shadow: 0.75, shadowDir: [0.3, 1, 0.65], drift: (C.fair.drift || [0.10, -0.035]).map((v) => v * F * dk), evolve: 0.0025 / F, floor: 0.05,
       sunK: 1.4, ambK: 0.18, lightK: 3.2,
