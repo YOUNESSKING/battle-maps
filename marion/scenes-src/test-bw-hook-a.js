@@ -86,7 +86,7 @@ SIDEFLAG("gb", LYT(32.98, -80.52)); SIDEFLAG("sc", LYT(33.86, -79.55));
 // the wagons: up the lowcountry road, then (inside the santee map) on the santee road to the south landing of Nelson's Ferry
 { const NF = PP(1581.8, 1085.8);           // south landing (santee px)
   const lo = R_CN.filter((p) => Math.hypot(p[0] - NF[0], p[1] - NF[1]) > 22);
-  const W1 = [...sub(lo, 0.55, 1.0, 30), PP(1600, 1140), PP(1590, 1112)], W2 = [...sub(lo, 0.38, 0.98, 30), PP(1612, 1170)];
+  const W1 = [...sub(lo, 0.55, 1.0, 30), PP(1600, 1140), PP(1602, 1146)], W2 = [...sub(lo, 0.38, 0.98, 30), PP(1612, 1170)];   // r21 (critics: "Nelson■ Ferry"): w1 stops below the place label (it ended ON the label and greyed out there when hidden)
   UNIT("w1", "british", W1[0], "supply", { ech: "" }); UNIT("w2", "british", W2[0], "supply", { ech: "" });
   march("w1", W1.slice(0, 22), 0, 4.6, { trail: false, dustSize: 70, dustOp: 0.45 }); along("w1", W1.slice(21), 4.6, TZ1 - 4.6 + 0.6);
   march("w2", W2.slice(0, 22), 0.2, 4.4, { trail: false, dustSize: 70, dustOp: 0.45 }); along("w2", W2.slice(21), 4.6, TZ1 - 4.6 + 0.8);

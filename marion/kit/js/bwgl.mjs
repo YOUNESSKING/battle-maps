@@ -257,6 +257,9 @@ else {
   // Opt-in: build_scene.py --smoke3d (GD.var.smoke3d); without it nothing here runs and the locked r15 smoke is untouched.
   const GV3 = (typeof GD !== "undefined" && GD.var) || {}, S3V = GV3.smoke3d || C.smoke3d;
   let S3D = null;
+  // r21 (owner: every shot aims at its target): shots logged without an explicit aim (the default aim = muzzle + (10, 0)) are re-aimed at
+  // window.BW_AIM (borrow.js pending autoaim: the declared target / the nearest enemy box at the shot time), before anything reads them
+  if ((S3V || GV3.autoaim) && window.BW_AIM) for (const q of (C.vshots || [])) if (q[3] === q[1] + 10 && q[4] === q[2]) { const p = window.BW_AIM(q[0], q[1], q[2]); if (p) { q[3] = p[0]; q[4] = p[1]; } }
   if (S3V && ((C.vshots || []).length || (C.vcannon || []).length)) {
     // r20 (owner + critic A on r19: "why did you push the smoke of the gun to the house?"): the engine's smoke code, its source / direction /
     // scale fixed for black powder: everything stays at the guns. Engine calls only (fx.smokeLine / fx.cannon / fx.flash), options changed.
@@ -272,7 +275,7 @@ else {
     const mk3 = (Zs, seed, wind) => { const cam = new THREE.PerspectiveCamera(), sc = new THREE.Scene(), fx = createFX({ scene: sc, camera: cam, renderer, unitsPerMeter: UF, fxScale: 9, wind, sunDir: [-0.7, 0.48, -0.4], duration: D, seed });
       return { Zs, fx, sc, cam, W: (x, z, h) => [x / Zs, h, z / Zs], prep() { cam.copy(camera); cam.position.divideScalar(Zs); cam.near = camera.near / Zs; cam.far = camera.far / Zs; cam.updateProjectionMatrix(); cam.updateMatrixWorld(true); } }; };
     const MJ = mk3(Z, 1517, [20, -7]), MH = mk3(Z, 1519, [20, -7]), MF = mk3(Z, 1520, [20, -7]);   // MF: the flashes, drawn straight to the canvas (r15 drew them on their own layer: never capped, never cut out)
-    const CN3 = C.vcannon || [], g0 = CN3[0], wdir = g0 ? (() => { const dx = g0[1] - g0[6], dz = g0[2] - g0[7], l = Math.hypot(dx, dz) || 1; return [20 * dx / l, 20 * dz / l]; })() : [20, -7];
+    const CN3 = C.vcannon || [], g0 = CN3[0], wdir = g0 ? (() => { const dx = g0[1] - g0[6], dz = g0[2] - g0[7], l = Math.hypot(dx, dz) || 1; return [30 * dx / l, 30 * dz / l]; })() : [20, -7];   // r21: 30 m/s (the cloud stretches downwind, away from the fort)
     const CW = mk3(Zc, 1518, wdir);
     const IO = String(GV3.smoke3dimpoff || "0,0").split(",").map(Number);
     // per-muzzle emitter: a 1 map-px line at the muzzle; rate set so the engine spawns exactly n puffs in [t, t + dt]
@@ -280,18 +283,12 @@ else {
       w.fx.smokeLine([w.W(x, z, 0.06), w.W(x - uz, z + ux, 0.06)], t, t + dt, { dir: [ux, uz], rate: n / ((Lu / (100 * UF)) * dt), flash: false, ...o }); };
     const MUZ = (px, Zs) => px / (Zs / KK) * 1.3 / UF;   // muzzle speed (m/s) that throws a puff ~px screen px (drag k 1.3: distance = v / k)
     for (const [ts, x, z, ax, az] of (C.vshots || [])) {
-      emit(MJ, x, z, ax, az, ts, 4, 0.04, { look: "gm", size: 0.42, alpha: 0.55, life: 1.0, muzzle: MUZ(75, Z), height: 1.2, windK: 0.3 });
       emit(MH, x, z, ax, az, ts + 0.05, 3, 0.2, { look: "gm", size: 0.95, alpha: 0.30, life: 4.2, muzzle: MUZ(20, Z), height: 1.6, windK: 0.6 });
-      // r20 (critic B: pinpoints, flashes off the sound): one flash per logged shot (the audio's list), ON its frame, the v8 colours (core
-      // warm white, halo orange) sized to read: fx.flash quad = 10 x size x fxScale x U units: quads 80 / 160 px -> a visible core ~35 px + halo ~70 px (the sprite is a soft disc) (r15: core
-      // 8 px + 35 px tongue + 80 px glow); the size is in film units, so it is the same in every scene (PPU 60)
-      const FPX = (px) => px / (10 * 9 * UF * (Z / KK));
-      const tf = Math.round(ts * 30) / 30 - 1e-4;   // on the shot's frame (as r15: a shot 0.3 ms after a frame start flashed on that frame, the engine would wait for the next)
-      const lf = Math.hypot(ax - x, az - z) || 1, fx_ = x + (ax - x) / lf * 18 * KK, fz_ = z + (az - z) / lf * 18 * KK;   // r20 render check: 18 px out along the aim (a muzzle at a box was hidden under it)
-      MF.fx.flash(MF.W(fx_, fz_, 0.1), tf, { size: FPX(80), life: 0.13, color: [1.6, 1.25, 0.7], alpha: 1 });
-      MF.fx.flash(MF.W(fx_, fz_, 0.1), tf, { size: FPX(160), life: 0.16, color: [1.25, 0.5, 0.12], alpha: 0.5 }); }
+    }   // r21: the jets and flashes are r15's again (its burst pass + flash layer, on the logged frames)
     for (const [ts, x, z, ax, az, ti, tx, tz] of CN3) { const l = Math.hypot(ax - x, az - z) || 1;
-      CW.fx.cannon(CW.W(x, z, 0.05), ts, { size: 1.2, jet: 0.5 / 1.2, flashHold: 0.4, flashCore: 0.7, nightPool: 7, dir: [(ax - x) / l, (az - z) / l] });
+      const CS = +GV3.smoke3dcansize || 2.1, CL = GV3.smoke3dcanlook || "billow";   // r21: the lit billow look (white tops, shaded undersides), size 2.1: ~100-190 px, centred <= 41 px from the gun (--var to try others); the engine's own flash off (flash 0): r15's fireball is drawn
+      const CA = +GV3.smoke3dcanalpha || 0.42, CT = +GV3.smoke3dcantint || 0.70;   // r21 (coordinator: r15's grey-white, see-through-edged cloud, not a white ball): grey tint, lower puff alpha, more drift
+      CW.fx.cannon(CW.W(x, z, 0.05), ts, { size: CS, look: CL, jet: 0.5 / CS, flash: 0, alpha: CA, tint: [CT, CT, CT + 0.02], windK: 1.0, dir: [(ax - x) / l, (az - z) / l] });
       if (ti >= 0) { const ix = tx + IO[0], iz = tz + IO[1];
         emit(CW, ix, iz, ix + (ax - x) / l, iz + (az - z) / l, ts + ti, 6, 0.06, { look: "gm", tint: [0.25, 0.22, 0.18], size: 0.45, alpha: 0.45, life: 1.2, muzzle: MUZ(10, Zc), height: 0.3, windK: 0.2 });
         CW.fx.flash(CW.W(ix, iz, 0.03), ts + ti, { size: 0.35, life: 0.08, color: [1.2, 0.55, 0.16], alpha: 0.8 }); } }
@@ -316,16 +313,19 @@ else {
     const capped = (w, t, cap, knee) => { w.prep(); w.fx.update(t, w.cam); const prev = renderer.getRenderTarget(); renderer.setRenderTarget(RT3); renderer.setClearColor(0, 0); renderer.clear(true, false, false);
       renderer.render(w.sc, w.cam); renderer.setRenderTarget(prev); const ur = rects3(); for (let i = 0; i < NR; i++) { const r = ur[i]; if (r) { rc3[i].set(r[0], r[1], r[2], r[3]); rm3[i] = r[4] * cap / 0.4; } else rc3[i].set(-1, -1, -1, -1); }
       cmp3.uniforms.uCap.value = cap; cmp3.uniforms.uKn.value = knee; renderer.render(cS3, oC3); };
-    S3D = { Z, Zc, draw(t) { if (HIDE) return; capped(MH, t, 0.4, 0.6); capped(MJ, t, 0.8, 0); capped(CW, t, 0.9, 0); MF.prep(); MF.fx.update(t, MF.cam); renderer.render(MF.sc, MF.cam); } };   // r20: the gun's cloud too goes through the cut-out composite (the gun box stays above its smoke)
+    let DBG = null;   // --var smoke3ddebug=1: an arrow from each muzzle along its aim for 0.6 s after the shot (a checking copy, never a film)
+    if (GV3.smoke3ddebug) { DBG = document.createElement("canvas"); DBG.width = 1920; DBG.height = 1080; DBG.style.cssText = "position:absolute;left:0;top:0;width:1920px;height:1080px;pointer-events:none;z-index:99"; SCN.appendChild(DBG); }
+    const prj = (x, z) => { const v = new THREE.Vector3(x, 0, z).project(camera); return [(v.x + 1) / 2 * 1920, (1 - v.y) / 2 * 1080]; };
+    S3D = { Z, Zc, draw(t) { if (HIDE) return; capped(MH, t, 0.4, 0.6); capped(CW, t, 0.75, 0.6);
+      if (DBG) { const g = DBG.getContext("2d"); g.clearRect(0, 0, 1920, 1080); g.strokeStyle = "#ff00ff"; g.fillStyle = "#ff00ff"; g.lineWidth = 2;
+        for (const [ts, x, z, ax, az] of (C.vshots || [])) { if (t < ts - 0.05 || t > ts + 0.6) continue; const [mx, my] = prj(x, z), [tx, ty] = prj(ax, az), l = Math.hypot(tx - mx, ty - my) || 1, ux = (tx - mx) / l, uy = (ty - my) / l, e = [mx + ux * 45, my + uy * 45];
+          g.beginPath(); g.moveTo(mx, my); g.lineTo(e[0], e[1]); g.stroke(); g.beginPath(); g.moveTo(e[0], e[1]); g.lineTo(e[0] - ux * 9 - uy * 5, e[1] - uy * 9 + ux * 5); g.lineTo(e[0] - ux * 9 + uy * 5, e[1] - uy * 9 - ux * 5); g.fill(); } } } };   // r21: the gun cloud peak alpha 0.75 with the soft knee (see-through edges)   // r20: the gun's cloud too goes through the cut-out composite (the gun box stays above its smoke)
     window.__S3D = { Z, Zc, wind: wdir, shots: (C.vshots || []).length, cannon: CN3.length };
   }
   // LOOK-LOCK pending-end smoke3d
   let SMOKE = null;
   if ((C.vshots || []).length || (C.vcannon || []).length) {
     const V = C.volley || {}, K = V.K || 1, SH = (C.vshots || []).slice().sort((a, b) => a[0] - b[0]), CN = (C.vcannon || []).slice().sort((a, b) => a[0] - b[0]);
-    // LOOK-LOCK pending-begin smoke3d
-    if (S3D) { SH.length = 0; CN.length = 0; }   // r19 --smoke3d: the engine draws the shots (above); the r15 puffs / flashes / cannon plume stay off, the soot column stays
-    // LOOK-LOCK pending-end smoke3d
     const mb = (a) => () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let q = Math.imul(a ^ (a >>> 15), 1 | a); q = (q + Math.imul(q ^ (q >>> 7), 61 | q)) ^ q; return ((q ^ (q >>> 14)) >>> 0) / 4294967296; };
     // --- 8 cauliflower textures (128 px cells in a 512 x 256 atlas): RGB = lit colour, A = density
     const CS = 128, AW = CS * 4, AH = CS * 2, atl = new Uint8Array(AW * AH * 4);
@@ -392,6 +392,12 @@ else {
     (C.vcolumn || []).forEach(([x, z, t0, t1, o = {}], j) => { const R = mb(9001 + j * 17); for (let t = t0; t < t1; t += 0.16) {
       PL.push({ i: -1, g: 1, t, x, z, h: R(), cell: Math.floor(R() * 8), ex: (R() - 0.5) * 8, ez: -6, eT: 0.6, g0: 0.35, gT: 3.0, gr: 0.03, ain: 0.3, rise: o.rise ?? 70,
         wind: o.wind || [10, -4], white: 0, fo: 2.5, sz: (o.r ?? 26) * (0.8 + 0.4 * R()) / 0.42, a0: 0.5 + 0.15 * R(), tau: 3.5, life: 6 + R(), w: 1.2 }); } });
+    // LOOK-LOCK pending-begin smoke3d
+    // r21 (critics on r20: placement right, punch lost): with --smoke3d r15's own effects stay where the engine has no better one: its flash layer
+    // (musket tongues, the cannon fireball, the muzzle dust ring, on the logged frames) and its white jet bursts (cap 0.8, grey by 0.9 s); its
+    // musket haze and its cannon cloud are taken out (the engine haze / cannon cloud of the smoke3d block replace them); the roof soot stays
+    if (S3D) for (let k = PL.length - 1; k >= 0; k--) { const p = PL[k]; if (p.g ? p.w !== 1.2 : !p.jet) PL.splice(k, 1); }
+    // LOOK-LOCK pending-end smoke3d
     PL.sort((a, b) => a.t - b.t || (a.jet || 0) - (b.jet || 0));
     const N = PL.length, geo = new THREE.InstancedBufferGeometry(); geo.setAttribute("position", new THREE.Float32BufferAttribute([-0.5, -0.5, 0, 0.5, -0.5, 0, 0.5, 0.5, 0, -0.5, 0.5, 0], 3)); geo.setIndex([0, 1, 2, 0, 2, 3]);
     const iP = new THREE.InstancedBufferAttribute(new Float32Array(N * 4), 4), iQ = new THREE.InstancedBufferAttribute(new Float32Array(N * 4), 4);   // xyz size | alpha cell white -

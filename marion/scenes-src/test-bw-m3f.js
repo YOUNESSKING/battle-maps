@@ -95,12 +95,12 @@ B.move("fr2", T_NARROW, 0.5, 1522, RY + 1, "power2.out");
 const ROADHIT = (x) => [x, RY + 1];
 AIDS.forEach((id) => tl.to(B.units[id].el.querySelector(".blk"), { filter: "brightness(1) saturate(1) opacity(1)", duration: 0.25 }, T_EVERY - 0.05));
 // BW: one muzzle flash (+ flintlock shot) per musket along the whole hidden line, a ragged ripple from the west flank
-BW.musketVolley([[1488, 790], [1598, 792]], T_EVERY, 0.6, 28, { seed: 31, aim: (x) => [x + 30, RY + 2], shake: ["fr", "fr2"] });   // LOOK LOCK v1: the r15 ripple knobs (4 clumps) live in BW.LOCK.volleyCall   // r15: 4 narrower clumps (25-40 px gaps; 5 clumps merged into one bar)   // r14: 6 clumps with gaps; r10: 28 muskets -> 3-4 flashes per frame   // r9: muzzles at the line front, jets along the road side
+BW.musketVolley([[1488, 790], [1598, 792]], T_EVERY, 0.6, 28, { seed: 31, aim: GD.var.smoke3d ? undefined : (x) => [x + 30, RY + 2], shake: ["fr", "fr2"] });   // LOOK LOCK v1: the r15 ripple knobs (4 clumps) live in BW.LOCK.volleyCall   // r15: 4 narrower clumps (25-40 px gaps; 5 clumps merged into one bar)   // r14: 6 clumps with gaps; r10: 28 muskets -> 3-4 flashes per frame   // r9: muzzles at the line front, jets along the road side
 mg([1498, 794], ROADHIT(1528), T_EVERY + 0.02, 5, 1.1); mg([1560, 794], ROADHIT(1536), T_EVERY + 0.1, 5, 1.1);
 /* BW r3: kit smoke replaced by the per-shot puffs (<= 6 per volley) */
 MARK([1568, RY + 1], T_EVERY + 0.35, T_COUNT + 0.2);   // BW r2: east of the jammed boxes, off the FRASER tag
 // "firing buckshot": a second ripple down the line
-BW.musketVolley([[1490, 790], [1596, 792]], T_BUCK + 0.05, 0.7, 20, { seed: 57, aim: (x) => [x + 30, RY + 2], shake: ["fr", "fr2"] });   // r15: narrower clumps   // BW: the buckshot ripple, shot by shot
+BW.musketVolley([[1490, 790], [1596, 792]], T_BUCK + 0.05, 0.7, 20, { seed: 57, aim: GD.var.smoke3d ? undefined : (x) => [x + 30, RY + 2], shake: ["fr", "fr2"] });   // r15: narrower clumps   // BW: the buckshot ripple, shot by shot
 mg([1528, 794], ROADHIT(1520), T_BUCK + 0.08, 4, 1.1); mg([1588, 796], ROADHIT(1540), T_BUCK + 0.2, 4, 1.1);
 /* BW r3: kit smoke replaced by the per-shot puffs (<= 6 per volley) */
 // the red cavalry breaks: "killed on the spot" -> fast fade; a few flee back toward the ferry

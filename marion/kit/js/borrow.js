@@ -182,6 +182,23 @@ const BW = (() => {
         c.sh.style.transform = `translate(${(gx + c.r * ws * 0.45 - shs).toFixed(1)}px,${(gy + c.r * ws * 0.3 - shs * 0.7).toFixed(1)}px) scale(${(2 * shs / 128).toFixed(4)},${(1.4 * shs / 128).toFixed(4)})`;
         c.sh.style.opacity = (a * 0.16 * (1 - sstep(0.4, 0.8, hs))).toFixed(3); } } });   // r2: no white veil (1a: no white flash)
   // LOOK-LOCK pending-end clouds
+  // LOOK-LOCK pending-begin autoaim
+  // r21 (owner 2026-11-28: "each firing unit finds its target and aims at it"): BW_AIM(t, x, y, targets?) -> the map point a muzzle at (x, y)
+  // aims at, at time t: the nearest of `targets` (unit ids) if given, else the nearest ENEMY unit box (the other colour than the unit nearest the
+  // muzzle = the shooter's own). Unit positions at t come from their start + every B.move (logged here; B.move itself is unchanged). The 3D layer
+  // (bwgl.mjs, pending smoke3d) re-aims every shot that has no explicit aim (BW.musketShot / BW.musketVolley without `aim`): the flash tongue,
+  // the jet / white burst and the haze then point at the target. Scenes that pass `aim` keep it.
+  const MOVES = {}, _bmove = B.move;
+  B.move = (id, t, dur, x, y, ease) => { (MOVES[id] = MOVES[id] || []).push([t, dur, x, y]); return _bmove(id, t, dur, x, y, ease); };
+  const posAt = (id, t) => { const u = B.units[id]; let x = u.x, y = u.y;
+    for (const [t0, d, mx, my] of (MOVES[id] || []).slice().sort((p, q) => p[0] - q[0])) { if (t >= t0 + d) { x = mx; y = my; } else { if (t > t0) { const k = (t - t0) / d; x += (mx - x) * k; y += (my - y) * k; } break; } }
+    return [x, y]; };
+  const redU = (id) => /rome|british/.test(B.units[id].el.className);
+  window.BW_AIM = (t, x, y, targets) => { const all = Object.keys(B.units), d2 = (id) => { const p = posAt(id, t); return Math.hypot(p[0] - x, p[1] - y); };
+    let cand = (targets || []).filter((id) => B.units[id]);
+    if (!cand.length) { const own = all.reduce((b, id) => (b == null || d2(id) < d2(b) ? id : b), null); cand = own == null ? [] : all.filter((id) => redU(id) !== redU(own)); }
+    const best = cand.reduce((b, id) => (b == null || d2(id) < d2(b) ? id : b), null); return best == null ? null : posAt(best, t); };
+  // LOOK-LOCK pending-end autoaim
   // ================================================================== 7. musket shots: one flash + one powder puff per shot, a "musket" cue per shot (flintlock stem)
   const SHOTS = [];
   // r8: one flintlock shot = a "musket" sound cue + an entry for the 3D layer, which draws the pan flash, the muzzle tongue, the glow, the sparks

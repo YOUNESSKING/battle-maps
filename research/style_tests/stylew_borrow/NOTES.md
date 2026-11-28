@@ -259,6 +259,26 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r21 stills (critics on r20: placement right, punch lost; owner: aim each shot at its target) -> `sheet_smoke3d_r21.jpg` (r15 | r20 | r21)
+- r15's effects back where the engine had no better one (pending smoke3d, bwgl.mjs): the r15 shot lists are no longer emptied, so its flash layer
+  draws the musket tongues, the cannon fireball (~110 x 60 px, frames 1039 / 1040 at 100 / 60 %) and the muzzle dust ring on the logged frames,
+  and its burst pass the white jets (cap 0.8, grey by 0.9 s); its musket haze and cannon cloud are filtered out of its particle list (the roof soot
+  stays). The engine keeps the haze (per muzzle, ~20 px ahead, gone by ~5 s) and the cannon cloud; its own cannon flash is off (flash 0).
+- Cannon cloud: the engine's lit `billow` look, size 2.1, grey tint 0.70, puff alpha 0.42, windK 1.0, 30 m/s from the fort through the gun,
+  composited with the boxes cut out at cap 0.75 + soft knee: grey-white, lumpy, see-through edges, stretching up-right. Measured (local stills
+  vs `smoke3dhide`): centre 32 / 37 / 49 px from the gun box at +2 / +3 / +5 s, 99 x 116 -> 153 x 176 -> 165 x 185 px at +1 / +3 / +5 s, the
+  gun box 100 % visible, the house contrast loss 0 % (+0 .. +5 s).
+- Auto-aim (owner): `window.BW_AIM` in borrow.js (pending `autoaim`: unit positions from their start + every B.move); bwgl re-aims every shot
+  logged without an explicit aim (the default aim) at the declared target / the nearest enemy box; m3f drops its one-direction aim in --smoke3d
+  builds. Debug copy (`--var smoke3ddebug=1`): magenta arrows from each muzzle: the shooters left of FRASER angle right, those right of it angle
+  left. Volleys: boxes 100 % visible, haze centroid +35-39 px from the blue box centres (2-6 px in front of the muzzles). LOCK.md 8 (d).
+- Opening seam (`tools/opening_seam_r21.py`; the dive re-rendered from frame 210): (a) the framing correction eased in over 7.0-8.4 s (fits from
+  frame 244, held before): vertical motion eases 4 -> 0.6 -> 4.9 px / frame, no reversal; (b) the scene's plate dissolves in over 8.0-8.3 s while
+  the dive's fades: a plate on screen the whole time; (c) "Nelson■ Ferry" (in r15 too): the wagon w1 ended ON the place label and greyed there
+  when hidden at ~9.2 s; test-bw-hook-a.js now stops it below the label (PP(1602, 1146)). The seam stills use a RunPod preview of the new hook
+  (8.0-9.6 s, A4000, ~$0.019, pods empty).
+- Local snapshots miss the fireball's 60 % second frame (r15's own canvas code, unchanged; the GPU render shows it: r15 / r20 frame 1040).
+
 ## r20 share -> `stylew_borrow_test_r20_share.mp4` (76.733 s, 2302 frames; r18 audio stream-copied, identical; -14.0 LUFS, -1.9 dBTP)
 - RunPod, 3 pods (A4000 / A4000 / A5000, all terminated, pods list empty): ~$0.035 + $0.032 + $0.038 = ~$0.105. Builds: m3d `--smoke3d --var
   smoke3dimpoff=-46,10`, m3f + hook-a `--smoke3d`, hook-a0 = the locked hook (crossfade only).

@@ -183,6 +183,12 @@ hashed by themselves: changing them is a relock, section 7).
 - (b) Critic B: apply the final limiter to the effects only, so it never pulls the voice down under a cannon shot.
 - (c) The cloud dive (scored about 8, known weak spots: flat grey bases on a few cumulus, edge-heavy field, the deck's darker underside
   at ~6.2 s): **NOT APPROVED, being redone; any film must not use the r13g dive.**
+- (d) **Pending improvement (owner 2026-11-28): musket auto-aim.** Every shot aims at its target: the volley's declared targets, else the nearest
+  enemy unit box at the shot time (`window.BW_AIM`, `marion/kit/js/borrow.js` pending region `autoaim`: unit positions from their start +
+  every `B.move`). The flash tongue, the jet / white burst and the haze point along it; the wind drift comes after. Scenes that pass an explicit
+  `aim` keep it. Today it is applied only in `--smoke3d` test builds (`bwgl.mjs` pending smoke3d re-aims the shots logged without an explicit
+  aim); test-bw-m3f drops its one-direction aim only in those builds. Becomes the default for every BW.musketShot / BW.musketVolley once
+  the owner approves the r21 test (a lock v2 change).
 
 ## 9. Open owner decision (not part of this lock)
 
