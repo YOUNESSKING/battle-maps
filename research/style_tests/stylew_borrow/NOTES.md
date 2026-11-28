@@ -259,6 +259,16 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r19b stills (coordinator: r19 too small and weak next to our bigger boxes) -> `sheet_smoke3d_r19b.jpg` (film | r19 PPU 60 | r19b PPU 150)
+- Build: `--smoke3d --var smoke3dppu=150` (+ for m3d `--var smoke3dimpoff=-46,10`): the same engine code and numbers, scaled to the film's
+  smoke-to-box ratio (his boxes ~25 px on screen, ours ~65 px).
+- Musket: the curtains become big film-like banks over the line, the blue boxes veiled by +2-4 s as in the film.
+- Cannon: the flash ~2.5x bigger; the plume jets from the gun to the fort and spreads over the whole fort (house + garrison box veiled from ~+0.5 s).
+- Impact (engine fx.impact { size 0.9 } at the 150 scale; `--var smoke3dimpk=N` scales only the impact, unused): at the gable it was under the
+  house icon and inside the cannon plume; moved to open ground in the fort yard west of the house (`smoke3dimpoff=-46,10` map px): an orange
+  pin-flash on the impact frame and a small dark dirt puff at +0.5-0.9 s, then the plume covers it. Still faint: the engine's impact is small.
+- The r19 column has no 51.17 still (its +0.9 row repeats its +0.5 frame).
+
 ## r19 stills (owner: "the gun smoke exactly like the 3D film: COPY it") -> `sheet_smoke3d_r19.jpg` (build `--smoke3d`; stills only, no render yet)
 - Sources (copied, not re-created): `vicksburg/engine/fx.js` (= `gm3d/clip/fx.js` + the v8 per-shot muzzle flashes; the smoke's random
   sequence is identical with or without them), already shipped as `gl/fx.js` by build_scene.py. Musket = `fx.smokeLine` + `SMOKE_GM`

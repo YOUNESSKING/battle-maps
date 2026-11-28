@@ -260,7 +260,7 @@ else {
   if (S3V && ((C.vshots || []).length || (C.vcannon || []).length)) {
     const V3 = C.volley || {}, Z = (+GV3.smoke3dppu || C.smoke3dPPU || 60) * (V3.K || 1), camF = new THREE.PerspectiveCamera(), sc3 = new THREE.Scene();
     const fx3 = createFX({ scene: sc3, camera: camF, renderer, unitsPerMeter: 1 / 129.36, fxScale: 9, wind: [20, -7], sunDir: [-0.7, 0.48, -0.4], duration: D, seed: 1517 });
-    const W3 = (x, z, h) => [x / Z, h, z / Z]; const IU = +GV3.smoke3dimpup || 0;
+    const W3 = (x, z, h) => [x / Z, h, z / Z]; const IU = +GV3.smoke3dimpup || 0, IO = String(GV3.smoke3dimpoff || "0,0").split(",").map(Number);   // impact placement: N map px north / "dx,dz" map px
     const SMOKE_GM = { cluster: [1.0, 1.0], fadeAfter: 6, fadeTo: 0.12, look: "gmTall" };
     const SH3 = (C.vshots || []).slice().sort((a, b) => a[0] - b[0]), RP = [];
     for (const q of SH3) { const g = RP[RP.length - 1]; if (g && q[0] - g[g.length - 1][0] < 0.9) g.push(q); else RP.push([q]); }
@@ -271,7 +271,7 @@ else {
         size: 1.45, height: 3, muzzle: 6, windK: 0.45, muzzleFlash: {} }); }
     for (const [ts, x, z, ax, az, ti, tx, tz] of (C.vcannon || [])) { const l = Math.hypot(ax - x, az - z) || 1;
       fx3.cannon(W3(x, z, 0.05), ts, { size: 1.0, flashHold: 0.4, flashCore: 0.7, nightPool: 7, dir: [(ax - x) / l, (az - z) / l] });
-      if (ti >= 0) fx3.impact(W3(tx, tz - IU, 0), ts + ti, { size: 0.9 }); }   // IU (--var smoke3dimpup=N map px north): the strike point moved out from under a DOM icon (placement only)
+      if (ti >= 0) fx3.impact(W3(tx + IO[0], tz - IU + IO[1], 0), ts + ti, { size: 0.9 * (+GV3.smoke3dimpk || 1) }); }   // IU (--var smoke3dimpup=N map px north): the strike point moved out from under a DOM icon (placement only)
     fx3.setNight(V3.night ? 1 : 0);
     S3D = { Z, draw(t) { camF.copy(camera); camF.position.divideScalar(Z); camF.near = camera.near / Z; camF.far = camera.far / Z; camF.updateProjectionMatrix(); camF.updateMatrixWorld(true);
       fx3.update(t, camF); renderer.render(sc3, camF); } };
