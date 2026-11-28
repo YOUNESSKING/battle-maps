@@ -52,7 +52,7 @@ probe = np.zeros((int(4 * SR), 2), np.float32); rng = np.random.default_rng(3); 
 T.render_volley(L, probe, dict(type="musket_volley", tShare=0.5, unit=dict(men=144), at=dict(camDist=20, px=[960, 540]),
                                shots=[dict(tShare=0.5 + 0.04 * k, at=dict(px=[700 + 30 * k, 540])) for k in range(16)]), rng, [])
 CN_DB = float(os.environ.get("CANNON_DB", "7")); MU_DB = float(os.environ.get("MUSKET_DB", "12"))
-CN_REL = float(os.environ.get("CANNON_REL", "11")); MU_REL = float(os.environ.get("MUSKET_REL", "-2"))   # r14h: the gun stems' level vs the voice (100 ms max RMS)   # r14 (owner: guns and muskets too low): the 3D cannon stem +7 dB, the muskets +12 dB (now outside the voice-keyed compressor; chosen from a gain grid, NOTES)
+CN_REL = float(os.environ.get("CANNON_REL", "11")); MU_REL = float(os.environ.get("MUSKET_REL", "-2")); MU_REL2 = float(os.environ.get("MUSKET_REL2", "2"))   # r14h: the gun stems' level vs the voice (100 ms max RMS)   # r14 (owner: guns and muskets too low): the 3D cannon stem +7 dB, the muskets +12 dB (now outside the voice-keyed compressor; chosen from a gain grid, NOTES)
 GAIN = (rms_peak(imp) - 8) - rms_peak(probe) + MU_DB
 print(f"cannon impact {rms_peak(imp):.1f} dB, raw volley {rms_peak(probe):.1f} dB -> musket stem gain {GAIN:+.1f} dB")
 
@@ -131,7 +131,7 @@ for (a, b, name) in SEGS:
         os.remove(TMPP + "_pl.wav"); os.remove(TMPP + "_pl2.wav"); return y
     cnS = prelim(cn[:n] * (1 - 0.15 * venv)[:, None], vref + CN_REL, db(-4)); musS = np.zeros_like(mus_shots)   # r14h (advisor): each ripple pushed to the target on its own (the buckshot ripple no longer rides under the first)
     cuts = [max(0, int((g[0][0] - 0.2) * SR)) for g in groups] + [n]
-    for k in range(len(groups)): musS[cuts[k]:cuts[k + 1]] = prelim(mus_shots[cuts[k]:cuts[k + 1]], vref + MU_REL, db(-6))
+    for k in range(len(groups)): musS[cuts[k]:cuts[k + 1]] = prelim(mus_shots[cuts[k]:cuts[k + 1]], vref + MU_REL + (MU_REL2 if k else 0), db(-6))   # r14h: the later ripples +2 dB (the 66.56 volley read +2.8 vs r13, the brief asks +4-6)
     if not groups: musS = mus_shots
     print(f"  stems (100 ms max RMS): voice {vref:.1f} | cannon {_pk(cnS):.1f} | muskets {_pk(musS):.1f} dB")
     vo = vo + cnS + musS
@@ -171,7 +171,7 @@ subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{tmp}vo.wav", "-i", f"{tm
 def ilufs(fn):
     r = subprocess.run(["ffmpeg", "-nostats", "-i", fn, "-af", "ebur128", "-f", "null", "-"], capture_output=True, text=True).stderr
     return float(re.findall(r"I:\s+(-?[\d.]+) LUFS", r)[-1])
-LIM = float(os.environ.get("LIMIT_DB", "-2.2")); g = -14.0 - ilufs(f"{tmp}mix.wav")
+LIM = float(os.environ.get("LIMIT_DB", "-3.0")); g = -14.0 - ilufs(f"{tmp}mix.wav")   # r14h: limit -3.0 (AAC adds ~1 dB of true peak: -2.2 read -1.1 dBTP in the mp4)
 for _ in range(3):
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{tmp}mix.wav", "-af", f"volume={g:.2f}dB,alimiter=limit={db(LIM):.4f}:attack=1:release=60:level=false,aresample=48000",
                     "-c:a", "pcm_s16le", OUT], check=True)

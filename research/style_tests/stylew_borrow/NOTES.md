@@ -264,18 +264,22 @@ Only these changed (hook window = r11 render):
   (bomb4 lowpass 900) when the roof catches; the Jackson flintlock set for the muskets. No Style W kit cannon / impact cues (dropped).
 - Mix chain rebuilt (advisor): loudnorm had fallen back to dynamic gain around the shots and cancelled every boost. Now: the compressors are
   keyed by the voice ONLY; the cannon stem and the musket stem are each pushed into their own limiter to a short-term level set against the
-  window's voice (cannon = voice +9 dB, gun +4 over its boom; muskets = voice -2 dB, 100 ms max RMS); music bed 0.05 (was 0.08),
-  ambience -27 dB (was -23); a static gain to -14.0 LUFS + one brick-wall limiter at -2.2 dBFS (true peak -2.1 on the wav).
-- Coordinator's metric (mean power over 0.35 s from each shot, mono, final wav; dB):
+  window's voice (cannon = voice +11 dB, gun +4 over its boom; muskets = voice -2 dB per ripple, later ripples +2 (`MUSKET_REL2`), 100 ms max RMS);
+  music bed 0.05 (was 0.08), ambience -27 dB (was -23); a static gain to -14.0 LUFS + one brick-wall limiter at -3.0 dBFS (AAC adds ~1 dB of
+  true peak: -2.2 read -1.1 dBTP in the mp4). Temp files are per process and BLAS single-threaded (parallel builds had clobbered / spun).
+- Coordinator's metric on the MP4s (mean stereo power over 0.35 s from each shot; `tools/measure_shots035.py`; dB, change vs r13):
 
-| mix | cannon 34.63 | impact 35.13 | volley 63.37 | volley 66.56 | voice 40-44 s |
-|---|---|---|---|---|---|
-| r13 | -11.2 | -12.0 | -14.2 | -13.8 | -13.3 |
-| r14g (sent) | -11.2 | -11.1 | -12.9 | -13.0 | -13.4 |
-| r14h | -7.7 (+3.5) | -6.0 (+6.0) | -9.2 (+5.0) | -10.9 (+2.9) | -14.3 (-1.0) |
+| mix | cannon 34.63 | impact 35.13 | volley 63.37 | volley 66.56 | voice only 40-44 s | LUFS | true peak |
+|---|---|---|---|---|---|---|---|
+| r13 share | -14.0 | -15.0 | -17.2 | -16.8 | -16.3 | -14.0 | -2.6 |
+| r14 share | -13.6 | -14.0 | -15.9 | -16.0 | -16.4 | -14.0 | -2.6 |
+| r14h test (impact a) | -8.8 (+5.2) | -8.4 (+6.6) | -12.9 (+4.3) | -12.9 (+3.9) | -17.7 (-1.4) | -14.1 | -2.7 |
 
-- Impact A/B (`impact_ab/`, README there): a = boom only; b = + bomb6 first blast, highpass (CC0, USC Cinema / craigsmith);
-  c = + sfx_thud (our own synthesized, belisarius); d = + cand4_hit lowpassed (Kostrava, CC0). `impact_ab.mp4` plays a-d with the video.
+- Impact A/B (`impact_ab/`, README there): each variant is a full mix of the Fort Motte window (ONLY=test-bw-m3d, the extra inside the
+  pre-limited cannon stem via IMPACT=path|filter|dB), cut to share 34.4-37.4 s and loudness-matched to -16 LUFS; extras level-matched to the
+  boom -3 dB (100 ms max RMS). a = boom only; b = + bomb6 blast at 25.1 s, highpass 250 (CC0, USC Cinema / craigsmith); c = + sfx_thud (our own
+  synthesized, belisarius); d = + cand4_hit lowpass 1.2 kHz (Kostrava, CC0). `impact_ab.mp4` plays a-d with the video (letter bottom-left).
+- Final (after the judges' pick): rebuild with IMPACT=<pick>, stream-copy the video from the r14 share, verify 76.733 s and true peak <= -1.5.
 
 ## r13c clouds (critic A 7/7 on r13b) -> `sheet_clouds_r13c.jpg` + `clouds_r13c_hook_0-17.8.mp4` (RunPod A4000, 30 fps) + `clouds_r13c_dive_0-9s_25fps.mp4`
 Coverage from a mask render (map hidden, clouds over black; `clouds_r13c_coverage.json`): 1-3 s 18 %, 4-5.3 s 11 % (corridor clear), 5.6 s 28 %,
