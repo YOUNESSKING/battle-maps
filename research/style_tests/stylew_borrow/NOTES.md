@@ -350,3 +350,16 @@ Coverage from a mask render (map hidden, clouds over black; `clouds_r13c_coverag
 - Early field: units kept clear (`unitKeep`: lumps that APPEAR within 45 px + radius of the four British boxes, 0.3-5.3 s, are dropped), tighter
   clusters (`kidD`), n 84. NOT reached: 10 % (target 15-18 %), middle third ~0-2 % (units + road + diveClear sit there); near-layer clouds fade
   5.6-5.8 s as see-through ghosts; some right-side fair cumulus show radial shading streaks; one flat pillow top-left.
+
+## r13e clouds: early field only (deck untouched) -> `sheet_clouds_r13e.jpg` + `clouds_r13e_hook_0-17.8.mp4` + `clouds_r13e_dive_0-9s_25fps.mp4` + `clouds_r13e_coverage.json`
+- Why more clusters gave less cover (r13d): not the count. (a) Uniform WORLD placement crowds the far top of the 38-deg view and leaves the near
+  half empty; (b) lumps whose world size is under ~2x the noise amplitude (5 x F) are eaten by the noise (debug overlay: many placed lumps drew
+  nothing), worst on the 100 x F upper layer (smaller world size for the same screen size) - it rendered almost nothing; (c) r13d's hK 1.15 -> 1
+  in the same step thinned every dome. Bounds clipping was ruled out (fitted bounds now opt-in `fitBounds`, off).
+- Fix: `screenPlace` (clusters spread evenly over the frame at t 2.6, screen radius 45-110 px, each put where its pixel's ray meets its height),
+  world floor rMin 22 x F, hMin 8 x F, upper layer 74 x F (nearTier 66, still 1.6x drift), erode0 -0.2, lumpK 0.22 (opt-in build patch: smaller
+  dome-outline wobble, fewer radial ridges), kidZ 1.3 (rounder clusters in the tilted view). Taller domes (hMin 14, hK 1.5) gave striped/streaked
+  clouds; erode0 <= -0.6 gave bubbly balls + crescent flakes: avoided.
+- Upper layer fades 5.8-6.1 s, when the deck lies under it (no see-through ghosts over the map).
+- Mask cover: 0.5-2 s 15 %, 3 s 14 %, 3.5-5.3 s 12.5-13 % (corridor fade), middle third 8-11 %; deck as r13d (5.5 24 %, 5.9 41 %, 6.3 63 %, 6.6 99.6 %).
+- Debug: `window.BWGL_DEBUG` draws every fair lump (kept / corridor / upper / dropped / rejected) over the frame; `ct/dbgsnap.sh`-style local stills.

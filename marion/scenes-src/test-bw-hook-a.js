@@ -180,7 +180,7 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
   // r5 timing (critic B: the spoken places must read): deck from 6.4 s, white ~6.6-7.1 s, emerge 7.1, clear 7.25, haze gone 7.55, land 7.6
   BW.gl({ mpu: 128, dive: { t: SW, over: NFL, grey: 0.8, greyCol: "rgb(205,205,200)" }, hazeK: 0.6, shadowK: 0.25,   // r13b (critic A): ground shadows 25 %; inside the deck an even grey 6.6-7.1 s
     diveOff: { push: -1.4, deckIn: -1.3, full: -0.5, deck: -0.45, wIn: -0.4, inside: -0.2, warm: 0.05, emerge: 0.2, clear: 0.35, haze: 0.6, land: 0.75 },   // r6: the deck closes in from the frame edges from 5.8 s (clear window over the crossing to ~6.45), full by 6.75
-    fair: { F: 3.3, box: [0, 0, 2900, 1800], n: 34, med: 28, rMin: 15, rMax: 44, hMin: 10, kidD: [0.75, 0.6], kidZ: 1.3, erode0: () => -0.85,   /* r13e: fair lumps rendered far smaller than placed (the noise ate them): grow them */ lumpK: 0.12,   // r13d: rounder (<= 1.6:1) cumulus; r13e: smoother outlines (no radial ridges)
+    fair: { F: 3.3, box: [0, 0, 2900, 1800], n: 40, med: 28, rMin: 22, rMax: 48, hMin: 8, kidD: [0.75, 0.6], kidZ: 1.3, erode0: () => -0.2,   /* r13e: fair lumps rendered far smaller than placed (the noise ate them): grow them */ lumpK: 0.22,   // r13d: rounder (<= 1.6:1) cumulus; r13e: smoother outlines (no radial ridges)
       screenPlace: { t: 2.6, px: [-80, -40, 2000, 1120], med: 66, rMin: 45, rMax: 110 },   // r13e: clusters spread evenly over the frame (incl. the middle third)
       sunK0: 2.2, ambK0: 0.3, skirtCut: 3, seed: 5, tiers: [52, 74], nearTier: 66,   /* r13e: the 100 x F upper layer rendered almost nothing (its thin lumps vanished); 74 renders */
       nearK: 1.6, ambBot: [0.42, 0.46, 0.54],   // r13b: 10-14 bigger cumulus on 2 heights, the near layer drifts 1.6x
@@ -189,7 +189,7 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
       // r13c deck (critic A): the masses fade in from 5.3 s (density + erosion, no pop-in): ~30 % at 5.9, ~65 % at 6.3, ~95 % at 6.6; soft edges
       // r13d (critic A): a smooth ramp (11/18/26/35/45/57/99 % at 5.3/5.5/5.7/5.9/6.1/6.3/6.6 s); the side masses lead a little (small centre
       // erosion gone by 5.8 s: no ring, no hole round the target), undersides grade to ~(120,126,136)
-      deckK: (t) => BW.sstep(5.25, 5.8, t), nearOp: (t) => 1 - BW.sstep(6.1, 6.45, t),   /* r13e: the upper clouds stay until the deck is under them (white on white), no see-through ghosts */ deckFront: (t) => 0.7 * (1 - BW.sstep(5.3, 5.8, t)),
+      deckK: (t) => BW.sstep(5.25, 5.8, t), nearOp: (t) => 1 - BW.sstep(5.8, 6.1, t),   /* r13e: the upper clouds stay until the deck is under them (white on white), no see-through ghosts */ deckFront: (t) => 0.7 * (1 - BW.sstep(5.3, 5.8, t)),
       deckLook: { ambBot: [0.27, 0.30, 0.36], ambTop: [0.55, 0.58, 0.64], ambK: 0.30, lightK: 3.4, sunK: 1.25 },   // r13c: grey hollows, tops ~10 % under the fair cumulus
       deckErode: (t) => { if (t < 5.25 || t > SW + 0.5) return 9; const P = [[5.25, 1.6], [5.5, 1.3], [5.7, 1.0], [5.9, 0.6], [6.1, 0.32], [6.3, 0.14], [6.5, 0]]; for (let i = 1; i < P.length; i++) if (t < P[i][0]) return BW.lerp(P[i - 1][1], P[i][1], (t - P[i - 1][0]) / (P[i][0] - P[i - 1][0])); return 0; },
       // r13c: the road / ONE ROAD stamp / Charleston corridor is cleared only while the trace + stamp + focus are on screen (its clusters fade out, then back)
