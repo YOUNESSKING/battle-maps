@@ -238,7 +238,7 @@ pin(box(XS, "II"), U4.pM, TT.T_GRIP, T4, "wide", 0.3, true); pin(box(XS, "II"), 
 // the wagons roll up the Charleston road (r15: march over 0-4.6 s, then on to the south landing)
 const RD = PNS.roadCN, RL = [0]; for (let i = 1; i < RD.length; i++) RL.push(RL[i - 1] + Math.hypot(RD[i][0] - RD[i - 1][0], RD[i][1] - RD[i - 1][1]));
 const onRoad = (f) => { const s = f * RL[RL.length - 1]; let i = 1; while (i < RL.length - 1 && RL[i] < s) i++; const k = (s - RL[i - 1]) / Math.max(1e-6, RL[i] - RL[i - 1]); return [lerp(RD[i - 1][0], RD[i][0], k), lerp(RD[i - 1][1], RD[i][1], k)]; };
-const WG = [[0.55, 0.97, 0], [0.38, 0.95, 0.2]].map(([f0, f1, d]) => { const o = pin(box(WH, ""), [0, 0], 0, 9.0, "both"); o.path = (t) => onRoad(lerp(f0, f1, clamp((t - d) / (7.6 - d)) ** 0.9)); return o; });
+const WG = [[0.55, 0.97, 0], [0.38, 0.95, 0.2]].map(([f0, f1, d]) => { const o = pin(box(WH, ""), [0, 0], 0, 9.0, "both"); o.handoff = true; o.path = (t) => onRoad(lerp(f0, f1, clamp((t - d) / (7.6 - d)) ** 0.9)); return o; });
 const flag = (src, p) => { const e = document.createElement("img"); e.className = "fl"; e.src = src; return pin(e, p, 0, SW_O - 0.2, "wide"); };
 const SW_O = tO(16.4);
 flag("assets/gb_flag_1606.png", PNS.gb); flag("assets/moultrie_flag.png", PNS.sc);
@@ -247,14 +247,16 @@ flag("assets/gb_flag_1606.png", PNS.gb); flag("assets/moultrie_flag.png", PNS.sc
 const TRP = [...PNS.roadCN, ...PNS.roadNC], TR0 = TT.T_ROAD - 0.1, TR1 = TT.TZ0 + 0.2;
 const trG = document.createElementNS(NSV, "g"); trG.innerHTML = `<path fill="none" stroke="rgba(20,16,8,.6)" stroke-width="4.7" stroke-linecap="round" stroke-linejoin="round"/><path fill="none" stroke="#f3e6b8" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>`; SVG.appendChild(trG);
 // "Nelson's Ferry": v6's pinned place name (.pl), on its word, held through the landing
-{ const e = document.createElement("div"); e.className = "pl"; e.style.fontSize = "26px"; e.textContent = "Nelson's Ferry"; const o = pin(e, [PNS.nfl[0], PNS.nfl[1] + 1.2], TT.T_NF, 99, "both", 0.6); o.label = true; }
+{ const e = document.createElement("div"); e.className = "pl"; e.style.fontSize = "26px"; e.textContent = "Nelson's Ferry"; const o = pin(e, [PNS.nfl[0], PNS.nfl[1] + 1.2], TT.T_NF, 99, "both", 0.6); o.label = true; o.handoff = true; }
+const HO = [8.0, 8.3];   // r20: the dive's plaque, place label and wagons fade out over 8.0-8.3 s (r15's take over in the 8.4-8.6 crossfade)
 function drawOurs(t) {
   const reg = world.region, fx = reg === "wide" ? fxW : fxC;
   for (const o of OUR) { const on = t >= o.t0 && t < o.t1 && (o.region === "both" || o.region === reg); let a = on ? Math.min(sstep(o.t0, o.t0 + o.fade, t), 1 - sstep(o.t1 - o.fade, o.t1, t)) : 0;
     if (o.t0 <= 0.01) a = on ? 1 - sstep(o.t1 - o.fade, o.t1, t) : 0;
     const p = o.path ? o.path(t) : o.p; if (a <= 0.002) { o.e.style.opacity = "0"; continue; }
     const s = world.projectMap(p[0], p[1], 0.05); if (!s.visible) { o.e.style.opacity = "0"; continue; }
-    a *= 1 - 0.9 * fx.cloudAlphaAt(s.x, s.y);   // under a cloud: dimmed by its alpha there (v6 does this for its pinned names)
+    a *= 1 - 0.9 * fx.cloudAlphaAt(s.x, s.y);
+    if (o.handoff) a *= 1 - sstep(HO[0], HO[1], t);   // r20 (critic B: two plates / labels / wagons in the 8.4-8.6 crossfade): the dive's own overlays leave before the hand-off   // under a cloud: dimmed by its alpha there (v6 does this for its pinned names)
     const dy = o.drop ? -40 * (1 - sstep(o.t0, o.t0 + 0.3, t)) : 0, sc = o.stamp ? 1 + 0.6 * (1 - sstep(o.t0, o.t0 + 0.18, t)) : 1;
     o.e.style.transform = `translate(${s.x.toFixed(1)}px,${(s.y + dy).toFixed(1)}px) translate(-50%,-50%) scale(${sc.toFixed(3)})`; o.e.style.opacity = a.toFixed(3); }
   // the road trace
@@ -268,6 +270,7 @@ O.plaque.date(TT.T_DATE + 0.05, { month: "1780" });
 O.film.grade(tO(DV.deck), "none", 0.5 * TA); O.film.grade(tO(DV.emerge), "day", 0.8 * TA);
 
 window.__draw = (t) => {
+  { const ho = (1 - sstep(HO[0], HO[1], t)).toFixed(3); document.querySelectorAll("#ov .plq > *").forEach((c) => { c.style.opacity = ho; }); }   // r20: the dive's pocket-watch / date plaque too (its children: the overlay animates the plaque's own opacity)
   const v = tv(t);
   gradeAt(v);
   O.film.set({ grain: lerp(0.04, 0.03, sstep(DV.full - 0.3, DV.wIn, v) * (1 - sstep(DV.emerge, DV.clear, v))).toFixed(3) });

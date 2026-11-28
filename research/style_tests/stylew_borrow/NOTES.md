@@ -259,6 +259,32 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r20 stills (critic A 6.5 / owner "why did you push the smoke of the gun to the house?" + critic B 7.5) -> `sheet_smoke3d_r20.jpg` (r15 | r19 | r20), `sheet_seam_r20.jpg`
+- The engine's smoke code kept (fx.smokeLine / fx.cannon / fx.flash, film units, our camera / Z); source, direction and scale fixed for black
+  powder (bwgl.mjs smoke3d pending region rewritten; build `--smoke3d`, m3d also `--var smoke3dimpoff=-46,10`):
+  - muskets (PPU 60): per logged shot (the audio's list) a jet smokeLine at its muzzle (4 puffs thrown ~45-105 px, mean 75, along the aim,
+    life ~1 s) + a haze smokeLine (3 puffs ~20 px in front, life 4.2 x 0.75-1.25 -> gone by ~5 s) + one flash ON its time (fx.flash: v8
+    colours, core ~40 px, halo ~85 px: r15 had core 8 + tongue 35 + glow 80). The engine draws no flashes of its own any more (critic B: the
+    guard's 16.067 / 16.267 / 16.533 flashes off the sound came from the engine's own ripple). Jets and haze in two engine worlds composited
+    like r15: jets cap 0.8, haze cap 0.40 + soft knee, unit boxes / tags / banners cut out. Composite converts the engine's linear output to
+    sRGB (rendered into a target the gm grey came out ~80 instead of ~150).
+  - cannon (PPU 60): fx.cannon size 1.2, jet x0.5/1.2 (~33-66 px toward the fort: the ring is ~126 px from the muzzle), in its own world whose
+    wind blows from the target through the gun (20 m/s x windK 0.6), composited with the boxes cut out (cap 0.9); impact = a short dark dust
+    smokeLine (6 puffs, alpha 0.45, life ~1.2 s) + the engine's 0.08 s orange flash, in the fort yard west of the house.
+- Numbers (local stills vs the same build with `--var smoke3dhide=1`; `tools/measure_r20.py`):
+  - house contrast (std of luma, 150 x 110 crop on the walls; ref ~67): r15 loss 2-25 %, r19 50-81 % from +1 s (13.2 at the white flag),
+    r20 0 % at +0 / +0.5 / +0.6 / +1 / +1.5 / +2 / white flag 53.1 / +3 / +5 / +8 s.
+  - gun cloud (r20): centre 40-47 px from the gun box centre (the muzzle side), equivalent radius 55 (+0.5) -> 78 (+3) px, drifts ~7 px/s to
+    the upper right (+3 -> +5 s, relative to the gun box; the camera moves after 53.3), faded to ~45 % by +8 s; the gun box 100 % visible.
+  - impact (r20): 15-21 x 21-32 px, visible +0.6 to +1.5 s, gone by +2.0 s.
+  - volley 1 (r15 / r19 / r20): min box visibility blue 88-97 / 20-64 / 100 %, red 90-98 / 28-46 / 100 %; haze centroid +32-47 / -47-+11 /
+    +35-42 px from the blue box centres = r20 +2-9 px in front of the muzzle line (the flashes sit 33 px below the box centres).
+- Opening seam (critic B: two 1780 plates, two Nelson's Ferry labels, a doubled wagon marker and river at 8.45-8.55 s): dive_v6copy/index.html
+  fades its own plaque, place label and wagons out over 8.0-8.3 s; frames 234-258 re-rendered locally (frames18.mjs, 1280 x 720);
+  `tools/opening_seam_r20.py` warps each dive frame onto r15's framing (ECC affine, scale ~0.99-0.97, shift ~+23-32, +15-38 px; eased in
+  8.0-8.4 s; grey difference to r15 15 -> 12) and redoes the 8.4-8.6 crossfade. No doubles left; ~0.3 s with no plate before r15's.
+- The hook guard (night) cannot be snapshotted locally (times out with and without the flag): its flashes are the same per-shot code.
+
 ## r19 share -> `stylew_borrow_test_r19_share.mp4` (76.733 s, 2302 frames, r18 audio stream-copied: identical; -14.0 LUFS, -1.9 dBTP)
 - Coordinator: muskets at PPU 150 (the film's smoke-to-box ratio); the cannon alone at PPU 110 (`--var smoke3dcanppu=110`: a second film-unit
   engine world for the gun, seed 1518) so the fort and the white flag stay readable; the impact in the fort yard (`smoke3dimpoff=-46,10`) at
