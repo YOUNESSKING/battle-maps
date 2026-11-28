@@ -152,6 +152,12 @@ python3 research/look_lock_stylew/tools/check_look_lock.py --audio <film or pilo
   `--voice-dir DIR` (r15 layout only, needs the voice stems `out_c.wav`) adds the buckshot-ripple voice margins (r14j: +13.3/+5.6,
   +1.2/+6.9, -2.2/+1.7, 2-4 kHz -58.3).
 
+**Automatic:** `kit/build_scene.py ... --borrow` runs (a) + (b) on its own scene source before every build (like the sound lock inside
+the SFX render) and STOPS on LOOK LOCK BROKEN or a lint error; the cloud warnings only print. An owner look TEST of a changed value builds
+with `--look-test` (prints "LOOK TEST BUILD: NOT for a film"); a film never uses it. Once the lock is on `main`, the gate also warns
+when `research/look_lock_stylew/` or `borrow.js` differ from `origin/main` (lock.json, the golden files and the gate script are not
+hashed by themselves: changing them is a relock, section 7).
+
 ## 6. Pilot first (any film over ~5 minutes)
 
 1. Build the film's scenes with `--borrow`; run the gate (a) + (b) on every scene: LOOK LOCK OK, lint ok (cloud warnings only if the owner

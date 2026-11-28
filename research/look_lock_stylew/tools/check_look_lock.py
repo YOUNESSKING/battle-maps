@@ -206,24 +206,25 @@ def frames_local(L, only, work):
     G = json.load(open(os.path.join(GOLD, "golden.json")))["frames"]; G = [g for g in G if not only or g["id"] in only]
     os.makedirs(work, exist_ok=True); M = os.path.join(REPO, "marion"); shots = {}
     subprocess.run(["python3", "kit/make_kit.py"], cwd=M, check=True, capture_output=True)
-    for sc in sorted({g["scene"] for g in G}):
-        b = next(g["build"] for g in G if g["scene"] == sc)
-        r = subprocess.run(["python3", "kit/build_scene.py", sc] + b.split() + ["--borrow"], cwd=M, capture_output=True, text=True)
-        if r.returncode or "SYNTAX ERROR" in r.stdout: raise SystemExit(f"build {sc} failed:\n{r.stdout[-800:]}{r.stderr[-800:]}")
-        lo, nc = (any(g.get(k) for g in G if g["scene"] == sc) for k in ("lores_clouds", "no_clouds"))
+    for src in sorted({g["scene"] for g in G}):
+        b = next(g["build"] for g in G if g["scene"] == src); sc = "looklock-" + src   # a throwaway copy: the real test scene folders stay untouched
+        r = subprocess.run(["python3", "kit/build_scene.py", sc] + b.split() + ["--src", src, "--borrow"], cwd=M, capture_output=True, text=True)
+        if r.returncode or "SYNTAX ERROR" in r.stdout: raise SystemExit(f"build {src} failed:\n{r.stdout[-800:]}{r.stderr[-800:]}")
+        lo, nc = (any(g.get(k) for g in G if g["scene"] == src) for k in ("lores_clouds", "no_clouds"))
         if lo or nc:   # the PENDING clouds (not tested): low resolution, or off where none is on screen, so SwiftShader stays inside the snapshot timeout
             bp = os.path.join(M, "scenes", sc, "gl", "bwgl.mjs"); t = open(bp).read(); os.remove(bp)   # (a copy in the scene, never the kit file)
             t = t.replace("resolution: C.fair.res ?? 0.75", "resolution: 0.4").replace("maxSteps: C.fair.maxSteps ?? 200", "maxSteps: 90")
             if nc: t = t.replace("if (C.fair) {", "if (false) {").replace("if (C.stratus && DV) {", "if (false) {")
             open(bp, "w").write(t)
-        ts = sorted({g["scene_t"] for g in G if g["scene"] == sc}); out = os.path.join(work, sc)
+        ts = sorted({g["scene_t"] for g in G if g["scene"] == src}); out = os.path.join(work, src)
         for k in range(3):   # the snapshot command occasionally drops a frame: retry
             r = subprocess.run(["bash", os.path.join(REPO, "vicksburg/tools/snap.sh"), f"scenes/{sc}", ",".join(f"{t:.4f}" for t in ts), out], cwd=M, capture_output=True, text=True)
             fs = sorted(glob.glob(f"{out}/frame-*.png"))
             if len(fs) >= len(ts): break
             print(f"  {sc}: snapshot try {k + 1} got {len(fs)}/{len(ts)} stills: {(r.stdout + r.stderr).strip().splitlines()[-1:]}")
         for f in fs:
-            t = float(re.search(r"at-([\d.]+)s", f).group(1)); shots[(sc, round(t, 3))] = f
+            t = float(re.search(r"at-([\d.]+)s", f).group(1)); shots[(src, round(t, 3))] = f
+        import shutil; shutil.rmtree(os.path.join(M, "scenes", sc), ignore_errors=True)   # the throwaway build (scenes/looklock-*)
     return [(g, shots.get((g["scene"], round(g["scene_t"], 3)))) for g in G]
 
 
@@ -307,6 +308,9 @@ def main():
     a = ap.parse_args(); L = json.load(open(LOCK))
     if a.relock: relock(L, a.relock); return 0
     errs, miss, warns = check_hashes(L); bad = False
+    if subprocess.run(["git", "-C", REPO, "cat-file", "-e", "origin/main:research/look_lock_stylew/lock.json"], capture_output=True).returncode == 0 and \
+       subprocess.run(["git", "-C", REPO, "diff", "--quiet", "origin/main", "--", "research/look_lock_stylew", "marion/kit/js/borrow.js"], capture_output=True).returncode:
+        warns.append("the lock itself (research/look_lock_stylew/ or borrow.js) differs from origin/main: only an owner-approved relock may change it (LOCK.md section 7)")
     for w in warns: print("WARNING:", w)
     for m in miss: print(f"LOOK LOCK: locked sound file missing (not committed; restore it from its project): {m}")
     print("pending (NOT locked, NOT approved): " + "; ".join(f"{k}: {v['status']}" for k, v in L["pending"].items()))

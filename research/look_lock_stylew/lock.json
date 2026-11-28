@@ -31,7 +31,7 @@
    "path": "marion/kit/build_scene.py",
    "mode": "sections",
    "what": "the --borrow build (overlay + borrow.js + bwgl.mjs + three + fx.js; the fx.js cloud patches = pending)",
-   "sha256": "7b89bc69913d0df8caa7a138f03541675911748a98a728eb788a04de3d3e56d5",
+   "sha256": "6d16975df379c974b3d5c3400d204057c24de3d6b2579629f22a4d67d51e98f0",
    "pending": {
     "clouds": "58ae6755a3cb7608604255d70bb49b1fb0b8b06b5404b0ab04621aceb4d82483"
    }
