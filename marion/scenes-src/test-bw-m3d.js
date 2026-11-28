@@ -223,7 +223,7 @@ const RGLOW = (() => { const r = 70 / C2[2], el = GG.pin(`<div style="width:${2 
   const d = el.firstElementChild; tl.to(d, { opacity: 1, duration: 0.6 }, T_IGN + 0.1);
   for (let k = 0, t = T_IGN + 0.7; t < T_150 + 0.5; k++, t += 0.11) tl.to(d, { opacity: 0.62 + 0.38 * Math.abs(Math.sin(k * 2.17 + 0.6)), scale: 0.94 + 0.1 * Math.abs(Math.sin(k * 1.31)), duration: 0.11, ease: "sine.inOut" }, t);
   return el; })();
-{ const s0 = SV(2, -24); BW.gl({}); (window.BWGL_CFG.vcolumn = window.BWGL_CFG.vcolumn || []).push([s0[0], s0[1], T_IGN + 0.5, T_150 + 1.0, { rise: 80, wind: [12, -6], r: 24 }]); }
+{ const s0 = SV(2, -24); BW.soot(s0, T_IGN + 0.5, T_150 + 1.0, { wind: [12, -6] }); }   // LOOK LOCK v1: BW.LOCK.soot
 SFX("hit", T_CAUGHT + 0.1);
 // "When British soldiers climbed up to tear the burning shingles away": red figures on the roof
 const RFIG = MSV.querySelector(".rfig");
@@ -301,7 +301,7 @@ ICON(`<svg width="64" height="64" viewBox="-20 -20 40 40" style="display:block;o
 if (GD.var.audit) LABEL_AUDIT([2, 10, 20, 30, 40, 50, 60, 70], { show: true });
 // ================================================================================================================================
 // BW r9: the 3D layer for the cannon (K = world px per screen px at the camera scale 3.6), slow wind, heavier smoke cap 0.75
-BW.gl({ mpu: 16, shadowK: 0.3, volley: { K: 1 / 3.6, cwind: [16, -5], cap: 0.9, clife: 7.5,   // r13: the cannon cloud drifts and is gone in ~8 s
-  capBoxes: [[[1356, 698, 1422, 746], TGF + 1.5, TGF + 5.5, 0.6, 30], [[1384, 696, 1428, 738], TGF + 0.38, TGF + 0.8, 0.3, 24, 0.08]] } });   // r14 (critic B): the jet thinned over the roof for ~0.3 s so the strike (TGF + 0.5) reads   // r13: over the house front the cannon smoke stays <= 0.6 from +1.5 s for 4 s (defenders, white flag)
+BW.gl({ mpu: 16, shadowK: 0.3, volley: BW.smoke("cannon", { K: 1 / 3.6, cwind: [16, -5],   // LOOK LOCK v1: BW.LOCK.smoke.cannon + BW.LOCK.capBox   // r13: the cannon cloud drifts and is gone in ~8 s
+  capBoxes: [BW.capBox("target", [1356, 698, 1422, 746], TGF + 1.5, TGF + 5.5), BW.capBox("strike", [1384, 696, 1428, 738], TGF + 0.38, TGF + 0.8)] }) });   // r14 (critic B): the jet thinned over the roof for ~0.3 s so the strike (TGF + 0.5) reads   // r13: over the house front the cannon smoke stays <= 0.6 from +1.5 s for 4 s (defenders, white flag)
 BW.legend(0, END + 1, [{ name: "Americans", sub: "Marion and Lee", color: "#2c57b7" }, { name: "British", sub: "the garrison", color: "#bc2528" }]);
 }

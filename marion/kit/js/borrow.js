@@ -9,11 +9,36 @@
 //   BW.clouds(o)                     the v6 white cumulus + cloud dive, as perspective sprites over the flat map (no 3D world)
 //   BW.shot / BW.volley              one muzzle flash + powder puff per musket shot; each logs a "musket" cue (+ map px) for the flintlock stem
 //   BW.tilt(keys)                    gentle perspective tilt of the map (CSS 3D on a wrapper of #world + #fx), slow push
+// LOOK LOCK v1 (= r15, owner 2026-11-28; research/look_lock_stylew/LOCK.md): BW.LOCK holds the approved values; a scene calls the named blocks
+//   BW.smoke(kind, content) / BW.musketVolley / BW.goldSlam / BW.goldTitle / BW.capBox / BW.soot and passes CONTENT only (positions, times,
+//   unit lists, camera scale K, wind direction). Changing a value in BW.LOCK = a new lock version, owner only (tools/check_look_lock.py).
 const BW = (() => {
   const W = 1920, H = 1080, R0 = (seed) => () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
   const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x)), sstep = (a, b, x) => { const u = clamp((x - a) / (b - a)); return u * u * (3 - 2 * u); }, lerp = (a, b, k) => a + (b - a) * k;
+  // LOOK-LOCK begin presets (v1 = r15). Values copied unchanged from the approved test scenes (test-bw-m3f r15, test-bw-hook-a, test-bw-m3d).
+  const LOCK = Object.freeze({ v: 1,
+    smoke: {   // -> BWGL_CFG.volley (bwgl.mjs)
+      "musket.day": { jet: [60, 80], front: 20, cap: 0.4, a0: 0.36, haze: 1, burstCap: 0.8, burstLen: [60, 90], puffSpread: [0.05, 0.5], puffR: [16, 24], lumps: 0.45, life: 5.5, fade: 2.6, tau: 3,
+        windAt: 0.8, shear: 0.8, stretch: 0.05, jetGrow: 1.3, jetWindAt: 0.8, greyAt: [0.4, 0.9], burstWhite: [235, 233, 228], burstGrey: [175, 178, 182], hazeGrey: [[140, 143, 147], [175, 178, 182]],
+        cardRot: 35, cardFeather: 30, jitterY: 12, capKnee: 0.6, latK: 0.35 },                                     // m3f r15 (daylight ambush, Parker's Ferry)
+      "musket.night": { night: 1, jet: [55, 75], billows: 8, cap: 0.4, a0: 0.36, haze: 1, burstCap: 0.8, life: 5, fade: 2.4, tau: 3, windAt: 0.5, shear: 0.8, stretch: 0.12 },   // hook-a r13 (guard, before dawn)
+      "cannon": { cap: 0.9, clife: 7.5 } },                                                                       // m3d r13/r14 (Fort Motte six-pounder)
+    content: ["K", "wind", "cwind", "gone", "capBoxes"],   // the only keys a scene may pass to BW.smoke (camera scale, wind DIRECTION, end time, keep-readable boxes)
+    windSpeed: { "musket.day": 42.4, "musket.night": 38.6, "cannon": 16.8 },   // locked drift speeds (px/s): the scene picks the direction, the gate checks the speed (+-25 %)
+    volleyCall: { k: 0.9, jy: 4, noPuff: true, groups: 4, groupW: 0.18 },      // BW.volley knobs of the r15 ripples (4 clumps with gaps)
+    shotCall: { k: 0.9, puff: false },                                          // single BW.shot (hook-a guard)
+    capBox: { target: [0.6, 30], strike: [0.3, 24, 0.08] },                     // keep-readable smoke caps: [cap, feather px, ramp s]
+    soot: { rise: 80, r: 24 },                                                  // burning-roof soot column (m3d)
+    gold: { slam: { exact: true, dim: 0.35 }, title: {} },                      // 3D gold name slam (map dimmed 35 %) / title card
+    focus: { DIM: 1.9, LIT: 0.15, CORE: 380, FEATHER: 200, OUT: 0.32 } });      // the soft focus light circle (r13b)
+  const lockErr = (m) => { throw new Error("LOOK LOCK: " + m + " (research/look_lock_stylew/LOCK.md)"); };
+  const smoke = (kind, content = {}) => { const P = LOCK.smoke[kind]; if (!P) lockErr(`unknown smoke preset "${kind}" (${Object.keys(LOCK.smoke).join(", ")})`);
+    for (const k in content) if (!LOCK.content.includes(k)) lockErr(`"${k}" is a locked smoke value, not a content input`);
+    return { ...P, ...content }; };
+  const capBox = (kind, box, t0, t1) => { const c = LOCK.capBox[kind]; if (!c) lockErr(`unknown capBox "${kind}"`); return [box, t0, t1, ...c]; };
+  // LOOK-LOCK end presets
   document.getElementById("date").style.display = "none";            // the black date plate is replaced by the pocket-watch plaque
-  K.FOCUS_DIM = 1.9; K.FOCUS_LIT = 0.15; K.FOCUS_CORE = 380; K.FOCUS_FEATHER = 200; K.FOCUS_OUT = 0.32;   // r13b (critic A): findable edge, ~30 % darker outside, warmer light
+  for (const k in LOCK.focus) K["FOCUS_" + k] = LOCK.focus[k];   // r13b (critic A): findable edge, ~30 % darker outside, warmer light
   { const PN = document.getElementById("pins"); if (typeof FOC !== "undefined" && PN && PN.parentElement) { PN.parentElement.insertBefore(FOC, PN);   // the dim under the pins: only the ground darkens
       Object.assign(FOC.style, { inset: "auto", left: "-2000px", top: "-2000px", width: "6880px", height: "5620px" }); } }                               // the soft focus "light circle" turned up (owner 2026-11-27): darker outside, faint warm light on the place named
   // ---- tilt wrapper: #world (map + pins + svg) and #fx (screen-space smoke) tilt together, the HUD and the cards stay flat
@@ -107,6 +132,7 @@ const BW = (() => {
     G.rig.style.opacity = (a * (1 - fly)).toFixed(3); G.shadow.style.opacity = "0";
     G.shadow.style.transform = `translate(${(-ry * 2).toFixed(1)}px,0) scale(${grow.toFixed(4)})`;
     if (G.subEl) G.subEl.style.opacity = (G.o.sub ? sstep(G.o.sub[1], G.o.sub[1] + 0.35, t) * (1 - fly) * (G.o.fly ? 1 : 1 - sstep(G.tOff, G.tOff + 0.35, t)) : 0).toFixed(3); } });
+  // LOOK-LOCK pending-begin clouds (NOT approved, owner 2026-11-28: the clouds + the opening dive are being redone)
   // ================================================================== 6. clouds + the dive (v6 white cumulus, perspective sprites over the flat map)
   // cloud sprite: cauliflower lobes lit from the upper left (white tops, grey-blue undersides), soft eroded edges
   const cloudTex = (seed) => { const R = R0(seed), w = 520, h = 360, c = document.createElement("canvas"); c.width = w; c.height = h; const g = c.getContext("2d");
@@ -155,6 +181,7 @@ const BW = (() => {
       if (c.sh) { const shs = c.r * ws * 0.9; c.sh.style.visibility = "visible";
         c.sh.style.transform = `translate(${(gx + c.r * ws * 0.45 - shs).toFixed(1)}px,${(gy + c.r * ws * 0.3 - shs * 0.7).toFixed(1)}px) scale(${(2 * shs / 128).toFixed(4)},${(1.4 * shs / 128).toFixed(4)})`;
         c.sh.style.opacity = (a * 0.16 * (1 - sstep(0.4, 0.8, hs))).toFixed(3); } } });   // r2: no white veil (1a: no white flash)
+  // LOOK-LOCK pending-end clouds
   // ================================================================== 7. musket shots: one flash + one powder puff per shot, a "musket" cue per shot (flintlock stem)
   const SHOTS = [];
   // r8: one flintlock shot = a "musket" sound cue + an entry for the 3D layer, which draws the pan flash, the muzzle tongue, the glow, the sparks
@@ -248,6 +275,14 @@ const BW = (() => {
     if (o.unit && B.units[o.unit]) { const blk = B.units[o.unit].el.querySelector(".blk"), d = away(aim, p), r = o.recoil ?? 2.2;
       tl.to(blk, { x: d[0] * r, y: d[1] * r, duration: 0.05, ease: "power3.out" }, t); tl.to(blk, { x: 0, y: 0, duration: 0.9, ease: "power2.inOut" }, t + 0.12); }
     return O; };
+  // LOOK-LOCK begin blocks: the named calls with the locked defaults (scenes pass content only)
+  const musketVolley = (pts, t0, span, n, o = {}) => { for (const k of ["k", "jx", "jy", "groups", "groupW", "noPuff", "puffEvery", "ps"]) if (k in o) lockErr(`volley "${k}" is locked`);
+    return volley(pts, t0, span, n, { ...LOCK.volleyCall, ...o }); };                  // o: seed, aim(x, y), shake [unit ids]
+  const musketShot = (p, t, o = {}) => shot(p, t, { ...LOCK.shotCall, ...o });           // o: aim
+  const goldSlam = (text, tOn, tOff, o = {}) => gold(text, tOn, tOff, { ...o, ...LOCK.gold.slam });     // o: y, w, tGrow
+  const goldTitle = (text, tOn, tOff, o = {}) => gold(text, tOn, tOff, { ...o, ...LOCK.gold.title });   // o: y, w, tGrow, sub [text, t]
+  const soot = (p, t0, t1, o = {}) => { gl({}); (window.BWGL_CFG.vcolumn = window.BWGL_CFG.vcolumn || []).push([p[0], p[1], t0, t1, { rise: LOCK.soot.rise, wind: o.wind || [12, -6], r: LOCK.soot.r }]); return O; };
+  // LOOK-LOCK end blocks
   // ================================================================== 8. tilt camera (gentle; keys [t, deg, scale])
   const TS = { d: 0, s: 1 }; const tiltApply = () => { WR.style.transform = TS.d || TS.s !== 1 ? `perspective(1700px) rotateX(${TS.d.toFixed(3)}deg) scale(${TS.s.toFixed(4)})` : ""; };
   const tilt = (keys) => { TS.d = keys[0][1]; TS.s = keys[0][2]; tiltApply(); for (let i = 1; i < keys.length; i++) tl.to(TS, { d: keys[i][1], s: keys[i][2], duration: Math.max(0.01, keys[i][0] - keys[i - 1][0]), ease: keys[i][3] || "sine.inOut", onUpdate: tiltApply }, keys[i - 1][0]); tl.call(tiltApply, null, 0); };
@@ -263,6 +298,6 @@ const BW = (() => {
   const finish = () => { const px = SHOTS.map(([t, x, y]) => { tl.seek(t, false); const wx = gsap.getProperty(WORLD, "x"), ws = gsap.getProperty(WORLD, "scaleX"), wy = gsap.getProperty(WORLD, "y");
       return [t, +(wx + x * ws).toFixed(1), +(wy + y * ws).toFixed(1)]; });
     document.documentElement.setAttribute("data-shots", JSON.stringify(px)); tl.seek(0, false); drive(); };
-  return { O, TS, gl, smokeGL, date, note, dateNow, time, rowParts, legend, row, gold, clouds, shot, volley, hit, wipe, rout, captured, dip, cannon, shake, tilt, finish, WR, sstep, lerp, clamp };
+  return { O, TS, gl, smokeGL, LOCK, smoke, capBox, musketVolley, musketShot, goldSlam, goldTitle, soot, date, note, dateNow, time, rowParts, legend, row, gold, clouds, shot, volley, hit, wipe, rout, captured, dip, cannon, shake, tilt, finish, WR, sstep, lerp, clamp };
 })();
 window.BW = BW;

@@ -59,6 +59,7 @@ else {
     m.onBeforeCompile = (sh, r) => { prev(sh, r); const i = sh.fragmentShader.lastIndexOf("}");
       sh.fragmentShader = sh.fragmentShader.slice(0, i) + `\n  gl_FragColor = vec4(0.0, 0.0, 0.0, clamp(1.0 - gl_FragColor.g, 0.0, 1.0) * ${(C.shadowK ?? 0.9).toFixed(2)} * opacity);   // r13c: * opacity (a fading cloud system fades its shadow)\n}`; };
     const g = new THREE.Mesh(new THREE.PlaneGeometry(box[2], box[3]), m); g.rotation.x = -Math.PI / 2; g.position.set(box[0] + box[2] / 2, 0, box[1] + box[3] / 2); g.renderOrder = -20; sys.scene.add(g); return g; };
+  // LOOK-LOCK pending-begin clouds (NOT approved, owner 2026-11-28: the dive, the deck, the white-out and the cumulus are being redone; research/look_lock_stylew/LOCK.md)
   // ---------------- dives (v8 timings, VX.DIVE_OFF_V8; an optional land offset)
   const OFF = { push: -3.8, deckIn: -1.7, full: -0.55, deck: -0.45, wIn: -0.35, inside: -0.15, SW: 0, warm: 0.15, emerge: 0.85, clear: 1.15, haze: 1.8, land: 3.35, ...(C.diveOff || {}) };
   const DV = C.dive ? (() => { const o = {}; for (const k in OFF) o[k] = C.dive.t + OFF[k]; return { ...o, over: C.dive.over }; })() : null;
@@ -218,6 +219,7 @@ else {
       deck: (t) => ({ x: c[0] + 4 * Fc, z: c[1], r: 9 * Fc, front: 3 * sstep(DV.emerge + 0.9 * K, DV.emerge + 1.6 * K, t), k: 1 }),
       opacity: (t) => (t < DV.SW - 0.15 ? 0 : 1 - sstep(DV.emerge + 3.2 * K, DV.emerge + 3.8 * K, t)) });
   }
+  // LOOK-LOCK pending-end clouds
   // ---------------- musket smoke: fx.smokeLine with the GM settings (SMOKE_GM) per firing line
   if ((C.smoke || []).length) {
     const sys = mkFX({ seed: 1781, fxScale: C.smokeScale ?? 1, wind: C.smokeWind || [4, -1.5] });
@@ -470,6 +472,7 @@ else {
         } } };
   }
   // ---------------- per frame
+  // LOOK-LOCK pending-begin clouds-frame (white-out + debug)
   const whiteAt = (t) => { const d = DV; if (!d) return [0, 0];
     let a; if (t < d.emerge) { const v6 = t < d.SW + 0.05 ? (C.dive.grey ? C.dive.grey * sstep(d.wIn, d.wIn + 0.2, t) : 0.45 * sstep(d.wIn, d.SW, t)) :   /* r13b: inside the deck an even grey (WO base ~(208,211,204)) at C.dive.grey */ t < d.warm + 0.1 ? lerp(0.86, 1, sstep(d.warm - 0.05, d.warm + 0.1, t)) : 1;
       a = Math.max(v6, sstep(d.SW - 0.12, d.SW - 0.067, t) * (1 - sstep(d.SW + 0.067, d.SW + 0.13, t))); }
@@ -483,6 +486,7 @@ else {
     for (const c of window.__bwglDbg.list) if (c[5] === 0) pr(c[0], c[4] + 0.5 * c[3], c[1], c[2], c.corr ? "#ff0" : c[4] >= (C.fair.nearTier || 1e9) * (C.fair.F || 1) ? "#0ff" : "#0f0");
     for (const c of window.__bwglDropped || []) pr(c[0], c[4] + 0.5 * c[3], c[1], c[2], "#f00");
     for (const c of (window.__bwglRej || []).slice(0, 400)) pr(c[0], 60 * (C.fair.F || 1), c[1], c[2] * 0.3, c[3] === 1 ? "#888" : "#444"); };
+  // LOOK-LOCK pending-end clouds-frame
   const draw = (t) => {
     const cs = camSolve(); dbgDraw();
     HAZE.style.opacity = (sstep(14, 34, cs.tilt) * (C.hazeK ?? 1)).toFixed(3);
