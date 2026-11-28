@@ -82,13 +82,13 @@ else {
       const P = camera.position.clone(), M = camera.matrixWorld.clone(), PI = camera.projectionMatrixInverse.clone(), T = C.fair.tiers || [49, 49]; if (TL) TL.seek(t0, false);
       spAt = (c) => { const h = (T[Math.floor(hsh(c, 71) * T.length)] + 4.5) * F + 10 * F, sx = SPL.px[0] + hsh(c + sd, 61) * (SPL.px[2] - SPL.px[0]), sy = SPL.px[1] + hsh(c + sd, 62) * (SPL.px[3] - SPL.px[1]);
         const d = new THREE.Vector3(sx / 960 - 1, 1 - sy / 540, 0.5).applyMatrix4(PI).applyMatrix4(M).sub(P), k = (h - P.y) / d.y;
-        return [P.x + d.x * k, P.z + d.z * k, lnr(c + sd, 63, SPL.med, 0.4, SPL.rMin, SPL.rMax) * d.length() * k / 1700]; }; }
+        return [P.x + d.x * k, P.z + d.z * k, Math.max((sc.rMin ?? 14) * F, lnr(c + sd, 63, SPL.med, 0.4, SPL.rMin, SPL.rMax) * d.length() * k / 1700)]; }; }   // world floor: domes under ~2x the noise amplitude are eaten by the noise
     for (let c = 0, k = 0; c < sc.tries && k < sc.n; c++) {
       const [cx, cz, R0] = spAt ? spAt(c) : [B[0] + hsh(c + sd, 61) * B[2], B[1] + hsh(c + sd, 62) * B[3], lnr(c + sd, 63, sc.med * F, 0.5, (sc.rMin ?? 14) * F, (sc.rMax ?? 70) * F)];   // r13c: radius clamp per scene
-      if (offWide(cx, cz, R0) || wsp.some(([a, b, q]) => Math.hypot(a - cx, b - cz) < q + R0 + 10 * F)) continue;
+      if (offWide(cx, cz, R0) || wsp.some(([a, b, q]) => Math.hypot(a - cx, b - cz) < q + R0 + 10 * F)) { (window.__bwglRej = window.__bwglRej || []).push([cx, cz, R0, offWide(cx, cz, R0) ? 1 : 2]); continue; }
       k++; wsp.push([cx, cz, R0, c]); if (inCorr(cx, cz, R0)) corrC.add(c); const kids = 1 + Math.floor(hsh(c + sd, 65) * 3);
       for (let j = 0; j < kids; j++) { const i2 = (c + sd) * 7 + j, a = hsh(i2, 66) * 6.283, r = lnr(i2, 67, R0 * 0.45, 0.6, 7 * F, R0 * 0.9), dd = R0 * ((C.fair.kidD || [0.9, 0.8])[0] + (C.fair.kidD || [0.9, 0.8])[1] * hsh(i2, 69)) + r * 0.6;   // r13d: kidD = tighter (rounder) clusters
-        const x = cx + Math.cos(a) * dd, z = cz + Math.sin(a) * dd * 0.8; if (!offWide(x, z, r)) { wsp.push([x, z, r, c]); if (inCorr(x, z, r)) corrC.add(c); } } }
+        const x = cx + Math.cos(a) * dd, z = cz + Math.sin(a) * dd * (C.fair.kidZ ?? 0.8);   /* r13e: kidZ > 1 offsets the tilted view's foreshortening (no wide pillows) */ if (!offWide(x, z, r)) { wsp.push([x, z, r, c]); if (inCorr(x, z, r)) corrC.add(c); } } }
     // r5: screen-space keep-clear (spoken places must read): drop whole clusters whose cloud projects into the box (+ its radius) at the sampled times
     const SCL = C.fair.screenClear; let dropC = new Set();
     if (SCL) { const TL = window.__timelines && window.__timelines.main, t0 = TL ? TL.time() : 0, v = new THREE.Vector3();
@@ -118,7 +118,7 @@ else {
         const x = gx + (hsh(i, 5) - 0.5) * 18 * F, z = gz + (hsh(i, 6) - 0.5) * 18 * F, r = Math.hypot(x - cx0, (z - cz0) * 1.15);
         if (hsh(i, 7) < lerp(0.97, 0.55, clamp((r - 30 * F) / (90 * F)))) deck.push([x, z, (20 + hsh(i, 8) * 16) * F]); }
       for (const [dx, dz, r] of [[0, 0, 30], [-6, 11, 26], [8, -7, 26], [3, 20, 26], [-11, -9, 24], [13, 7, 24]]) deck.push([DV.over[0] + dx * F, DV.over[1] + dz * F, r * F]); }
-    const HK = C.fair.hK ?? 1, cl = wsp.map(([x, z, r, c], i) => Object.assign([x, z, r, 3 * F + HK * r * (0.18 + 0.16 * hsh(i, 13)), (tierOf(c) + hsh(i, 11) * 9) * F, 0], { corr: CORR && CORR.perDome ? inCorr(x, z, r) : corrC.has(c) }))   // r13c: perDome = only the lumps over the corridor fade
+    const HK = C.fair.hK ?? 1, HM = (C.fair.hMin ?? 0) * F, cl = wsp.map(([x, z, r, c], i) => Object.assign([x, z, r, Math.max(HM, 3 * F + HK * r * (0.18 + 0.16 * hsh(i, 13))),   /* r13e: hMin: thin domes vanished in the noise */ (tierOf(c) + hsh(i, 11) * 9) * F, 0], { corr: CORR && CORR.perDome ? inCorr(x, z, r) : corrC.has(c) }))   // r13c: perDome = only the lumps over the corridor fade
       .concat(deck.map(([x, z, r, mi], i) => [x, z, r, r * (0.26 + 0.1 * hsh(i, 14) + 0.12 * clamp(1 - Math.hypot(x - DV.over[0], z - (DV.over[1] + 4 * F)) / (60 * F))), (mi != null ? (C.fair.deckY ?? 62) * F : (hsh(i, 15) < 0.35 ? 72 : 56) * F + hsh(i, 12) * 4 * F), 1]));   // r13: two deck heights -> parallax layers through the dive
     // r13c: corridor test where the lump APPEARS (the camera ray through the lump hits the ground there; tilted, a raised cloud shows north of its
     // ground point), sampled over the corridor's window CORR.t
@@ -132,15 +132,15 @@ else {
       for (let tt = UK.t[0]; tt <= UK.t[1] + 1e-6; tt += 0.25) { if (TL) TL.seek(tt, false); camSolve(); const P = camera.position;
         cl.forEach((c, i) => { if (c[5] === 1 || drop.has(i)) return; const h = c[4] + 0.5 * c[3], k = P.y / Math.max(1, P.y - h), gx = P.x + (c[0] - P.x) * k, gz = P.z + (c[1] - P.z) * k;
           if (UK.keep.some(([x, z, R]) => Math.hypot(gx - x, gz - z) < R + c[2] * k)) drop.add(i); }); }
-      if (TL) TL.seek(t0, false); for (let i = cl.length - 1; i >= 0; i--) if (drop.has(i)) cl.splice(i, 1); window.__bwglUnitDrop = drop.size; }
-    window.__bwglDbg = { wsp: wsp.length, clusters: new Set(wsp.map((q) => q[3])).size, proj: () => { camSolve(); const v = new THREE.Vector3();   // r13e: debug (probe): fair lumps on screen
+      if (TL) TL.seek(t0, false); window.__bwglDropped = cl.filter((c, i) => drop.has(i)); for (let i = cl.length - 1; i >= 0; i--) if (drop.has(i)) cl.splice(i, 1); window.__bwglUnitDrop = drop.size; }
+    window.__bwglDbg = { list: cl, wsp: wsp.length, clusters: new Set(wsp.map((q) => q[3])).size, proj: () => { camSolve(); const v = new THREE.Vector3();   // r13e: debug (probe): fair lumps on screen
       return cl.filter((c) => c[5] === 0).map((c) => { v.set(c[0], c[4] + 0.5 * c[3], c[1]).project(camera); const d = camera.position.distanceTo(new THREE.Vector3(c[0], c[4], c[1]));
         return [Math.round((v.x + 1) * 960), Math.round((1 - v.y) * 540), Math.round(c[2] * 1700 / d), c.corr ? 1 : 0, c[4] >= (C.fair.nearTier || 1e9) * F ? 1 : 0, Math.round(c[3] / c[2] * 100) / 100]; }); } };
     window.__bwglClouds = cl.length;
     const D0 = DV || NODIVE, AD = (t) => (t > D0.SW + 1 ? NODIVE : D0);
     const slabTop = Math.max(104, ...TIERS.map((v) => v + 55)) * F;
-    const mkVC = (sx, list, dk, opF) => { if (list.length) sx.vc = sx.fx.vclouds({ noise: NOISE, clouds: list, bounds: (() => { const pd = (c) => c[2] * 1.7 + 32 * F;   // r13d: the map always holds every lump (the deck reached past the box edge: a straight cut at 6.3 s)
-        return [Math.min(B[0] - 40 * F, ...list.map((c) => c[0] - pd(c))), Math.min(B[1] - 70 * F, ...list.map((c) => c[1] - pd(c))), Math.max(B[0] + B[2] + 40 * F, ...list.map((c) => c[0] + pd(c))), Math.max(B[1] + B[3] + 40 * F, ...list.map((c) => c[1] + pd(c)))]; })(), texel: F, skip: 30 * F,
+    const mkVC = (sx, list, dk, opF) => { if (list.length) sx.vc = sx.fx.vclouds({ noise: NOISE, clouds: list, bounds: (C.fair.fitBounds ? (() => { const pd = (c) => c[2] * 1.7 + 32 * F;   // r13d: the map always holds every lump (the deck reached past the box edge: a straight cut at 6.3 s)
+        return [Math.min(B[0] - 40 * F, ...list.map((c) => c[0] - pd(c))), Math.min(B[1] - 70 * F, ...list.map((c) => c[1] - pd(c))), Math.max(B[0] + B[2] + 40 * F, ...list.map((c) => c[0] + pd(c))), Math.max(B[1] + B[3] + 40 * F, ...list.map((c) => c[1] + pd(c)))]; })() : [B[0] - 40 * F, B[1] - 70 * F, B[0] + B[2] + 40 * F, B[1] + B[3] + 40 * F]),   // r13e: fitBounds opt-in (it broke the near layer) texel: F, skip: 30 * F,
       slab: [28 * F, slabTop]   /* r13: low enough that no cloud bottom is cut flat */, tile: 125 * F, groupScale: C.fair.groupScale ?? 3.0, amp: 5 * F, soft: (C.fair.soft ?? 1.7) * F, skirtCut: C.fair.skirtCut || 0, lumpK: C.fair.lumpK, flatPow: 0.3, sigma: 0.75 / F,
       stepIn: 0.25 * F, stepK: 0.0035, lightStep: 1.4 * F, lodDist: 260 * F, nearFade: 9 * F,   /* r13: no planar cut where the camera passes through a cloud */ maxSteps: C.fair.maxSteps ?? 200, resolution: C.fair.res ?? 0.75, warp: 0.06, fine: 0.12, wisp: 0.45, inner: 0.8,
       weights: [1.0, 0.5, 1, 0.5], group0: C.fair.group0 || [0.55, 0.3, 1.4, 0.5], blur: 1.0, sharp: 1, shadow: 0.75, shadowDir: [0.3, 1, 0.65], drift: (C.fair.drift || [0.10, -0.035]).map((v) => v * F * dk), evolve: 0.0025 / F, floor: 0.05,
@@ -429,8 +429,15 @@ else {
     else a = t < d.clear ? lerp(1, 0.1, 1 - (1 - clamp((t - d.emerge) / (d.clear - d.emerge))) ** 2) : lerp(0.1, 0, sstep(d.clear, d.haze, t));
     return [a, sstep(d.warm - 0.05, d.warm + 0.15, t)]; };
   const VG = document.getElementById("vignette");
+  // r13e debug (window.BWGL_DEBUG, mask test copies only): every fair lump as a circle (green kept, yellow corridor, cyan near, red dropped, grey rejected centre)
+  let DBGC = null; const dbgDraw = () => { if (!window.BWGL_DEBUG || !window.__bwglDbg) return; if (!DBGC) { DBGC = document.createElement("canvas"); DBGC.width = 1920; DBGC.height = 1080; DBGC.style.cssText = "position:absolute;left:0;top:0;width:1920px;height:1080px;pointer-events:none;z-index:99"; SCN.appendChild(DBGC); }
+    const g = DBGC.getContext("2d"), v = new THREE.Vector3(); g.clearRect(0, 0, 1920, 1080); g.lineWidth = 3;
+    const pr = (x, y, z, r, col) => { v.set(x, y, z).project(camera); if (v.z > 1) return; const d = camera.position.distanceTo(new THREE.Vector3(x, y, z)); g.strokeStyle = col; g.beginPath(); g.arc((v.x + 1) * 960, (1 - v.y) * 540, Math.max(3, r * 1700 / d), 0, 6.283); g.stroke(); };
+    for (const c of window.__bwglDbg.list) if (c[5] === 0) pr(c[0], c[4] + 0.5 * c[3], c[1], c[2], c.corr ? "#ff0" : c[4] >= (C.fair.nearTier || 1e9) * (C.fair.F || 1) ? "#0ff" : "#0f0");
+    for (const c of window.__bwglDropped || []) pr(c[0], c[4] + 0.5 * c[3], c[1], c[2], "#f00");
+    for (const c of (window.__bwglRej || []).slice(0, 400)) pr(c[0], 60 * (C.fair.F || 1), c[1], c[2] * 0.3, c[3] === 1 ? "#888" : "#444"); };
   const draw = (t) => {
-    const cs = camSolve();
+    const cs = camSolve(); dbgDraw();
     HAZE.style.opacity = (sstep(14, 34, cs.tilt) * (C.hazeK ?? 1)).toFixed(3);
     const [wa, ww] = whiteAt(t); WO.style.opacity = wa.toFixed(3); WW.style.opacity = ww.toFixed(3);
     if (VG) VG.style.filter = wa > 0.002 ? `opacity(${(1 - wa).toFixed(3)})` : "";   // r13: the map vignette fades out inside the white-out (an even cream, no dark oval)
