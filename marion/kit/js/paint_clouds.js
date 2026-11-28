@@ -65,14 +65,19 @@ const PC = (() => {
     g.globalCompositeOperation = "source-over";
     vis.sort((p, q) => p.p[3] - q.p[3]);   // far first
     for (const v of vis) { if (v.off) continue; const x = v.p[0] - v.w / 2, y = v.p[1] - v.h * 0.55;
-      if (v.near < 0.999) { g.globalAlpha = v.a * (1 - v.near); dimg(v.cl.tex.sharp, x, y, v.w, v.h, v.cl.flip); }
-      if (v.near > 0.001) { g.globalAlpha = v.a * v.near; dimg(v.cl.tex.soft, x, y, v.w, v.h, v.cl.flip); } }
+      if (v.near < 0.999) { g.globalAlpha = v.a * (1 - v.near); dimg(o.fieldTint ? scaled(v.cl.tex.sharp, o.fieldTint) : v.cl.tex.sharp, x, y, v.w, v.h, v.cl.flip); }
+      if (v.near > 0.001) { g.globalAlpha = v.a * v.near; dimg(o.fieldTint ? scaled(v.cl.tex.soft, o.fieldTint) : v.cl.tex.soft, x, y, v.w, v.h, v.cl.flip); } }
     // the painted wipe: the near layer fills the frame around the swap and parts outward to reveal the target (screen space)
     if (o.wipe) wipe(t, o.wipe);
     // warm painted haze over the far edge of the tilted map
     if (o.haze && !window.__pcNoHaze) { const k = o.haze(t, c); if (k > 0.002) { g.globalAlpha = k; g.drawImage(HZ, 0, 0); } }
     g.globalAlpha = 1; };
   // shadow sprite -> a cool dark wash (alpha = silhouette)
+  // r16c polish: a copy of a sprite with its colour scaled per channel (cached): the field warmed toward the map grade, the bank's per-mass jitter
+  const SCALED = new Map(); const scaled = (im, k) => { if (!im || !im.complete || !im.naturalWidth) return im; const key = im.src + "|" + k.join(","); if (SCALED.has(key)) return SCALED.get(key);
+    const c2 = document.createElement("canvas"); c2.width = im.naturalWidth; c2.height = im.naturalHeight; const q = c2.getContext("2d"); q.drawImage(im, 0, 0);
+    const D = q.getImageData(0, 0, c2.width, c2.height), d = D.data; for (let i = 0; i < d.length; i += 4) { d[i] = d[i] * k[0]; d[i + 1] = d[i + 1] * k[1]; d[i + 2] = d[i + 2] * k[2]; }
+    q.putImageData(D, 0, 0); SCALED.set(key, c2); return c2; };
   const tint = (im) => { if (!im || !im.complete || !im.naturalWidth) return null; const c2 = document.createElement("canvas"); c2.width = im.naturalWidth; c2.height = im.naturalHeight;
     const q = c2.getContext("2d"); q.drawImage(im, 0, 0); q.globalCompositeOperation = "source-in"; q.fillStyle = "rgb(30,40,34)"; q.fillRect(0, 0, c2.width, c2.height); return c2; };
   const HZ = (() => { const c2 = document.createElement("canvas"); c2.width = 1920; c2.height = 1080; const q = c2.getContext("2d"), gr = q.createLinearGradient(0, 0, 0, 1080);
@@ -82,7 +87,7 @@ const PC = (() => {
   // end radius px] slide in from beyond the frame edges toward the target and grow (the bank the lens falls into); a warm painted backing closes
   // the last gaps for <= ~0.15 s round w.t (the swap); then they part outward, grow and thin into soft wisps.
   const wipe = (t, w) => { const t2 = w.t + (w.outDur ?? 0.8), M = w.masses; if (t < Math.min(...M.map((m) => m[4])) || t > t2) return;
-    const [cx, cy] = w.track ? (() => { const c = cam(), p = proj(c, w.track[0], w.track[1], 0); return [p[0], p[1] + (w.dy ?? 0)]; })() : w.at;
+    const [cx, cy] = w.track ? (() => { const c = cam(), p = proj(c, w.track[0], w.track[1], 0); return [p[0] + (w.dx ?? 0), p[1] + (w.dy ?? 0)]; })() : w.at;
     const cover = sstep(w.t - 0.09, w.t - 0.06, t) * (1 - sstep(w.t + 0.03, w.t + 0.06, t));   // full backing <= ~0.13 s
     if (cover > 0.002) { g.globalAlpha = cover; g.drawImage(BACK, 0, 0); }   // the backing first: the painted masses stay on top
     for (let i = 0; i < M.length; i++) { const [ang, s0, tn, flip, te, r0] = M[i]; if (t < te) continue; const im = img(tn), ims = img(tn + "_s");
@@ -92,9 +97,15 @@ const PC = (() => {
         else { const e = sstep(tm, tc, t); rad = lerp(rm, r0, e); sc = s0 * lerp(1, 1.12, e); }
         a = sstep(te, te + 0.15, t); soft = 0; }
       else { const u = clamp((t - w.t) / (t2 - w.t)), e = 1 - (1 - u) ** 2; rad = r0 + (w.part ?? 1400) * e; sc = s0 * 1.12 * (1 + 0.5 * e); a = 1 - sstep(0.3, 1, u); soft = 0.7 * sstep(0, 0.5, u); }   // parts outward into soft wisps
-      const W2 = 1024 * sc, H2 = (im.naturalHeight / (im.naturalWidth || 1) || 0.75) * 1024 * sc, x = cx + Math.cos(ang) * rad - W2 / 2, y = cy + Math.sin(ang) * rad * 0.75 - H2 / 2;
-      if (soft < 0.999) { g.globalAlpha = a * (1 - soft); dimg(im, x, y, W2, H2, flip); }
-      if (soft > 0.001) { g.globalAlpha = a * soft; dimg(ims, x, y, W2, H2, flip); } }
+      // r16c polish: break the repeats of the 5 sprites: per mass a random mirror, a +-20 deg turn, a +-15 % scale and a small brightness/hue jitter
+      const hr = (k) => { const z = Math.sin((i + 1) * 127.1 + k * 311.7) * 43758.5453; return z - Math.floor(z); };
+      const J = w.jitter ? [hr(1) < 0.5, (hr(2) - 0.5) * 0.698, 0.85 + 0.3 * hr(3), 0.97 + 0.05 * hr(4), (hr(5) - 0.5) * 0.03] : [flip, 0, 1, 1, 0];
+      const fl = w.jitter ? J[0] : flip, ck = [J[3] * (1 + J[4]), J[3], J[3] * (1 - J[4])], im2 = w.jitter ? scaled(im, ck.map((v) => +v.toFixed(3))) : im, ims2 = w.jitter ? scaled(ims, ck.map((v) => +v.toFixed(3))) : ims;
+      const W2 = 1024 * sc * J[2], H2 = (im.naturalHeight / (im.naturalWidth || 1) || 0.75) * W2, mx = cx + Math.cos(ang) * rad, my = cy + Math.sin(ang) * rad * 0.75;
+      g.save(); g.translate(mx, my); g.rotate(J[1]);
+      if (soft < 0.999) { g.globalAlpha = a * (1 - soft); dimg(im2, -W2 / 2, -H2 / 2, W2, H2, fl); }
+      if (soft > 0.001) { g.globalAlpha = a * soft; dimg(ims2, -W2 / 2, -H2 / 2, W2, H2, fl); }
+      g.restore(); }
     g.globalAlpha = 1; };
   // the painted backing inside the wipe (cloud mid tone + a soft wash mottling)
   const BACK = (() => { const c2 = document.createElement("canvas"); c2.width = 1920; c2.height = 1080; const q = c2.getContext("2d");

@@ -208,6 +208,7 @@ if (!GD.var.paint) { const ROADP = [...R_CN, ...R_NC].filter((q, i) => i % 2 ===
 else { BW.gl({ mpu: 128, hazeK: 0, shadowK: 0, volley: BW.smoke("musket.night", { K: 1 / 15.2, wind: [-14, -36], gone: 17.0 }) });
   const L0 = 0, L1 = 1, L2 = 2;   // far / mid / near layers (altitudes in map px: the push-in passes them at different times)
   PC.dive({ layers: [330, 640, 1150], fieldAt: 2.6, wind: [1.1, -0.35], shadowK: 0.2, shadowOff: [70, 55],
+    fieldTint: [0.983, 0.975, 0.956],   // r16c polish: the field warmed toward the map grade (lit tops ~(238,232,218), ~4 % darker)
     // r16c (old illustrated map): lobed painted cumulus groups seen from above + 3 long low wisps; log-normal sizes (sprite radius 72-361 px,
     // 5x), ~12-15 % cover over the frame, off the road / ONE ROAD / Charleston / the British boxes; [screen x, y, radius px at 2.6 s, layer, sprite]
     field: [[560, 150, 137, L0, "pc_g3"], [1490, 110, 102, L0, "pc_g5"], [1770, 470, 216, L0, "pc_g1"], [1540, 940, 159, L0, "pc_g4"], [300, 330, 87, L0, "pc_g2"], [1300, 260, 72, L0, "pc_g6"],
@@ -218,7 +219,7 @@ else { BW.gl({ mpu: 128, hazeK: 0, shadowK: 0, volley: BW.smoke("musket.night", 
     // the BANK + the wipe (screen space round the ferry): 9 big lobed masses [from angle, scale, sprite, flip, enter time, radius px when closed]
     // grow in from all edges from 6.0 s (>= 70 % cover by 6.6 s with a hole over the wagons), close by ~6.92 s, the painted backing <= ~0.13 s
     // round SW, then part outward into soft wisps (the ferry clear by ~7.6 s)
-    wipe: { t: SW, track: NFL, outDur: 0.6, part: 1500, rIn: 1450, rMid: 900, tMid: 6.6, closeLead: 0.08, masses: [[0.20, 1.6, "pc_b0", 0, 6.000, 450], [0.90, 1.7, "pc_b1", 1, 6.025, 480], [1.60, 1.55, "pc_b2", 0, 6.050, 430], [2.29, 1.65, "pc_b3", 1, 6.075, 470], [2.99, 1.6, "pc_b4", 0, 6.100, 460], [3.69, 1.6, "pc_b0", 1, 6.125, 450], [4.39, 1.7, "pc_b1", 0, 6.150, 480], [5.09, 1.55, "pc_b2", 1, 6.175, 430], [5.79, 1.65, "pc_b3", 0, 6.200, 470]]},
+    wipe: { t: SW, track: NFL, dx: 60, dy: 110, jitter: true,   /* r16c polish: the hole centred on the wagons */   /* r16c polish: per-mass mirror / +-20 deg / +-15 % / small hue + brightness jitter */ outDur: 0.6, part: 1500, rIn: 1450, rMid: 980, tMid: 6.6, closeLead: 0.08, masses: [[0.20, 1.6, "pc_b0", 0, 6.000, 450], [0.90, 1.7, "pc_b1", 1, 6.025, 480], [1.60, 1.55, "pc_b2", 0, 6.050, 430], [2.29, 1.65, "pc_b3", 1, 6.075, 470], [2.99, 1.6, "pc_b4", 0, 6.100, 460], [3.69, 1.6, "pc_b0", 1, 6.125, 450], [4.39, 1.7, "pc_b1", 0, 6.150, 480], [5.09, 1.55, "pc_b2", 1, 6.175, 430], [5.79, 1.65, "pc_b3", 0, 6.200, 470]]},
     haze: (t, c) => 0.85 * BW.sstep(0.35, 0.62, c.th),   // a warm painted haze over the far edge while the view is steeply tilted
     until: TZ1 + 0.4 }); }
 // hook-2: "before dawn" is the script's only time: the pocket watch comes in (hands ~4:30, no clock time is spoken)
