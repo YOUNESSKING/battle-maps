@@ -259,6 +259,27 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r14i audio (critic B 6.5 on r14h; impact pick = a, the 3D boom only) -> `stylew_borrow_test_r14i_share.mp4` (r14 video stream-copied, 76.733 s)
+- Fire bed (29.2-33.6): the bomb4 fire left the pre-limited cannon stem (it was lifted ~4.5 dB there) and is its own stem at -13 dB (r13), ducked
+  60 % under the voice: window total -15.8 dB (r13 -15.5, r14h -11.9); voice over the fire +19 dB in 1-4 kHz, +5 dB full band.
+- Muskets: the loud "front" of a ripple = its first 0.35 s (`FRONT_S`; a 20-shot ripple's second shot comes 33 ms in, so the old front was one
+  shot); the front is pushed to voice -1 dB (later ripples +2); the tail -12 dB and 75 % under the voice (`TAIL_DB`, `TAIL_DUCK`) and follows its
+  front's gain minus the limiting (no squash-up). The tail after 63.75 s is back at r13's level (-14.2 vs -14.4).
+- Cannon: the 3D gun is its own stem (voice +10 dB, ceiling -2 dBFS), its body after 0.30 s eased -12 dB over 0.2 s (it filled the strike's
+  window, so the strike read as loud as the crack); the boom stem voice +1.5 dB. The crack is 2.8 dB over the impact window and 2.0 dB over the
+  narrator's loudest 0.35 s (-10.4). Final limiter -2.6 dBFS (true peak -2.2 on the mp4).
+- Shot table (mp4, mean stereo power over 0.35 s; change vs r13):
+
+| mix | cannon 34.63 | impact 35.13 | volley 63.37 | volley 66.56 | voice only 40-44 s | LUFS | true peak |
+|---|---|---|---|---|---|---|---|
+| r13 share | -14.0 | -15.0 | -17.2 | -16.8 | -16.3 | -14.0 | -2.6 |
+| r14h test | -8.8 (+5.2) | -8.4 (+6.6) | -12.9 (+4.3) | -12.9 (+3.9) | -17.7 (-1.4) | -14.1 | -2.7 |
+| r14i share | -8.4 (+5.6) | -11.2 (+3.8) | -12.3 (+4.9) | -11.7 (+5.1) | -16.8 (-0.5) | -14.2 | -2.2 |
+
+- Voice margins (`tools/measure_margins.py`: the final minus the gain-scaled pure voice stem = the rest; aligned for the limiter's 47-sample lookahead):
+  hook-a 16.0-16.6 +17.3 dB (+12.0 in 1-4 kHz); fire 29.2-33.6 +5.1 (+19.3); tail only 63.75-64.1 -2.0 (+11.2); 66.95-67.8 is mostly a voice
+  pause (the tail fills it; +0.7 dB in 1-4 kHz at the 67.0 word, was about -17).
+
 ## r14h audio (owner: the guns clearly louder, ONLY the 3D-film gun sounds) — audio only, not remuxed yet (the judges pick the impact first)
 - Gun sounds: the 3D gun (goosegreen candidates/cand1_hit) on the flash frame, the 3D boom (cand2_hit) on the visible impact, the 3D fire
   (bomb4 lowpass 900) when the roof catches; the Jackson flintlock set for the muskets. No Style W kit cannon / impact cues (dropped).
