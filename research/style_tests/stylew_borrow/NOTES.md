@@ -276,3 +276,21 @@ Only these changed (hook window = r11 render):
 
 - Impact A/B (`impact_ab/`, README there): a = boom only; b = + bomb6 first blast, highpass (CC0, USC Cinema / craigsmith);
   c = + sfx_thud (our own synthesized, belisarius); d = + cand4_hit lowpassed (Kostrava, CC0). `impact_ab.mp4` plays a-d with the video.
+
+## r13c clouds (critic A 7/7 on r13b) -> `sheet_clouds_r13c.jpg` + `clouds_r13c_hook_0-17.8.mp4` (RunPod A4000, 30 fps) + `clouds_r13c_dive_0-9s_25fps.mp4`
+Coverage from a mask render (map hidden, clouds over black; `clouds_r13c_coverage.json`): 1-3 s 18 %, 4-5.3 s 11 % (corridor clear), 5.6 s 28 %,
+5.9 s 35 %, 6.3 s 57 %, 6.45 s 85 %, 6.6 s 99 % (middle third 100 %). Fair tops ~(243,241,237), deck tops ~(222,224,224) (~10 % darker).
+- Early field: n 56, med 30 (radius clamp rMin 12 / rMax 48 x F), diveClear 40 (the middle third gets clouds); no screenClear deletion. The road /
+  ONE ROAD / Charleston corridor (`fair.corridor`): only the lumps that APPEAR over it (camera ray through the lump onto the ground, sampled over
+  T_ROAD-0.6 .. TZ0+0.4) live in their own system that fades out while the trace/stamp/focus are on screen and back after. Brighter early light
+  (sunK0 2.2, ambK0 0.3), bluer undersides (ambBot [0.42,0.46,0.54]). Two heights kept (near layer 1.6x drift); near + corridor fade 5.75-6.15 s.
+- Ring artefacts fixed (opt-in `skirtCut`, build-time patch of the copied fx.js only): empty height-map columns had their base at the slab floor,
+  so the noise drew faint white rings round every cloud at the floor.
+- Round hole in the deck fixed: a fair cluster over a deck mass is moved to the top tier (its own system); on the far map its footprint replaced the
+  deck columns (`__bwglDeckOverlap`).
+- Deck: 6 big masses (massStep 22, lumps 28-40 x F, groupScale 2.2 = bigger lobes), no centre front erosion; density 0 -> 1 over 5.3-5.75 s and the
+  erosion shrinks 0.8 -> 0.28 (5.9) -> 0.04 (6.3) -> 0 (6.45), so masses grow round (no stringy rims, no pop-in); `deckLook` grey hollows
+  (ambBot [0.30,0.33,0.40], lightK 3.4). Inside: WO base rgb(205,205,200) at 0.8 (deck lumps show through); cream white-out unchanged.
+- New knobs (all opt-in; hook-b / m3 scenes have no nearTier/corridor and build unchanged): corridor, skirtCut, rMin/rMax, sunK0/ambK0, ambBot[2],
+  deckK/deckErode/deckFront, deckLook, massStep/massLump, groupScale, soft/group0, nearOp, dive.greyCol.
+- Weak spot: at ~6.2-6.35 s a darker flat underside with a stepped lower edge shows at the bottom of the big mass for ~0.2 s.

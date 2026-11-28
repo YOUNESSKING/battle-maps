@@ -92,7 +92,13 @@ else {
       if (TL) TL.seek(t0, false); }
     for (let i = wsp.length - 1; i >= 0; i--) if (dropC.has(wsp[i][3])) wsp.splice(i, 1);
     // 2-3 heights (parallax while the camera drops): each cluster picks a tier
-    const TIERS = C.fair.tiers || [49, 49]; const tierOf = (c) => TIERS[Math.floor(hsh(c, 71) * TIERS.length)];
+    const TIERS = C.fair.tiers || [49, 49];
+    // r13c: a fair cluster over a deck mass goes to the top tier (its own system when nearTier is set): on the far map its footprint would replace
+    // the deck columns and punch a round hole in the deck
+    const MSS = DV && C.fair.masses ? C.fair.masses.map(([mx, mz, MR]) => [DV.over[0] + mx * F, DV.over[1] + mz * F, MR * F]) : [], overDeck = new Set();
+    for (const [x, z, r, c] of wsp) if (MSS.some(([a, b, R]) => Math.hypot(x - a, z - b) < R + 1.8 * r)) overDeck.add(c);
+    window.__bwglDeckOverlap = overDeck.size;
+    const tierOf = (c) => (C.fair.nearTier != null && overDeck.has(c) ? Math.max(...TIERS) : TIERS[Math.floor(hsh(c, 71) * TIERS.length)]);
     const deck = [];
     if (DV && C.fair.masses) {   // r13b (critic A): the deck = 2-3 big merged masses (+ the centre) of tightly packed lumps, no separate puffs
       const MS = C.fair.massStep || 14, ML = C.fair.massLump || [18, 10];   // r13c: lump spacing + radius (bigger lobes, fewer puffs)
@@ -136,7 +142,7 @@ else {
     const NT = C.fair.nearTier; if (NT != null) { const isNear = (c) => !(c[5] === 1 || c[4] < NT * F), CO = CORR ? CORR.op : null, NO = C.fair.nearOp, BO = C.fair.opacity || (() => 1);
       // r13c: up to 3 systems: far (+ the deck), near (drifts nearK x, can fade before the camera reaches its height), the corridor lumps (fade while it is spoken)
       const parts = [[cl.filter((c) => !isNear(c) && !c.corr), 1, null], [cl.filter((c) => isNear(c) && !c.corr), C.fair.nearK ?? 1.6, NO],
-        [cl.filter((c) => c.corr), CORR && CORR.dk || 1.3, CO]];   // one corridor system for both heights (each raymarch pass costs a full-screen pass)
+        [cl.filter((c) => c.corr), CORR && CORR.dk || 1.3, CO && NO ? (t) => CO(t) * NO(t) : CO]];   // corridor lumps also leave before the camera reaches them   // one corridor system for both heights (each raymarch pass costs a full-screen pass)
       window.__bwglParts = parts.map((q) => q[0].length);
       parts.forEach(([list, dk, opF], i) => { if (!list.length) return; const sx = i === 0 ? sys : mkFX({ seed: 1863 + i, on: C.fair.on });
         mkVC(sx, list, dk, opF ? (t) => opF(t) * BO(t) : null); if (i) { const g = ground(sx, [B[0] - 400 * F, B[1] - 400 * F, B[2] + 800 * F, B[3] + 800 * F]); sx.on = C.fair.on || (() => true); if (opF) sx.pre = (t) => { g.material.opacity = opF(t); }; } }); }

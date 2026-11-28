@@ -15,6 +15,7 @@ os.environ["TROOP_SHOTS"] = f"{REPO}/ajackson/sound/shots_flint"
 sys.path.insert(0, f"{REPO}/vicksburg/tools"); sys.path.insert(0, f"{M}/tools")
 import troop_sfx as T
 import sfx_mix_lib as K
+TMPP = f"{os.environ.get('TMPDIR', '/tmp')}/_bw{os.getpid()}"   # per-process temp prefix (parallel A/B builds no longer clobber each other)
 SR = 48000; OUT, VC = sys.argv[1], sys.argv[2]
 GG = f"{REPO}/goosegreen/assets/media/sfx"; GM = f"{REPO}/grant/assets/media/sfx/candidates"   # r13: the 3D films' sound sources (ajackson/tools/assemble.py, gm3d/clip/assemble.py)
 SEGS = [(0.0, 17.8, "test-bw-hook-a"), (float(os.environ.get("B0", "56.35")), float(os.environ.get("B1", "59.95")), "test-bw-hook-b"), (71.45, 75.85, "test-bw-hook-b"), (750.21, 764.81, "test-bw-m3d"), (801.5, 839.5, "test-bw-m3f")]   # r9: + the Fort Motte six-pounder (m3d scene 40.0-54.6)
@@ -51,11 +52,13 @@ probe = np.zeros((int(4 * SR), 2), np.float32); rng = np.random.default_rng(3); 
 T.render_volley(L, probe, dict(type="musket_volley", tShare=0.5, unit=dict(men=144), at=dict(camDist=20, px=[960, 540]),
                                shots=[dict(tShare=0.5 + 0.04 * k, at=dict(px=[700 + 30 * k, 540])) for k in range(16)]), rng, [])
 CN_DB = float(os.environ.get("CANNON_DB", "7")); MU_DB = float(os.environ.get("MUSKET_DB", "12"))
-CN_REL = float(os.environ.get("CANNON_REL", "9")); MU_REL = float(os.environ.get("MUSKET_REL", "-2"))   # r14h: the gun stems' level vs the voice (100 ms max RMS)   # r14 (owner: guns and muskets too low): the 3D cannon stem +7 dB, the muskets +12 dB (now outside the voice-keyed compressor; chosen from a gain grid, NOTES)
+CN_REL = float(os.environ.get("CANNON_REL", "11")); MU_REL = float(os.environ.get("MUSKET_REL", "-2"))   # r14h: the gun stems' level vs the voice (100 ms max RMS)   # r14 (owner: guns and muskets too low): the 3D cannon stem +7 dB, the muskets +12 dB (now outside the voice-keyed compressor; chosen from a gain grid, NOTES)
 GAIN = (rms_peak(imp) - 8) - rms_peak(probe) + MU_DB
 print(f"cannon impact {rms_peak(imp):.1f} dB, raw volley {rms_peak(probe):.1f} dB -> musket stem gain {GAIN:+.1f} dB")
 
 parts, log = [], []
+ONLY = os.environ.get("ONLY")   # r14h: build one window only (A/B snippets)
+if ONLY: SEGS = [q for q in SEGS if q[2] == ONLY]
 for (a, b, name) in SEGS:
     d = b - a; n = int(round(d * SR)); t0, cues, shots, bwt = scene(name)
     vo = voice(a, d); vo = np.pad(vo, ((0, max(0, n - len(vo))), (0, 0)))[:n]
@@ -70,7 +73,7 @@ for (a, b, name) in SEGS:
     booms = [c for c in kit if c[1] == "impact" and name == "test-bw-m3d"]; KEEPK = ()   # r14h (owner, final): the guns use ONLY the 3D-film sounds: no Style W kit cannon / impact cues (an extra impact only if the judges pick one, IMPACT env)
     dropped = [c for c in kit if c[1] in GUNK and c[1] not in KEEPK]; kit = [c for c in kit if c[1] not in GUNK or c[1] in KEEPK]
     kitg = [c for c in kit if c[1] in KEEPK]; kit = [c for c in kit if c[1] not in KEEPK]   # r14h: the kit impact joins the cannon stem
-    K.render(kit, d, "/tmp/_bw_kit.wav"); fx = rd("/tmp/_bw_kit.wav"); fx = np.pad(fx, ((0, max(0, n - len(fx))), (0, 0)))[:n]; os.remove("/tmp/_bw_kit.wav")
+    K.render(kit, d, TMPP + "_kit.wav"); fx = rd(TMPP + "_kit.wav"); fx = np.pad(fx, ((0, max(0, n - len(fx))), (0, 0)))[:n]; os.remove(TMPP + "_kit.wav")
     # musket shots: [t, screen x, screen y] (scene time), grouped into ripples
     sh = sorted([[t + t0 - a, x, y] for t, x, y in shots if a <= t + t0 < b - 0.05])
     st = np.zeros((n + SR * 3, 2), np.float32); groups = []
@@ -101,12 +104,16 @@ for (a, b, name) in SEGS:
         g3 = rd(f"{GG}/candidates/cand1_hit.wav"); GX = float(os.environ.get("GUN_EXTRA", "4")); log3 += [("gun cand1_hit", -15 + 4 + CN_DB + GX, put(g3, c[0], 0.115, -15 + 4 + CN_DB + GX)) for c in guns]   # r14h: the shot itself above its boom
     if booms:
         b3 = rd(f"{GG}/candidates/cand2_hit.wav"); log3 += [("boom cand2_hit (impact)", -19 + 4 + CN_DB, put(b3, c[0], 0.067, -19 + 4 + CN_DB)) for c in booms]
+        IMP = os.environ.get("IMPACT")   # r14h: an extra impact on the strike, "path|ffmpeg filter|dB vs the boom" (the judges' pick), inside the cannon stem
+        if IMP:
+            ip, iflt, irel = IMP.split("|"); ic = rd(ip, iflt or None); ie = np.abs(ic).mean(1); io = float(np.argmax(ie > 0.1 * ie.max())) / SR
+            log3 += [(f"impact {os.path.basename(ip)}", -19 + 4 + CN_DB + float(irel), put(ic, c[0], io, -19 + 4 + CN_DB + float(irel))) for c in booms]
     if name == "test-bw-m3d" and bwt:   # the roof catches fire on screen at T_ROOF + 0.9 (scene time)
         fire = rd(f"{GM}/bombs/bomb4_heavyexplosionreverbusc.mp3", "lowpass=f=900", 0, 5.6); fire *= np.clip((5.6 - np.arange(len(fire)) / SR) / 2.0, 0, 1)[:, None]
         tf = bwt[2] + 0.9 + t0 - a
         if 0 <= tf < d: log3.append(("fire bomb4 lowpass 900", -17 + 4, put(fire, tf, 0.121, -17 + 4)))
     if kitg:
-        K.render(kitg, d, "/tmp/_bw_kitg.wav"); kg = rd("/tmp/_bw_kitg.wav"); os.remove("/tmp/_bw_kitg.wav"); cn[:min(len(kg), len(cn))] += kg[:len(cn)]
+        K.render(kitg, d, TMPP + "_kitg.wav"); kg = rd(TMPP + "_kitg.wav"); os.remove(TMPP + "_kitg.wav"); cn[:min(len(kg), len(cn))] += kg[:len(cn)]
     def _pk(x, w=0.1):   # max short-term RMS (dB) of a stem in this window
         c = np.concatenate([[0], np.cumsum((x.mean(1).astype(np.float64)) ** 2)]); k = int(w * SR)
         return 10 * np.log10(max(1e-12, (c[k:] - c[:-k]).max() / k)) if len(c) > k else -120
@@ -118,11 +125,14 @@ for (a, b, name) in SEGS:
         if _pk(x) < -100: return x
         g = target - _pk(x)
         for _ in range(3):
-            sf.write("/tmp/_bw_pl.wav", x * db(g), SR, subtype="FLOAT")
-            subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "/tmp/_bw_pl.wav", "-af", f"alimiter=limit={ceil}:attack=1:release=60:level=false", "-c:a", "pcm_f32le", "/tmp/_bw_pl2.wav"], check=True)
-            y = rd("/tmp/_bw_pl2.wav"); y = np.pad(y, ((0, max(0, len(x) - len(y))), (0, 0)))[:len(x)]; g += target - _pk(y)
-        os.remove("/tmp/_bw_pl.wav"); os.remove("/tmp/_bw_pl2.wav"); return y
-    cnS = prelim(cn[:n] * (1 - 0.15 * venv)[:, None], vref + CN_REL, db(-4)); musS = prelim(mus_shots, vref + MU_REL, db(-6))
+            sf.write(TMPP + "_pl.wav", x * db(g), SR, subtype="FLOAT")
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", TMPP + "_pl.wav", "-af", f"alimiter=limit={ceil}:attack=1:release=60:level=false", "-c:a", "pcm_f32le", TMPP + "_pl2.wav"], check=True)
+            y = rd(TMPP + "_pl2.wav"); y = np.pad(y, ((0, max(0, len(x) - len(y))), (0, 0)))[:len(x)]; g += target - _pk(y)
+        os.remove(TMPP + "_pl.wav"); os.remove(TMPP + "_pl2.wav"); return y
+    cnS = prelim(cn[:n] * (1 - 0.15 * venv)[:, None], vref + CN_REL, db(-4)); musS = np.zeros_like(mus_shots)   # r14h (advisor): each ripple pushed to the target on its own (the buckshot ripple no longer rides under the first)
+    cuts = [max(0, int((g[0][0] - 0.2) * SR)) for g in groups] + [n]
+    for k in range(len(groups)): musS[cuts[k]:cuts[k + 1]] = prelim(mus_shots[cuts[k]:cuts[k + 1]], vref + MU_REL, db(-6))
+    if not groups: musS = mus_shots
     print(f"  stems (100 ms max RMS): voice {vref:.1f} | cannon {_pk(cnS):.1f} | muskets {_pk(musS):.1f} dB")
     vo = vo + cnS + musS
     # battle bed: the 3D films' distant-warfare ambience, battle windows only (from the first visible shot), 1 s fades, -23 dB, ducked 35 %
@@ -148,7 +158,7 @@ def cat(i):
     for p in parts[1:]:
         x = p[i]; r = np.linspace(0, 1, f)[:, None]; y[-f:] = y[-f:] * (1 - r) + x[:f] * r; y = np.concatenate([y, x[f:]])
     return y
-tmp = "/tmp/_bw_"
+tmp = TMPP + "_"
 for i, nm in enumerate(("vo", "mu", "fx", "vk")): sf.write(f"{tmp}{nm}.wav", cat(i), SR, subtype="FLOAT")
 D = sum(b - a for a, b, _ in SEGS) - XF * (len(SEGS) - 1)
 # r14h (advisor): the compressors are keyed by the VOICE only (vk), the music bed 0.05 (was 0.08), no limiter before the loudness stage

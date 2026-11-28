@@ -180,13 +180,13 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
   // r5 timing (critic B: the spoken places must read): deck from 6.4 s, white ~6.6-7.1 s, emerge 7.1, clear 7.25, haze gone 7.55, land 7.6
   BW.gl({ mpu: 128, dive: { t: SW, over: NFL, grey: 0.8, greyCol: "rgb(205,205,200)" }, hazeK: 0.6, shadowK: 0.25,   // r13b (critic A): ground shadows 25 %; inside the deck an even grey 6.6-7.1 s
     diveOff: { push: -1.4, deckIn: -1.3, full: -0.5, deck: -0.45, wIn: -0.4, inside: -0.2, warm: 0.05, emerge: 0.2, clear: 0.35, haze: 0.6, land: 0.75 },   // r6: the deck closes in from the frame edges from 5.8 s (clear window over the crossing to ~6.45), full by 6.75
-    fair: { F: 3.3, box: [0, 0, 2900, 1800], n: 44, med: 24, rMin: 12, rMax: 40, sunK0: 2.2, ambK0: 0.3, skirtCut: 3, seed: 5, tiers: [52, 100], nearTier: 90, nearK: 1.6, ambBot: [0.42, 0.46, 0.54],   // r13b: 10-14 bigger cumulus on 2 heights, the near layer drifts 1.6x
-      masses: [[-56, -26, 64], [54, -22, 62], [2, 50, 62], [8, 6, 70], [-48, 44, 44], [50, 44, 44]], massStep: 22, massLump: [28, 12], groupScale: 2.2,   // r13b: the deck = 3 big merged masses + the centre
+    fair: { F: 3.3, box: [0, 0, 2900, 1800], n: 56, med: 30, rMin: 12, rMax: 48, sunK0: 2.2, ambK0: 0.3, skirtCut: 3, seed: 5, tiers: [52, 100], nearTier: 90, nearK: 1.6, ambBot: [0.42, 0.46, 0.54],   // r13b: 10-14 bigger cumulus on 2 heights, the near layer drifts 1.6x
+      masses: [[-64, -30, 76], [62, -26, 74], [2, 58, 74], [8, 6, 80], [-56, 52, 54], [58, 52, 54]], massStep: 22, massLump: [28, 12], groupScale: 2.2,   // r13b: the deck = 3 big merged masses + the centre
       diveClear: 40,   // r13c: the field reaches the middle third too
       // r13c deck (critic A): the masses fade in from 5.3 s (density + erosion, no pop-in): ~30 % at 5.9, ~65 % at 6.3, ~95 % at 6.6; soft edges
-      deckK: (t) => BW.sstep(5.3, 6.3, t), nearOp: (t) => 1 - BW.sstep(5.9, 6.35, t),
+      deckK: (t) => BW.sstep(5.3, 5.75, t), nearOp: (t) => 1 - BW.sstep(5.75, 6.15, t),
       deckLook: { ambBot: [0.30, 0.33, 0.40], ambTop: [0.55, 0.58, 0.64], ambK: 0.30, lightK: 3.4, sunK: 1.25 },   // r13c: grey hollows ~(135,140,150), tops ~10 % under the fair cumulus deckFront: () => 0, soft: 2.8, group0: [0.55, 0.3, 0.85, 0.5],
-      deckErode: (t) => { if (t < 5.25 || t > SW + 0.5) return 9; const P = [[5.25, 0.35], [5.9, 0.2], [6.3, 0.08], [6.5, 0]]; for (let i = 1; i < P.length; i++) if (t < P[i][0]) return BW.lerp(P[i - 1][1], P[i][1], (t - P[i - 1][0]) / (P[i][0] - P[i - 1][0])); return 0; },
+      deckErode: (t) => { if (t < 5.25 || t > SW + 0.5) return 9; const P = [[5.25, 0.8], [5.9, 0.28], [6.3, 0.04], [6.45, 0]]; for (let i = 1; i < P.length; i++) if (t < P[i][0]) return BW.lerp(P[i - 1][1], P[i][1], (t - P[i - 1][0]) / (P[i][0] - P[i - 1][0])); return 0; },
       // r13c: the road / ONE ROAD stamp / Charleston corridor is cleared only while the trace + stamp + focus are on screen (its clusters fade out, then back)
       corridor: { perDome: true, t: [T_ROAD - 0.6, TZ0 + 0.4], keepLines: [[ROADP, 40]], keep: [[CHS[0], CHS[1] + 40, 160], [860, 1110, 130]], op: (t) => 1 - BW.sstep(T_ROAD - 0.7, T_ROAD - 0.1, t) + BW.sstep(TZ0 + 0.3, TZ0 + 0.9, t) },
       on: (t) => t < SW + 1.2 },   // r13c: no screenClear cluster deletion (it emptied the middle of the field); the date plate is HUD (drawn above the clouds)
