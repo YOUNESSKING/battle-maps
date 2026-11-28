@@ -164,7 +164,10 @@ const BW = (() => {
     SFX("musket", t); SHOTS.push([+t.toFixed(4), p[0], p[1]]); return null; };
   // a ragged ripple along a firing line: n shots spread over `span` s between the points `pts` (one flank first, stragglers at the end)
   const volley = (pts, t0, span, n, o = {}) => { const R = R0(o.seed || Math.round(t0 * 1000)); const L = pts.length;
-    for (let i = 0; i < n; i++) { const u = clamp((i + (R() - 0.5) * 1.6) / Math.max(1, n - 1)) ** lerp(0.85, 1.3, R()), f = i / Math.max(1, n - 1) * (L - 1), a = pts[Math.floor(f)], b = pts[Math.min(L - 1, Math.floor(f) + 1)], q = f - Math.floor(f);
+    // r14 (critic A: the burst read as one bar): o.groups = muskets clumped in G groups along the line with gaps between (positions only:
+    // the same random draws, so the shot times and the sound stay identical)
+    const G = o.groups || 0, gpos = (i) => { const gi = Math.min(G - 1, Math.floor(i * G / n)), h = Math.sin(i * 12.9898 + 4.1) * 43758.5453; return (gi + 0.5 + (h - Math.floor(h) - 0.5) * (o.groupW ?? 0.55)) / G; };
+    for (let i = 0; i < n; i++) { const u = clamp((i + (R() - 0.5) * 1.6) / Math.max(1, n - 1)) ** lerp(0.85, 1.3, R()), f = (G ? gpos(i) : i / Math.max(1, n - 1)) * (L - 1), a = pts[Math.floor(f)], b = pts[Math.min(L - 1, Math.floor(f) + 1)], q = f - Math.floor(f);
       const x = lerp(a[0], b[0], q) + (R() - 0.5) * (o.jx || 6), y = lerp(a[1], b[1], q) + (R() - 0.5) * (o.jy || 5);
       const ts = t0 + (i === 0 ? 0 : u * span); shot([x, y], ts, { k: o.k || 1, aim: o.aim ? o.aim(x, y) : null, ps: o.ps, puff: !o.noPuff && i % (o.puffEvery || 2) === 0 });
       (o.shake || []).forEach((id) => { if (i % 2 === 0) shake(id, Math.ceil(ts * 30 - 1e-6) / 30 + 0.05, 2); }); } };   // r10: the target boxes shake ~2 px on the flashes

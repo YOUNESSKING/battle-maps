@@ -193,7 +193,7 @@ else {
     SH.forEach(([ts, x, z, ax, az], i) => { const R = mb(i * 7919 + 101); let dx = ax - x, dz = az - z; const l = Math.hypot(dx, dz) || 1; dx /= l; dz /= l;
       const J = V.jet || [60, 80], Lj = J[0] + R() * (J[1] - J[0]);
       if (V.burstLen) { const BL = V.burstLen[0] + R() * (V.burstLen[1] - V.burstLen[0]);   // r13c (critic A): the muzzle burst 160-200 x 35-45 px on screen
-        for (let j = 0; j < 7; j++) { const u = j / 6; PL.push({ i, t: ts, x, z, dx, dz, jet: 1, s: BL * (0.08 + 0.76 * u), lat: (R() - 0.5) * 6 * u, sz: (44 + 16 * Math.sin(Math.PI * Math.min(1, u * 1.2))) * (0.9 + 0.2 * R()), a0: 0.85, life: 1.0, h: R(), cell: Math.floor(R() * 8) }); } }
+        for (let j = 0; j < 4; j++) { const u = j / 3; PL.push({ i, t: ts, x, z, dx, dz, jet: 1, s: BL * (0.1 + 0.9 * u), lat: (R() - 0.5) * 10 * u, sz: (15 + 10 * R()) * (0.8 + 0.4 * u) / 0.42, a0: 0.85, life: 1.0, h: R(), cell: Math.floor(R() * 8) }); } }   // r14: one jet per musket, 60-90 px, lumps r 15-25 px
       else for (let j = 0; j < 5; j++) { const u = j / 4; PL.push({ i, t: ts, x, z, dx, dz, jet: 1, s: Lj * (0.12 + 0.88 * u), lat: (R() - 0.5) * 4 * u, sz: (11 + 15 * u) * (0.9 + 0.2 * R()), a0: 0.85 * (1 - 0.25 * u), life: 1.0, h: R(), cell: Math.floor(R() * 8) }); }
       const nB = V.billows ?? (6 + Math.floor(R() * 3));
       // r10: density varies +-40 % along the line (smooth in x), puffs spread over ~20 px across the line, and ~1 shot in 4 adds a big

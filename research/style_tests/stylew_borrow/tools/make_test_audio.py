@@ -50,7 +50,7 @@ imp = rd(f"{GG}/candidates/cand1_hit.wav") * db(-15 + 4)   # r13: the reference 
 probe = np.zeros((int(4 * SR), 2), np.float32); rng = np.random.default_rng(3); L = T.Lib(rng)
 T.render_volley(L, probe, dict(type="musket_volley", tShare=0.5, unit=dict(men=144), at=dict(camDist=20, px=[960, 540]),
                                shots=[dict(tShare=0.5 + 0.04 * k, at=dict(px=[700 + 30 * k, 540])) for k in range(16)]), rng, [])
-CN_DB = float(os.environ.get("CANNON_DB", "5")); MU_DB = float(os.environ.get("MUSKET_DB", "-2"))   # r14 (critic A: the cannon measured like a volley): cannon stem +5 dB, muskets -2 dB
+CN_DB = float(os.environ.get("CANNON_DB", "5")); MU_DB = float(os.environ.get("MUSKET_DB", "3"))   # r14 (owner: guns and muskets too low): the 3D cannon stem +5 dB, the muskets +3 dB vs r13
 GAIN = (rms_peak(imp) - 8) - rms_peak(probe) + MU_DB
 print(f"cannon impact {rms_peak(imp):.1f} dB, raw volley {rms_peak(probe):.1f} dB -> musket stem gain {GAIN:+.1f} dB")
 
@@ -66,7 +66,8 @@ for (a, b, name) in SEGS:
     # r13 (owner: "guns and artillery exactly like the 3D films"): every kit gun / impact cue in the borrow windows is dropped (no doubled sound);
     # the visible cannon shot gets the 3D "gun" on its flash frame, its visible impact the 3D "boom", the burning roof the 3D "fire".
     GUNK = ("fire", "impact", "explosion", "mortar", "mg"); guns = [c for c in kit if c[1] == "fire" and name == "test-bw-m3d"]
-    booms = [c for c in kit if c[1] == "impact" and name == "test-bw-m3d"]; dropped = [c for c in kit if c[1] in GUNK]; kit = [c for c in kit if c[1] not in GUNK]
+    booms = [c for c in kit if c[1] == "impact" and name == "test-bw-m3d"]; KEEPK = ("impact",) if name == "test-bw-m3d" else ()   # r14 (owner): the r12 locked-kit impact cue back in the cannon window, layered with the 3D gun + boom + fire
+    dropped = [c for c in kit if c[1] in GUNK and c[1] not in KEEPK]; kit = [c for c in kit if c[1] not in GUNK or c[1] in KEEPK]
     K.render(kit, d, "/tmp/_bw_kit.wav"); fx = rd("/tmp/_bw_kit.wav"); fx = np.pad(fx, ((0, max(0, n - len(fx))), (0, 0)))[:n]; os.remove("/tmp/_bw_kit.wav")
     # musket shots: [t, screen x, screen y] (scene time), grouped into ripples
     sh = sorted([[t + t0 - a, x, y] for t, x, y in shots if a <= t + t0 < b - 0.05])
@@ -86,7 +87,7 @@ for (a, b, name) in SEGS:
     w = int(0.05 * SR); env = np.sqrt(np.convolve((vo ** 2).mean(1), np.ones(w) / w, "same")); env = (env > 0.01).astype(np.float32)
     k = int(0.25 * SR); env = np.clip(np.convolve(env, np.hanning(k) / np.hanning(k).sum(), "same") * 1.2, 0, 1)
     EX = float(os.environ.get("MUSKET_EXTRA_DB", "0"))   # r3: first shot -4 dB, tail -6 dB under the voice (+ EX on both) so the bangs peak <= -6 dBFS
-    fx = fx + (st[:n] * db(-4 + EX) + tail[:n] * (1 - 0.5 * env)[:, None] * db(EX)) * db(GAIN)
+    fx = fx + (st[:n] * db(-4 + EX) + tail[:n] * (1 - 0.3 * env)[:, None] * db(EX)) * db(GAIN)   # r14: the tail ducked 30 % (was 50 %)
     kv = int(0.25 * SR); venv = np.convolve(np.abs(vo).mean(1), np.ones(kv) / kv, mode="same"); venv = np.clip(venv / (np.percentile(venv, 95) + 1e-9), 0, 1)
     cn = np.zeros((n + SR * 8, 2), np.float32)
     def put(clip, t, onset, g):   # onset of the clip on the cue time
@@ -100,7 +101,7 @@ for (a, b, name) in SEGS:
         fire = rd(f"{GM}/bombs/bomb4_heavyexplosionreverbusc.mp3", "lowpass=f=900", 0, 5.6); fire *= np.clip((5.6 - np.arange(len(fire)) / SR) / 2.0, 0, 1)[:, None]
         tf = bwt[2] + 0.9 + t0 - a
         if 0 <= tf < d: log3.append(("fire bomb4 lowpass 900", -17 + 4, put(fire, tf, 0.121, -17 + 4)))
-    vo = vo + cn[:n] * (1 - 0.25 * venv)[:, None]   # Jackson: sfx +4 dB, ducked 25 % under the voice
+    vo = vo + cn[:n] * (1 - 0.15 * venv)[:, None]   # Jackson: sfx +4 dB ducked 25 %; r14 (owner): ducked 15 % so the shots punch through
     # battle bed: the 3D films' distant-warfare ambience, battle windows only (from the first visible shot), 1 s fades, -23 dB, ducked 35 %
     tb = (sh[0][0] - 0.8) if (name == "test-bw-m3f" and sh) else (guns[0][0] - 1.0) if guns else None
     if tb is not None and tb < d - 1:
@@ -127,7 +128,7 @@ def cat(i):
 tmp = "/tmp/_bw_"
 for i, nm in enumerate(("vo", "mu", "fx")): sf.write(f"{tmp}{nm}.wav", cat(i), SR, subtype="FLOAT")
 D = sum(b - a for a, b, _ in SEGS) - XF * (len(SEGS) - 1)
-f = ["[0:a]asplit=3[vo][key][key2]", "[2:a][key2]sidechaincompress=threshold=0.03:ratio=3:attack=10:release=300[sfx]",
+f = ["[0:a]asplit=3[vo][key][key2]", "[2:a][key2]sidechaincompress=threshold=0.03:ratio=2:attack=10:release=300[sfx]",
      f"[1:a]volume=0.08[mus]", "[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]",
      "[vo][musd][sfx]amix=inputs=3:normalize=0,alimiter=limit=0.5:level=false[aout]"]
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{tmp}vo.wav", "-i", f"{tmp}mu.wav", "-i", f"{tmp}fx.wav", "-filter_complex", ";".join(f),
