@@ -50,7 +50,7 @@ imp = rd(f"{GG}/candidates/cand1_hit.wav") * db(-15 + 4)   # r13: the reference 
 probe = np.zeros((int(4 * SR), 2), np.float32); rng = np.random.default_rng(3); L = T.Lib(rng)
 T.render_volley(L, probe, dict(type="musket_volley", tShare=0.5, unit=dict(men=144), at=dict(camDist=20, px=[960, 540]),
                                shots=[dict(tShare=0.5 + 0.04 * k, at=dict(px=[700 + 30 * k, 540])) for k in range(16)]), rng, [])
-CN_DB = float(os.environ.get("CANNON_DB", "5")); MU_DB = float(os.environ.get("MUSKET_DB", "3"))   # r14 (owner: guns and muskets too low): the 3D cannon stem +5 dB, the muskets +3 dB vs r13
+CN_DB = float(os.environ.get("CANNON_DB", "7")); MU_DB = float(os.environ.get("MUSKET_DB", "12"))   # r14 (owner: guns and muskets too low): the 3D cannon stem +7 dB, the muskets +12 dB (now outside the voice-keyed compressor; chosen from a gain grid, NOTES)
 GAIN = (rms_peak(imp) - 8) - rms_peak(probe) + MU_DB
 print(f"cannon impact {rms_peak(imp):.1f} dB, raw volley {rms_peak(probe):.1f} dB -> musket stem gain {GAIN:+.1f} dB")
 
@@ -88,7 +88,8 @@ for (a, b, name) in SEGS:
     w = int(0.05 * SR); env = np.sqrt(np.convolve((vo ** 2).mean(1), np.ones(w) / w, "same")); env = (env > 0.01).astype(np.float32)
     k = int(0.25 * SR); env = np.clip(np.convolve(env, np.hanning(k) / np.hanning(k).sum(), "same") * 1.2, 0, 1)
     EX = float(os.environ.get("MUSKET_EXTRA_DB", "0"))   # r3: first shot -4 dB, tail -6 dB under the voice (+ EX on both) so the bangs peak <= -6 dBFS
-    fx = fx + (st[:n] * db(-4 + EX) + tail[:n] * (1 - 0.3 * env)[:, None] * db(EX)) * db(GAIN)   # r14: the tail ducked 30 % (was 50 %)
+    mus_shots = (st[:n] * db(-4 + EX) + tail[:n] * (1 - 0.3 * env)[:, None] * db(EX)) * db(GAIN)   # r14: the tail ducked 30 % (was 50 %)
+    # r14 (owner: too low): the musket stem joins the cannon stem (not the voice-keyed sidechain compressor), ducked only by the 30 % tail rule above
     kv = int(0.25 * SR); venv = np.convolve(np.abs(vo).mean(1), np.ones(kv) / kv, mode="same"); venv = np.clip(venv / (np.percentile(venv, 95) + 1e-9), 0, 1)
     cn = np.zeros((n + SR * 8, 2), np.float32)
     def put(clip, t, onset, g):   # onset of the clip on the cue time
@@ -102,7 +103,11 @@ for (a, b, name) in SEGS:
         fire = rd(f"{GM}/bombs/bomb4_heavyexplosionreverbusc.mp3", "lowpass=f=900", 0, 5.6); fire *= np.clip((5.6 - np.arange(len(fire)) / SR) / 2.0, 0, 1)[:, None]
         tf = bwt[2] + 0.9 + t0 - a
         if 0 <= tf < d: log3.append(("fire bomb4 lowpass 900", -17 + 4, put(fire, tf, 0.121, -17 + 4)))
-    vo = vo + cn[:n] * (1 - 0.15 * venv)[:, None]   # Jackson: sfx +4 dB ducked 25 %; r14 (owner): ducked 15 % so the shots punch through
+    def _pk(x, w=0.1):   # max short-term RMS (dB) of a stem in this window
+        c = np.concatenate([[0], np.cumsum((x.mean(1).astype(np.float64)) ** 2)]); k = int(w * SR)
+        return 10 * np.log10(max(1e-12, (c[k:] - c[:-k]).max() / k)) if len(c) > k else -120
+    print(f"  stems (100 ms max RMS, pre-mix): voice {_pk(vo):.1f} dB | cannon {_pk(cn[:n] * (1 - 0.15 * venv)[:, None]):.1f} dB | muskets {_pk(mus_shots):.1f} dB")
+    vo = vo + cn[:n] * (1 - 0.15 * venv)[:, None] + mus_shots   # Jackson: sfx +4 dB ducked 25 %; r14 (owner): ducked 15 % so the shots punch through
     # battle bed: the 3D films' distant-warfare ambience, battle windows only (from the first visible shot), 1 s fades, -23 dB, ducked 35 %
     tb = (sh[0][0] - 0.8) if (name == "test-bw-m3f" and sh) else (guns[0][0] - 1.0) if guns else None
     if tb is not None and tb < d - 1:
@@ -131,7 +136,7 @@ for i, nm in enumerate(("vo", "mu", "fx")): sf.write(f"{tmp}{nm}.wav", cat(i), S
 D = sum(b - a for a, b, _ in SEGS) - XF * (len(SEGS) - 1)
 f = ["[0:a]asplit=3[vo][key][key2]", "[2:a][key2]sidechaincompress=threshold=0.03:ratio=2:attack=10:release=300[sfx]",
      f"[1:a]volume=0.08[mus]", "[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]",
-     "[vo][musd][sfx]amix=inputs=3:normalize=0,alimiter=limit=0.5:level=false[aout]"]
+     "[vo][musd][sfx]amix=inputs=3:normalize=0,alimiter=limit=0.9:level=false[aout]"]   # r14: transients survive to the final -3 dBFS limiter (was 0.5)
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{tmp}vo.wav", "-i", f"{tmp}mu.wav", "-i", f"{tmp}fx.wav", "-filter_complex", ";".join(f),
                 "-map", "[aout]", "-c:a", "pcm_s16le", f"{tmp}mix.wav"], check=True)
 LN = "loudnorm=I=-13.8:TP=-1.5:LRA=11"   # r11: -13.8 before the -3 dBFS peak limiter -> -14.0 LUFS out
