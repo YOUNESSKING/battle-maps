@@ -16,12 +16,18 @@ from places import PLACES, RIVER_LINES  # noqa
 a = sys.argv[1:]; insets = []; src = None
 BORROW = "--borrow" in a   # opt-in TEST (research/style_tests/stylew_borrow): + vicksburg/engine/overlay.js + kit/js/borrow.js; scenes without it build unchanged
 if BORROW: a.remove("--borrow")
+# LOOK-LOCK pending-begin clouds (r16 painted clouds, opt-in --paint)
 PAINT = "--paint" in a   # r16 opt-in (research/style_tests/stylew_borrow NOTES r16): + kit/js/paint_clouds.js + kit/paint_clouds/*.webp, GD.var.paint = "1"
 if PAINT: a.remove("--paint")
+# LOOK-LOCK pending-end clouds
+LOOKTEST = "--look-test" in a   # a TEST build of a changed look (an owner test, never a film): the look-lock gate only warns
+if LOOKTEST: a.remove("--look-test")
 while "--inset" in a: i = a.index("--inset"); insets.append(a[i + 1]); del a[i:i + 2]
 VARS = {}
 while "--var" in a: i = a.index("--var"); k_, v_ = a[i + 1].split("=", 1); VARS[k_] = v_; del a[i:i + 2]   # GD.var.<k> in the scene (one source, variants)
+# LOOK-LOCK pending-begin clouds (r16 painted clouds, opt-in --paint)
 if PAINT: VARS["paint"] = "1"
+# LOOK-LOCK pending-end clouds
 if "--src" in a: i = a.index("--src"); src = a[i + 1]; del a[i:i + 2]   # build scenes/<SCENE> from scenes-src/<src>.js (one source, several scenes)
 name, base = a[0], a[1]
 if a[2] == "--dur":
@@ -91,25 +97,35 @@ AT = ("const at = (k, ph, off = 0) => { const e = B.at(k, ph), A = B.T.anchors |
 assert kit.count("const { at } = B;") == 1
 kit = kit.replace("const { at } = B;", AT)
 body = open(f"{ROOT}/scenes-src/{src or name}.js").read()
+if BORROW:   # LOOK LOCK (research/look_lock_stylew/LOCK.md): (a) hashes + (b) lint of this scene source before every --borrow build
+    _g = subprocess.run([sys.executable, os.path.join(ROOT, "..", "research", "look_lock_stylew", "tools", "check_look_lock.py"), "--lint", f"{ROOT}/scenes-src/{src or name}.js"], capture_output=True, text=True)
+    print("\n".join(l for l in _g.stdout.splitlines() if not l.startswith(("pending", "LOOK LOCK OK", "lint "))) or "LOOK LOCK OK", flush=True)
+    if _g.returncode:
+        if not LOOKTEST: sys.exit("LOOK LOCK: build stopped (restore the locked look or fix the scene; an owner look test builds with --look-test)")
+        print("LOOK TEST BUILD (--look-test): NOT for a film")
 if BORROW:   # the GM overlay (pocket watch, seals, THE ARMIES, ledger) + the borrow module, between the kit and the scene; BW.finish() after it
     VX = os.path.join(ROOT, "..", "vicksburg", "engine"); os.makedirs(f"{out}/assets/gmfonts", exist_ok=True)
     for f in os.listdir(f"{VX}/assets/fonts"):
         if f.endswith(".woff2"): shutil.copy(f"{VX}/assets/fonts/{f}", f"{out}/assets/gmfonts/{f}")
     kit += "\n" + open(f"{VX}/overlay.js").read() + "\n" + open(f"{KIT}/js/borrow.js").read()
+    # LOOK-LOCK pending-begin clouds (r16 painted clouds, opt-in --paint)
     if PAINT:   # r16 painted clouds (after borrow.js: uses BW.TS + the timeline)
         kit += "\n" + open(f"{KIT}/js/paint_clouds.js").read()
         os.makedirs(f"{out}/assets/pc", exist_ok=True)
         for f in os.listdir(f"{KIT}/paint_clouds"): shutil.copy(f"{KIT}/paint_clouds/{f}", f"{out}/assets/pc/{f}")
+    # LOOK-LOCK pending-end clouds
     body += "\nBW.finish();\n"
     os.makedirs(f"{out}/gl", exist_ok=True)   # r4: the 3D engine layer (three r169 module, fx.js + one extra smoke look, the cloud noise, bwgl.mjs)
     shutil.copy(f"{VX}/vendor/three.module.min.js", f"{out}/gl/three.module.min.js")
     fxs = open(f"{VX}/fx.js").read(); _k = "const LOOKS = {"; assert fxs.count(_k) == 1
+    # LOOK-LOCK pending-begin clouds (fx.js cloud build patches: NOT approved, being redone)
     _sk = "bot[k] = c.yb + (c.g ? 0 : c.H * 0.06 * Math.min(1, r * r));"; assert fxs.count(_sk) == 1   # r13c (opt-in o.skirtCut): no thin rings of cloud round each dome's footprint
     fxs = fxs.replace(_sk, "bot[k] = c.yb + (c.g ? 0 : c.H * (o.baseRound ?? 0.06) * Math.min(1, r * r)) + (o.skirtCut && r > 1 ? (r - 1) * c.H * o.skirtCut : 0);")
     _lp = "lump = 1 + 0.3 * (fbm("; assert fxs.count(_lp) == 1   # r13e (opt-in o.lumpK): the dome outline wobble (0.3) drew radial ridges on big fair cumulus
     fxs = fxs.replace(_lp, "lump = 1 + (c.g ? 0.3 : (o.lumpK ?? 0.3)) * (fbm(")
     _tf = "const top = new Float32Array(MW * MD).fill(y0 - 8), bot = new Float32Array(MW * MD).fill(y0)"; assert fxs.count(_tf) == 1   # r13c (opt-in): empty columns far below the slab floor (an empty column's base far above its top: the old fill left faint rings at the slab floor round every cloud)
     fxs = fxs.replace(_tf, "const top = new Float32Array(MW * MD).fill(y0 - 8), bot = new Float32Array(MW * MD).fill(y0 + (o.skirtCut ? 400 : 0))")
+    # LOOK-LOCK pending-end clouds
     open(f"{out}/gl/fx.js", "w").write(fxs.replace(_k, _k + "\n  bwTall: { tint: [0.31, 0.32, 0.336], alpha: 0.27, s0: 9.0, grow: 3.6, rise: 0.22, turb: 0.4, life: 18, mode: 5.2 },   // BW r4: gmTall stretched x3.4 (curtains ~4x taller than wide)"))
     if os.path.exists(f"{out}/gl/noise128.bin"): os.remove(f"{out}/gl/noise128.bin")
     os.link(f"{VX}/cloudtex/noise128.bin", f"{out}/gl/noise128.bin")

@@ -135,7 +135,7 @@ mg(PP(1478, 702), PP(...REND[0]), T_GUNS + 0.05, 5, 1.3 / CH2[2]);
 mg(PP(1478, 702), PP(...REND[1]), T_GUNS + 1.1, 4, 1.3 / CH2[2]);
 // muzzle flashes at the guard (constant size on screen; visual only, the mg sound carries them)
 // BW: every shot of the guard = one muzzle flash + one flintlock shot cue (6 shots, ragged)
-[0.05, 0.27, 0.42, 1.1, 1.31, 1.58].forEach((dt, i) => BW.shot(PP(1478 - 16 + 7 * i, 702 + (i % 2 ? 8 : -6)), T_GUNS + dt, { k: 0.9, aim: PP(1478 - 60 - 7 * i, 702 - 70), puff: false }));   // r8: fired north-west over the riders' approach: the smoke stays clear of every box
+[0.05, 0.27, 0.42, 1.1, 1.31, 1.58].forEach((dt, i) => BW.musketShot(PP(1478 - 16 + 7 * i, 702 + (i % 2 ? 8 : -6)), T_GUNS + dt, { aim: PP(1478 - 60 - 7 * i, 702 - 70) }));   // r8: fired north-west over the riders' approach: the smoke stays clear of every box
 // r4: two short tall smoke curtains beside the guard (engine fx.smokeLine, GM settings), clear of the prisoners (east)
 // r5: real curtains: wider (gmTall), leaning downwind (west-north), from the guard's muzzles east of the box; boxes stay >= 50 % visible
 // r7: the smoke is the engine volley smoke from each shot (pan puff + jet + billows -> bank), see NOTES "musket smoke + flash spec"
@@ -200,12 +200,12 @@ if (!GD.var.paint) { const ROADP = [...R_CN, ...R_NC].filter((q, i) => i % 2 ===
       authoredK: 1.6, authored: [[960, 40, 70, 2, 0], [520, 150, 95, 3, 0], [230, 225, 95, 3, 1], [70, 440, 105, 3, 1], [110, 620, 125, 4, 1], [670, 640, 105, 3, 0],
         [1680, 390, 130, 4, 0], [1590, 320, 35, 1, 0], [1690, 600, 30, 1, 0], [1780, 650, 65, 2, 0], [1250, 230, 55, 2, 0], [1350, 760, 70, 2, 1]],   // r13d: >= 40 px off the British boxes
       on: (t) => t < SW + 1.2 },   // r13c: no screenClear cluster deletion (it emptied the middle of the field); the date plate is HUD (drawn above the clouds)
-    stratus: { F: 3.1, at: [CEND[0], CEND[1]], speed: 0.45 }, volley: { K: 1 / 15.2, night: 1, wind: [-14, -36], jet: [55, 75], billows: 8, gone: 17.0, cap: 0.4, a0: 0.36, haze: 1, burstCap: 0.8, life: 5, fade: 2.4, tau: 3, windAt: 0.5, shear: 0.8, stretch: 0.12 } }); }   // r13: thinner, carried off north-west, gone in ~5 s   // r9: gone 0.5 s before it reaches the riders   // r8: the guard smoke blows north, away from every box
+    stratus: { F: 3.1, at: [CEND[0], CEND[1]], speed: 0.45 }, volley: BW.smoke("musket.night", { K: 1 / 15.2, wind: [-14, -36], gone: 17.0 }) }); }   // LOOK LOCK v1: BW.LOCK.smoke["musket.night"]   // r13: thinner, carried off north-west, gone in ~5 s   // r9: gone 0.5 s before it reaches the riders   // r8: the guard smoke blows north, away from every box
 // r16 (owner 2026-11-28: "the clouds should be suited for a 2D film"): PAINTED clouds (kit/js/paint_clouds.js, build --paint): gouache sprites in
 // 3 parallax layers over the map + their soft painted shadows, a painted deck round Nelson's Ferry that the lens falls into, and a painted
 // cloud wipe (the near layer fills the frame around the swap SW and parts outward onto the ferry) in place of the grey white-out.
 // The engine layer stays for the guard's musket smoke only (no fair clouds, no deck, no stratus, no white-out, no grey haze band).
-else { BW.gl({ mpu: 128, hazeK: 0, shadowK: 0, volley: { K: 1 / 15.2, night: 1, wind: [-14, -36], jet: [55, 75], billows: 8, gone: 17.0, cap: 0.4, a0: 0.36, haze: 1, burstCap: 0.8, life: 5, fade: 2.4, tau: 3, windAt: 0.5, shear: 0.8, stretch: 0.12 } });
+else { BW.gl({ mpu: 128, hazeK: 0, shadowK: 0, volley: BW.smoke("musket.night", { K: 1 / 15.2, wind: [-14, -36], gone: 17.0 }) });
   const L0 = 0, L1 = 1, L2 = 2;   // far / mid / near layers (altitudes in map px: the push-in passes them at different times)
   PC.dive({ layers: [330, 640, 1150], fieldAt: 2.6, wind: [1.1, -0.35], shadowK: 0.2, shadowOff: [80, 60],
     // r16b: soft translucent painted masses seen from above + long low wisps, log-normal sizes (64-450 px, 7x; sprite radius, the painted body is ~60 % of it), off the road / ONE ROAD /
