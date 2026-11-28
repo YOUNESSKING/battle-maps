@@ -259,6 +259,20 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r20 share -> `stylew_borrow_test_r20_share.mp4` (76.733 s, 2302 frames; r18 audio stream-copied, identical; -14.0 LUFS, -1.9 dBTP)
+- RunPod, 3 pods (A4000 / A4000 / A5000, all terminated, pods list empty): ~$0.035 + $0.032 + $0.038 = ~$0.105. Builds: m3d `--smoke3d --var
+  smoke3dimpoff=-46,10`, m3f + hook-a `--smoke3d`, hook-a0 = the locked hook (crossfade only).
+- Render check fixes (found on the first splice: the guard had NO visible flash): the flashes now live in their own engine world drawn straight
+  to the canvas (not capped, not cut out: the guard's muzzles sit at the red box), 18 px out along the aim, quads 80 / 160 px (visible core
+  ~35 px + halo ~70 px), and on the shot's frame (time rounded to the frame start, as r15: the engine waited one frame for a shot 0.3 ms after
+  a frame start). m3f + hook re-rendered; m3d reused (no muskets).
+- Splice (`tools/splice_r20.py`): share 234-257 = the opening seam frames (`opening_seam_r20.py`), 405-533 the new hook (+ the recomposed
+  hook -> hook-b crossfade), 740-2301 new m3d xfaded into new m3f.
+- Guard flash check (every frame 448-500, new bright warm pixels vs the previous frame): flash onsets at frames 450, 457, 461, 482, 488, 496 =
+  the six shot sounds (15.000, 15.233, 15.367, 16.067, 16.267, 16.533 s) and the same frames as r15; each a visible burst (~530-570 px).
+  Volleys 63.37 / 66.56: the r20 onsets fall on the same frames as r15's ripple. Seams: no step at 234 / 258 (the dive camera settling into
+  the crossfade), 405 / 526-534 / 740 / 1162-1170 as r19.
+
 ## r20 stills (critic A 6.5 / owner "why did you push the smoke of the gun to the house?" + critic B 7.5) -> `sheet_smoke3d_r20.jpg` (r15 | r19 | r20), `sheet_seam_r20.jpg`
 - The engine's smoke code kept (fx.smokeLine / fx.cannon / fx.flash, film units, our camera / Z); source, direction and scale fixed for black
   powder (bwgl.mjs smoke3d pending region rewritten; build `--smoke3d`, m3d also `--var smoke3dimpoff=-46,10`):

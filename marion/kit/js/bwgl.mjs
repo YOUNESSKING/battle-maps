@@ -271,7 +271,7 @@ else {
     const HIDE = !!GV3.smoke3dhide;   // measurement: the same scene with no gun smoke drawn (references for the contrast / visibility numbers)
     const mk3 = (Zs, seed, wind) => { const cam = new THREE.PerspectiveCamera(), sc = new THREE.Scene(), fx = createFX({ scene: sc, camera: cam, renderer, unitsPerMeter: UF, fxScale: 9, wind, sunDir: [-0.7, 0.48, -0.4], duration: D, seed });
       return { Zs, fx, sc, cam, W: (x, z, h) => [x / Zs, h, z / Zs], prep() { cam.copy(camera); cam.position.divideScalar(Zs); cam.near = camera.near / Zs; cam.far = camera.far / Zs; cam.updateProjectionMatrix(); cam.updateMatrixWorld(true); } }; };
-    const MJ = mk3(Z, 1517, [20, -7]), MH = mk3(Z, 1519, [20, -7]);
+    const MJ = mk3(Z, 1517, [20, -7]), MH = mk3(Z, 1519, [20, -7]), MF = mk3(Z, 1520, [20, -7]);   // MF: the flashes, drawn straight to the canvas (r15 drew them on their own layer: never capped, never cut out)
     const CN3 = C.vcannon || [], g0 = CN3[0], wdir = g0 ? (() => { const dx = g0[1] - g0[6], dz = g0[2] - g0[7], l = Math.hypot(dx, dz) || 1; return [20 * dx / l, 20 * dz / l]; })() : [20, -7];
     const CW = mk3(Zc, 1518, wdir);
     const IO = String(GV3.smoke3dimpoff || "0,0").split(",").map(Number);
@@ -283,17 +283,19 @@ else {
       emit(MJ, x, z, ax, az, ts, 4, 0.04, { look: "gm", size: 0.42, alpha: 0.55, life: 1.0, muzzle: MUZ(75, Z), height: 1.2, windK: 0.3 });
       emit(MH, x, z, ax, az, ts + 0.05, 3, 0.2, { look: "gm", size: 0.95, alpha: 0.30, life: 4.2, muzzle: MUZ(20, Z), height: 1.6, windK: 0.6 });
       // r20 (critic B: pinpoints, flashes off the sound): one flash per logged shot (the audio's list), ON its frame, the v8 colours (core
-      // warm white, halo orange) sized to read: fx.flash quad = 10 x size x fxScale x U units -> core ~40 px, halo ~85 px on screen (r15: core
+      // warm white, halo orange) sized to read: fx.flash quad = 10 x size x fxScale x U units: quads 80 / 160 px -> a visible core ~35 px + halo ~70 px (the sprite is a soft disc) (r15: core
       // 8 px + 35 px tongue + 80 px glow); the size is in film units, so it is the same in every scene (PPU 60)
       const FPX = (px) => px / (10 * 9 * UF * (Z / KK));
-      MJ.fx.flash(MJ.W(x, z, 0.1), ts, { size: FPX(40), life: 0.13, color: [1.6, 1.25, 0.7], alpha: 1 });
-      MJ.fx.flash(MJ.W(x, z, 0.1), ts, { size: FPX(85), life: 0.16, color: [1.25, 0.5, 0.12], alpha: 0.55 }); }
+      const tf = Math.round(ts * 30) / 30 - 1e-4;   // on the shot's frame (as r15: a shot 0.3 ms after a frame start flashed on that frame, the engine would wait for the next)
+      const lf = Math.hypot(ax - x, az - z) || 1, fx_ = x + (ax - x) / lf * 18 * KK, fz_ = z + (az - z) / lf * 18 * KK;   // r20 render check: 18 px out along the aim (a muzzle at a box was hidden under it)
+      MF.fx.flash(MF.W(fx_, fz_, 0.1), tf, { size: FPX(80), life: 0.13, color: [1.6, 1.25, 0.7], alpha: 1 });
+      MF.fx.flash(MF.W(fx_, fz_, 0.1), tf, { size: FPX(160), life: 0.16, color: [1.25, 0.5, 0.12], alpha: 0.5 }); }
     for (const [ts, x, z, ax, az, ti, tx, tz] of CN3) { const l = Math.hypot(ax - x, az - z) || 1;
       CW.fx.cannon(CW.W(x, z, 0.05), ts, { size: 1.2, jet: 0.5 / 1.2, flashHold: 0.4, flashCore: 0.7, nightPool: 7, dir: [(ax - x) / l, (az - z) / l] });
       if (ti >= 0) { const ix = tx + IO[0], iz = tz + IO[1];
         emit(CW, ix, iz, ix + (ax - x) / l, iz + (az - z) / l, ts + ti, 6, 0.06, { look: "gm", tint: [0.25, 0.22, 0.18], size: 0.45, alpha: 0.45, life: 1.2, muzzle: MUZ(10, Zc), height: 0.3, windK: 0.2 });
         CW.fx.flash(CW.W(ix, iz, 0.03), ts + ti, { size: 0.35, life: 0.08, color: [1.2, 0.55, 0.16], alpha: 0.8 }); } }
-    [MJ, MH, CW].forEach((w) => w.fx.setNight(V3.night ? 1 : 0));
+    [MJ, MH, MF, CW].forEach((w) => w.fx.setNight(V3.night ? 1 : 0));
     // the r15 composite (copied: alpha cap + soft knee + box / tag / banner cut-outs) for the musket worlds
     const RT3 = new THREE.WebGLRenderTarget(1280, 720, { type: THREE.HalfFloatType, depthBuffer: false }), NR = 24, rc3 = Array.from({ length: NR }, () => new THREE.Vector4(-1, -1, -1, -1)), rm3 = new Float32Array(NR);
     const cmp3 = new THREE.ShaderMaterial({ transparent: true, depthTest: false, depthWrite: false, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor,
@@ -314,7 +316,7 @@ else {
     const capped = (w, t, cap, knee) => { w.prep(); w.fx.update(t, w.cam); const prev = renderer.getRenderTarget(); renderer.setRenderTarget(RT3); renderer.setClearColor(0, 0); renderer.clear(true, false, false);
       renderer.render(w.sc, w.cam); renderer.setRenderTarget(prev); const ur = rects3(); for (let i = 0; i < NR; i++) { const r = ur[i]; if (r) { rc3[i].set(r[0], r[1], r[2], r[3]); rm3[i] = r[4] * cap / 0.4; } else rc3[i].set(-1, -1, -1, -1); }
       cmp3.uniforms.uCap.value = cap; cmp3.uniforms.uKn.value = knee; renderer.render(cS3, oC3); };
-    S3D = { Z, Zc, draw(t) { if (HIDE) return; capped(MH, t, 0.4, 0.6); capped(MJ, t, 0.8, 0); capped(CW, t, 0.9, 0); } };   // r20: the gun's cloud too goes through the cut-out composite (the gun box stays above its smoke)
+    S3D = { Z, Zc, draw(t) { if (HIDE) return; capped(MH, t, 0.4, 0.6); capped(MJ, t, 0.8, 0); capped(CW, t, 0.9, 0); MF.prep(); MF.fx.update(t, MF.cam); renderer.render(MF.sc, MF.cam); } };   // r20: the gun's cloud too goes through the cut-out composite (the gun box stays above its smoke)
     window.__S3D = { Z, Zc, wind: wdir, shots: (C.vshots || []).length, cannon: CN3.length };
   }
   // LOOK-LOCK pending-end smoke3d
