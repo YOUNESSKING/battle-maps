@@ -1,0 +1,376 @@
+{
+ "source": "research/style_tests/stylew_borrow/stylew_borrow_test_r15_share.mp4",
+ "lock": "v1 = r15",
+ "note": "share time = frame/30 of the r15 share; scene_t = the test scene's own time (windows: A hook-a 0-17.8, B hook-b 29.34-32.34, B2 hook-b 44.24-48.64, D m3d 40.0-54.6, C m3f 3.26-41.26, joined with 8-frame crossfades). NO cloud / dive / white-out frames: the clouds and the opening dive are NOT approved (owner 2026-11-28).",
+ "frames": [
+  {
+   "id": "musket_night_jets",
+   "frame": 491,
+   "share_t": 16.3667,
+   "window": "A",
+   "scene": "test-bw-hook-a",
+   "scene_t": 16.3667,
+   "build": "lowcountry hook-1 hook-2 --inset santee",
+   "block": "musket.night",
+   "what": "hook-a guard volley at night (6 shots from 15.0 s): flashes + jets of the night musket preset",
+   "crop": [
+    420,
+    200,
+    900,
+    520
+   ],
+   "crop_png": "musket_night_jets_crop.png",
+   "full_png": "musket_night_jets_full.png"
+  },
+  {
+   "id": "gold_name_slam",
+   "frame": 585,
+   "share_t": 19.5,
+   "window": "B",
+   "scene": "test-bw-hook-b",
+   "scene_t": 31.3067,
+   "build": "lowcountry hook-3 hook-5 --inset santee --inset blackriver",
+   "block": "gold.slam",
+   "what": "the 3D gold name FRANCIS MARION on its word, map dimmed 35 % (crop = title only; the clouds around it are NOT locked)",
+   "crop": [
+    330,
+    750,
+    1590,
+    950
+   ],
+   "crop_png": "gold_name_slam_crop.png",
+   "full_png": "gold_name_slam_full.png"
+  },
+  {
+   "id": "gold_title",
+   "frame": 705,
+   "share_t": 23.5,
+   "window": "B2",
+   "scene": "test-bw-hook-b",
+   "scene_t": 47.4733,
+   "build": "lowcountry hook-3 hook-5 --inset santee --inset blackriver",
+   "block": "gold.title",
+   "what": "the gold title + THREE GREATEST TACTICAL MOVES subtitle",
+   "crop": [
+    230,
+    330,
+    1690,
+    700
+   ],
+   "crop_png": "gold_title_crop.png",
+   "full_png": "gold_title_full.png"
+  },
+  {
+   "id": "plaque_key_day",
+   "frame": 900,
+   "share_t": 30.0,
+   "window": "D",
+   "scene": "test-bw-m3d",
+   "scene_t": 45.6,
+   "build": "congaree m3-7 m3-9",
+   "block": "plaque + key",
+   "what": "pocket-watch date plaque (1781 / 12 May) top-left + THE ARMIES key bottom-left, a plain map shot",
+   "crop": [
+    0,
+    0,
+    340,
+    130
+   ],
+   "crop_png": "plaque_key_day_crop.png",
+   "full_png": "plaque_key_day_full.png",
+   "extra_crops": {
+    "key": [
+     20,
+     880,
+     320,
+     1060
+    ]
+   }
+  },
+  {
+   "id": "cannon_flash",
+   "frame": 1039,
+   "share_t": 34.6333,
+   "window": "D",
+   "scene": "test-bw-m3d",
+   "scene_t": 50.2333,
+   "build": "congaree m3-7 m3-9",
+   "block": "cannon",
+   "what": "cannon flash frame 1: ragged fireball cone + white core + ground glow (share 34.633)",
+   "crop": [
+    800,
+    180,
+    1400,
+    620
+   ],
+   "crop_png": "cannon_flash_crop.png",
+   "full_png": "cannon_flash_full.png"
+  },
+  {
+   "id": "cannon_flash2",
+   "frame": 1040,
+   "share_t": 34.6667,
+   "window": "D",
+   "scene": "test-bw-m3d",
+   "scene_t": 50.2667,
+   "build": "congaree m3-7 m3-9",
+   "block": "cannon",
+   "what": "cannon flash frame 2 (60 %), jet starting",
+   "crop": [
+    800,
+    180,
+    1400,
+    620
+   ],
+   "crop_png": "cannon_flash2_crop.png",
+   "full_png": "cannon_flash2_full.png"
+  },
+  {
+   "id": "cannon_strike",
+   "frame": 1054,
+   "share_t": 35.1333,
+   "window": "D",
+   "scene": "test-bw-m3d",
+   "scene_t": 50.7333,
+   "build": "congaree m3-7 m3-9",
+   "block": "cannon",
+   "what": "the round shot strikes the gable (+0.5 s): dirt burst, thinned jet over the roof",
+   "crop": [
+    800,
+    180,
+    1400,
+    620
+   ],
+   "crop_png": "cannon_strike_crop.png",
+   "full_png": "cannon_strike_full.png"
+  },
+  {
+   "id": "cannon_cloud_1s5",
+   "frame": 1084,
+   "share_t": 36.1333,
+   "window": "D",
+   "scene": "test-bw-m3d",
+   "scene_t": 51.7333,
+   "build": "congaree m3-7 m3-9",
+   "block": "cannon",
+   "what": "cannon cloud +1.5 s: dense dark-bottomed jet head",
+   "crop": [
+    800,
+    180,
+    1400,
+    620
+   ],
+   "crop_png": "cannon_cloud_1s5_crop.png",
+   "full_png": "cannon_cloud_1s5_full.png"
+  },
+  {
+   "id": "cannon_cloud_4s",
+   "frame": 1159,
+   "share_t": 38.6333,
+   "window": "D",
+   "scene": "test-bw-m3d",
+   "scene_t": 54.2333,
+   "build": "congaree m3-7 m3-9",
+   "block": "cannon",
+   "what": "cannon cloud +4 s: drifted, thinning (gone by ~8 s)",
+   "crop": [
+    800,
+    180,
+    1400,
+    620
+   ],
+   "crop_png": "cannon_cloud_4s_crop.png",
+   "full_png": "cannon_cloud_4s_full.png"
+  },
+  {
+   "id": "timeline_seals",
+   "frame": 1260,
+   "share_t": 42.0,
+   "window": "C",
+   "scene": "test-bw-m3f",
+   "scene_t": 6.5267,
+   "build": "edisto m3-11 m3-12",
+   "block": "timeline + plaque",
+   "what": "wax-seal timeline along the bottom + the date plaque rolled to 30 August",
+   "crop": [
+    400,
+    950,
+    1500,
+    1080
+   ],
+   "crop_png": "timeline_seals_crop.png",
+   "full_png": "timeline_seals_full.png"
+  },
+  {
+   "id": "focus_circle",
+   "frame": 1368,
+   "share_t": 45.6,
+   "window": "C",
+   "scene": "test-bw-m3f",
+   "scene_t": 10.1267,
+   "build": "edisto m3-11 m3-12",
+   "block": "focus",
+   "what": "the soft focus light circle on 'in a thick wood' (darker outside, warm light inside)",
+   "crop": [
+    0,
+    0,
+    1920,
+    1080
+   ],
+   "crop_png": "focus_circle_crop.png",
+   "full_png": "focus_circle_full.png"
+  },
+  {
+   "id": "musket_flash",
+   "frame": 1902,
+   "share_t": 63.4,
+   "window": "C",
+   "scene": "test-bw-m3f",
+   "scene_t": 27.9267,
+   "build": "edisto m3-11 m3-12",
+   "block": "musket.day",
+   "what": "first musket flashes of the ambush ripple (share 63.40)",
+   "crop": [
+    700,
+    250,
+    1300,
+    520
+   ],
+   "crop_png": "musket_flash_crop.png",
+   "full_png": "musket_flash_full.png"
+  },
+  {
+   "id": "musket_jets_0s3",
+   "frame": 1910,
+   "share_t": 63.6667,
+   "window": "C",
+   "scene": "test-bw-m3f",
+   "scene_t": 28.1933,
+   "build": "edisto m3-11 m3-12",
+   "block": "musket.day",
+   "what": "musket jets +0.3 s: 4 clumps with gaps, white",
+   "crop": [
+    700,
+    250,
+    1300,
+    520
+   ],
+   "crop_png": "musket_jets_0s3_crop.png",
+   "full_png": "musket_jets_0s3_full.png"
+  },
+  {
+   "id": "musket_jets_0s8",
+   "frame": 1925,
+   "share_t": 64.1667,
+   "window": "C",
+   "scene": "test-bw-m3f",
+   "scene_t": 28.6933,
+   "build": "edisto m3-11 m3-12",
+   "block": "musket.day",
+   "what": "musket jets +0.8 s: clumps still separate, white -> grey",
+   "crop": [
+    700,
+    250,
+    1300,
+    520
+   ],
+   "crop_png": "musket_jets_0s8_crop.png",
+   "full_png": "musket_jets_0s8_full.png"
+  },
+  {
+   "id": "musket_haze_2s",
+   "frame": 1961,
+   "share_t": 65.3667,
+   "window": "C",
+   "scene": "test-bw-m3f",
+   "scene_t": 29.8933,
+   "build": "edisto m3-11 m3-12",
+   "block": "musket.day",
+   "what": "musket haze +2 s: grey haze carried downwind, round soft cards, no slab",
+   "crop": [
+    700,
+    250,
+    1300,
+    520
+   ],
+   "crop_png": "musket_haze_2s_crop.png",
+   "full_png": "musket_haze_2s_full.png"
+  },
+  {
+   "id": "musket_haze_5s",
+   "frame": 2051,
+   "share_t": 68.3667,
+   "window": "C",
+   "scene": "test-bw-m3f",
+   "scene_t": 32.8933,
+   "build": "edisto m3-11 m3-12",
+   "block": "musket.day",
+   "what": "volley 1 +5 s: its haze gone (the buckshot ripple's haze from 66.56 is still drifting)",
+   "crop": [
+    700,
+    250,
+    1300,
+    520
+   ],
+   "crop_png": "musket_haze_5s_crop.png",
+   "full_png": "musket_haze_5s_full.png"
+  },
+  {
+   "id": "wipe_out",
+   "frame": 2142,
+   "share_t": 71.4,
+   "window": "C",
+   "scene": "test-bw-m3f",
+   "scene_t": 35.9267,
+   "build": "edisto m3-11 m3-12",
+   "block": "wipe",
+   "what": "wipe-out of the second red box: dark box + dust puff + casualty marks (+0.35 s)",
+   "crop": [
+    750,
+    250,
+    1300,
+    560
+   ],
+   "crop_png": "wipe_out_crop.png",
+   "full_png": "wipe_out_full.png"
+  },
+  {
+   "id": "rout",
+   "frame": 2219,
+   "share_t": 73.9667,
+   "window": "C",
+   "scene": "test-bw-m3f",
+   "scene_t": 38.4933,
+   "build": "edisto m3-11 m3-12",
+   "block": "rout",
+   "what": "rout: 4 box-coloured pieces scattering south-west, one wounded straggler (+0.6 s)",
+   "crop": [
+    750,
+    300,
+    1300,
+    700
+   ],
+   "crop_png": "rout_crop.png",
+   "full_png": "rout_full.png"
+  },
+  {
+   "id": "ledger",
+   "frame": 2290,
+   "share_t": 76.3333,
+   "window": "C",
+   "scene": "test-bw-m3f",
+   "scene_t": 40.86,
+   "build": "edisto m3-11 m3-12",
+   "block": "ledger",
+   "what": "parchment result list (PARKER'S FERRY, 3 rows) top-right + the date plaque",
+   "crop": [
+    1240,
+    60,
+    1880,
+    380
+   ],
+   "crop_png": "ledger_crop.png",
+   "full_png": "ledger_full.png"
+  }
+ ]
+}

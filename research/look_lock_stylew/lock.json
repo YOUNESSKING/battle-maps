@@ -1,0 +1,679 @@
+{
+ "name": "Style W borrow look",
+ "version": 1,
+ "approved_short": "r15, owner 2026-11-28 (clouds + opening dive NOT approved)",
+ "approved": "owner 2026-11-28: approved r15 as THE reference (\"I like everything\"); correction the same day: \"The clouds and the opening, I don't like them\" -> clouds + dive NOT locked, being redone",
+ "reference": "research/style_tests/stylew_borrow/stylew_borrow_test_r15_share.mp4",
+ "golden": "research/look_lock_stylew/golden/golden.json",
+ "rules": "research/look_lock_stylew/LOCK.md",
+ "history": [],
+ "locked_files": [
+  {
+   "path": "marion/kit/js/borrow.js",
+   "mode": "sections",
+   "what": "the BW module: BW.LOCK presets + named blocks, plaque, key, ledger, gold title, shots/volleys, hit/wipe/rout, cannon, tilt (section 6 CSS clouds = pending)",
+   "sha256": "f8ef2ce56730e90cfc4481e7715c7a166ee369180c34be187c95231e7ba13ee4",
+   "pending": {
+    "clouds": "cea642b2695555ffe122b98dddfdea09ed94abc335bbe7490b96a5b1806d7399"
+   }
+  },
+  {
+   "path": "marion/kit/js/bwgl.mjs",
+   "mode": "sections",
+   "what": "the 3D layer: musket flashes + jets + haze, cannon fireball/jet/cloud, soot column, camera solve (dive/fair/stratus/white-out = pending)",
+   "sha256": "22f9e0536fcdc9cea671f84c6bc5cbe3b670b352bad7d587ddbe4d28dffd3049",
+   "pending": {
+    "clouds": "243c8842e1a42e2ba987b2a75ea53ff758de5ad8caad64b009d73a903ab81dba",
+    "clouds-frame": "03fe6a5c7e761f880d332a315366dbd28c293a7e4adf29bee1124101655f0d42"
+   }
+  },
+  {
+   "path": "marion/kit/build_scene.py",
+   "mode": "sections",
+   "what": "the --borrow build (overlay + borrow.js + bwgl.mjs + three + fx.js; the fx.js cloud patches = pending)",
+   "sha256": "7b89bc69913d0df8caa7a138f03541675911748a98a728eb788a04de3d3e56d5",
+   "pending": {
+    "clouds": "58ae6755a3cb7608604255d70bb49b1fb0b8b06b5404b0ab04621aceb4d82483"
+   }
+  },
+  {
+   "path": "marion/kit/yt_kit.js",
+   "mode": "region",
+   "from": "const FOC = document.createElement",
+   "to": "// (2) re-ink the named ground",
+   "what": "the focus light circle (built kit)",
+   "sha256": "be8bd1c34e5abd57f63a4b8a603998ad6c6b0a97fd203e12b09230499f2fa136"
+  },
+  {
+   "path": "marion/kit/js/vx_bc_kit.src.js",
+   "mode": "region",
+   "from": "const FOC = document.createElement",
+   "to": "// (2) re-ink the named ground",
+   "what": "the focus light circle (kit source)",
+   "sha256": "be8bd1c34e5abd57f63a4b8a603998ad6c6b0a97fd203e12b09230499f2fa136"
+  },
+  {
+   "path": "vicksburg/engine/overlay.js",
+   "mode": "file",
+   "what": "GM overlay: pocket-watch plaque, THE ARMIES key, wax-seal timeline, ledger",
+   "sha256": "b66bc2d66d8558272f13cb66b26fd36494b0c3b90afefda4be438c2df05d1b92"
+  },
+  {
+   "path": "vicksburg/engine/fx.js",
+   "mode": "file",
+   "what": "engine fx: the cannon plume under the 2D fireball (its cloud code is patched at build time)",
+   "sha256": "4a44c7a1fa505ea360703bbb6e3a700ac0ca32a3639ac27e01943761dd944b74"
+  },
+  {
+   "path": "vicksburg/engine/vendor/three.module.min.js",
+   "mode": "file",
+   "what": "three r169",
+   "sha256": "f7cee3c7533449a1505cc12cb5128b89e3d4fd3d7ea62b05f9f5464a217472ee"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cinzel-latin-600-normal.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "61efc27ceb7d08bb841652fa8979c0b6833b92548b7f9544c07968a6c02f28e4"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cinzel-latin-700-normal.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "8efa224fe70fef188a39c095e218b81fd31061809f2752537e33a9ec7b9c2263"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cinzel-latin-ext-600-normal.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "a5779eb98b5046090f99169b529743e356b452909295ad7db4cb70011e0425e0"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cinzel-latin-ext-700-normal.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "55b110958b9b614a410cf607c12b1ff2990fa3e5bd0bfacf17e5fd7dce681562"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cormorant-garamond-cyrillic-500-italic.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "05c0ceae1b682821281884a877ea9135bdeeb6e0d0eeebc79cf0a1211e494538"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cormorant-garamond-cyrillic-500-normal.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "30aec8d9cdb4ea84534ffcd7c58b0f06069f63dc177b5aafd7438627dfe10fb8"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cormorant-garamond-cyrillic-600-italic.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "cb92ea139b34821f3145ff5735ef3ffcfb3070125fa75c73fbd993c7e9a861cb"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cormorant-garamond-cyrillic-600-normal.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "012bad3c47fada69f033bab125a60357379d69080ecfd37282e636f8390c6bf9"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cormorant-garamond-cyrillic-700-normal.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "a767c1a110fa77514eda50ac2f962e92f99db4b8760c2bea2a6c04cbdf9b02aa"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cormorant-garamond-latin-500-italic.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "4fb55a7a6d564d428061fe12c82c896264bcc8b7f0b52840bf88e0db5b91256f"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cormorant-garamond-latin-500-normal.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "8197bf53615ddc8c423f444c7f0eec63b7fa0ba093fcfbec60dfdd28429b0fc8"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cormorant-garamond-latin-600-italic.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "0b6719b25266b8f7f0b48e84eb8094db8d243c5b089a5fa48d350bc93f57127b"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cormorant-garamond-latin-600-normal.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "ae062b6d5ae308e7edf61b28b07b9984bbb6e961b1f34d9b2c2f4389c33f21ea"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cormorant-garamond-latin-700-normal.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "21a0fc1c5c22708cf4aa0c147fd32982e25bf9e21efec0ca31a4495ba41753eb"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cormorant-garamond-latin-ext-500-italic.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "e4078de1cff9d0f515515d83cc4ecb8a1ddbaaa86b580bfbcee403d17980b1ed"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cormorant-garamond-latin-ext-500-normal.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "3de1b0f23516d8ff77cc1a5af88b6c19037a375ec52729a8a5633998f58aa609"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cormorant-garamond-latin-ext-600-italic.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "b367d9fced0c6964c5e7deeeb323e0d12ddc7ddc1b406e3c190724c0c71eacb4"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cormorant-garamond-latin-ext-600-normal.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "4993f7f4feb5e31d94f54e3b11428337a06f0c8c8d9ffef331aabd7e6a81b4c8"
+  },
+  {
+   "path": "vicksburg/engine/assets/fonts/cormorant-garamond-latin-ext-700-normal.woff2",
+   "mode": "file",
+   "what": "GM fonts (plaque, ledger, gold title)",
+   "sha256": "f6cf9ae2417875c056a91df3669b14099da0a004ed66460324208d3541e7fa86"
+  },
+  {
+   "path": "research/style_tests/stylew_borrow/tools/make_test_audio.py",
+   "mode": "file",
+   "what": "the approved r14j/r15 mix chain (gains, ducking, limiters, -14 LUFS)",
+   "sha256": "e96316ba89278cd6b79e9cc7825be49ed55a708d824e99517ac9a773e8d819e4"
+  },
+  {
+   "path": "vicksburg/tools/troop_sfx.py",
+   "mode": "file",
+   "what": "renders every musket ripple (flintlock set)",
+   "sha256": "a0eb692f1ca9c6164d35b3493d32a8cee2217128120bb00ca157aca0ce2bdcb1"
+  },
+  {
+   "path": "marion/tools/sfx_mix_lib.py",
+   "mode": "file",
+   "what": "kit cue renderer used by the mix",
+   "sha256": "dd07c0929f3255a27795f30f21586c3071fd8883921d795932c2e56fd9c5b30b"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/cheer_charge.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "44b2f6ea6ed1e1d9b247e8666c74b6c2e4f6c9c956bb922756b5c4f7b978b5f5"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf05_0.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "92b4c430fc6fd199921e899811e75ba01661e41556bcce762d08b4535d9e85d9"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf05_1.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "16af78367bc2da937c494258fd2e3141488c1c20ec388b0e4d38b5f88630ae9e"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf05_2.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "2252a03637a433b63c79b7001c2f855e76869d293c5492e254816ec1b5055426"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf05_3.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "19bac0b61da5fb76d46416f8ae89199c53a55f386b6d6aa435d711e66e24a23f"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf05_4.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "67f59df766cbfe877efdb4e6ec099ae5d688800545884f483c2db1fca63d313d"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf10_0.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "fb180f76eb1daf4eb4cdd299ae9ef2b52e38a88e1221742d2926fab976eaad60"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf10_1.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "3b906e3ac5e7cc90dac5bc1fb47dc66270dc28c147c67628776fd82b6a24b6e1"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf10_2.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "ff7bcd495cb2ca59368c8403127b5822bfc091bb40d921ec822922cd971ede0f"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf10_3.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "fbe7ae40dc393e17527ed602978788dfa657b0de5057fbe996ceabb38f17710c"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf10_4.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "dea02c470c1f6d5f688ae416891b12f36f07bb7015089c4c0a5cbcc0f15e2f3f"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf20_0.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "348a7bd3b5d3fc18f014aecd359f57d447a3ed8289a5178c4c5be39413f5b5c2"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf20_1.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "53990cf66682f45ac08fa5e0b6e32877daae5ff569ff356ceaf9ac5c157d1c3e"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf20_2.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "e8e6b63dba8205d6745c2751e0820feaeb7073d6965d4421099f73d18ebc54c0"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf20_3.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "01012b84281b2c62d0c8280d270c9bac869299a34eb44373a0f1ae617a6f7dd4"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf20_4.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "ea0f932c3649d47ca209d4833896c6ff215e7bfcf9bc49a84b0b68132f750e25"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf30a_0.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "2f59556d51e9825cd64781caa43dd1177ed0a234709b4ac67e5385c7098d0a9c"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf30a_1.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "ac8d06269f5d2dd68a467d20a353e78a628a4f710fa428097d03d366553b4bb6"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf30a_2.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "7b8aeb797e60fb2ff3298e8186d5cbef1734f7052b347e7d3436ff88f7091afc"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf30a_3.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "a3c26f48fb7f02c9d6ac50558fffcab9f8f0b63b8f9f83cb7b2c45cbcd44f4f7"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf30a_4.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "278748e405f80e17e7f3acfe3ee4f6f47c96f24f2cd0a70c8d94c92baae1c03b"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf30b_0.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "24a4f64608f765d8eeb0e739c485d5c4ea78c434cf78c5bc4793e99b16471f94"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf30b_1.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "06aaa4c7f4167078673d984637f32c784c85aac91e729bc8f5d646d419e0c651"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf30b_2.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "bbd8b4a83e7d571a55e929f51ea2faea633bad0db1217ab54f9886a00f740e50"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf30b_3.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "b3536948a20ae33fe4e1aa42f46bfc4fc07ffe591d3709197ec7745402ee10fb"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf30b_4.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "88172e84034edaf67b4b087b879530aa5d00b34acc97c0c6ebbcc05d7c94a1d4"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf60a_0.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "eca2d165d7bc7d0f8fe97a0b17a87443bcd75a250bfa27542e2d73679651c758"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf60a_1.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "b5420996a11e78f73a51ffb1014ced6a275c0b63142e9efca1271da1b2a62e1e"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf60a_2.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "ebf66d0023f2cf3ada18b1d1f0d288b4afac134fa98193bb4685fac6e0e66d1f"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf60a_3.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "6e6c420af705fc5517a475f30c25b613465085eadc94cef3500f8a6f2da3e38a"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf60a_4.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "0838d46cc3edaf68ab4c21e6d7b1e4dfe432116f523dd96fd1c9d463f2f02035"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf60b_0.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "bcf79cd41799930fe1e81dfee63355eb78b6b9b1c4fc26464e5ef89f73efb6f0"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf60b_1.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "b8893566272c5fddf2a6a450611aa11f509a86288fb3c6e3738b372056a1cfcd"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf60b_2.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "218fecbc4345fd15d1bd2ae88955c95fd2a19ccfb5084a11e56dcd7776775221"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf60b_3.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "310c32211dec682ac017a14ee088d5e4053f42e3e82df99c88a1f49df0cc2de3"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/enf60b_4.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "0aa8b313d17d4e1eb513f466a69aa1847d8f2bc71ce3e3f36b8f68fd76be13fa"
+  },
+  {
+   "path": "ajackson/sound/shots_flint/march_loop.flac",
+   "mode": "file",
+   "what": "flintlock shot set (Jackson)",
+   "sha256": "79e53c8c6553fc116e0707218d97b068fa19c67329d66c84488f5ee72f3992e1"
+  },
+  {
+   "path": "goosegreen/assets/media/sfx/candidates/cand1_hit.wav",
+   "mode": "file",
+   "what": "3D-film cannon shot (gun)",
+   "sha256": "5195b00fe184ff7b77ee8197bc3a254eece9add9716e7608360b4f0cc411ef64"
+  },
+  {
+   "path": "goosegreen/assets/media/sfx/candidates/cand2_hit.wav",
+   "mode": "file",
+   "what": "3D-film boom (impact)",
+   "sha256": "616c6fd405065fa13fd9dfd799ef57e91fd52454c7dd1f7eec2c7fc081be90ed"
+  },
+  {
+   "path": "grant/assets/media/sfx/candidates/bombs/bomb4_heavyexplosionreverbusc.mp3",
+   "mode": "file",
+   "what": "burning roof (lowpass 900)",
+   "sha256": "5553062b804d8c086f0689495e595e445057d0b0d698a8f01af6685d3d697b85"
+  },
+  {
+   "path": "grant/assets/media/sfx/candidates/cand5_distant-warfare.mp3",
+   "mode": "file",
+   "what": "battle ambience -27 dB",
+   "sha256": "47bc6e0a09115e65ff2e83b4d4e5434616e9147e3158ad30e7ab1da1189dd38f"
+  }
+ ],
+ "params": {
+  "blocks": {
+   "smoke": {
+    "musket.day": {
+     "jet": [
+      60,
+      80
+     ],
+     "front": 20,
+     "cap": 0.4,
+     "a0": 0.36,
+     "haze": 1,
+     "burstCap": 0.8,
+     "burstLen": [
+      60,
+      90
+     ],
+     "puffSpread": [
+      0.05,
+      0.5
+     ],
+     "puffR": [
+      16,
+      24
+     ],
+     "lumps": 0.45,
+     "life": 5.5,
+     "fade": 2.6,
+     "tau": 3,
+     "windAt": 0.8,
+     "shear": 0.8,
+     "stretch": 0.05,
+     "jetGrow": 1.3,
+     "jetWindAt": 0.8,
+     "greyAt": [
+      0.4,
+      0.9
+     ],
+     "burstWhite": [
+      235,
+      233,
+      228
+     ],
+     "burstGrey": [
+      175,
+      178,
+      182
+     ],
+     "hazeGrey": [
+      [
+       140,
+       143,
+       147
+      ],
+      [
+       175,
+       178,
+       182
+      ]
+     ],
+     "cardRot": 35,
+     "cardFeather": 30,
+     "jitterY": 12,
+     "capKnee": 0.6,
+     "latK": 0.35
+    },
+    "musket.night": {
+     "night": 1,
+     "jet": [
+      55,
+      75
+     ],
+     "billows": 8,
+     "cap": 0.4,
+     "a0": 0.36,
+     "haze": 1,
+     "burstCap": 0.8,
+     "life": 5,
+     "fade": 2.4,
+     "tau": 3,
+     "windAt": 0.5,
+     "shear": 0.8,
+     "stretch": 0.12
+    },
+    "cannon": {
+     "cap": 0.9,
+     "clife": 7.5
+    }
+   },
+   "content": [
+    "K",
+    "wind",
+    "cwind",
+    "gone",
+    "capBoxes"
+   ],
+   "windSpeed": {
+    "musket.day": 42.4,
+    "musket.night": 38.6,
+    "cannon": 16.8
+   },
+   "volleyCall": {
+    "k": 0.9,
+    "jy": 4,
+    "noPuff": true,
+    "groups": 4,
+    "groupW": 0.18
+   },
+   "shotCall": {
+    "k": 0.9,
+    "puff": false
+   },
+   "capBox": {
+    "target": [
+     0.6,
+     30
+    ],
+    "strike": [
+     0.3,
+     24,
+     0.08
+    ]
+   },
+   "soot": {
+    "rise": 80,
+    "r": 24
+   },
+   "gold": {
+    "slam": {
+     "exact": true,
+     "dim": 0.35
+    },
+    "title": {}
+   },
+   "focus": {
+    "DIM": 1.9,
+    "LIT": 0.15,
+    "CORE": 380,
+    "FEATHER": 200,
+    "OUT": 0.32
+   }
+  },
+  "audio": {
+   "env_defaults": {
+    "B0": 56.35,
+    "B1": 59.95,
+    "CANNON_DB": 7.0,
+    "MUSKET_DB": 12.0,
+    "CANNON_REL": 1.5,
+    "MUSKET_REL": -1.0,
+    "MUSKET_REL2": 0.0,
+    "FRONT_S": 0.35,
+    "MUSKET_EXTRA_DB": 0.0,
+    "TAIL_DB": -12.0,
+    "TAIL_DUCK": 0.75,
+    "LATER_FRONT_DUCK": 0.9,
+    "TAIL_END_DB": -12.0,
+    "TAIL_END_AT": 0.0,
+    "LATER_TAIL_DB": -10.0,
+    "GUN_EXTRA": 6.5,
+    "GUN_TAIL_DB": -12.0,
+    "GUN_TAIL_AT": 0.3,
+    "GUN_CRACK_DB": 2.0,
+    "FIRE_DB": -13.0,
+    "GUN_REL": 10.0,
+    "CRACK_DRIVE": 3.0,
+    "MUSKET_GRMAX": 1.5,
+    "FIRE_DUCK": 0.6,
+    "XF": 0.0,
+    "LIMIT_DB": -2.2
+   },
+   "fixed": {
+    "music_bed": 0.05,
+    "music_duck": "sidechaincompress threshold 0.03 ratio 6 attack 20 release 400 (voice key)",
+    "sfx_duck": "sidechaincompress threshold 0.03 ratio 2 attack 10 release 300 (voice key)",
+    "ambience_db": -27,
+    "ambience_duck": 0.35,
+    "cannon_stem_duck": 0.15,
+    "gun": "cand1_hit -15 +4 dB, onset 0.115 s on the flash frame",
+    "boom": "cand2_hit -19 +4 dB on the visible impact",
+    "musket_level": "a 16-shot volley 8 dB under the cannon impact (stem gain measured)",
+    "loudness": "static gain to -14.0 LUFS + one brick-wall limiter at LIMIT_DB"
+   },
+   "reference_r15": {
+    "cannon": -7.0,
+    "impact": -11.1,
+    "volley": -12.0,
+    "later": -16.9,
+    "voice_only": -16.7,
+    "offsets_vs_voice": {
+     "cannon": 9.7,
+     "impact": 5.6,
+     "volley": 4.7,
+     "later": -0.2
+    }
+   },
+   "buckshot_margins_r15": [
+    13.3,
+    5.6,
+    1.2,
+    6.9,
+    -2.2,
+    1.7,
+    -58.3
+   ],
+   "tolerance_db": 1.5,
+   "lufs": -14.0,
+   "lufs_tol": 0.3,
+   "true_peak_max": -1.5
+  }
+ },
+ "pending": {
+  "clouds": {
+   "status": "NOT APPROVED (owner 2026-11-28), being redone; no film may use the r13g dive",
+   "code": [
+    "marion/kit/js/bwgl.mjs pending regions 'clouds' + 'clouds-frame' (dives, fair cumulus, deck, stratus, white-out)",
+    "marion/kit/js/borrow.js pending region 'clouds' (BW.clouds CSS sprites)",
+    "marion/kit/build_scene.py pending region 'clouds' (fx.js skirtCut / baseRound / lumpK patches)",
+    "vicksburg/engine/cloudtex/noise128.bin"
+   ],
+   "params": "the r13g/r13h cloud field + deck + dive timings in marion/scenes-src/test-bw-hook-a.js (BW.gl fair / dive / diveOff / stratus) and the name-slam clouds in test-bw-hook-b.js: recorded there, NOT locked"
+  },
+  "soldiers_vs_boxes": {
+   "status": "open owner decision for the 3D films (v14 soldiers vs the professional boxes); Style W uses unit boxes, not affected"
+  }
+ },
+ "frame_thresholds": {}
+}

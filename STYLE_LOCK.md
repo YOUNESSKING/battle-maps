@@ -372,6 +372,16 @@ Adds to 2d/2e; where it conflicts, 2f wins. Backup before this: `research/rules_
 6. **Weather** (`research/style_tests/more_life/weather/weather.js`): rain / mud / snow / fog ONLY where FACT_NOTES confirm it (e.g. Fort Donelson snow; Fort Henry mud; Shiloh night rain; Fredericksburg morning fog); clear otherwise. Visual only, no new sounds; units and labels stay readable.
 7. **Dropped by the owner (do not use):** camps/wagon parks/depots (2026-11-11), farms and fields (2026-11-11), block-formation units (2026-11-10).
 
+## 2g. STYLE W BORROW LOOK LOCK (owner 2026-11-28)
+Owner 2026-11-28 approved test r15 (`research/style_tests/stylew_borrow/stylew_borrow_test_r15_share.mp4`) as THE reference for Style W films
+built with `--borrow` (elements borrowed from the 3D films). Locked (lock v1 = r15): musket flashes / jets / haze (day + night), the cannon
+(fireball, jet, cloud, strike), hit / wipe-out / rout, the focus light circle, the pocket-watch date plaque, THE ARMIES key, the wax-seal
+timeline, the parchment ledger, the 3D gold title, and the r14j/r15 mix (3D-film gun + boom, flintlock set, -14 LUFS). **NOT locked: the
+clouds and the opening cloud dive** (owner the same day: "The clouds and the opening, I don't like them"): pending a new owner-approved test;
+no film may use the r13g dive. Rules, golden frames, building blocks (`BW.smoke`, `BW.musketVolley`, `BW.goldSlam`, ...), pilot-first rule:
+`research/look_lock_stylew/LOCK.md`. Gate before any `--borrow` render: `research/look_lock_stylew/tools/check_look_lock.py` must print
+LOOK LOCK OK and pass the lint; only the owner changes the lock (approved test -> new lock version).
+
 ## 3. Sound effects (locked files and levels)
 Rule: every visual beat has a sound, and **the boom is always on the impact** (launches are quiet). **Aircraft sounds only when an aircraft is on screen** (owner 2026-10-06): never a plane/jet/heli sound over parachutes or an empty sky; give `K.aircraft` the sound (its default) or show the planes. Levels are dB in `sfx_mix_lib.py`:
 

@@ -97,12 +97,14 @@ if BORROW:   # the GM overlay (pocket watch, seals, THE ARMIES, ledger) + the bo
     os.makedirs(f"{out}/gl", exist_ok=True)   # r4: the 3D engine layer (three r169 module, fx.js + one extra smoke look, the cloud noise, bwgl.mjs)
     shutil.copy(f"{VX}/vendor/three.module.min.js", f"{out}/gl/three.module.min.js")
     fxs = open(f"{VX}/fx.js").read(); _k = "const LOOKS = {"; assert fxs.count(_k) == 1
+    # LOOK-LOCK pending-begin clouds (fx.js cloud build patches: NOT approved, being redone)
     _sk = "bot[k] = c.yb + (c.g ? 0 : c.H * 0.06 * Math.min(1, r * r));"; assert fxs.count(_sk) == 1   # r13c (opt-in o.skirtCut): no thin rings of cloud round each dome's footprint
     fxs = fxs.replace(_sk, "bot[k] = c.yb + (c.g ? 0 : c.H * (o.baseRound ?? 0.06) * Math.min(1, r * r)) + (o.skirtCut && r > 1 ? (r - 1) * c.H * o.skirtCut : 0);")
     _lp = "lump = 1 + 0.3 * (fbm("; assert fxs.count(_lp) == 1   # r13e (opt-in o.lumpK): the dome outline wobble (0.3) drew radial ridges on big fair cumulus
     fxs = fxs.replace(_lp, "lump = 1 + (c.g ? 0.3 : (o.lumpK ?? 0.3)) * (fbm(")
     _tf = "const top = new Float32Array(MW * MD).fill(y0 - 8), bot = new Float32Array(MW * MD).fill(y0)"; assert fxs.count(_tf) == 1   # r13c (opt-in): empty columns far below the slab floor (an empty column's base far above its top: the old fill left faint rings at the slab floor round every cloud)
     fxs = fxs.replace(_tf, "const top = new Float32Array(MW * MD).fill(y0 - 8), bot = new Float32Array(MW * MD).fill(y0 + (o.skirtCut ? 400 : 0))")
+    # LOOK-LOCK pending-end clouds
     open(f"{out}/gl/fx.js", "w").write(fxs.replace(_k, _k + "\n  bwTall: { tint: [0.31, 0.32, 0.336], alpha: 0.27, s0: 9.0, grow: 3.6, rise: 0.22, turb: 0.4, life: 18, mode: 5.2 },   // BW r4: gmTall stretched x3.4 (curtains ~4x taller than wide)"))
     if os.path.exists(f"{out}/gl/noise128.bin"): os.remove(f"{out}/gl/noise128.bin")
     os.link(f"{VX}/cloudtex/noise128.bin", f"{out}/gl/noise128.bin")
