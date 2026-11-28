@@ -50,7 +50,8 @@ imp = rd(f"{GG}/candidates/cand1_hit.wav") * db(-15 + 4)   # r13: the reference 
 probe = np.zeros((int(4 * SR), 2), np.float32); rng = np.random.default_rng(3); L = T.Lib(rng)
 T.render_volley(L, probe, dict(type="musket_volley", tShare=0.5, unit=dict(men=144), at=dict(camDist=20, px=[960, 540]),
                                shots=[dict(tShare=0.5 + 0.04 * k, at=dict(px=[700 + 30 * k, 540])) for k in range(16)]), rng, [])
-CN_DB = float(os.environ.get("CANNON_DB", "7")); MU_DB = float(os.environ.get("MUSKET_DB", "12"))   # r14 (owner: guns and muskets too low): the 3D cannon stem +7 dB, the muskets +12 dB (now outside the voice-keyed compressor; chosen from a gain grid, NOTES)
+CN_DB = float(os.environ.get("CANNON_DB", "7")); MU_DB = float(os.environ.get("MUSKET_DB", "12"))
+CN_REL = float(os.environ.get("CANNON_REL", "5")); MU_REL = float(os.environ.get("MUSKET_REL", "-2"))   # r14h: the gun stems' level vs the voice (100 ms max RMS)   # r14 (owner: guns and muskets too low): the 3D cannon stem +7 dB, the muskets +12 dB (now outside the voice-keyed compressor; chosen from a gain grid, NOTES)
 GAIN = (rms_peak(imp) - 8) - rms_peak(probe) + MU_DB
 print(f"cannon impact {rms_peak(imp):.1f} dB, raw volley {rms_peak(probe):.1f} dB -> musket stem gain {GAIN:+.1f} dB")
 
@@ -68,6 +69,7 @@ for (a, b, name) in SEGS:
     GUNK = ("fire", "impact", "explosion", "mortar", "mg"); guns = [c for c in kit if c[1] == "fire" and name == "test-bw-m3d"]
     booms = [c for c in kit if c[1] == "impact" and name == "test-bw-m3d"]; KEEPK = ("impact",) if name == "test-bw-m3d" else ()   # r14 (owner): the r12 locked-kit impact cue back in the cannon window, layered with the 3D gun + boom + fire
     dropped = [c for c in kit if c[1] in GUNK and c[1] not in KEEPK]; kit = [c for c in kit if c[1] not in GUNK or c[1] in KEEPK]
+    kitg = [c for c in kit if c[1] in KEEPK]; kit = [c for c in kit if c[1] not in KEEPK]   # r14h: the kit impact joins the cannon stem
     K.render(kit, d, "/tmp/_bw_kit.wav"); fx = rd("/tmp/_bw_kit.wav"); fx = np.pad(fx, ((0, max(0, n - len(fx))), (0, 0)))[:n]; os.remove("/tmp/_bw_kit.wav")
     # musket shots: [t, screen x, screen y] (scene time), grouped into ripples
     sh = sorted([[t + t0 - a, x, y] for t, x, y in shots if a <= t + t0 < b - 0.05])
@@ -103,21 +105,36 @@ for (a, b, name) in SEGS:
         fire = rd(f"{GM}/bombs/bomb4_heavyexplosionreverbusc.mp3", "lowpass=f=900", 0, 5.6); fire *= np.clip((5.6 - np.arange(len(fire)) / SR) / 2.0, 0, 1)[:, None]
         tf = bwt[2] + 0.9 + t0 - a
         if 0 <= tf < d: log3.append(("fire bomb4 lowpass 900", -17 + 4, put(fire, tf, 0.121, -17 + 4)))
+    if kitg:
+        K.render(kitg, d, "/tmp/_bw_kitg.wav"); kg = rd("/tmp/_bw_kitg.wav"); os.remove("/tmp/_bw_kitg.wav"); cn[:min(len(kg), len(cn))] += kg[:len(cn)]
     def _pk(x, w=0.1):   # max short-term RMS (dB) of a stem in this window
         c = np.concatenate([[0], np.cumsum((x.mean(1).astype(np.float64)) ** 2)]); k = int(w * SR)
         return 10 * np.log10(max(1e-12, (c[k:] - c[:-k]).max() / k)) if len(c) > k else -120
     print(f"  stems (100 ms max RMS, pre-mix): voice {_pk(vo):.1f} dB | cannon {_pk(cn[:n] * (1 - 0.15 * venv)[:, None]):.1f} dB | muskets {_pk(mus_shots):.1f} dB")
-    vo = vo + cn[:n] * (1 - 0.15 * venv)[:, None] + mus_shots   # Jackson: sfx +4 dB ducked 25 %; r14 (owner): ducked 15 % so the shots punch through
+    # r14h (owner: guns clearly louder): the cannon stem (kit impact + 3D gun + boom + fire) and the musket stem are each pushed into their own
+    # limiter to a short-term level set against THIS window's voice (cannon = voice + CN_REL dB, muskets = voice + MU_REL dB, 100 ms max RMS)
+    vk = vo.copy(); vref = _pk(vo)
+    def prelim(x, target, ceil):
+        if _pk(x) < -100: return x
+        g = target - _pk(x)
+        for _ in range(3):
+            sf.write("/tmp/_bw_pl.wav", x * db(g), SR, subtype="FLOAT")
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "/tmp/_bw_pl.wav", "-af", f"alimiter=limit={ceil}:attack=1:release=60:level=false", "-c:a", "pcm_f32le", "/tmp/_bw_pl2.wav"], check=True)
+            y = rd("/tmp/_bw_pl2.wav"); y = np.pad(y, ((0, max(0, len(x) - len(y))), (0, 0)))[:len(x)]; g += target - _pk(y)
+        os.remove("/tmp/_bw_pl.wav"); os.remove("/tmp/_bw_pl2.wav"); return y
+    cnS = prelim(cn[:n] * (1 - 0.15 * venv)[:, None], vref + CN_REL, db(-4)); musS = prelim(mus_shots, vref + MU_REL, db(-6))
+    print(f"  stems (100 ms max RMS): voice {vref:.1f} | cannon {_pk(cnS):.1f} | muskets {_pk(musS):.1f} dB")
+    vo = vo + cnS + musS
     # battle bed: the 3D films' distant-warfare ambience, battle windows only (from the first visible shot), 1 s fades, -23 dB, ducked 35 %
     tb = (sh[0][0] - 0.8) if (name == "test-bw-m3f" and sh) else (guns[0][0] - 1.0) if guns else None
     if tb is not None and tb < d - 1:
         amb = rd(f"{GM}/cand5_distant-warfare.mp3", None, 70, d - tb + 0.5); amb = np.pad(amb, ((0, max(0, int((d - tb) * SR) + 1 - len(amb))), (0, 0)))
         i0 = int(tb * SR); m = n - i0; e = np.clip(np.minimum(np.arange(m) / SR, (m - np.arange(m)) / SR) / 1.0, 0, 1)
-        vo[i0:] += amb[:m] * db(-23) * (e * (1 - 0.35 * venv[i0:]))[:, None]; log3.append(("ambience cand5 distant-warfare", -23, round(tb + a, 3)))
+        vo[i0:] += amb[:m] * db(-27) * (e * (1 - 0.35 * venv[i0:]))[:, None]; log3.append(("ambience cand5 distant-warfare", -27, round(tb + a, 3)))   # r14h: -27 (was -23)
     if dropped: print(f"  dropped kit gun cues: {[(c[1], round(c[0] + a, 2)) for c in dropped]}")
     for l in log3: print(f"  3D-film sound: {l[0]:32s} {l[1]:+.0f} dB at {l[2]} (film s)")
     print(f"{name:16s} {a:7.2f}-{b:7.2f}  kit cues {len(kit):3d}  musket shots {len(sh):3d} in {len(groups)} ripples")
-    parts.append((vo, mu, fx))
+    parts.append((vo, mu, fx, vk))
 
 # --- concat (10 ms joins under the picture's fade through black) and the assemble_full.py chain: music 0.08 ducked (ratio 6), sfx ducked (ratio 3)
 XF = float(os.environ.get("XF", "0"))   # r5: straight crossfades of XF s at the joins (the picture uses xfade with the same overlap)
@@ -132,19 +149,26 @@ def cat(i):
         x = p[i]; r = np.linspace(0, 1, f)[:, None]; y[-f:] = y[-f:] * (1 - r) + x[:f] * r; y = np.concatenate([y, x[f:]])
     return y
 tmp = "/tmp/_bw_"
-for i, nm in enumerate(("vo", "mu", "fx")): sf.write(f"{tmp}{nm}.wav", cat(i), SR, subtype="FLOAT")
+for i, nm in enumerate(("vo", "mu", "fx", "vk")): sf.write(f"{tmp}{nm}.wav", cat(i), SR, subtype="FLOAT")
 D = sum(b - a for a, b, _ in SEGS) - XF * (len(SEGS) - 1)
-f = ["[0:a]asplit=3[vo][key][key2]", "[2:a][key2]sidechaincompress=threshold=0.03:ratio=2:attack=10:release=300[sfx]",
-     f"[1:a]volume=0.08[mus]", "[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]",
-     "[vo][musd][sfx]amix=inputs=3:normalize=0,alimiter=limit=0.9:level=false[aout]"]   # r14: transients survive to the final -3 dBFS limiter (was 0.5)
-subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{tmp}vo.wav", "-i", f"{tmp}mu.wav", "-i", f"{tmp}fx.wav", "-filter_complex", ";".join(f),
-                "-map", "[aout]", "-c:a", "pcm_s16le", f"{tmp}mix.wav"], check=True)
-LN = "loudnorm=I=-13.8:TP=-1.5:LRA=11"   # r11: -13.8 before the -3 dBFS peak limiter -> -14.0 LUFS out
-r = subprocess.run(["ffmpeg", "-nostats", "-i", f"{tmp}mix.wav", "-af", LN + ":print_format=json", "-f", "null", "-"], capture_output=True, text=True).stderr
-m = json.loads(r[r.rindex("{"):r.rindex("}") + 1])
-af = (f"{LN}:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}:measured_thresh={m['input_thresh']}"
-      f":offset={m['target_offset']}:linear=true,aresample=48000,alimiter=limit=0.708:attack=2:release=80:level=false")   # r11: peaks (the cannon boom) <= -3 dBFS
-subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{tmp}mix.wav", "-af", af, "-c:a", "pcm_s16le", OUT], check=True)
-for nm in ("vo", "mu", "fx", "mix"): os.remove(f"{tmp}{nm}.wav")
+# r14h (advisor): the compressors are keyed by the VOICE only (vk), the music bed 0.05 (was 0.08), no limiter before the loudness stage
+f = ["[3:a]asplit=2[key][key2]", "[2:a][key2]sidechaincompress=threshold=0.03:ratio=2:attack=10:release=300[sfx]",
+     "[1:a]volume=0.05[mus]", "[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]",
+     "[0:a][musd][sfx]amix=inputs=3:normalize=0[aout]"]
+subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{tmp}vo.wav", "-i", f"{tmp}mu.wav", "-i", f"{tmp}fx.wav", "-i", f"{tmp}vk.wav", "-filter_complex", ";".join(f),
+                "-map", "[aout]", "-c:a", "pcm_f32le", f"{tmp}mix.wav"], check=True)
+# r14h (advisor): loudnorm fell back to dynamic gain around the loud shots; now a STATIC gain to -14 LUFS + one brick-wall limiter (-2.2 dBFS)
+def ilufs(fn):
+    r = subprocess.run(["ffmpeg", "-nostats", "-i", fn, "-af", "ebur128", "-f", "null", "-"], capture_output=True, text=True).stderr
+    return float(re.findall(r"I:\s+(-?[\d.]+) LUFS", r)[-1])
+LIM = float(os.environ.get("LIMIT_DB", "-2.2")); g = -14.0 - ilufs(f"{tmp}mix.wav")
+for _ in range(3):
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{tmp}mix.wav", "-af", f"volume={g:.2f}dB,alimiter=limit={db(LIM):.4f}:attack=1:release=60:level=false,aresample=48000",
+                    "-c:a", "pcm_s16le", OUT], check=True)
+    I = ilufs(OUT); print(f"  loudness pass: gain {g:+.2f} dB -> {I:.2f} LUFS"); 
+    if abs(I + 14.0) <= 0.15: break
+    g += -14.0 - I
+for nm in ("vo", "mu", "fx", "vk", "mix"): os.remove(f"{tmp}{nm}.wav")
+
 json.dump(dict(gain_db=round(GAIN, 2), segments=SEGS, volleys=log), open(OUT.rsplit(".", 1)[0] + "_log.json", "w"), indent=0, default=float)
 print("wrote", OUT, round(D, 2), "s")
