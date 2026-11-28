@@ -79,7 +79,7 @@ else {
       const cx = B[0] + hsh(c + sd, 61) * B[2], cz = B[1] + hsh(c + sd, 62) * B[3], R0 = lnr(c + sd, 63, sc.med * F, 0.5, (sc.rMin ?? 14) * F, (sc.rMax ?? 70) * F);   // r13c: radius clamp per scene
       if (offWide(cx, cz, R0) || wsp.some(([a, b, q]) => Math.hypot(a - cx, b - cz) < q + R0 + 10 * F)) continue;
       k++; wsp.push([cx, cz, R0, c]); if (inCorr(cx, cz, R0)) corrC.add(c); const kids = 1 + Math.floor(hsh(c + sd, 65) * 3);
-      for (let j = 0; j < kids; j++) { const i2 = (c + sd) * 7 + j, a = hsh(i2, 66) * 6.283, r = lnr(i2, 67, R0 * 0.45, 0.6, 7 * F, R0 * 0.9), dd = R0 * (0.9 + 0.8 * hsh(i2, 69)) + r * 0.6;
+      for (let j = 0; j < kids; j++) { const i2 = (c + sd) * 7 + j, a = hsh(i2, 66) * 6.283, r = lnr(i2, 67, R0 * 0.45, 0.6, 7 * F, R0 * 0.9), dd = R0 * ((C.fair.kidD || [0.9, 0.8])[0] + (C.fair.kidD || [0.9, 0.8])[1] * hsh(i2, 69)) + r * 0.6;   // r13d: kidD = tighter (rounder) clusters
         const x = cx + Math.cos(a) * dd, z = cz + Math.sin(a) * dd * 0.8; if (!offWide(x, z, r)) { wsp.push([x, z, r, c]); if (inCorr(x, z, r)) corrC.add(c); } } }
     // r5: screen-space keep-clear (spoken places must read): drop whole clusters whose cloud projects into the box (+ its radius) at the sampled times
     const SCL = C.fair.screenClear; let dropC = new Set();
@@ -102,16 +102,16 @@ else {
     const deck = [];
     if (DV && C.fair.masses) {   // r13b (critic A): the deck = 2-3 big merged masses (+ the centre) of tightly packed lumps, no separate puffs
       const MS = C.fair.massStep || 14, ML = C.fair.massLump || [18, 10];   // r13c: lump spacing + radius (bigger lobes, fewer puffs)
-      let i = 0; for (const [mx, mz, MR] of C.fair.masses) for (let gx = -MR; gx <= MR; gx += MS) for (let gz = -MR; gz <= MR; gz += MS, i++) {
+      let i = 0; for (const [mi, [mx, mz, MR]] of C.fair.masses.entries()) for (let gx = -MR; gx <= MR; gx += MS) for (let gz = -MR; gz <= MR; gz += MS, i++) {
         const x = gx + (hsh(i, 5) - 0.5) * MS * 0.57, z = gz + (hsh(i, 6) - 0.5) * MS * 0.57; if (Math.hypot(x, z * 1.1) > MR) continue;
-        deck.push([DV.over[0] + (mx + x) * F, DV.over[1] + (mz + z) * F, (ML[0] + hsh(i, 8) * ML[1]) * F]); } }
+        deck.push([DV.over[0] + (mx + x) * F, DV.over[1] + (mz + z) * F, (ML[0] + hsh(i, 8) * ML[1]) * F, mi]); } }   // r13d: one base height for the whole deck (base steps between lumps showed as a stepped notch, a gap between two heights)
     else if (DV && C.fair.deck !== false) { const cx0 = DV.over[0], cz0 = DV.over[1] + 6 * F;
       for (let i = 0, gx = cx0 - 118 * F; gx < cx0 + 122 * F; gx += 27 * F) for (let gz = cz0 - 112 * F; gz < cz0 + 108 * F; gz += 27 * F, i++) {   // r13: fewer, bigger, merging lumps
         const x = gx + (hsh(i, 5) - 0.5) * 18 * F, z = gz + (hsh(i, 6) - 0.5) * 18 * F, r = Math.hypot(x - cx0, (z - cz0) * 1.15);
         if (hsh(i, 7) < lerp(0.97, 0.55, clamp((r - 30 * F) / (90 * F)))) deck.push([x, z, (20 + hsh(i, 8) * 16) * F]); }
       for (const [dx, dz, r] of [[0, 0, 30], [-6, 11, 26], [8, -7, 26], [3, 20, 26], [-11, -9, 24], [13, 7, 24]]) deck.push([DV.over[0] + dx * F, DV.over[1] + dz * F, r * F]); }
-    const cl = wsp.map(([x, z, r, c], i) => Object.assign([x, z, r, 3 * F + r * (0.18 + 0.16 * hsh(i, 13)), (tierOf(c) + hsh(i, 11) * 9) * F, 0], { corr: CORR && CORR.perDome ? inCorr(x, z, r) : corrC.has(c) }))   // r13c: perDome = only the lumps over the corridor fade
-      .concat(deck.map(([x, z, r], i) => [x, z, r, r * (0.26 + 0.1 * hsh(i, 14) + 0.12 * clamp(1 - Math.hypot(x - DV.over[0], z - (DV.over[1] + 4 * F)) / (60 * F))), (hsh(i, 15) < 0.35 ? 72 : 56) * F + hsh(i, 12) * 4 * F, 1]));   // r13: two deck heights -> parallax layers through the dive
+    const HK = C.fair.hK ?? 1, cl = wsp.map(([x, z, r, c], i) => Object.assign([x, z, r, 3 * F + HK * r * (0.18 + 0.16 * hsh(i, 13)), (tierOf(c) + hsh(i, 11) * 9) * F, 0], { corr: CORR && CORR.perDome ? inCorr(x, z, r) : corrC.has(c) }))   // r13c: perDome = only the lumps over the corridor fade
+      .concat(deck.map(([x, z, r, mi], i) => [x, z, r, r * (0.26 + 0.1 * hsh(i, 14) + 0.12 * clamp(1 - Math.hypot(x - DV.over[0], z - (DV.over[1] + 4 * F)) / (60 * F))), (mi != null ? (C.fair.deckY ?? 62) * F : (hsh(i, 15) < 0.35 ? 72 : 56) * F + hsh(i, 12) * 4 * F), 1]));   // r13: two deck heights -> parallax layers through the dive
     // r13c: corridor test where the lump APPEARS (the camera ray through the lump hits the ground there; tilted, a raised cloud shows north of its
     // ground point), sampled over the corridor's window CORR.t
     if (CORR && CORR.t) { const TL = window.__timelines && window.__timelines.main, t0 = TL ? TL.time() : 0; for (const c of cl) c.corr = false;
@@ -119,10 +119,17 @@ else {
         for (const c of cl) { if (c[5] === 1 || c.corr) continue; const h = c[4] + 0.5 * c[3], k = P.y / Math.max(1, P.y - h);
           if (inCorr(P.x + (c[0] - P.x) * k, P.z + (c[1] - P.z) * k, c[2] * k)) c.corr = true; } }
       if (TL) TL.seek(t0, false); }
+    // r13d: no fair lump may APPEAR over the units spoken about (unitKeep {t, keep:[[x, z, R]]}): such lumps are dropped
+    const UK = C.fair.unitKeep; if (UK) { const TL = window.__timelines && window.__timelines.main, t0 = TL ? TL.time() : 0, drop = new Set();
+      for (let tt = UK.t[0]; tt <= UK.t[1] + 1e-6; tt += 0.25) { if (TL) TL.seek(tt, false); camSolve(); const P = camera.position;
+        cl.forEach((c, i) => { if (c[5] === 1 || drop.has(i)) return; const h = c[4] + 0.5 * c[3], k = P.y / Math.max(1, P.y - h), gx = P.x + (c[0] - P.x) * k, gz = P.z + (c[1] - P.z) * k;
+          if (UK.keep.some(([x, z, R]) => Math.hypot(gx - x, gz - z) < R + c[2] * k)) drop.add(i); }); }
+      if (TL) TL.seek(t0, false); for (let i = cl.length - 1; i >= 0; i--) if (drop.has(i)) cl.splice(i, 1); window.__bwglUnitDrop = drop.size; }
     window.__bwglClouds = cl.length;
     const D0 = DV || NODIVE, AD = (t) => (t > D0.SW + 1 ? NODIVE : D0);
     const slabTop = Math.max(104, ...TIERS.map((v) => v + 55)) * F;
-    const mkVC = (sx, list, dk, opF) => { if (list.length) sx.vc = sx.fx.vclouds({ noise: NOISE, clouds: list, bounds: [B[0] - 40 * F, B[1] - 70 * F, B[0] + B[2] + 40 * F, B[1] + B[3] + 40 * F], texel: F, skip: 30 * F,
+    const mkVC = (sx, list, dk, opF) => { if (list.length) sx.vc = sx.fx.vclouds({ noise: NOISE, clouds: list, bounds: (() => { const pd = (c) => c[2] * 1.7 + 32 * F;   // r13d: the map always holds every lump (the deck reached past the box edge: a straight cut at 6.3 s)
+        return [Math.min(B[0] - 40 * F, ...list.map((c) => c[0] - pd(c))), Math.min(B[1] - 70 * F, ...list.map((c) => c[1] - pd(c))), Math.max(B[0] + B[2] + 40 * F, ...list.map((c) => c[0] + pd(c))), Math.max(B[1] + B[3] + 40 * F, ...list.map((c) => c[1] + pd(c)))]; })(), texel: F, skip: 30 * F,
       slab: [28 * F, slabTop]   /* r13: low enough that no cloud bottom is cut flat */, tile: 125 * F, groupScale: C.fair.groupScale ?? 3.0, amp: 5 * F, soft: (C.fair.soft ?? 1.7) * F, skirtCut: C.fair.skirtCut || 0, flatPow: 0.3, sigma: 0.75 / F,
       stepIn: 0.25 * F, stepK: 0.0035, lightStep: 1.4 * F, lodDist: 260 * F, nearFade: 9 * F,   /* r13: no planar cut where the camera passes through a cloud */ maxSteps: C.fair.maxSteps ?? 200, resolution: C.fair.res ?? 0.75, warp: 0.06, fine: 0.12, wisp: 0.45, inner: 0.8,
       weights: [1.0, 0.5, 1, 0.5], group0: C.fair.group0 || [0.55, 0.3, 1.4, 0.5], blur: 1.0, sharp: 1, shadow: 0.75, shadowDir: [0.3, 1, 0.65], drift: (C.fair.drift || [0.10, -0.035]).map((v) => v * F * dk), evolve: 0.0025 / F, floor: 0.05,
