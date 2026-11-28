@@ -207,19 +207,18 @@ if (!GD.var.paint) { const ROADP = [...R_CN, ...R_NC].filter((q, i) => i % 2 ===
 // The engine layer stays for the guard's musket smoke only (no fair clouds, no deck, no stratus, no white-out, no grey haze band).
 else { BW.gl({ mpu: 128, hazeK: 0, shadowK: 0, volley: BW.smoke("musket.night", { K: 1 / 15.2, wind: [-14, -36], gone: 17.0 }) });
   const L0 = 0, L1 = 1, L2 = 2;   // far / mid / near layers (altitudes in map px: the push-in passes them at different times)
-  PC.dive({ layers: [330, 640, 1150], fieldAt: 2.6, wind: [1.1, -0.35], shadowK: 0.2, shadowOff: [80, 60],
-    // r16b: soft translucent painted masses seen from above + long low wisps, log-normal sizes (64-450 px, 7x; sprite radius, the painted body is ~60 % of it), off the road / ONE ROAD /
-    // Charleston / the British boxes; [screen x, y, radius px at 2.6 s, layer, sprite]; the near layer only at the frame edges
-    field: [[560, 130, 96, L0, "pc_p3"], [1500, 110, 77, L0, "pc_p5"], [1760, 450, 152, L0, "pc_p1"], [1520, 930, 112, L0, "pc_p4"], [300, 320, 64, L0, "pc_p2"],
-      [1350, 300, 272, L0, "pc_w0"], [380, 470, 304, L0, "pc_w1"],
-      [200, 190, 240, L1, "pc_p0"], [1680, 250, 208, L1, "pc_p2"], [1640, 720, 272, L1, "pc_b1"], [360, 960, 176, L1, "pc_p1"], [1450, 420, 288, L1, "pc_w2"],
-      [-40, 560, 416, L2, "pc_b0"], [1985, 880, 448, L2, "pc_b2"], [1880, 40, 352, L2, "pc_p4"]],
+  PC.dive({ layers: [330, 640, 1150], fieldAt: 2.6, wind: [1.1, -0.35], shadowK: 0.2, shadowOff: [70, 55],
+    // r16c (old illustrated map): lobed painted cumulus groups seen from above + 3 long low wisps; log-normal sizes (sprite radius 72-361 px,
+    // 5x), ~12-15 % cover over the frame, off the road / ONE ROAD / Charleston / the British boxes; [screen x, y, radius px at 2.6 s, layer, sprite]
+    field: [[560, 150, 137, L0, "pc_g3"], [1490, 110, 102, L0, "pc_g5"], [1770, 470, 216, L0, "pc_g1"], [1540, 940, 159, L0, "pc_g4"], [300, 330, 87, L0, "pc_g2"], [1300, 260, 72, L0, "pc_g6"],
+      [1350, 330, 331, L0, "pc_w0"], [420, 480, 361, L0, "pc_w1"], [1700, 1010, 346, L0, "pc_w2"],
+      [190, 200, 233, L1, "pc_g0"], [1680, 260, 209, L1, "pc_g2"], [1620, 720, 270, L1, "pc_g7"], [330, 960, 172, L1, "pc_g8"],
+      [-30, 560, 263, L2, "pc_b0"], [1980, 880, 283, L2, "pc_b2"], [1890, 40, 231, L2, "pc_g9"]],
     fieldOp: (t, c) => (c.layer === 2 ? 0.9 : 1),
-    // the BANK + the wipe (screen space round the ferry): 6 big soft masses [from angle, scale at SW, sprite, flip, enter time, radius px at SW]
-    // slide in from beyond the frame edges from 6.0 s and grow (the wagons stay visible until they close), cover the swap SW for ~0.15 s,
-    // then part outward and thin into soft wisps by ~SW + 0.8
-    wipe: { t: SW, track: NFL, outDur: 0.8, part: 1400, masses: [[Math.PI, 1.8, "pc_b0", 0, 6.0, 420], [0, 1.85, "pc_b1", 1, 6.1, 430],
-      [Math.PI / 2, 1.75, "pc_b2", 0, 6.25, 380], [-2.3, 1.7, "pc_b3", 1, 6.4, 400], [-0.8, 1.7, "pc_b1", 0, 6.5, 410], [0.75, 1.65, "pc_b0", 1, 6.6, 400]] },
+    // the BANK + the wipe (screen space round the ferry): 9 big lobed masses [from angle, scale, sprite, flip, enter time, radius px when closed]
+    // grow in from all edges from 6.0 s (>= 70 % cover by 6.6 s with a hole over the wagons), close by ~6.92 s, the painted backing <= ~0.13 s
+    // round SW, then part outward into soft wisps (the ferry clear by ~7.6 s)
+    wipe: { t: SW, track: NFL, outDur: 0.6, part: 1500, rIn: 1450, rMid: 900, tMid: 6.6, closeLead: 0.08, masses: [[0.20, 1.6, "pc_b0", 0, 6.000, 450], [0.90, 1.7, "pc_b1", 1, 6.025, 480], [1.60, 1.55, "pc_b2", 0, 6.050, 430], [2.29, 1.65, "pc_b3", 1, 6.075, 470], [2.99, 1.6, "pc_b4", 0, 6.100, 460], [3.69, 1.6, "pc_b0", 1, 6.125, 450], [4.39, 1.7, "pc_b1", 0, 6.150, 480], [5.09, 1.55, "pc_b2", 1, 6.175, 430], [5.79, 1.65, "pc_b3", 0, 6.200, 470]]},
     haze: (t, c) => 0.85 * BW.sstep(0.35, 0.62, c.th),   // a warm painted haze over the far edge while the view is steeply tilted
     until: TZ1 + 0.4 }); }
 // hook-2: "before dawn" is the script's only time: the pocket watch comes in (hands ~4:30, no clock time is spoken)

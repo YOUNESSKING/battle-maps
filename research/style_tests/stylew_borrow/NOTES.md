@@ -259,6 +259,20 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r16c (owner: the direction is right; halfway between r16 clip-art and r16b fog, "an old illustrated map") -> `sheet_dive2d_r16c.jpg` (r15 | r16b | r16c at 1.0 / 4.0 / 6.6 / 7.7 s, + the bank at 6.85, the wipe parting at 7.2, a 1:1 crop)
+- Merged origin/main (look lock v1, PR #154). The `--paint` additions in build_scene.py now sit inside `LOOK-LOCK pending-begin/-end clouds`
+  sections; the gate prints LOOK LOCK OK, with only the expected cloud warnings. No locked preset was touched.
+- Sprites (`make_paint_clouds.py`, `lobed()`): each cloud is 3-7 soft rounded lobes (bank masses 11-16) of different sizes, seen from above at the
+  map's tilt (lobes flattened 0.8). Each lobe gets its own painted shading: lit top-left (242,238,228), mid (222,220,214), cool shade lower right
+  (188,192,202), wide soft steps, and a faint warm sepia rim on the shade side. Lobes are laid far to near like brush dabs, on an irregular rim.
+  The dry-brush feather is ~10-20 px. Cores ~0.9, the thin outer band ~0.6. Paper grain; no glare. The colour is un-premultiplied (first try
+  had dark fringes). Kinds: `g` = cumulus groups (10), `w` = r16b wisps (3), `b` = bank masses (5).
+- Field: 13 groups + 3 long low wisps, sprite radius 72-361 px (5x), off the road / stamp / Charleston / British boxes. Cover measured on the
+  cloud canvas (alpha > 0.5, the warm top haze excluded): 13 % at 1.0 s, 12 % at 4.0 s. Ground shadows ~18 %, offset down-right.
+- Bank + wipe (screen space round the ferry): 9 lobed masses grow in from all edges from 6.0 s (radius 1450 -> 900 px by 6.6 s, then close to
+  ~450 px by SW - 0.08). The painted backing shows for <= ~0.13 s; then they part outward into soft wisps (0.6 s).
+  Measured cover: 6.2 s 24 %, 6.4 s 66 %, 6.6 s 80 % (a hole over the wagons), 6.8 s 97 %, 6.95-7.05 s 100 %, 7.1 s 93 %, 7.2 s 61 %, 7.3 s 31 %, 7.5 s 0.
+
 ## r16b (coordinator on r16: "cartoon clip-art, not painted Style W") -> `sheet_dive2d_r16b.jpg` (r15 | r16b at 1.0 / 4.0 / 6.6 / 7.7 s, + the bank at 6.85, the wipe parting at 7.2, a 1:1 crop)
 - Sprites rebuilt (`make_paint_clouds.py`): soft painted masses seen from above. The density is a sum of gaussian blobs; edges dissolve
   in a dry brush over ~20-40 px (a wide feather, stroke noise, a broken outer band); never a straight bottom. Translucent: thin parts ~0.6,

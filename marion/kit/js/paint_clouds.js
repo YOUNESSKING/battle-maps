@@ -28,13 +28,13 @@ const PC = (() => {
     for (let i = 0; i < 30; i++) { const p = proj(c, X, Y, A), px = proj(c, X + 1, Y, A), py = proj(c, X, Y + 1, A);
       const a = px[0] - p[0], b = py[0] - p[0], cc = px[1] - p[1], d = py[1] - p[1], ex = sx - p[0], ey = sy - p[1], det = a * d - b * cc;
       X += (d * ex - b * ey) / det; Y += (a * ey - cc * ex) / det; if (Math.hypot(ex, ey) < 0.05) break; } return [X, Y]; };
-  const TEXS = { p: [0, 1, 2, 3, 4, 5].map((i) => "pc_p" + i), w: [0, 1, 2, 3].map((i) => "pc_w" + i), b: [0, 1, 2, 3].map((i) => "pc_b" + i) };   // r16b: puffs seen from above / wisps / bank masses
+  const TEXS = { g: [...Array(10).keys()].map((i) => "pc_g" + i), w: [0, 1, 2].map((i) => "pc_w" + i), b: [0, 1, 2, 3, 4].map((i) => "pc_b" + i) };   // r16c: lobed cumulus groups / wisps / bank masses
   const texOf = (name) => ({ sharp: img(name), soft: img(name + "_s"), sh: img(name + "_sh") });
   const place = () => {   // world placement from the authored screen layout (needs the timeline: run once on the first draw)
     if (placed || !CFG) return; placed = true; const o = CFG, TL = tl, t0 = TL.time();
     if (o.field) {
       o.field.forEach(([sx, sy, rpx, layer, tn, at], i) => { TL.seek(at ?? o.fieldAt ?? 2.6, false); const c = cam(); const A = o.layers[layer]; const [X, Y] = unproj(c, sx, sy, A), f = proj(c, X, Y, A)[2];   // at: the time this layout is authored for
-        CL.push({ X, Y, A, R: rpx / f, tex: texOf(tn || TEXS.p[i % TEXS.p.length]), flip: i % 3 === 1, layer, kind: "field" }); }); }
+        CL.push({ X, Y, A, R: rpx / f, tex: texOf(tn || TEXS.g[i % TEXS.g.length]), flip: i % 3 === 1, layer, kind: "field" }); }); }
     if (o.deck) { const d = o.deck; let cx = d.at[0], cy = d.at[1];
       if (d.placeAt != null) { TL.seek(d.placeAt, false); const c = cam(), p = proj(c, d.at[0], d.at[1], 0); [cx, cy] = unproj(c, p[0], p[1] + (d.dy ?? 0), d.alt); }   // the deck shows OVER the ferry (not north of it) at placeAt
       d.masses.forEach(([dx, dy, R, tn], i) => CL.push({ X: cx + dx, Y: cy + dy, A: d.alt * (1 + 0.04 * (i % 3)), R, tex: texOf(tn || TEXS.b[i % TEXS.b.length]),
@@ -70,7 +70,7 @@ const PC = (() => {
     // the painted wipe: the near layer fills the frame around the swap and parts outward to reveal the target (screen space)
     if (o.wipe) wipe(t, o.wipe);
     // warm painted haze over the far edge of the tilted map
-    if (o.haze) { const k = o.haze(t, c); if (k > 0.002) { g.globalAlpha = k; g.drawImage(HZ, 0, 0); } }
+    if (o.haze && !window.__pcNoHaze) { const k = o.haze(t, c); if (k > 0.002) { g.globalAlpha = k; g.drawImage(HZ, 0, 0); } }
     g.globalAlpha = 1; };
   // shadow sprite -> a cool dark wash (alpha = silhouette)
   const tint = (im) => { if (!im || !im.complete || !im.naturalWidth) return null; const c2 = document.createElement("canvas"); c2.width = im.naturalWidth; c2.height = im.naturalHeight;
@@ -83,12 +83,15 @@ const PC = (() => {
   // the last gaps for <= ~0.15 s round w.t (the swap); then they part outward, grow and thin into soft wisps.
   const wipe = (t, w) => { const t2 = w.t + (w.outDur ?? 0.8), M = w.masses; if (t < Math.min(...M.map((m) => m[4])) || t > t2) return;
     const [cx, cy] = w.track ? (() => { const c = cam(), p = proj(c, w.track[0], w.track[1], 0); return [p[0], p[1] + (w.dy ?? 0)]; })() : w.at;
-    const cover = sstep(w.t - 0.07, w.t - 0.03, t) * (1 - sstep(w.t + 0.03, w.t + 0.08, t));
+    const cover = sstep(w.t - 0.09, w.t - 0.06, t) * (1 - sstep(w.t + 0.03, w.t + 0.06, t));   // full backing <= ~0.13 s
     if (cover > 0.002) { g.globalAlpha = cover; g.drawImage(BACK, 0, 0); }   // the backing first: the painted masses stay on top
     for (let i = 0; i < M.length; i++) { const [ang, s0, tn, flip, te, r0] = M[i]; if (t < te) continue; const im = img(tn), ims = img(tn + "_s");
       let rad, sc, a, soft;
-      if (t < w.t) { const u = clamp((t - te) / (w.t - te)), e = u * u * (3 - 2 * u) * 0.35 + u * u * 0.65; rad = lerp(1500, r0, e); sc = s0 * lerp(0.55, 1, e); a = 0.95; soft = 0.25 * (1 - e); }
-      else { const u = clamp((t - w.t) / (t2 - w.t)), e = 1 - (1 - u) ** 2; rad = r0 + (w.part ?? 1400) * e; sc = s0 * (1 + 0.7 * e); a = 1 - sstep(0.35, 1, u); soft = 0.6 * sstep(0, 0.6, u); }   // parts into soft wisps
+      if (t < w.t) { const tm = w.tMid ?? 6.6, tc = w.t - (w.closeLead ?? 0.08), rm = w.rMid ?? 640;   // r16c: in from beyond the edge -> rMid at tMid (a hole stays over the target) -> r0 at tc (closed)
+        if (t < tm) { const e = 1 - (1 - clamp((t - te) / (tm - te))) ** 2; rad = lerp(w.rIn ?? 1250, rm, e); sc = s0 * lerp(0.75, 1, e); }
+        else { const e = sstep(tm, tc, t); rad = lerp(rm, r0, e); sc = s0 * lerp(1, 1.12, e); }
+        a = sstep(te, te + 0.15, t); soft = 0; }
+      else { const u = clamp((t - w.t) / (t2 - w.t)), e = 1 - (1 - u) ** 2; rad = r0 + (w.part ?? 1400) * e; sc = s0 * 1.12 * (1 + 0.5 * e); a = 1 - sstep(0.3, 1, u); soft = 0.7 * sstep(0, 0.5, u); }   // parts outward into soft wisps
       const W2 = 1024 * sc, H2 = (im.naturalHeight / (im.naturalWidth || 1) || 0.75) * 1024 * sc, x = cx + Math.cos(ang) * rad - W2 / 2, y = cy + Math.sin(ang) * rad * 0.75 - H2 / 2;
       if (soft < 0.999) { g.globalAlpha = a * (1 - soft); dimg(im, x, y, W2, H2, flip); }
       if (soft > 0.001) { g.globalAlpha = a * soft; dimg(ims, x, y, W2, H2, flip); } }
