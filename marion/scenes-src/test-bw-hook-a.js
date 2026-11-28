@@ -176,7 +176,7 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
 // BW (borrowed from the 3D films): cloud dive, pocket-watch plaque, THE ARMIES, tilt
 // ================================================================================================================================
 // r4: the real engine (fx.vclouds + the v8 dive + the close stratus + cloud shadows on the ground), camera solved from the DOM camera
-{ const ROADP = [...R_CN, ...R_NC].filter((q, i) => i % 2 === 0), CHS = LYT(32.80, -79.95);
+if (!GD.var.paint) { const ROADP = [...R_CN, ...R_NC].filter((q, i) => i % 2 === 0), CHS = LYT(32.80, -79.95);
   // r5 timing (critic B: the spoken places must read): deck from 6.4 s, white ~6.6-7.1 s, emerge 7.1, clear 7.25, haze gone 7.55, land 7.6
   BW.gl({ mpu: 128, dive: { t: SW, over: NFL, grey: 0.8, greyCol: "rgb(205,205,200)" }, hazeK: 0.6, shadowK: 0.25,   // r13b (critic A): ground shadows 25 %; inside the deck an even grey 6.6-7.1 s
     diveOff: { push: -1.4, deckIn: -1.3, full: -0.5, deck: -0.45, wIn: -0.4, inside: -0.2, warm: 0.05, emerge: 0.2, clear: 0.35, haze: 0.6, land: 0.75 },   // r6: the deck closes in from the frame edges from 5.8 s (clear window over the crossing to ~6.45), full by 6.75
@@ -201,6 +201,30 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
         [1680, 390, 130, 4, 0], [1590, 320, 35, 1, 0], [1690, 600, 30, 1, 0], [1780, 650, 65, 2, 0], [1250, 230, 55, 2, 0], [1350, 760, 70, 2, 1]],   // r13d: >= 40 px off the British boxes
       on: (t) => t < SW + 1.2 },   // r13c: no screenClear cluster deletion (it emptied the middle of the field); the date plate is HUD (drawn above the clouds)
     stratus: { F: 3.1, at: [CEND[0], CEND[1]], speed: 0.45 }, volley: { K: 1 / 15.2, night: 1, wind: [-14, -36], jet: [55, 75], billows: 8, gone: 17.0, cap: 0.4, a0: 0.36, haze: 1, burstCap: 0.8, life: 5, fade: 2.4, tau: 3, windAt: 0.5, shear: 0.8, stretch: 0.12 } }); }   // r13: thinner, carried off north-west, gone in ~5 s   // r9: gone 0.5 s before it reaches the riders   // r8: the guard smoke blows north, away from every box
+// r16 (owner 2026-11-28: "the clouds should be suited for a 2D film"): PAINTED clouds (kit/js/paint_clouds.js, build --paint): gouache sprites in
+// 3 parallax layers over the map + their soft painted shadows, a painted deck round Nelson's Ferry that the lens falls into, and a painted
+// cloud wipe (the near layer fills the frame around the swap SW and parts outward onto the ferry) in place of the grey white-out.
+// The engine layer stays for the guard's musket smoke only (no fair clouds, no deck, no stratus, no white-out, no grey haze band).
+else { BW.gl({ mpu: 128, hazeK: 0, shadowK: 0, volley: { K: 1 / 15.2, night: 1, wind: [-14, -36], jet: [55, 75], billows: 8, gone: 17.0, cap: 0.4, a0: 0.36, haze: 1, burstCap: 0.8, life: 5, fade: 2.4, tau: 3, windAt: 0.5, shear: 0.8, stretch: 0.12 } });
+  const L0 = 0, L1 = 1, L2 = 2;   // far / mid / near layers (altitudes in map px: the push-in passes them at different times)
+  PC.dive({ layers: [330, 640, 1150, 460, 300], fieldAt: 2.6, wind: [1.1, -0.35], shadowK: 0.22,
+    // [screen x, y, radius px at the authoring time, layer, sprite, authoring time]: 0-5.3 s off the road / ONE ROAD / Charleston / the British
+    // boxes, the near layer only at the frame edges; layers 3-4 = the clouds round the dive (laid out at 5.7 s round the ferry at ~830 / 495,
+    // they come in with "across the Santee" and rush out past the lens during the fall: the parallax of the dive)
+    field: [[560, 150, 96, L0], [1480, 115, 84, L0], [1770, 430, 104, L0], [300, 330, 78, L0], [1530, 920, 88, L0],
+      [190, 175, 140, L1], [1660, 265, 140, L1], [1600, 690, 128, L1], [380, 960, 124, L1],
+      [-40, 560, 250, L2, "pc_m0"], [1985, 880, 270, L2, "pc_m1"], [1880, 40, 210, L2, "pc_m2"],
+      [520, 330, 120, 3, "pc_c2", 5.7], [1150, 300, 130, 3, "pc_c4", 5.7], [1240, 640, 120, 3, "pc_c1", 5.7], [460, 700, 125, 3, "pc_c5", 5.7],
+      [830, 240, 95, 4, "pc_c3", 5.7], [1060, 470, 90, 4, "pc_c0", 5.7], [620, 520, 95, 4, "pc_c4", 5.7], [900, 720, 90, 4, "pc_c2", 5.7]],
+    fieldOp: (t, c) => (c.layer === 2 ? 0.92 : c.layer >= 3 ? BW.sstep(5.25, 5.85, t) : 1),
+    // the deck round the ferry: comes in as the push starts, the lens falls into it at the swap
+    deck: { at: NFL, placeAt: 6.6, dy: -20, alt: 150, op: (t) => BW.sstep(5.75, 6.0, t) * (1 - BW.sstep(SW - 0.03, SW + 0.01, t)), grow: (t) => 0.55 + 0.45 * BW.sstep(5.75, 6.5, t),   // grows in (no see-through ghost)
+      masses: [[-52, -34, 40], [50, -30, 42], [-4, 50, 40], [58, 38, 36], [-60, 34, 36], [6, -64, 38], [0, 2, 30]] },
+    // the wipe: screen-space masses round the ferry [angle, radius px at SW, scale at SW, sprite, flip]; cover SW +- 0.05 s, parted by ~SW + 0.8
+    wipe: { t: SW, track: NFL, inDur: 0.32, outDur: 0.8, part: 1500, masses: [[0, 0, 2.0, "pc_t0", 0], [0.3, 470, 1.55, "pc_t1", 0], [1.35, 440, 1.6, "pc_t2", 1],
+      [2.4, 470, 1.55, "pc_t3", 0], [3.45, 450, 1.6, "pc_t1", 1], [4.5, 470, 1.55, "pc_t2", 0], [5.45, 440, 1.6, "pc_t3", 1]] },
+    haze: (t, c) => 0.85 * BW.sstep(0.35, 0.62, c.th),   // a warm painted haze over the far edge while the view is steeply tilted
+    until: TZ1 + 0.4 }); }
 // hook-2: "before dawn" is the script's only time: the pocket watch comes in (hands ~4:30, no clock time is spoken)
 BW.time(T_DAWN, { label: "Before dawn", header: "1780" });   // r2: no clock time is spoken: text only, no watch
 BW.date("1780", T_4M + 0.1);

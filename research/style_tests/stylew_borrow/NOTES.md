@@ -259,6 +259,36 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r16 (painted 2D clouds; owner 2026-11-28) -> `sheet_dive2d_r16.jpg` (stills first; the hook render + splice into r15 wait for the owner / critics)
+- **Redirect.** The first brief was "r16 (3D dive)": the real engine clouds (vicksburg/engine vclouds as in gm3d v6) over our basemap. Before
+  anything was built the owner clarified: "the clouds should be suited for a 2D film". The current clouds read as realistic 3D volumes pasted
+  on a painted 2D map and do not belong to Style W, and the dive is "not up to the level". So r16 drops the 3D-engine route (and the r13c-h
+  emulation): the clouds are now PAINTED, made to match the Style W ink map.
+- **Look** (`marion/tools/make_paint_clouds.py` -> `marion/kit/paint_clouds/*.webp`, 660 KB, no photos, no AI images): gouache sprites
+  built from lobes (a union of circles) and value noise. Each has a soft dry-brush edge (stroke noise, 3 px feather) and 4 flat tones with narrow
+  soft steps: a cream lit top (249,245,233), a mid tone (231,228,217), a cool shade (197,201,204) and a deep base (163,171,182). The light comes
+  from the upper left, and the tone boundaries are jittered by horizontal brush strokes. There is slight pigment pooling inside the shaded edge,
+  a faint broken sepia ink edge (alpha 0.3) and paper grain. Kinds: `c` = side-lit cumulus (6, the field), `m` = big side-lit masses (4, the
+  near layer), `t` = masses seen from above (4, the deck and the wipe). Each kind has a `_s` soft half-size copy (blur 9 px; near the lens, at
+  most 50-55 %) and a `_sh` silhouette for the ground shadow.
+- **Engine** (`marion/kit/js/paint_clouds.js`, `PC.dive`): one 2D canvas between the map and the HUD. Each cloud has a map point and an altitude,
+  and goes through the SAME transform as the map (#world translate/scale inside #bw-tilt perspective(1700) rotateX scale, origin 960 / 669.6),
+  so the layers slide at their own speeds as the camera pushes in. Clouds grow, soften and fade near the lens. Their soft painted shadows
+  (a cool wash, multiply, 22 %) sit down-right on the map. Layouts are authored in SCREEN px at a given time and placed by inverse projection.
+  No canvas `filter` is used (it is unreliable on the GPU pods), and the sprites are a `buildReady` promise.
+- **Dive** (camera path, tilt, narration, stamps, units, plaque all unchanged from r15):
+  - 0-5.3 s: 12 painted cumulus in 3 layers (far 330 / mid 640 / near 1150 map px). The near layer is big and only at the frame edges.
+    They are placed off the road, the ONE ROAD stamp, Charleston and the British boxes.
+  - From "across the Santee" (5.25 s): 8 more clouds round the ferry (altitudes 300 / 460). They rush out past the lens during the fall, giving
+    the parallax of falling through.
+  - 5.75 s on: a painted deck of 7 top-view masses (altitude 150) grows in over Nelson's Ferry, and the lens falls into it.
+  - SW 7.0 s +- 0.05: the wipe, 7 screen-space masses round the ferry plus a painted backing. They cover the swap, then part outward (ease-out,
+    0.8 s) onto the ferry. This replaces the grey white-out.
+  - Also new: a warm painted haze over the far edge while the view is steep (it replaces the engine's grey haze band).
+- **Opt-in:** `build_scene.py --borrow --paint` (adds paint_clouds.js + the sprites, sets `GD.var.paint`). In `test-bw-hook-a.js` the old
+  BW.gl clouds / dive / stratus block runs only without the flag. With the flag, BW.gl keeps only the guard's musket smoke (`hazeK` 0,
+  `shadowK` 0). Other scenes and builds without `--paint` are unchanged.
+
 ## r15 musket smoke (critic A 8.5 on r14k) -> `stylew_borrow_test_r15_share.mp4` (m3f re-rendered on one RunPod RTX A5000; the rest = r14k frames 0-1169, the cut at 39.0 s after the D->C crossfade; audio = r14j stream-copied; 76.733 s, -14.0 LUFS, -1.9 dBTP)
 - Sheet `sheet_smoke_r15.jpg` (r14k left, r15 right, crops at the critic's times); zoom `patch_6780_r14k_vs_r15.jpg` (67.8 s, x 1050-1500, y 250-400).
 - Jets / one bar: volley 1 in 4 clumps (was 5; 5 merged) with groupW 0.18 (both volleys), the haze puffs' sideways offset x0.35 (`latK`),

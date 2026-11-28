@@ -16,9 +16,12 @@ from places import PLACES, RIVER_LINES  # noqa
 a = sys.argv[1:]; insets = []; src = None
 BORROW = "--borrow" in a   # opt-in TEST (research/style_tests/stylew_borrow): + vicksburg/engine/overlay.js + kit/js/borrow.js; scenes without it build unchanged
 if BORROW: a.remove("--borrow")
+PAINT = "--paint" in a   # r16 opt-in (research/style_tests/stylew_borrow NOTES r16): + kit/js/paint_clouds.js + kit/paint_clouds/*.webp, GD.var.paint = "1"
+if PAINT: a.remove("--paint")
 while "--inset" in a: i = a.index("--inset"); insets.append(a[i + 1]); del a[i:i + 2]
 VARS = {}
 while "--var" in a: i = a.index("--var"); k_, v_ = a[i + 1].split("=", 1); VARS[k_] = v_; del a[i:i + 2]   # GD.var.<k> in the scene (one source, variants)
+if PAINT: VARS["paint"] = "1"
 if "--src" in a: i = a.index("--src"); src = a[i + 1]; del a[i:i + 2]   # build scenes/<SCENE> from scenes-src/<src>.js (one source, several scenes)
 name, base = a[0], a[1]
 if a[2] == "--dur":
@@ -93,6 +96,10 @@ if BORROW:   # the GM overlay (pocket watch, seals, THE ARMIES, ledger) + the bo
     for f in os.listdir(f"{VX}/assets/fonts"):
         if f.endswith(".woff2"): shutil.copy(f"{VX}/assets/fonts/{f}", f"{out}/assets/gmfonts/{f}")
     kit += "\n" + open(f"{VX}/overlay.js").read() + "\n" + open(f"{KIT}/js/borrow.js").read()
+    if PAINT:   # r16 painted clouds (after borrow.js: uses BW.TS + the timeline)
+        kit += "\n" + open(f"{KIT}/js/paint_clouds.js").read()
+        os.makedirs(f"{out}/assets/pc", exist_ok=True)
+        for f in os.listdir(f"{KIT}/paint_clouds"): shutil.copy(f"{KIT}/paint_clouds/{f}", f"{out}/assets/pc/{f}")
     body += "\nBW.finish();\n"
     os.makedirs(f"{out}/gl", exist_ok=True)   # r4: the 3D engine layer (three r169 module, fx.js + one extra smoke look, the cloud noise, bwgl.mjs)
     shutil.copy(f"{VX}/vendor/three.module.min.js", f"{out}/gl/three.module.min.js")
