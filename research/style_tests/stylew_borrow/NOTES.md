@@ -259,6 +259,17 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r16 share (r16c + polish) -> `stylew_borrow_test_r16_share.mp4` (76.733 s, 2302 frames at 30 fps, 21 MB; r15 audio stream copied bit-exact)
+- Polish (coordinator): the field is warmed toward the map grade (`fieldTint` [0.983, 0.975, 0.956]: lit tops ~(238,232,218), ~4 % darker).
+  The bank masses are jittered (`jitter`: per mass a random mirror, +-20 deg, +-15 % scale, a small hue/brightness shift; same 5 sprites).
+  The bank's hole is centred on the wagons (dx 60 / dy 110 px from the ferry), so the boxes stay visible until it closes (~6.75 s).
+  Cover: 1.0 s 13 %, 6.4 s 58 %, 6.6 s 72 %, 6.8 s 99 %, 6.95-7.05 s 100 %, 7.2 s 62 %, 7.5 s 0.
+- Render: hook window 0-17.8 s (`test-bw-hook-a:0-17.8`, build `--borrow --paint`, LOOK LOCK OK). RunPod: no community A5000/A4000 for
+  the first try; then one RTX A5000 SECURE ($0.27/h, render 241 s, ~6 min up, ~$0.03). The pod was terminated and the pods list verified empty.
+- Splice: share frames 0-526 = the new render (r15's first crossfade, hook -> name slam, starts at 17.55 s = frame 527); frames 527-2301 =
+  r15. Re-encoded as r15 (x264 slow crf 22, maxrate 3.2 Mb/s); audio `-c:a copy` (stream MD5 identical to r15). Alignment checked: render vs
+  r15 at frames 300/450/520/526 differ by a mean 0.7-1.1 grey levels (encode only). Seam 524-531 is continuous.
+
 ## r16c (owner: the direction is right; halfway between r16 clip-art and r16b fog, "an old illustrated map") -> `sheet_dive2d_r16c.jpg` (r15 | r16b | r16c at 1.0 / 4.0 / 6.6 / 7.7 s, + the bank at 6.85, the wipe parting at 7.2, a 1:1 crop)
 - Merged origin/main (look lock v1, PR #154). The `--paint` additions in build_scene.py now sit inside `LOOK-LOCK pending-begin/-end clouds`
   sections; the gate prints LOOK LOCK OK, with only the expected cloud warnings. No locked preset was touched.
