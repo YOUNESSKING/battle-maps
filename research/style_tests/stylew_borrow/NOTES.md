@@ -259,6 +259,27 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r14j audio (critic B 8.5 on r14i) -> `stylew_borrow_test_r14j_share.mp4` (r14 video stream-copied, 76.733 s, -14.0 LUFS, -1.9 dBTP)
+- Why the buckshot ripple (66.56) escaped the tail rule: the rule did apply, but the ripple's quiet front (-27.5 dB vs -25.0) was pushed to the
+  +2 dB later-ripple target (MUSKET_REL2), i.e. +17.9 dB into 5.5 dB of limiting: the 0.35 s front became a wall and its tail rode +12.4 dB,
+  ringing into the narrator's pause (67.0-67.7). Fixes: MUSKET_REL2 0; the front limiter capped at 1.5 dB of reduction (`MUSKET_GRMAX`; the gain
+  stops rising instead); the later ripples' front ducked 90 % under the voice after the limiter (`LATER_FRONT_DUCK`, r13's voice-keyed
+  compressor did this); every tail fades -12 dB from its ripple's last shot (`TAIL_END_DB`), later ripples' tails -10 dB more (`LATER_TAIL_DB`).
+- `tools/measure_buckshot.py` (fits the raw voice stem from scratchpad/vc into ANY mix, so r13 is measured the same way; 0.25 s windows;
+  voice margin full band / 1-4 kHz; the mix's 2-4 kHz level after the ripple):
+
+| mix | 66.5 | 66.75 | 67.0 | 2-4 kHz 67.3-67.7 |
+|---|---|---|---|---|
+| r13 | +23.4 / +14.1 | +5.6 / +8.1 | -1.7 / +1.9 | -52.3 |
+| r14i | -1.6 / -7.4 | -9.5 / -3.1 | -14.2 / -9.8 | -40.5 |
+| r14j | +13.3 / +5.6 | +1.2 / +6.9 | -2.2 / +1.7 | -58.3 |
+
+- Gun: the crack was already on the final limiter's ceiling (+2 dB on its first 0.1 s changed nothing), so the first 0.1 s is made denser: a
+  tanh soft clip at the gun stem's own peak (`CRACK_DRIVE` 3, 20 ms ramps); final limiter -2.2 dBFS. 50 ms peaks (mp4, stereo mean power):
+  crack -4.4 (r14i -7.0), impact -7.1, narrator's loudest -8.6.
+- Shot table (mp4, 0.35 s; vs r13): cannon -7.0 (+7.0), impact -11.1 (+3.9), volley 63.37 -12.0 (+5.2), volley 66.56 -16.9 (-0.1: the buckshot
+  ripple is under the narrator now, as r13), voice only 40-44 -16.7 (-0.4).
+
 ## r14i audio (critic B 6.5 on r14h; impact pick = a, the 3D boom only) -> `stylew_borrow_test_r14i_share.mp4` (r14 video stream-copied, 76.733 s)
 - Fire bed (29.2-33.6): the bomb4 fire left the pre-limited cannon stem (it was lifted ~4.5 dB there) and is its own stem at -13 dB (r13), ducked
   60 % under the voice: window total -15.8 dB (r13 -15.5, r14h -11.9); voice over the fire +19 dB in 1-4 kHz, +5 dB full band.

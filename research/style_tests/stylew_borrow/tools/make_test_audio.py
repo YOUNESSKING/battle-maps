@@ -52,7 +52,7 @@ probe = np.zeros((int(4 * SR), 2), np.float32); rng = np.random.default_rng(3); 
 T.render_volley(L, probe, dict(type="musket_volley", tShare=0.5, unit=dict(men=144), at=dict(camDist=20, px=[960, 540]),
                                shots=[dict(tShare=0.5 + 0.04 * k, at=dict(px=[700 + 30 * k, 540])) for k in range(16)]), rng, [])
 CN_DB = float(os.environ.get("CANNON_DB", "7")); MU_DB = float(os.environ.get("MUSKET_DB", "12"))
-CN_REL = float(os.environ.get("CANNON_REL", "1.5")); MU_REL = float(os.environ.get("MUSKET_REL", "-1")); MU_REL2 = float(os.environ.get("MUSKET_REL2", "2"))   # r14h: the gun stems' level vs the voice (100 ms max RMS)   # r14 (owner: guns and muskets too low): the 3D cannon stem +7 dB, the muskets +12 dB (now outside the voice-keyed compressor; chosen from a gain grid, NOTES)
+CN_REL = float(os.environ.get("CANNON_REL", "1.5")); MU_REL = float(os.environ.get("MUSKET_REL", "-1")); MU_REL2 = float(os.environ.get("MUSKET_REL2", "0"))   # r14h: the gun stems' level vs the voice (100 ms max RMS)   # r14 (owner: guns and muskets too low): the 3D cannon stem +7 dB, the muskets +12 dB (now outside the voice-keyed compressor; chosen from a gain grid, NOTES)
 GAIN = (rms_peak(imp) - 8) - rms_peak(probe) + MU_DB
 print(f"cannon impact {rms_peak(imp):.1f} dB, raw volley {rms_peak(probe):.1f} dB -> musket stem gain {GAIN:+.1f} dB")
 
@@ -95,7 +95,13 @@ for (a, b, name) in SEGS:
     k = int(0.25 * SR); env = np.clip(np.convolve(env, np.hanning(k) / np.hanning(k).sum(), "same") * 1.2, 0, 1)
     EX = float(os.environ.get("MUSKET_EXTRA_DB", "0"))   # r3: first shot -4 dB, tail -6 dB under the voice (+ EX on both) so the bangs peak <= -6 dBFS
     TL_DB = float(os.environ.get("TAIL_DB", "-12")); TL_DK = float(os.environ.get("TAIL_DUCK", "0.75"))   # r14i (critic B): the ripple tails -12 dB + 75 % under the voice (r13 had -6 + 50 % before a voice-keyed compressor), after the per-ripple limiter
-    mus_front = st[:n] * db(-4 + EX) * db(GAIN); mus_tail = tail[:n] * (1 - TL_DK * env)[:, None] * db(EX + TL_DB) * db(GAIN)
+    BK_DK = float(os.environ.get("LATER_FRONT_DUCK", "0.9")); TE_DB = float(os.environ.get("TAIL_END_DB", "-12")); TE_AT = float(os.environ.get("TAIL_END_AT", "0")); LT_DB = float(os.environ.get("LATER_TAIL_DB", "-10"))   # r14j (critic B, buckshot ripple 66.56): the later ripples' front ducked 90 % under the voice (r13's voice-keyed compressor did it), every tail -10 dB more from 0.1 s after its ripple's last shot (0.25 s ramp)
+    fdk = np.ones(len(st), np.float32); tend = np.ones(len(st), np.float32)
+    for gi, g in enumerate(groups):
+        q0 = max(0, int((g[0][0] - 0.2) * SR)); q1 = int((groups[gi + 1][0][0] - 0.2) * SR) if gi + 1 < len(groups) else len(st)
+        if gi: fdk[q0:q1] = 1 - BK_DK * np.pad(env, (0, len(st) - n))[q0:q1]
+        tq = np.arange(q1 - q0) / SR + q0 / SR - (g[-1][0] + TE_AT); tend[q0:q1] = db(TE_DB * np.clip(tq / 0.25, 0, 1) + (LT_DB if gi else 0))
+    mus_front = st[:n] * db(-4 + EX) * db(GAIN); mus_tail = tail[:n] * ((1 - TL_DK * env) * tend[:n])[:, None] * db(EX + TL_DB) * db(GAIN)
     mus_shots = mus_front + mus_tail
     # r14 (owner: too low): the musket stem joins the cannon stem (not the voice-keyed sidechain compressor), ducked only by the 30 % tail rule above
     kv = int(0.25 * SR); venv = np.convolve(np.abs(vo).mean(1), np.ones(kv) / kv, mode="same"); venv = np.clip(venv / (np.percentile(venv, 95) + 1e-9), 0, 1)
@@ -107,7 +113,7 @@ for (a, b, name) in SEGS:
     log3 = []
     if guns:
         g3 = rd(f"{GG}/candidates/cand1_hit.wav"); GX = float(os.environ.get("GUN_EXTRA", "6.5")); GT = float(os.environ.get("GUN_TAIL_DB", "-12"))   # r14i (critic B): the crack its own stem; its body past GUN_TAIL_AT s eased GT dB over 0.2 s so it stops filling the boom's window (the strike 0.5 s later)
-        ge = np.ones(len(g3), np.float32); tt = np.arange(len(g3)) / SR - 0.115; GA = float(os.environ.get("GUN_TAIL_AT", "0.30")); ge = db(GT * np.clip((tt - GA) / 0.2, 0, 1)).astype(np.float32); g3 = g3 * ge[:, None]
+        ge = np.ones(len(g3), np.float32); tt = np.arange(len(g3)) / SR - 0.115; GA = float(os.environ.get("GUN_TAIL_AT", "0.30")); ge = db(GT * np.clip((tt - GA) / 0.2, 0, 1)).astype(np.float32); CK = float(os.environ.get("GUN_CRACK_DB", "2")); ge = ge * db(CK * np.clip(1 - (tt - 0.1) / 0.05, 0, 1) * (tt > -0.02)).astype(np.float32); g3 = g3 * ge[:, None]   # r14j (critic B): the first 0.1 s of the crack +2 dB (back to 0 by 0.15 s)
         log3 += [("gun cand1_hit", -15 + 4 + CN_DB + GX, put(g3, c[0], 0.115, -15 + 4 + CN_DB + GX, gb)) for c in guns]   # r14h: the shot itself above its boom
     if booms:
         b3 = rd(f"{GG}/candidates/cand2_hit.wav"); log3 += [("boom cand2_hit (impact)", -19 + 4 + CN_DB, put(b3, c[0], 0.067, -19 + 4 + CN_DB)) for c in booms]
@@ -129,24 +135,37 @@ for (a, b, name) in SEGS:
     # r14h (owner: guns clearly louder): the cannon stem (kit impact + 3D gun + boom + fire) and the musket stem are each pushed into their own
     # limiter to a short-term level set against THIS window's voice (cannon = voice + CN_REL dB, muskets = voice + MU_REL dB, 100 ms max RMS)
     vk = vo.copy(); vref = _pk(vo)
-    def prelim(x, target, ceil):
+    def prelim(x, target, ceil, grmax=None):   # r14j: grmax caps the limiter's reduction (dB): the gain stops rising instead of squashing a wall
         if _pk(x) < -100: return x
         g = target - _pk(x)
-        for _ in range(3):
+        for _ in range(5 if grmax is not None else 3):
             sf.write(TMPP + "_pl.wav", x * db(g), SR, subtype="FLOAT")
             subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", TMPP + "_pl.wav", "-af", f"alimiter=limit={ceil}:attack=1:release=60:level=false", "-c:a", "pcm_f32le", TMPP + "_pl2.wav"], check=True)
             y = rd(TMPP + "_pl2.wav"); y = np.pad(y, ((0, max(0, len(x) - len(y))), (0, 0)))[:len(x)]; gl = g; g += target - _pk(y)
+            if grmax is not None and _pk(x * db(gl)) - _pk(y) > grmax: g = gl - (_pk(x * db(gl)) - _pk(y) - grmax)
         prelim.gain = gl; prelim.gr = _pk(x * db(gl)) - _pk(y)   # r14i: the gain applied and the limiter's reduction (100 ms RMS)
         os.remove(TMPP + "_pl.wav"); os.remove(TMPP + "_pl2.wav"); return y
     GUN_REL = float(os.environ.get("GUN_REL", "10"))   # r14i: the crack (own limiter, ceiling -2 dBFS) vs the boom stem (CN_REL, ceiling -4)
-    cnB = prelim(cn[:n] * (1 - 0.15 * venv)[:, None], vref + CN_REL, db(-4)); cnG = prelim(gb[:n] * (1 - 0.15 * venv)[:, None], vref + GUN_REL, db(-2)); cnS = cnB + cnG
+    cnB = prelim(cn[:n] * (1 - 0.15 * venv)[:, None], vref + CN_REL, db(-4)); cnG = prelim(gb[:n] * (1 - 0.15 * venv)[:, None], vref + GUN_REL, db(-2)); CKD = float(os.environ.get("CRACK_DRIVE", "3"))   # r14j (critic B: the crack's first 0.1 s ~+2 dB): the crack is already on the limiter's ceiling, so it is made DENSER, not higher: a tanh soft clip at its own peak over the first 0.1 s (20 ms ramps)
+    if guns and CKD > 0:
+        pkg = float(np.abs(cnG).max()) + 1e-9; m = np.zeros(n, np.float32); tt2 = np.arange(n) / SR
+        for c in guns: m = np.maximum(m, np.clip(np.minimum((tt2 - c[0] + 0.01) / 0.02, (c[0] + 0.12 - tt2) / 0.02), 0, 1))
+        cnG = cnG * (1 - m)[:, None] + (pkg * np.tanh(CKD * cnG / pkg) / np.tanh(CKD)) * m[:, None]
+    cnS = cnB + cnG
     if os.environ.get("DUMP_CN") and guns: np.save(os.environ["DUMP_CN"], np.stack([cnB.mean(1), cnG.mean(1), vk.mean(1)]))   # debug: boom / gun / voice stems of the cannon window
     musS = np.zeros_like(mus_shots)   # r14h (advisor): each ripple pushed to the target on its own (the buckshot ripple no longer rides under the first)
     cuts = [max(0, int((g[0][0] - 0.2) * SR)) for g in groups] + [n]
+    MU_GRMAX = float(os.environ.get("MUSKET_GRMAX", "1.5"))
     for k in range(len(groups)):   # r14i: the FRONT shot of each ripple pushed to the target; its tail follows that gain minus the limiting (no squash-up of the tail)
         j0, j1 = cuts[k], cuts[k + 1]; prelim.gain = prelim.gr = 0
-        musS[j0:j1] = prelim(mus_front[j0:j1], vref + MU_REL + (MU_REL2 if k else 0), db(-6)) + mus_tail[j0:j1] * db(prelim.gain - prelim.gr)   # r14h: the later ripples +2 dB (the 66.56 volley read +2.8 vs r13, the brief asks +4-6)
+        musS[j0:j1] = prelim(mus_front[j0:j1], vref + MU_REL + (MU_REL2 if k else 0), db(-6), MU_GRMAX) * fdk[j0:j1, None] + mus_tail[j0:j1] * db(prelim.gain - prelim.gr)   # r14j: the buckshot ripple (quiet front) had been lifted +17.9 dB into 5.5 dB of limiting, a wall + its tail at +12.4
+        if os.environ.get("DEBUG_RIP"): print(f"  ripple {k}: {groups[k][0][0]:.2f}-{groups[k][-1][0]:.2f} s, {len(groups[k])} shots, gain {prelim.gain:+.1f} gr {prelim.gr:.1f}, front {_pk(mus_front[j0:j1]):.1f} tail {_pk(mus_tail[j0:j1]):.1f} dB (pre-gain)")   # r14h: the later ripples +2 dB (the 66.56 volley read +2.8 vs r13, the brief asks +4-6)
     if not groups: musS = mus_shots
+    if os.environ.get("DUMP_MU") and name == "test-bw-m3f":   # debug: front (post-limit) / tail (post-gain) / kit fx / voice of the m3f window
+        mf = np.zeros_like(musS); mt = np.zeros_like(musS)
+        for k in range(len(groups)):
+            j0, j1 = cuts[k], cuts[k + 1]; mf[j0:j1] = prelim(mus_front[j0:j1], vref + MU_REL + (MU_REL2 if k else 0), db(-6), MU_GRMAX) * fdk[j0:j1, None]; mt[j0:j1] = mus_tail[j0:j1] * db(prelim.gain - prelim.gr)
+        np.save(os.environ["DUMP_MU"], np.stack([mf.mean(1), mt.mean(1), fx.mean(1), vo.mean(1)])); print("  kit cues:", [(c[1], round(c[0], 2)) for c in kit])
     print(f"  stems (100 ms max RMS): voice {vref:.1f} | cannon {_pk(cnS):.1f} | muskets {_pk(musS):.1f} dB")
     FDK = float(os.environ.get("FIRE_DUCK", "0.6"))
     vo = vo + cnS + musS + fr[:n] * (1 - FDK * venv)[:, None]   # r14i: the fire ducked 60 % under the voice
@@ -186,7 +205,7 @@ subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{tmp}vo.wav", "-i", f"{tm
 def ilufs(fn):
     r = subprocess.run(["ffmpeg", "-nostats", "-i", fn, "-af", "ebur128", "-f", "null", "-"], capture_output=True, text=True).stderr
     return float(re.findall(r"I:\s+(-?[\d.]+) LUFS", r)[-1])
-LIM = float(os.environ.get("LIMIT_DB", "-2.6")); g = -14.0 - ilufs(f"{tmp}mix.wav")   # r14h: limit -3.0 (AAC adds ~1 dB of true peak: -2.2 read -1.1 dBTP in the mp4)
+LIM = float(os.environ.get("LIMIT_DB", "-2.2")); g = -14.0 - ilufs(f"{tmp}mix.wav")   # r14j: limit -2.2 (true peak -1.9 dBTP on the mp4 with the denser crack and lower gun stems; -2.2 had read -1.1 in r14h)
 for _ in range(3):
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{tmp}mix.wav", "-af", f"volume={g:.2f}dB,alimiter=limit={db(LIM):.4f}:attack=1:release=60:level=false,aresample=48000",
                     "-c:a", "pcm_s16le", OUT], check=True)
