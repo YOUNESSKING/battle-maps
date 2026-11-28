@@ -51,7 +51,7 @@ probe = np.zeros((int(4 * SR), 2), np.float32); rng = np.random.default_rng(3); 
 T.render_volley(L, probe, dict(type="musket_volley", tShare=0.5, unit=dict(men=144), at=dict(camDist=20, px=[960, 540]),
                                shots=[dict(tShare=0.5 + 0.04 * k, at=dict(px=[700 + 30 * k, 540])) for k in range(16)]), rng, [])
 CN_DB = float(os.environ.get("CANNON_DB", "7")); MU_DB = float(os.environ.get("MUSKET_DB", "12"))
-CN_REL = float(os.environ.get("CANNON_REL", "5")); MU_REL = float(os.environ.get("MUSKET_REL", "-2"))   # r14h: the gun stems' level vs the voice (100 ms max RMS)   # r14 (owner: guns and muskets too low): the 3D cannon stem +7 dB, the muskets +12 dB (now outside the voice-keyed compressor; chosen from a gain grid, NOTES)
+CN_REL = float(os.environ.get("CANNON_REL", "9")); MU_REL = float(os.environ.get("MUSKET_REL", "-2"))   # r14h: the gun stems' level vs the voice (100 ms max RMS)   # r14 (owner: guns and muskets too low): the 3D cannon stem +7 dB, the muskets +12 dB (now outside the voice-keyed compressor; chosen from a gain grid, NOTES)
 GAIN = (rms_peak(imp) - 8) - rms_peak(probe) + MU_DB
 print(f"cannon impact {rms_peak(imp):.1f} dB, raw volley {rms_peak(probe):.1f} dB -> musket stem gain {GAIN:+.1f} dB")
 
@@ -67,7 +67,7 @@ for (a, b, name) in SEGS:
     # r13 (owner: "guns and artillery exactly like the 3D films"): every kit gun / impact cue in the borrow windows is dropped (no doubled sound);
     # the visible cannon shot gets the 3D "gun" on its flash frame, its visible impact the 3D "boom", the burning roof the 3D "fire".
     GUNK = ("fire", "impact", "explosion", "mortar", "mg"); guns = [c for c in kit if c[1] == "fire" and name == "test-bw-m3d"]
-    booms = [c for c in kit if c[1] == "impact" and name == "test-bw-m3d"]; KEEPK = ("impact",) if name == "test-bw-m3d" else ()   # r14 (owner): the r12 locked-kit impact cue back in the cannon window, layered with the 3D gun + boom + fire
+    booms = [c for c in kit if c[1] == "impact" and name == "test-bw-m3d"]; KEEPK = ()   # r14h (owner, final): the guns use ONLY the 3D-film sounds: no Style W kit cannon / impact cues (an extra impact only if the judges pick one, IMPACT env)
     dropped = [c for c in kit if c[1] in GUNK and c[1] not in KEEPK]; kit = [c for c in kit if c[1] not in GUNK or c[1] in KEEPK]
     kitg = [c for c in kit if c[1] in KEEPK]; kit = [c for c in kit if c[1] not in KEEPK]   # r14h: the kit impact joins the cannon stem
     K.render(kit, d, "/tmp/_bw_kit.wav"); fx = rd("/tmp/_bw_kit.wav"); fx = np.pad(fx, ((0, max(0, n - len(fx))), (0, 0)))[:n]; os.remove("/tmp/_bw_kit.wav")
@@ -98,7 +98,7 @@ for (a, b, name) in SEGS:
         i0 = int(round((t - onset) * SR)); i0 = max(0, i0); m = min(len(clip), len(cn) - i0); cn[i0:i0 + m] += clip[:m] * db(g); return round(t + a, 3)
     log3 = []
     if guns:
-        g3 = rd(f"{GG}/candidates/cand1_hit.wav"); log3 += [("gun cand1_hit", -15 + 4 + CN_DB, put(g3, c[0], 0.115, -15 + 4 + CN_DB)) for c in guns]
+        g3 = rd(f"{GG}/candidates/cand1_hit.wav"); GX = float(os.environ.get("GUN_EXTRA", "4")); log3 += [("gun cand1_hit", -15 + 4 + CN_DB + GX, put(g3, c[0], 0.115, -15 + 4 + CN_DB + GX)) for c in guns]   # r14h: the shot itself above its boom
     if booms:
         b3 = rd(f"{GG}/candidates/cand2_hit.wav"); log3 += [("boom cand2_hit (impact)", -19 + 4 + CN_DB, put(b3, c[0], 0.067, -19 + 4 + CN_DB)) for c in booms]
     if name == "test-bw-m3d" and bwt:   # the roof catches fire on screen at T_ROOF + 0.9 (scene time)

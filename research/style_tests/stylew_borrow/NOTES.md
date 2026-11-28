@@ -258,3 +258,21 @@ Only these changed (hook window = r11 render):
 | muskets | troop stem (Jackson flintlock set) -12 dB, ducked 85 % | the same flintlock set (troop_sfx), one shot per flash, a volley 8 dB under the cannon (stem gain -14.1 dB), first shot -4 dB, tail ducked 50 % |
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
+
+## r14h audio (owner: the guns clearly louder, ONLY the 3D-film gun sounds) — audio only, not remuxed yet (the judges pick the impact first)
+- Gun sounds: the 3D gun (goosegreen candidates/cand1_hit) on the flash frame, the 3D boom (cand2_hit) on the visible impact, the 3D fire
+  (bomb4 lowpass 900) when the roof catches; the Jackson flintlock set for the muskets. No Style W kit cannon / impact cues (dropped).
+- Mix chain rebuilt (advisor): loudnorm had fallen back to dynamic gain around the shots and cancelled every boost. Now: the compressors are
+  keyed by the voice ONLY; the cannon stem and the musket stem are each pushed into their own limiter to a short-term level set against the
+  window's voice (cannon = voice +9 dB, gun +4 over its boom; muskets = voice -2 dB, 100 ms max RMS); music bed 0.05 (was 0.08),
+  ambience -27 dB (was -23); a static gain to -14.0 LUFS + one brick-wall limiter at -2.2 dBFS (true peak -2.1 on the wav).
+- Coordinator's metric (mean power over 0.35 s from each shot, mono, final wav; dB):
+
+| mix | cannon 34.63 | impact 35.13 | volley 63.37 | volley 66.56 | voice 40-44 s |
+|---|---|---|---|---|---|
+| r13 | -11.2 | -12.0 | -14.2 | -13.8 | -13.3 |
+| r14g (sent) | -11.2 | -11.1 | -12.9 | -13.0 | -13.4 |
+| r14h | -7.7 (+3.5) | -6.0 (+6.0) | -9.2 (+5.0) | -10.9 (+2.9) | -14.3 (-1.0) |
+
+- Impact A/B (`impact_ab/`, README there): a = boom only; b = + bomb6 first blast, highpass (CC0, USC Cinema / craigsmith);
+  c = + sfx_thud (our own synthesized, belisarius); d = + cand4_hit lowpassed (Kostrava, CC0). `impact_ab.mp4` plays a-d with the video.
