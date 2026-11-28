@@ -259,6 +259,29 @@ Only these changed (hook window = r11 render):
 | old 2D kit gun cues | - | dropped in the borrow windows ("fire" 760.44, "impact" 760.94); the locked kit files and check_sound_lock untouched (SOUND LOCK OK) |
 | loudness | -14 LUFS | -14.0 LUFS, peaks -2.9 dBFS (limiter -3 dBFS) |
 
+## r18 (owner: "3D didn't work like that": COPY how the 3D film did it) -> `dive_v6copy/` + `sheet_v6copy_r18.jpg` (stills only)
+- `dive_v6copy/` is a literal copy of the gm3d clip project: world.js, fx.js, vendor/, cloudtex/, and index.html cut from the clip's own
+  index.html. Kept verbatim (v6 clip time): its camera beats and easing (DV + the keys), fx + the wide clouds, the deck and the close stratus
+  (vclouds), the grade, the white-out (+ the v8 cut fix), the emerge fog and the film settings.
+- Removed: the 3D title, the battle, the boats, the fires, the flashback.
+- Only the content is swapped (`tools/make_assets.py`):
+  - The ground: our Lowcountry Style W basemap as v6's wide ground texture, scaled 1/2.9 into v6's map units (it fills v6's 1000 x 640 box),
+    with Nelson's Ferry on v6's dive target (1518, 706).
+  - The landing: the Santee basemap as v6's close ground, at its true place.
+  - Flat heights; no rivers / trees / houses / bridge meshes (the painted maps carry them).
+- world.js change: a hidden bridge anchor is not drawn.
+- Retime (linear, v6's proportions kept): ours = TA * v6 + TB, TA = 1.4/3.35, TB = 7.0 - TA * 16.4. So v6 SW 16.4 -> 7.0, land 19.75 -> 8.4,
+  push 12.6 -> 5.41, deck in 14.7 -> 6.29.
+- Our overlays, on r15's words, drawn the way v6 pins its DOM boxes / names (`world.projectMap`, dimmed by the cloud alpha there):
+  - the four British boxes (II pair drops in on "Britain"), the two wagons rolling up the Charleston road, the two flags;
+  - the road trace + ONE ROAD on "one road", "Nelson's Ferry" (v6's `.pl` label) on its word;
+  - the pocket-watch plaque (vicksburg/engine/overlay.js, as r15) "1780".
+- Hand-off: v6's land key (dist 40, tilt 38) is replaced by our 2D camera's framing at 8.5 s: map (1310.9, 893.4), scale 13.34, tilt 7 ->
+  at [1517.41, 698.66], dist 48.7, tilt 7, fov 32. The 3D landed frame lines up with r15's 2D frame (ferry, rivers, woods in place);
+  the plan is a crossfade 8.4 -> 8.6 s into r15.
+- Stills: puppeteer harness at 1280 x 720 (v6's composition size).
+- `--paint` and `--cloud3d` are kept, unused; the gate still says LOOK LOCK OK (r18 touches no locked file).
+
 ## r17 (owner rejected the painted r16: "I like something like 3D more" / "maybe tone it to 2D or make it work") -> `sheet_dive3d_r17.jpg` (stills only)
 - Back to the REAL engine clouds of the approved gm3d v6 clip. The new path sits behind `build_scene.py --cloud3d` (GD.var.cloud3d), with
   `--var tone=2d` for variant B. `--paint` is kept as it was (opt-in, unused). All code is inside the LOOK-LOCK pending cloud sections; the gate
